@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+*.class
+
+# Package Files #
+*.war
+*.ear
+=======
+/bin
+>>>>>>> 90d0f83875fd93fc61307a67fd0a357509b2651a
