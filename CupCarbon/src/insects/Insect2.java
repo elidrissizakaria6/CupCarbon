@@ -31,8 +31,9 @@ import java.text.SimpleDateFormat;
 
 import map.Layer;
 import utilities.MapCalc;
+import device.Device;
 
-public class Insect extends Thread {
+public class Insect2 extends Device implements Runnable {
 
 	protected double x = 0;
 	protected double y = 0;
@@ -46,13 +47,13 @@ public class Insect extends Thread {
 
 	// ------------------------------------
 
-	public Insect(double x, double y, int theta) {
+	public Insect2(double x, double y, int theta) {
 		this.x = x;
 		this.y = y;
 		this.theta = theta;
 	}
 
-	public Insect(double x, double y, boolean dispersion) {
+	public Insect2(double x, double y, boolean dispersion) {
 		generate(x, y, dispersion);
 	}
 
@@ -95,8 +96,8 @@ public class Insect extends Thread {
 		g.setColor(Color.DARK_GRAY);	
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
 		(int) theta - 90 - 20, 40);		
-		g.setColor(Color.orange);
-		g.drawRect((int)xc-100, (int)yc-100, 200, 200);
+		//g.setColor(Color.orange);
+		//g.drawRect((int)xc-100, (int)yc-100, 200, 200);
 	}
 
 	public double getX() {
@@ -114,7 +115,8 @@ public class Insect extends Thread {
 	@Override
 	public void run() {
 		double distance;
-		String gpsFileName = "trajet/trajet1.gps";
+		//String gpsFileName = "trajet/trajet1.gps";
+		System.out.println("---> "+gpsFileName);
 		boolean firstTime = true;
 		FileInputStream fis;
 		BufferedReader b = null;
@@ -122,7 +124,7 @@ public class Insect extends Thread {
 		String s;
 		double x1, y1, x2, y2;
 		try {
-			sleep((int) (1000 * Math.random()));
+			Thread.sleep((int) (1000 * Math.random()));
 			if (!gpsFileName.equals("")) {
 				fis = new FileInputStream(gpsFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
@@ -163,7 +165,7 @@ public class Insect extends Thread {
 							for (int i = 0; i < distance; i++) {
 								move(getAngle(x1, y1, x2, y2));
 								Layer.getMapViewer().repaint();
-								sleep(d);
+								Thread.sleep(d);
 							}
 						}
 					} else {
@@ -223,5 +225,46 @@ public class Insect extends Thread {
 			return (180 - (int) alpha);
 		else
 			return (-(int) alpha);
+	}
+
+	@Override
+	public String getIdFL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getNodeIdName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getType() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setRadioRadius(double radiuRadius) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setCaptureRadius(double captureRadius) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setGPSFileName(String gpsFileName) {
+		this.gpsFileName = gpsFileName ;
+	}
+
+	@Override
+	public String getGPSFileName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

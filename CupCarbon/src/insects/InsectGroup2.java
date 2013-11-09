@@ -23,23 +23,21 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Vector;
 
-public class InsectGroup {
-	private Vector<Insect> insects;
+public class InsectGroup2 {
+	private Vector<Insect2> insect2s;
 	private int height = 100000000;
 	private int width = 600000000;
 
-	public InsectGroup() {
-		insects = new Vector<Insect>();
+	public InsectGroup2() {
+		insect2s = new Vector<Insect2>();
 	}
 
-	public InsectGroup(int n) {
-		insects = new Vector<Insect>();
+	public InsectGroup2(int n) {
+		insect2s = new Vector<Insect2>();
 		for (int i = 0; i < n; i++) {
-			insects.add(new Insect(48.39188295873048, -4.44371223449707, true));
+			insect2s.add(new Insect2(48.39188295873048, -4.44371223449707, true));
 		}
 	}
-
-	int v;
 
 	public Point closestLocation(double px, double py, double ox, double oy) {
 		double dX = Math.abs(ox - px);
@@ -87,13 +85,13 @@ public class InsectGroup {
 	}
 
 	public void draw(Graphics g) {		
-		for (Insect insect : insects) {
-			insect.draw(g);
+		for (Insect2 insect2 : insect2s) {
+			insect2.draw(g);
 		}
 	}
 
 	public void lancer() {
-		for (Insect insect : insects)
-			insect.start();
+		for (Insect2 insect2 : insect2s)
+			insect2.start();
 	}
 }

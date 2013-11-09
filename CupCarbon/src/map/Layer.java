@@ -19,7 +19,7 @@
 
 package map;
 
-import insects.InsectGroup;
+import insects.InsectGroup2;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -50,7 +50,7 @@ import cupcarbon.NodeParametersWindow;
 import device.BaseStation;
 import device.DeviceList;
 import device.Gas;
-import device.SimpleInsect;
+import device.Insect;
 import device.Marker;
 import device.MarkerList;
 import device.Mobile;
@@ -126,18 +126,18 @@ public class Layer implements Painter<Object>, MouseListener,
 	}
 
 	//private InsectCc icc = new InsectCc();
-	//private Insect insect = null ;
-	private InsectGroup ig = null ;
+	//private Insect2 insect = null ;
+	private InsectGroup2 ig = null ;
 	public void insectinit() {
-		//insect = new Insect(36.75690292648725,5.050878524780273,0);
-		ig = new InsectGroup(200) ;
+		//insect = new Insect2(36.75690292648725,5.050878524780273,0);
+		ig = new InsectGroup2(200) ;
 		ig.lancer() ;
 		//icc.start();
 		//48.40159956517584, -4.434313774108887, 0
-		//insect = new Insect(8181392.0, 5804555.0, 0);		
-		//insect = new Insect(48.40159956517584, -4.434313774108887, 0);
+		//insect = new Insect2(8181392.0, 5804555.0, 0);		
+		//insect = new Insect2(48.40159956517584, -4.434313774108887, 0);
 		
-		//insect = new Insect(687,345,0);
+		//insect = new Insect2(687,345,0);
 		
 		
 		//Point p = new Point(arg.getX(), arg.getY());
@@ -271,8 +271,8 @@ public class Layer implements Painter<Object>, MouseListener,
 				mapViewer.repaint();
 			}
 			if (lastKey == '3') {
-				DeviceList.add(new SimpleInsect(gp.getLatitude(), gp.getLongitude(),
-						500));
+				DeviceList.add(new Insect(gp.getLatitude(), gp.getLongitude(),
+						500, 100));
 				mapViewer.repaint();
 			}
 			if (lastKey == '4') {

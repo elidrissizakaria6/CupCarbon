@@ -35,7 +35,7 @@ import utilities.UColor;
  */
 public class SimpleInsect extends MobileG {
 
-	private static String idFL = "I" ; // ID First Letter
+	private static String idFL = "SI" ; // ID First Letter
 	
 	private int duree = 5000 ;
 	
@@ -196,7 +196,6 @@ public class SimpleInsect extends MobileG {
 
 	@Override
 	public void setCOMFileName(String comFileName) {
-		// TODO Auto-generated method stub
 		
 	}
 }
