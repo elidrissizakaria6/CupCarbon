@@ -27,7 +27,7 @@ public class InsectGroup {
 	private Vector<Insect> insects;
 	private int height = 100000000;
 	private int width = 600000000;
-	
+
 	public InsectGroup() {
 		insects = new Vector<Insect>();
 	}
@@ -35,7 +35,7 @@ public class InsectGroup {
 	public InsectGroup(int n) {
 		insects = new Vector<Insect>();
 		for (int i = 0; i < n; i++) {
-			insects.add(new Insect(48.39188295873048,-4.44371223449707,true));
+			insects.add(new Insect(48.39188295873048, -4.44371223449707, true));
 		}
 	}
 
@@ -86,13 +86,14 @@ public class InsectGroup {
 				* p2y));
 	}
 
-	public void draw(Graphics g) {
-		for (Insect insect : insects)
+	public void draw(Graphics g) {		
+		for (Insect insect : insects) {
 			insect.draw(g);
+		}
 	}
 
 	public void lancer() {
 		for (Insect insect : insects)
-			insect.start()	;	
+			insect.start();
 	}
 }

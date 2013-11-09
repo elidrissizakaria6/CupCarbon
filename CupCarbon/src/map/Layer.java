@@ -117,7 +117,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		mapViewer.addMouseListener(this);
 		mapViewer.addMouseMotionListener(this);
 		mapViewer.addKeyListener(this);
-		insectinit();
+		//insectinit();
 
 	}
 
@@ -160,7 +160,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		
 		//insect.draw(g);
 		
-		ig.draw(g);
+		//ig.draw(g);
 	
 		
 		// int ax =

@@ -22,14 +22,12 @@ package insects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.Random;
 
 import map.Layer;
 import utilities.MapCalc;
@@ -38,12 +36,13 @@ public class Insect extends Thread {
 
 	protected double x = 0;
 	protected double y = 0;
+	protected double xc = 0;
+	protected double yc = 0;
 	private double theta;
 	private double speed1 = .00001;
 	private double speed2 = .00001;
 	private double maxTheta = .5;
 	private double dispr = 80.;
-	private Random random = new Random();
 
 	// ------------------------------------
 
@@ -68,7 +67,7 @@ public class Insect extends Thread {
 		this.y = y + d2;
 		theta = (int) (Math.random() * 360);
 	}
-
+	
 	// ------------------------------------
 
 	public void move(double newHeading) {
@@ -86,23 +85,18 @@ public class Insect extends Thread {
 	}
 
 	public void draw(Graphics gg) {
-		int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
-		int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
-		double e = .5;
-		x += random.nextGaussian() * e;
-		y += random.nextGaussian() * e;
-		int v = 4;
 		Graphics2D g = (Graphics2D) gg;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-
-		
-		//g.setColor(Color.ORANGE);
-		//g.drawOval((int) x - v-2, (int) y - v-2, v * 4, v * 4);
-		g.setColor(Color.DARK_GRAY);
+			
+		int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
+		int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
+		int v = 5;		
+		g.setColor(Color.DARK_GRAY);	
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
-		(int) theta - 90 - 20, 40);
-
+		(int) theta - 90 - 20, 40);		
+		g.setColor(Color.orange);
+		g.drawRect((int)xc-100, (int)yc-100, 200, 200);
 	}
 
 	public double getX() {
@@ -156,12 +150,14 @@ public class Insect extends Thread {
 						tmpTime = cTime;
 						x1 = Double.parseDouble(ts[1]) + Math.random() / dispr;
 						y1 = Double.parseDouble(ts[2]) + Math.random() / dispr;
+						xc=MapCalc.geoToIntPixelMapX(x1,y1);
+						yc=MapCalc.geoToIntPixelMapY(x1,y1);
 						if (firstTime) {
 							x = x1;
 							y = y1;
 							firstTime = false;
 						} else {
-							distance = 1.35 * utilities.MapCalc.distance(x1,
+							distance = 1.35 * MapCalc.distance(x1,
 									y1, x2, y2);
 							int d = 1;
 							for (int i = 0; i < distance; i++) {
