@@ -24,118 +24,44 @@ import java.awt.Point;
 import java.util.Vector;
 
 public class InsectGroup {
-	private Vector<InsectSingle> insects;
-
+	private Vector<Insect> insects;
+	private int height = 100000000;
+	private int width = 600000000;
+	
 	public InsectGroup() {
-		insects = new Vector<InsectSingle>();
+		insects = new Vector<Insect>();
 	}
 
 	public InsectGroup(int n) {
-		insects = new Vector<InsectSingle>();
+		insects = new Vector<Insect>();
 		for (int i = 0; i < n; i++) {
-			insects.add(new InsectSingle());
+			insects.add(new Insect(48.39188295873048,-4.44371223449707,true));
 		}
 	}
 
 	int v;
-
-	synchronized public void move() {
-		// boolean b = true;
-		// Random r = new Random();
-		// int k=0;
-		for (InsectSingle insect : insects) {
-			// if (b) {
-			// if(v++<10) {
-			// insect.move((int)(r.nextGaussian()*100));
-			// }
-			// else
-			// v=0;
-			// if(k++>290)
-			// b = false;
-			// } else
-			insect.move(generalHeading(insect));
-		}
-	}
-
-	private int generalHeading(InsectSingle insect) {
-		Point target = new Point(0, 0);
-		int numInsects = 0;
-		for (int i = 0; i < insects.size(); i++) {
-			InsectSingle otherInsect = (InsectSingle) insects.elementAt(i);
-			Point otherLocation = closestLocation(insect.getX(), insect.getY(),
-					otherInsect.getX(), otherInsect.getY());
-
-			double distance = insect.getDistance(otherLocation);
-
-			if (!insect.equals(otherInsect) && distance > 0
-					&& distance <= Ranges.detectionRange) {
-				Point align = new Point((int) (100 * Math.cos(otherInsect
-						.getTheta() * Math.PI / 180)),
-						(int) (-100 * Math.sin(otherInsect.getTheta() * Math.PI
-								/ 180)));
-				align = normalisePoint(align, 100); // alignment weight is 100
-				boolean tooClose = (distance < Ranges.separationRange);
-				double weight = 200.0;
-				if (tooClose) {
-					weight *= Math.pow(1 - (double) distance
-							/ Ranges.separationRange, 2);
-				} else {
-					weight *= -Math
-							.pow((double) (distance - Ranges.separationRange)
-									/ (Ranges.detectionRange - Ranges.separationRange),
-									2);
-				}
-				Point attract = sumPoints(otherLocation.x, otherLocation.y,
-						-1.0, insect.x, insect.y, 1.0);
-				attract = normalisePoint(attract, weight); // weight is variable
-				Point dist = sumPoints(align.x, align.y, 1.0, attract.x,
-						attract.y, 1.0);
-				dist = normalisePoint(dist, 100); // final weight is 100
-				target = sumPoints(target.x, target.y, 1.0, dist.x, dist.y, 1.0);
-			} else {
-				Point dist = sumPoints(insect.getX(), insect.getY(), 1.0,
-						otherLocation.x, otherLocation.y, -1.0);
-				dist = normalisePoint(dist, 1000);
-				double weight = Math.pow((1 - (double) distance
-						/ Ranges.detectionRange), 2);
-				target = sumPoints(target.x, target.y, 1.0, dist.x, dist.y,
-						weight); // weight is
-			}
-			numInsects++;
-		}
-
-		if (numInsects == 0) {
-			return insect.getTheta();
-		} else { // average target points and add to position
-			target = sumPoints(insect.getX(), insect.getY(), 1.0, target.x,
-					target.y, 1 / (double) numInsects);
-		}
-		int targetTheta = (int) (180 / Math.PI * Math.atan2(insect.getY()
-				- target.y, target.x - insect.getX()));
-		return (targetTheta + 360) % 360; // angle for Insect to steer towards
-	}
 
 	public Point closestLocation(double px, double py, double ox, double oy) {
 		double dX = Math.abs(ox - px);
 		double dY = Math.abs(oy - py);
 		double x = ox;
 		double y = oy;
-		if (Math.abs(Ranges.height - ox + px) < dX) {
-			dX = Ranges.height - ox + px;
-			x = ox - Ranges.height;
+		if (Math.abs(height - ox + px) < dX) {
+			dX = height - ox + px;
+			x = ox - height;
 		}
-		if (Math.abs(Ranges.height - px + ox) < dX) {
-			dX = Ranges.height - px + ox;
-			x = ox + Ranges.height;
+		if (Math.abs(height - px + ox) < dX) {
+			dX = height - px + ox;
+			x = ox + height;
 		}
 
-		if (Math.abs(Ranges.width - oy + py) < dY) {
-			dY = Ranges.width - oy + py;
-			y = oy - Ranges.width;
+		if (Math.abs(width - oy + py) < dY) {
+			dY = width - oy + py;
+			y = oy - width;
 		}
-		if (Math.abs(Ranges.width - py + oy) < dY) {
-			dY = Ranges.width - py + oy;
-			y = oy + Ranges.width;
+		if (Math.abs(width - py + oy) < dY) {
+			dY = width - py + oy;
+			y = oy + width;
 		}
 
 		return new Point((int) x, (int) y);
@@ -161,7 +87,12 @@ public class InsectGroup {
 	}
 
 	public void draw(Graphics g) {
-		for (InsectSingle insect : insects)
+		for (Insect insect : insects)
 			insect.draw(g);
+	}
+
+	public void lancer() {
+		for (Insect insect : insects)
+			insect.start()	;	
 	}
 }

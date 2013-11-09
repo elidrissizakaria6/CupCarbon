@@ -33,23 +33,23 @@ import utilities.UColor;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class Insect extends MobileG {
+public class SimpleInsect extends MobileG {
 
 	private static String idFL = "I" ; // ID First Letter
 	
 	private int duree = 5000 ;
 	
-	public Insect() {}
+	public SimpleInsect() {}
 	
-	public Insect(double x, double y, double radius) {
+	public SimpleInsect(double x, double y, double radius) {
 		super(x,y,radius,"");
 	}
 	
-	public Insect(double x, double y, double radius, String gpsFileName) {
+	public SimpleInsect(double x, double y, double radius, String gpsFileName) {
 		super(x, y, radius, gpsFileName);
 	}
 	
-	public Insect(String x, String y, String radius, String gpsFileName) {
+	public SimpleInsect(String x, String y, String radius, String gpsFileName) {
 		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius), gpsFileName);
 	}
 

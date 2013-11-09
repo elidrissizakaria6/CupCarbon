@@ -34,32 +34,38 @@ import java.util.Random;
 import map.Layer;
 import utilities.MapCalc;
 
-public class Insect2 extends Thread {
+public class Insect extends Thread {
 
 	protected double x = 0;
 	protected double y = 0;
 	private double theta;
-	private double speed1 = .00001;// 4;
-	private double speed2 = .00001;// 4;
-	private double maxTheta = .05;
-	private double dispr = 50.;
+	private double speed1 = .00001;
+	private double speed2 = .00001;
+	private double maxTheta = .5;
+	private double dispr = 80.;
 	private Random random = new Random();
 
 	// ------------------------------------
 
-	public Insect2(double x, double y, int theta) {
+	public Insect(double x, double y, int theta) {
 		this.x = x;
 		this.y = y;
 		this.theta = theta;
 	}
 
-	public Insect2() {
-		generate();
+	public Insect(double x, double y, boolean dispersion) {
+		generate(x, y, dispersion);
 	}
 
-	public void generate() {
-		x = 48.39188295873048 + Math.random() / dispr;
-		y = -4.44371223449707 + Math.random() / dispr;
+	public void generate(double x, double y, boolean dispersion) {
+		double d1 = 0 ;
+		double d2 = 0 ;
+		if (dispersion) {
+			d1 = Math.random() / dispr ;
+			d2 = Math.random() / dispr ;
+		}
+		this.x = x + d1;
+		this.y = y + d2;
 		theta = (int) (Math.random() * 360);
 	}
 
@@ -85,30 +91,18 @@ public class Insect2 extends Thread {
 		double e = .5;
 		x += random.nextGaussian() * e;
 		y += random.nextGaussian() * e;
-		int v = 6;
+		int v = 4;
 		Graphics2D g = (Graphics2D) gg;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
+		
+		//g.setColor(Color.ORANGE);
+		//g.drawOval((int) x - v-2, (int) y - v-2, v * 4, v * 4);
 		g.setColor(Color.DARK_GRAY);
-
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
-				(int) theta - 90 - 20, 40);
+		(int) theta - 90 - 20, 40);
 
-	}
-
-	public double getDistance(Insect2 insect) {
-		double dX = insect.getX() - x;
-		double dY = insect.getY() - y;
-
-		return (int) Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
-	}
-
-	public double getDistance(Point p) {
-		double dX = p.x - x;
-		double dY = p.y - y;
-
-		return (int) Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 	}
 
 	public double getX() {
@@ -123,89 +117,24 @@ public class Insect2 extends Thread {
 		return theta;
 	}
 
-	// public void setSpeed(double speed) {
-	// this.speed = speed;
-	// }
-
-	public void setMaxTurnTheta(int theta) {
-		maxTheta = theta;
-	}
-
-	public void drawRanges(Graphics g) {
-		drawCircles(g, (int) x, (int) y);
-
-		// int radius = Obstacle.Ranges.detectionRange;
-
-		// boolean top = (y < Ranges.detectionRange);
-		// boolean bottom = (y > Ranges.width - Ranges.detectionRange);
-
-		// if (x < Ranges.detectionRange) { // if left
-		// drawCircles(g, Ranges.height + x, y);
-		// if (top) {
-		// drawCircles(g, Ranges.height + x, Ranges.width + y);
-		// } else if (bottom) {
-		// drawCircles(g, Ranges.height + x, y - Ranges.width);
-		// }
-		// } else if (x > Ranges.height - Ranges.detectionRange) { // if right
-		// drawCircles(g, x - Ranges.height, y);
-		// if (top) {
-		// drawCircles(g, x - Ranges.height, Ranges.width + y);
-		// } else if (bottom) {
-		// drawCircles(g, x - Ranges.height, y - Ranges.width);
-		// }
-		// }
-		// if (top) {
-		// drawCircles(g, x, Ranges.width + y);
-		// } else if (bottom) {
-		// drawCircles(g, x, y - Ranges.width);
-		// }
-	}
-
-	/**
-	 * Draws the range circles around the bird. The inner circle is the point at
-	 * which birds will separate to aviod the obstacle. The outer circle is the
-	 * range at which the birds can detect the obstacle.
-	 * 
-	 * @param g
-	 *            The graphics object to draw the bird on.
-	 * @param x
-	 *            The X coordinate of the bird
-	 * @param y
-	 *            The Y coordinate of the bird
-	 */
-	protected void drawCircles(Graphics g, int x, int y) {
-		g.setColor(Color.gray);
-		g.drawOval(x - Ranges.detectionRange, y - Ranges.detectionRange,
-				2 * Ranges.detectionRange, 2 * Ranges.detectionRange);
-		// g.setColor(Color.LIGHT_GRAY);
-		// g.drawOval(x - Ranges.separationRange, y - Ranges.separationRange,
-		// 2 * Ranges.separationRange, 2 * Ranges.separationRange);
-	}
-
-
-	public void run2() {
-	}
-	
 	@Override
 	public void run() {
+		double distance;
 		String gpsFileName = "trajet/trajet1.gps";
 		boolean firstTime = true;
 		FileInputStream fis;
 		BufferedReader b = null;
 		String[] ts;
 		String s;
-		double x2, y2;
+		double x1, y1, x2, y2;
 		try {
-			sleep(1000);
+			sleep((int) (1000 * Math.random()));
 			if (!gpsFileName.equals("")) {
 				fis = new FileInputStream(gpsFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
-				String desc_str = b.readLine();
-				String from_str = b.readLine();
-				String to_str = b.readLine();
-				System.out.println("Description : " + desc_str);
-				System.out.println("From : " + from_str);
-				System.out.println("To : " + to_str);
+				b.readLine();
+				b.readLine();
+				b.readLine();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -225,16 +154,18 @@ public class Insect2 extends Thread {
 						cTime = simpleDateFormat.parse(ts[0]).getTime();
 						toWait = cTime - tmpTime;
 						tmpTime = cTime;
-						x = Double.parseDouble(ts[1]);
-						y = Double.parseDouble(ts[2]);
-						if (firstTime)
+						x1 = Double.parseDouble(ts[1]) + Math.random() / dispr;
+						y1 = Double.parseDouble(ts[2]) + Math.random() / dispr;
+						if (firstTime) {
+							x = x1;
+							y = y1;
 							firstTime = false;
-						else {
-							double th = getAngle(x, y, x2, y2);
+						} else {
+							distance = 1.35 * utilities.MapCalc.distance(x1,
+									y1, x2, y2);
 							int d = 1;
-							int ss = 5000;
-							for (int i = 0; i < ss; i++) {
-								move(th);
+							for (int i = 0; i < distance; i++) {
+								move(getAngle(x1, y1, x2, y2));
 								Layer.getMapViewer().repaint();
 								sleep(d);
 							}
@@ -244,7 +175,7 @@ public class Insect2 extends Thread {
 					}
 				}
 				try {
-					Thread.sleep(toWait / 10);
+					Thread.sleep(toWait / 100);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

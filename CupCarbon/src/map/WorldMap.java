@@ -94,7 +94,7 @@ public class WorldMap extends JXMapKit {
 		setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
 		// setCenterPosition(new
 		// GeoPosition(48.58273977037357,-3.8297653198242188));//Morlaix
-		setZoom(5);
+		setZoom(6);
 		layer = new Layer(getMainMap());
 	}
 

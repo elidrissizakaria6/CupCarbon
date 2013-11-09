@@ -159,9 +159,9 @@ public class DeviceList {
 			break;
 		case 3:
 			if(type.length==5)
-				add( new Insect(type[3], type[4], type[5], type[6]));
+				add( new SimpleInsect(type[3], type[4], type[5], type[6]));
 			if(type.length==4)
-				add(new Insect(type[3], "", type[5], type[6]));
+				add(new SimpleInsect(type[3], "", type[5], type[6]));
 			break;
 		case 4:
 			add(new BaseStation(type[3], type[4], type[5], type[6]));			
