@@ -19,7 +19,7 @@
 
 package map;
 
-import insects.InsectGroup2;
+import insects.Insects;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -50,7 +50,6 @@ import cupcarbon.NodeParametersWindow;
 import device.BaseStation;
 import device.DeviceList;
 import device.Gas;
-import device.Insect;
 import device.Marker;
 import device.MarkerList;
 import device.Mobile;
@@ -91,7 +90,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	public Layer() {
 	}
 
-	public Layer(JXMapViewer mapViewer) {	
+	public Layer(JXMapViewer mapViewer) {
 		Layer.mapViewer = mapViewer;
 		nodeList = new DeviceList();
 		markerList = new MarkerList();
@@ -117,7 +116,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		mapViewer.addMouseListener(this);
 		mapViewer.addMouseMotionListener(this);
 		mapViewer.addKeyListener(this);
-		//insectinit();
+		// insectinit();
 
 	}
 
@@ -125,52 +124,11 @@ public class Layer implements Painter<Object>, MouseListener,
 		return mapViewer;
 	}
 
-	//private InsectCc icc = new InsectCc();
-	//private Insect2 insect = null ;
-	private InsectGroup2 ig = null ;
-	public void insectinit() {
-		//insect = new Insect2(36.75690292648725,5.050878524780273,0);
-		ig = new InsectGroup2(200) ;
-		ig.lancer() ;
-		//icc.start();
-		//48.40159956517584, -4.434313774108887, 0
-		//insect = new Insect2(8181392.0, 5804555.0, 0);		
-		//insect = new Insect2(48.40159956517584, -4.434313774108887, 0);
-		
-		//insect = new Insect2(687,345,0);
-		
-		
-		//Point p = new Point(arg.getX(), arg.getY());
-		//GeoPosition gp = mapViewer.convertPointToGeoPosition(p);
-		
-		//int [] c = utilities.MapCalc.geoToIntPixelMapXY(48.40159956517584, -4.434313774108887);
-		
-		//System.out.println(c[0]);
-		//System.out.println(c[1]);
-		//insect.start();
-	}
-
 	@Override
 	public void paint(Graphics2D g, Object arg1, int arg2, int arg3) {
 		g.setFont(new Font("arial", 0, 12));
 		Rectangle rect = mapViewer.getViewportBounds();
 		g.translate(-rect.x, -rect.y);
-
-		//System.out.println(x+" -- "+y);
-		
-		//insect.draw(g);
-		
-		//ig.draw(g);
-	
-		
-		// int ax =
-		// MapCalc.geoToIntPixelMapX(48.39188295873048,-4.44371223449707);
-		// int ay =
-		// MapCalc.geoToIntPixelMapY(48.39188295873048,-4.44371223449707);
-		//
-		// g.fillOval(ax, ay, 100, 100);
-
-		// icc.draw(g);
 
 		if (afficherIndicateur) {
 			g.setColor(UColor.ROUGE);
@@ -202,7 +160,7 @@ public class Layer implements Painter<Object>, MouseListener,
 				g.drawString("   Vertex", (float) x, (float) y);
 			}
 			g.drawOval((int) (x - 8), (int) (y - 8), 16, 16);
-			
+
 			// g.fillArc((int) (x - 10), (int) (y - 10), 20, 20, 75, 30);
 			//
 			// g.fillArc((int) (x - 10), (int) (y - 10), 20, 20, 165, 30);
@@ -219,11 +177,11 @@ public class Layer implements Painter<Object>, MouseListener,
 		if (dessinerCadre) {
 			Point2D p1 = MapCalc.pixelPanelToPixelMap(cadreX1, cadreY1);
 			Point2D p2 = MapCalc.pixelPanelToPixelMap(cadreX2, cadreY2);
-			g.setColor(UColor.BLANC_TTRANSPARENT);
+			g.setColor(UColor.WHITE_DTRANSPARENT);
 			g.fillRect((int) p1.getX(), (int) p1.getY(),
 					(int) (p2.getX() - p1.getX()),
 					(int) (p2.getY() - p1.getY()));
-			g.setColor(UColor.BLANC_TRANSPARENT);
+			g.setColor(UColor.WHITE_TRANSPARENT);
 			g.drawRect((int) p1.getX(), (int) p1.getY(),
 					(int) (p2.getX() - p1.getX()),
 					(int) (p2.getY() - p1.getY()));
@@ -237,27 +195,15 @@ public class Layer implements Painter<Object>, MouseListener,
 
 	public void simulate() {
 		nodeList.simulate();
-		// for(int i=0; i<nodes.size(); i++) {
-		// if(nodes.get(i).isSelected()) {
-		// nodes.get(i).simulate();
-		// }
-		// }
 	}
 
 	public void simulateAll() {
 		nodeList.simulateAll();
-		// for(int i=0; i<nodes.size(); i++) {
-		// nodes.get(i).setSelectionne(true);
-		// nodes.get(i).simulate();
-		// }
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg) {
-		// System.out.println("A");
-		// sensorParametersInit();
 		if (afficherIndicateur) {
-			// Node node = null;
 			Point p = new Point(arg.getX(), arg.getY());
 			GeoPosition gp = mapViewer.convertPointToGeoPosition(p);
 			if (lastKey == '1') {
@@ -271,7 +217,7 @@ public class Layer implements Painter<Object>, MouseListener,
 				mapViewer.repaint();
 			}
 			if (lastKey == '3') {
-				DeviceList.add(new Insect(gp.getLatitude(), gp.getLongitude(),
+				DeviceList.add(new Insects(gp.getLatitude(), gp.getLongitude(),
 						500, 100));
 				mapViewer.repaint();
 			}

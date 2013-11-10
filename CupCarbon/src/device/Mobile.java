@@ -67,7 +67,7 @@ public class Mobile extends MobileG {
 				g.fillRect(x - rayon, y - rayon, rayon * 2, rayon * 2);
 			}
 			case 1 : 
-				g.setColor(UColor.BLANC_TRANSPARENT);			
+				g.setColor(UColor.WHITE_TRANSPARENT);			
 				g.drawRect(x - rayon, y - rayon, rayon * 2, rayon * 2); 
 			}
 			

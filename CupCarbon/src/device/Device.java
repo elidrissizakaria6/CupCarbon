@@ -1032,7 +1032,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public void drawRadius(int x, int y, int r, Graphics g) {
 		if (r > 0 && displayRadius) {
-			g.setColor(UColor.BLANCF_TRANSPARENT);
+			g.setColor(UColor.WHITED_TRANSPARENT);
 			int lr1 = (int) (r * Math.cos(Math.PI / 4.));
 			g.drawLine(x, y, (int) (x + lr1), (int) (y - lr1));
 			g.drawString("" + radius, x + (lr1 / 2), (int) (y - (lr1 / 4.)));
@@ -1051,7 +1051,7 @@ public abstract class Device implements Runnable, MouseListener,
 			g.setFont(new Font("arial", 1, 10));
 			int lx1 = MapCalc.geoToIntPixelMapX(x, y);
 			int ly1 = MapCalc.geoToIntPixelMapY(x, y);
-			g.setColor(UColor.BLANCF_TRANSPARENT);
+			g.setColor(UColor.WHITED_TRANSPARENT);
 			g.fillRect(lx1 + 20, ly1 - 25, 150, 80);
 			g.setColor(UColor.NOIR_TRANSPARENT);
 			g.drawRect(lx1 + 20, ly1 - 25, 150, 80);

@@ -145,7 +145,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	 */
 	public void dessinAugDimRadio(int x, int y, Graphics g) {
 		if(reduireRadio || augmenterRadio) {
-			g.setColor(UColor.BLEU);
+			g.setColor(UColor.BLUE);
 			g.drawLine(x-10, y-2, x+10, y-2);
 			g.drawLine(x-10, y+2, x+10, y+2);
 		}
@@ -229,7 +229,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	 */
 	public void drawRadius(int x, int y, int r1, Graphics g) {
 		if(r1>0 && displayRadius) {
-			g.setColor(UColor.BLANCF_TRANSPARENT);
+			g.setColor(UColor.WHITED_TRANSPARENT);
 			int lr1 = (int) (r1*Math.cos(Math.PI/4.));
 			g.drawLine(x,y,(int)(x+lr1),(int)(y-lr1));
 			g.drawString(""+getRadioRadius(),x+(lr1/2),(int)(y-(lr1/4.)));
@@ -244,7 +244,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	 */
 	public void drawRadioRadius(int x, int y, int r2, Graphics g) {
 		if(r2>0 && displayRadius) {
-			g.setColor(UColor.BLANCF_TRANSPARENT);
+			g.setColor(UColor.WHITED_TRANSPARENT);
 			int lr2 = (int) (r2*Math.cos(Math.PI/4.));
 			g.drawLine(x,y,x-lr2,y-lr2);
 			g.drawString(""+radius,x-lr2,y-lr2);

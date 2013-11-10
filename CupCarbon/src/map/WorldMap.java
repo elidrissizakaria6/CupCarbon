@@ -46,8 +46,9 @@ public class WorldMap extends JXMapKit {
 			public String getTileUrl(int x, int y, int zoom) {
 				zoom = max - zoom;
 				// return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
-				// return
-				// "http://otile1.mqcdn.com/tiles/1.0.0/sat/"+zoom+"/"+x+"/"+y+".jpg";
+				// return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom +
+				// "/"
+				// + x + "/" + y + ".jpg";
 				return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/"
 						+ x + "/" + y + ".png";
 				// return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/"
@@ -94,7 +95,7 @@ public class WorldMap extends JXMapKit {
 		setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
 		// setCenterPosition(new
 		// GeoPosition(48.58273977037357,-3.8297653198242188));//Morlaix
-		setZoom(6);
+		setZoom(4);
 		layer = new Layer(getMainMap());
 	}
 

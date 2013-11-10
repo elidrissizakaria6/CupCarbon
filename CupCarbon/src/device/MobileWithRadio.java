@@ -72,7 +72,7 @@ public class MobileWithRadio extends MobileGWR {
 				g.fillOval(x - rayon2, y - rayon2, rayon2 * 2, rayon2 * 2);
 			}
 			case 1 : 
-				g.setColor(UColor.BLANC_TRANSPARENT);
+				g.setColor(UColor.WHITE_TRANSPARENT);
 				g.drawOval(x - rayon, y - rayon, rayon * 2, rayon * 2); 
 			}
 			

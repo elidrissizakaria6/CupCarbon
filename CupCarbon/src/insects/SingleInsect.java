@@ -22,82 +22,100 @@ package insects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 
+import javax.swing.ImageIcon;
+
 import map.Layer;
 import utilities.MapCalc;
 import device.Device;
 
-public class Insect2 extends Device implements Runnable {
+public class SingleInsect extends Device implements Runnable {
 
 	protected double x = 0;
 	protected double y = 0;
 	protected double xc = 0;
 	protected double yc = 0;
-	private double theta;
-	private double speed1 = .00001;
-	private double speed2 = .00001;
-	private double maxTheta = .5;
-	private double dispr = 80.;
+	private double direction;
+	private double speedOnX = .00001;
+	private double speedOnY = .00001;
+	private double rotationAngle = .3;
+	private double dispersion = 100.;
 
 	// ------------------------------------
 
-	public Insect2(double x, double y, int theta) {
+	public SingleInsect(double x, double y, int theta) {
 		this.x = x;
 		this.y = y;
-		this.theta = theta;
+		this.direction = theta;
 	}
 
-	public Insect2(double x, double y, boolean dispersion) {
+	public SingleInsect(double x, double y, boolean dispersion) {
 		generate(x, y, dispersion);
 	}
 
 	public void generate(double x, double y, boolean dispersion) {
-		double d1 = 0 ;
-		double d2 = 0 ;
+		double d1 = 0;
+		double d2 = 0;
 		if (dispersion) {
-			d1 = Math.random() / dispr ;
-			d2 = Math.random() / dispr ;
+			d1 = Math.random() / this.dispersion;
+			d2 = Math.random() / this.dispersion;
 		}
 		this.x = x + d1;
 		this.y = y + d2;
-		theta = (int) (Math.random() * 360);
+		direction = (int) (Math.random() * 360);
 	}
-	
+
 	// ------------------------------------
 
-	public void move(double newHeading) {
-		double left = (newHeading - theta + 360) % 360;
-		double right = (theta - newHeading + 360) % 360;
+	/**
+	 * Move the insect to the new direction
+	 * 
+	 * @param newDirection
+	 *            Angle in degree of the new direction
+	 */
+	public void move(double newDirection) {
+		double left = (newDirection - direction + 360) % 360;
+		double right = (direction - newDirection + 360) % 360;
 		double thetaChange = 0;
 		if (left < right) {
-			thetaChange = Math.min(maxTheta, left);
+			thetaChange = Math.min(rotationAngle, left);
 		} else {
-			thetaChange = -Math.min(maxTheta, right);
+			thetaChange = -Math.min(rotationAngle, right);
 		}
-		theta = (theta + thetaChange + 360) % 360;
-		x += (speed1 * Math.cos(theta * Math.PI / 180));
-		y -= (speed2 * Math.sin(theta * Math.PI / 180));
+		direction = (direction + thetaChange + 360) % 360;
+		x += (speedOnX * Math.cos(direction * Math.PI / 180));
+		y -= (speedOnY * Math.sin(direction * Math.PI / 180));
 	}
 
+	/**
+	 * Draw the insect
+	 * 
+	 * @param gg
+	 *            Graphics
+	 */
+	@Override
 	public void draw(Graphics gg) {
 		Graphics2D g = (Graphics2D) gg;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-			
+
 		int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
 		int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
-		int v = 5;		
-		g.setColor(Color.DARK_GRAY);	
+		int v = 5;
+		g.setColor(Color.WHITE);
+		g.fillArc((int) x - v, (int) y - v, v * 2 + 1, v * 2 + 1,
+				(int) direction - 90 - 25, 50);
+		g.setColor(Color.BLACK);
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
-		(int) theta - 90 - 20, 40);		
-		//g.setColor(Color.orange);
-		//g.drawRect((int)xc-100, (int)yc-100, 200, 200);
+				(int) direction - 90 - 20, 40);
 	}
 
 	public double getX() {
@@ -108,15 +126,13 @@ public class Insect2 extends Device implements Runnable {
 		return y;
 	}
 
-	public double getTheta() {
-		return theta;
+	public double getDirection() {
+		return direction;
 	}
 
 	@Override
 	public void run() {
 		double distance;
-		//String gpsFileName = "trajet/trajet1.gps";
-		System.out.println("---> "+gpsFileName);
 		boolean firstTime = true;
 		FileInputStream fis;
 		BufferedReader b = null;
@@ -141,36 +157,35 @@ public class Insect2 extends Device implements Runnable {
 		long toWait = 0;
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 		while (true) {
+			if (b == null)
+				break;
 			try {
-				if (b != null) {
-					if (((s = b.readLine()) != null)) {
-						x2 = x;
-						y2 = y;
-						ts = s.split(" ");
-						cTime = simpleDateFormat.parse(ts[0]).getTime();
-						toWait = cTime - tmpTime;
-						tmpTime = cTime;
-						x1 = Double.parseDouble(ts[1]) + Math.random() / dispr;
-						y1 = Double.parseDouble(ts[2]) + Math.random() / dispr;
-						xc=MapCalc.geoToIntPixelMapX(x1,y1);
-						yc=MapCalc.geoToIntPixelMapY(x1,y1);
-						if (firstTime) {
-							x = x1;
-							y = y1;
-							firstTime = false;
-						} else {
-							distance = 1.35 * MapCalc.distance(x1,
-									y1, x2, y2);
-							int d = 1;
-							for (int i = 0; i < distance; i++) {
-								move(getAngle(x1, y1, x2, y2));
-								Layer.getMapViewer().repaint();
-								Thread.sleep(d);
-							}
-						}
+				if (((s = b.readLine()) != null)) {
+					x2 = x;
+					y2 = y;
+					ts = s.split(" ");
+					cTime = simpleDateFormat.parse(ts[0]).getTime();
+					toWait = cTime - tmpTime;
+					tmpTime = cTime;
+					x1 = Double.parseDouble(ts[1]) + Math.random() / dispersion;
+					y1 = Double.parseDouble(ts[2]) + Math.random() / dispersion;
+					xc = MapCalc.geoToIntPixelMapX(x1, y1);
+					yc = MapCalc.geoToIntPixelMapY(x1, y1);
+					if (firstTime) {
+						x = x1;
+						y = y1;
+						firstTime = false;
 					} else {
-						break;
+						distance = 1.35 * MapCalc.distance(x1, y1, x2, y2);
+						int d = 1;
+						for (int i = 0; i < distance; i++) {
+							move(getAngle(x1, y1, x2, y2));
+							Layer.getMapViewer().repaint();
+							Thread.sleep(d);
+						}
 					}
+				} else {
+					break;
 				}
 				try {
 					Thread.sleep(toWait / 100);
@@ -248,18 +263,18 @@ public class Insect2 extends Device implements Runnable {
 	@Override
 	public void setRadioRadius(double radiuRadius) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setCaptureRadius(double captureRadius) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setGPSFileName(String gpsFileName) {
-		this.gpsFileName = gpsFileName ;
+		this.gpsFileName = gpsFileName;
 	}
 
 	@Override

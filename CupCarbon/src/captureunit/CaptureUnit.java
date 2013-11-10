@@ -94,7 +94,7 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 	 */
 	public void draw(Graphics g, int mode, boolean detection) {
 		if (!detection)
-			g.setColor(UColor.BLANC_TRANSPARENT);
+			g.setColor(UColor.WHITE_TRANSPARENT);
 		if (detection)
 			g.setColor(UColor.JAUNE_SENSOR);
 		if (mode == 0)

@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package device;
-
-import insects.Insect2;
+package insects;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -27,6 +25,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import device.Device;
+import device.MobileG;
 import utilities.MapCalc;
 import utilities.UColor;
 
@@ -36,35 +36,35 @@ import utilities.UColor;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class Insect extends MobileG {
+public class Insects extends MobileG {
 
 	private static String idFL = "I" ; // ID First Letter
-	private Vector<Insect2> insects;
+	private Vector<SingleInsect> insects;
 	private int height = 100000000;
 	private int width = 600000000;
 	
-	public Insect() {		
-		insects = new Vector<Insect2>();
+	public Insects() {		
+		insects = new Vector<SingleInsect>();
 	}
 	
-	public Insect(double x, double y, double radius) {
+	public Insects(double x, double y, double radius) {
 		super(x,y,radius,"");
-		insects = new Vector<Insect2>();
+		insects = new Vector<SingleInsect>();
 	}
 	
-	public Insect(double x, double y, double radius, int n) {
+	public Insects(double x, double y, double radius, int n) {
 		super(x,y,radius,"");
-		insects = new Vector<Insect2>();
+		insects = new Vector<SingleInsect>();
 		for (int i = 0; i < n; i++) {
-			insects.add(new Insect2(x, y, true));
+			insects.add(new SingleInsect(x, y, true));
 		}
 	}
 	
-	public Insect(double x, double y, double radius, String gpsFileName) {
+	public Insects(double x, double y, double radius, String gpsFileName) {
 		super(x, y, radius, gpsFileName);
 	}
 	
-	public Insect(String x, String y, String radius, String gpsFileName) {
+	public Insects(String x, String y, String radius, String gpsFileName) {
 		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius), gpsFileName);
 	}
 	
@@ -115,8 +115,8 @@ public class Insect extends MobileG {
 
 	@Override
 	public void run() {
-		for (Insect2 insect2 : insects)
-			insect2.start();
+		for (SingleInsect singleInsect : insects)
+			singleInsect.start();
 	}
 
 	public void draw(Graphics g) {
@@ -126,10 +126,10 @@ public class Insect extends MobileG {
 			int y = MapCalc.geoToIntPixelMapY(this.x, this.y) ;		
 			int rayon = MapCalc.rayonEnPixel(this.radius) ;		
 			
-			for (Insect2 insect2 : insects) {
-				insect2.setX(x);
-				insect2.setY(y);
-				insect2.draw(g);
+			for (SingleInsect singleInsect : insects) {
+				singleInsect.setX(x);
+				singleInsect.setY(y);
+				singleInsect.draw(g);
 			}
 			
 			if (inside || selected) {
@@ -148,7 +148,7 @@ public class Insect extends MobileG {
 				g.setColor(Color.gray);
 				g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
 			}
-			g.setColor(UColor.BLANC_TRANSPARENT);
+			g.setColor(UColor.WHITE_TRANSPARENT);
 			g.drawOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
 			drawMoveArrows(x,y,g) ;
 			drawIncRedDimNode(x,y,g);
@@ -204,15 +204,15 @@ public class Insect extends MobileG {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		super.mouseMoved(e);
-		for (Insect2 insect2 : insects) {
-			insect2.mouseMoved(e);
+		for (SingleInsect singleInsect : insects) {
+			singleInsect.mouseMoved(e);
 		}
 	}
 	
 	@Override
 	public void setGPSFileName(String gpsFileName) {
-		for (Insect2 insect2 : insects) {
-			insect2.setGPSFileName(gpsFileName);
+		for (SingleInsect singleInsect : insects) {
+			singleInsect.setGPSFileName(gpsFileName);
 		}		
 	}
 }

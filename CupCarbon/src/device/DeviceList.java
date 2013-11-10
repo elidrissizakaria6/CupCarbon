@@ -193,7 +193,7 @@ public class DeviceList {
 	}
 
 	//public void drawDistance(int x, int y, int x2, int y2, int d, Graphics g) {
-	//	g.setColor(UColor.BLANCF_TRANSPARENT);
+	//	g.setColor(UColor.WHITED_TRANSPARENT);
 	//	g.drawString(""+d,(x2-x)/2,(y2-y)/2);
 	//}
 	
