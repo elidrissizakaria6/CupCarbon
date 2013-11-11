@@ -24,15 +24,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 
+import map.Layer;
+
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
-import map.Layer;
 import utilities.MapCalc;
 import device.Device;
 import device.MobileG;
@@ -43,6 +45,8 @@ import device.MobileG;
  */
 public class SingleInsect extends MobileG implements Runnable {
 
+	private String insFileName = "";
+	
 	protected double x = 0;
 	protected double y = 0;
 	protected double xc = 0;
@@ -60,9 +64,15 @@ public class SingleInsect extends MobileG implements Runnable {
 		this.x = x;
 		this.y = y;
 		this.direction = theta;
+//		Layer.getMapViewer().addMouseListener(this);
+//		Layer.getMapViewer().addMouseMotionListener(this);
+//		Layer.getMapViewer().addKeyListener(this);
 	}
 
 	public SingleInsect(double x, double y, boolean dispersion) {
+//		Layer.getMapViewer().addMouseListener(this);
+//		Layer.getMapViewer().addMouseMotionListener(this);
+//		Layer.getMapViewer().addKeyListener(this);
 		generate(x, y, dispersion);
 	}
 
@@ -106,7 +116,6 @@ public class SingleInsect extends MobileG implements Runnable {
 	 * @param gg
 	 *            Graphics
 	 */
-	@Override
 	public void draw(Graphics gg) {
 		Graphics2D g = (Graphics2D) gg;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -143,8 +152,8 @@ public class SingleInsect extends MobileG implements Runnable {
 		double x1, y1, x2, y2;
 		try {
 			Thread.sleep((int) (1000 * Math.random()));
-			if (!gpsFileName.equals("")) {
-				fis = new FileInputStream(gpsFileName);
+			if (!insFileName.equals("")) {
+				fis = new FileInputStream(insFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
 				b.readLine();
 				b.readLine();
@@ -231,29 +240,6 @@ public class SingleInsect extends MobileG implements Runnable {
 			return (-(int) alpha);
 	}
 
-	@Override
-	public String getNodeIdName() {
-		return getIdFL() + id;
-	}
-
-	@Override
-	public int getType() {
-		return Device.INSECT;
-	}
-
-	@Override
-	public void setRadioRadius(double radiuRadius) {
-	}
-
-	@Override
-	public void setCaptureRadius(double captureRadius) {
-	}
-
-	@Override
-	public String getIdFL() {
-		return "I";
-	}
-
 	public void setXYFromMouse(int xm, int ym) {
 		Point p = new Point(xm, ym);
 		GeoPosition gp = Layer.getMapViewer().convertPointToGeoPosition(p);
@@ -261,4 +247,35 @@ public class SingleInsect extends MobileG implements Runnable {
 		y = gp.getLongitude();
 	}
 
+	public void setINSFileName(String insFileName) {
+		this.insFileName = insFileName ;
+	}
+
+	@Override
+    public String getNodeIdName() {
+            return getIdFL() + id;
+    }
+
+    @Override
+    public int getType() {
+            return Device.INSECT;
+    }
+
+    @Override
+    public void setRadioRadius(double radiuRadius) {
+    }
+
+    @Override
+    public void setCaptureRadius(double captureRadius) {
+    }
+
+    @Override
+    public String getIdFL() {
+            return "I";
+    }
+
+    public void MouseMoved(MouseEvent e) {
+    	super.mouseMoved(e);
+    	System.out.println("BBBBBB");
+    }
 }

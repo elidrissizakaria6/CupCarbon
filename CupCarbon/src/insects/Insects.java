@@ -25,11 +25,10 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
-import map.Layer;
-import device.Device;
-import device.MobileG;
 import utilities.MapCalc;
 import utilities.UColor;
+import device.Device;
+import device.MobileG;
 
 /**
  * @author Ahcene Bounceur
@@ -38,36 +37,37 @@ import utilities.UColor;
  */
 public class Insects extends MobileG {
 
-	private static String idFL = "I" ; // ID First Letter
+	private static String idFL = "I"; // ID First Letter
 	private Vector<SingleInsect> insects;
 	private int height = 100000000;
 	private int width = 600000000;
-	
-	public Insects() {		
+
+	public Insects() {
 		insects = new Vector<SingleInsect>();
 	}
-	
+
 	public Insects(double x, double y, double radius) {
-		super(x,y,radius,"");
+		super(x, y, radius, "");
 		insects = new Vector<SingleInsect>();
 	}
-	
+
 	public Insects(double x, double y, double radius, int n) {
-		super(x,y,radius,"");
+		super(x, y, radius, "");
 		insects = new Vector<SingleInsect>();
 		for (int i = 0; i < n; i++) {
 			insects.add(new SingleInsect(x, y, true));
 		}
 	}
-	
+
 	public Insects(double x, double y, double radius, String gpsFileName) {
 		super(x, y, radius, gpsFileName);
 	}
-	
+
 	public Insects(String x, String y, String radius, String gpsFileName) {
-		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius), gpsFileName);
+		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius),
+				gpsFileName);
 	}
-	
+
 	public Point closestLocation(double px, double py, double ox, double oy) {
 		double dX = Math.abs(ox - px);
 		double dY = Math.abs(oy - py);
@@ -115,58 +115,75 @@ public class Insects extends MobileG {
 
 	@Override
 	public void run() {
-		for (SingleInsect singleInsect : insects)
-			singleInsect.start();
+//		for (int i = 0; i < 5; i++) {
+			for (SingleInsect singleInsect : insects) {
+				//singleInsect.setINSFileName("/Users/bounceur/Desktop/aaaaaaaa/a/gps/a2.gps");
+				singleInsect.start();
+			}
+//			try {
+//				Thread.sleep(4000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//			reproduire(50);
+//		}
 	}
 
 	public void draw(Graphics g) {
-		if(visible) {
-			initDraw(g) ;			
-			int x = MapCalc.geoToIntPixelMapX(this.x, this.y) ;
-			int y = MapCalc.geoToIntPixelMapY(this.x, this.y) ;		
-			int rayon = MapCalc.rayonEnPixel(this.radius) ;		
-			
+		if (visible) {
+			initDraw(g);
+			int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
+			int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
+			int rayon = MapCalc.rayonEnPixel(this.radius);
+
 			for (SingleInsect singleInsect : insects) {
-				singleInsect.setX(x);
-				singleInsect.setY(y);
+//				3
 				singleInsect.draw(g);
 			}
-			
+
 			if (inside || selected) {
 				g.setColor(UColor.ORANGE);
-				g.drawLine(x-rayon-3, y-rayon-3, x-rayon+2, y-rayon-3);
-				g.drawLine(x-rayon-3, y-rayon-3, x-rayon-3, y-rayon+2);
-				g.drawLine(x-rayon-3, y+rayon+3, x-rayon+2, y+rayon+3);
-				g.drawLine(x-rayon-3, y+rayon+3, x-rayon-3, y+rayon-2);			
-				g.drawLine(x+rayon+3, y-rayon-3, x+rayon-2, y-rayon-3);
-				g.drawLine(x+rayon+3, y-rayon-3, x+rayon+3, y-rayon+2);			
-				g.drawLine(x+rayon+3, y+rayon+3, x+rayon-2, y+rayon+3);
-				g.drawLine(x+rayon+3, y+rayon+3, x+rayon+3, y+rayon-2);
+				g.drawLine(x - rayon - 3, y - rayon - 3, x - rayon + 2, y
+						- rayon - 3);
+				g.drawLine(x - rayon - 3, y - rayon - 3, x - rayon - 3, y
+						- rayon + 2);
+				g.drawLine(x - rayon - 3, y + rayon + 3, x - rayon + 2, y
+						+ rayon + 3);
+				g.drawLine(x - rayon - 3, y + rayon + 3, x - rayon - 3, y
+						+ rayon - 2);
+				g.drawLine(x + rayon + 3, y - rayon - 3, x + rayon - 2, y
+						- rayon - 3);
+				g.drawLine(x + rayon + 3, y - rayon - 3, x + rayon + 3, y
+						- rayon + 2);
+				g.drawLine(x + rayon + 3, y + rayon + 3, x + rayon - 2, y
+						+ rayon + 3);
+				g.drawLine(x + rayon + 3, y + rayon + 3, x + rayon + 3, y
+						+ rayon - 2);
 			}
-							
+
 			if (selected) {
 				g.setColor(Color.gray);
-				g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
+				g.drawOval(x - rayon - 4, y - rayon - 4, (rayon + 4) * 2,
+						(rayon + 4) * 2);
 			}
 			g.setColor(UColor.WHITE_TRANSPARENT);
 			g.drawOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
-			drawMoveArrows(x,y,g) ;
-			drawIncRedDimNode(x,y,g);
-			drawRadius(x,y,rayon,g);
-			
-			if(displayDetails) {
+			drawMoveArrows(x, y, g);
+			drawIncRedDimNode(x, y, g);
+			drawRadius(x, y, rayon, g);
+
+			if (displayDetails) {
 				g.setColor(Color.RED);
 			}
-			
-			if(underSimulation) {
+
+			if (underSimulation) {
 				g.setColor(UColor.VERT);
-				g.fillOval(x-3, y-3, 6, 6);
-			}
-			else {
+				g.fillOval(x - 3, y - 3, 6, 6);
+			} else {
 				g.setColor(Color.BLUE);
-				g.fillOval(x-3, y-3, 6, 6);
+				g.fillOval(x - 3, y - 3, 6, 6);
 			}
-			drawId(x,y,g);
+			drawId(x, y, g);
 		}
 	}
 
@@ -177,43 +194,50 @@ public class Insects extends MobileG {
 
 	@Override
 	public double getCaptureUnitRadius() {
-		return radius ;
+		return radius;
 	}
-	
+
 	@Override
 	public String getIdFL() {
-		return idFL ;
+		return idFL;
 	}
-	
+
 	@Override
 	public String getNodeIdName() {
-		return getIdFL()+id;
+		return getIdFL() + id;
 	}
 
 	@Override
-	public void setRadioRadius(double radiuRadius) {}
+	public void setRadioRadius(double radiuRadius) {
+	}
 
 	@Override
-	public void setCaptureRadius(double captureRadius) {}
+	public void setCaptureRadius(double captureRadius) {
+	}
 
 	@Override
 	public void setCOMFileName(String comFileName) {
-		
+
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		super.mouseMoved(e);		
-//		for (SingleInsect singleInsect : insects) {
-//			singleInsect.setXYFromMouse(e.getX(), e.getY());
-//		}
-//		Layer.getMapViewer().repaint();
+		// Not yet finshed
+		super.mouseMoved(e);
 	}
-	
+
 	@Override
 	public void setGPSFileName(String gpsFileName) {
 		for (SingleInsect singleInsect : insects) {
-			singleInsect.setGPSFileName(gpsFileName);
-		}		
+			singleInsect.setINSFileName(gpsFileName);
+		}
+	}
+
+	public void reproduire(int v) {
+		for (int i = 0; i < v; i++) {
+			SingleInsect si = new SingleInsect(x, y, true); 
+			si.setINSFileName("gps/a1.gps") ;
+			insects.add(si);
+		}
 	}
 }

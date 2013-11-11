@@ -1,17 +1,21 @@
 package cupcarbon;
 
-import java.awt.EventQueue;
-
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import java.awt.EventQueue;
 import java.awt.GridLayout;
-import java.awt.CardLayout;
+
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 public class InsectParametersWindow extends JInternalFrame {
+
+	/**
+	 * Serial
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Launch the application.

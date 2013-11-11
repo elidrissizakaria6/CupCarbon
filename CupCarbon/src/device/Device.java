@@ -1146,4 +1146,8 @@ public abstract class Device implements Runnable, MouseListener,
 	public DeviceSimulator getSimulator() {
 		return simulator;
 	}
+	
+	public Thread getThread() {
+		return thread;
+	}
 }
