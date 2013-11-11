@@ -34,8 +34,6 @@ import utilities.UColor;
  * @version 1.0
  */
 public class SimpleInsect extends MobileG {
-
-	private static String idFL = "SI" ; // ID First Letter
 	
 	private int duree = 5000 ;
 	
@@ -180,7 +178,7 @@ public class SimpleInsect extends MobileG {
 	
 	@Override
 	public String getIdFL() {
-		return idFL ;
+		return "SI" ;
 	}
 	
 	@Override

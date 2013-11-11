@@ -71,8 +71,6 @@ public abstract class Device implements Runnable, MouseListener,
 	protected boolean ctrlDown = false;
 	protected int lastKeyCode = 0;
 
-	protected static String idFL = ""; // ID First Letter
-
 	public static int number = 0;
 
 	protected int id = 0;
@@ -141,6 +139,8 @@ public abstract class Device implements Runnable, MouseListener,
 	}
 
 	/**
+	 * ID First Letter
+	 * 
 	 * @return the first letter of the identifier
 	 */
 	public abstract String getIdFL();
@@ -1041,10 +1041,11 @@ public abstract class Device implements Runnable, MouseListener,
 
 	/**
 	 * Draw the informations of the device
+	 * 
 	 * @param device
-	 * Device 
+	 *            Device
 	 * @param g
-	 * Graphics
+	 *            Graphics
 	 */
 	public void drawInfos(Device device, Graphics g) {
 		if (displayInfos && selected && infos != null) {
@@ -1125,6 +1126,7 @@ public abstract class Device implements Runnable, MouseListener,
 
 	/**
 	 * Set the state value
+	 * 
 	 * @param state
 	 */
 	public void setState(boolean state) {

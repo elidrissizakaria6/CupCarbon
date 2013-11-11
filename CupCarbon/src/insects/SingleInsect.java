@@ -32,8 +32,9 @@ import java.text.SimpleDateFormat;
 import map.Layer;
 import utilities.MapCalc;
 import device.Device;
+import device.MobileG;
 
-public class SingleInsect extends Device implements Runnable {
+public class SingleInsect extends MobileG implements Runnable {
 
 	protected double x = 0;
 	protected double y = 0;
@@ -106,9 +107,6 @@ public class SingleInsect extends Device implements Runnable {
 		int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
 		int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
 		int v = 5;
-		g.setColor(Color.WHITE);
-		g.fillArc((int) x - v, (int) y - v, v * 2 + 1, v * 2 + 1,
-				(int) direction - 90 - 25, 50);
 		g.setColor(Color.BLACK);
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
 				(int) direction - 90 - 20, 40);
@@ -199,32 +197,6 @@ public class SingleInsect extends Device implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		// try {
-		// sleep(500);
-		// int d = 1;
-		// int ss = 5000;
-		// for (int i = 0; i < ss; i++) {
-		// move(0);
-		// Layer.getMapViewer().repaint();
-		// sleep(d);
-		// }
-		/*
-		 * for (int i = 0; i < s; i++) { move(0);
-		 * Layer.getMapViewer().repaint(); sleep(d); }
-		 * 
-		 * for (int i = 0; i < s; i++) { move(45);
-		 * Layer.getMapViewer().repaint(); sleep(d); }
-		 * 
-		 * for (int i = 0; i < s; i++) { move(90);
-		 * Layer.getMapViewer().repaint(); sleep(d); } for (int i = 0; i < s;
-		 * i++) { move(0); Layer.getMapViewer().repaint(); sleep(d); } for (int
-		 * i = 0; i < s; i++) { move(180); Layer.getMapViewer().repaint();
-		 * sleep(d); }
-		 */
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
 	}
 
 	public double getAngle(double x1, double y1, double x2, double y2) {
@@ -239,43 +211,24 @@ public class SingleInsect extends Device implements Runnable {
 	}
 
 	@Override
-	public String getIdFL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String getNodeIdName() {
-		// TODO Auto-generated method stub
-		return null;
+		return getIdFL()+id;
 	}
 
 	@Override
 	public int getType() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Device.INSECT;
 	}
 
 	@Override
-	public void setRadioRadius(double radiuRadius) {
-		// TODO Auto-generated method stub
-
-	}
+	public void setRadioRadius(double radiuRadius) {}
 
 	@Override
-	public void setCaptureRadius(double captureRadius) {
-		// TODO Auto-generated method stub
-
-	}
+	public void setCaptureRadius(double captureRadius) {}
 
 	@Override
-	public void setGPSFileName(String gpsFileName) {
-		this.gpsFileName = gpsFileName;
+	public String getIdFL() {
+		return "I";
 	}
 
-	@Override
-	public String getGPSFileName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

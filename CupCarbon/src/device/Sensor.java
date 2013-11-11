@@ -41,8 +41,6 @@ import captureunit.CaptureUnit;
  */
 public class Sensor extends DeviceWithRadio {
 
-	private static String idFL = "S"; // ID First Letter
-
 	protected CaptureUnit captureUnit;
 
 	/**
@@ -432,7 +430,7 @@ public class Sensor extends DeviceWithRadio {
 	 */
 	@Override
 	public String getIdFL() {
-		return idFL;
+		return "S";
 	}
 
 	/*

@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import map.Layer;
 import device.Device;
 import device.MobileG;
 import utilities.MapCalc;
@@ -204,9 +205,16 @@ public class Insects extends MobileG {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		super.mouseMoved(e);
+		int x = MapCalc.geoToIntPixelMapX(e.getX(),e.getY()) ;
+		int y = MapCalc.geoToIntPixelMapY(e.getX(),e.getY()) ;		
 		for (SingleInsect singleInsect : insects) {
-			singleInsect.mouseMoved(e);
+			singleInsect.setX(x);
+			singleInsect.setY(y);
 		}
+		Layer.getMapViewer().repaint();
+//		for (SingleInsect singleInsect : insects) {
+//			singleInsect.mouseMoved(e);
+//		}
 	}
 	
 	@Override
