@@ -33,8 +33,7 @@ import utilities.UColor;
 
 /**
  * @author Ahcene Bounceur
- * @author Kamal Mehdi
- * @author Lounis Massinissa
+ * @author Mahamadou Traore
  * @version 1.0
  */
 public class Insects extends MobileG {
@@ -204,17 +203,11 @@ public class Insects extends MobileG {
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		super.mouseMoved(e);
-		int x = MapCalc.geoToIntPixelMapX(e.getX(),e.getY()) ;
-		int y = MapCalc.geoToIntPixelMapY(e.getX(),e.getY()) ;		
-		for (SingleInsect singleInsect : insects) {
-			singleInsect.setX(x);
-			singleInsect.setY(y);
-		}
-		Layer.getMapViewer().repaint();
+		super.mouseMoved(e);		
 //		for (SingleInsect singleInsect : insects) {
-//			singleInsect.mouseMoved(e);
+//			singleInsect.setXYFromMouse(e.getX(), e.getY());
 //		}
+//		Layer.getMapViewer().repaint();
 	}
 	
 	@Override

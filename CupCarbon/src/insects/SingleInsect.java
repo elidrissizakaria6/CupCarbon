@@ -22,6 +22,7 @@ package insects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -29,11 +30,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 
+import org.jdesktop.swingx.mapviewer.GeoPosition;
+
 import map.Layer;
 import utilities.MapCalc;
 import device.Device;
 import device.MobileG;
 
+/**
+ * @author Ahcene Bounceur
+ * @author Mahamadou Traore
+ */
 public class SingleInsect extends MobileG implements Runnable {
 
 	protected double x = 0;
@@ -41,6 +48,7 @@ public class SingleInsect extends MobileG implements Runnable {
 	protected double xc = 0;
 	protected double yc = 0;
 	private double direction;
+	// Insect parameters
 	private double speedOnX = .00001;
 	private double speedOnY = .00001;
 	private double rotationAngle = .3;
@@ -199,6 +207,19 @@ public class SingleInsect extends MobileG implements Runnable {
 		}
 	}
 
+	/**
+	 * Calculate the angle between two points (x1,y1) and (x2,y2) in degree
+	 * 
+	 * @param x1
+	 *            x of the first point
+	 * @param y1
+	 *            y of the second point
+	 * @param x2
+	 *            x of the first point
+	 * @param y2
+	 *            y of the secong point
+	 * @return the angle in degree
+	 */
 	public double getAngle(double x1, double y1, double x2, double y2) {
 		double dx = x2 - x1;
 		double dy = y2 - y1;
@@ -212,7 +233,7 @@ public class SingleInsect extends MobileG implements Runnable {
 
 	@Override
 	public String getNodeIdName() {
-		return getIdFL()+id;
+		return getIdFL() + id;
 	}
 
 	@Override
@@ -221,14 +242,23 @@ public class SingleInsect extends MobileG implements Runnable {
 	}
 
 	@Override
-	public void setRadioRadius(double radiuRadius) {}
+	public void setRadioRadius(double radiuRadius) {
+	}
 
 	@Override
-	public void setCaptureRadius(double captureRadius) {}
+	public void setCaptureRadius(double captureRadius) {
+	}
 
 	@Override
 	public String getIdFL() {
 		return "I";
+	}
+
+	public void setXYFromMouse(int xm, int ym) {
+		Point p = new Point(xm, ym);
+		GeoPosition gp = Layer.getMapViewer().convertPointToGeoPosition(p);
+		x = gp.getLatitude();
+		y = gp.getLongitude();
 	}
 
 }

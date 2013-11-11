@@ -74,7 +74,8 @@ public class CupCarbon {
 	private ScriptComWindow comWindow = new ScriptComWindow();
 	private CrtSimulator crtSimulator = new CrtSimulator();
 	private GpsWindow gpsWindow = new GpsWindow();
-	private NodeParametersWindow spWindow = new NodeParametersWindow();
+	private NodeParametersWindow nodeParametersWindow = new NodeParametersWindow();
+	private InsectParametersWindow insectParametersWindow = new InsectParametersWindow();
 	private InformationWindow infoWindow = new InformationWindow();
 	private GraphViewer graphViewer = new GraphViewer();
 
@@ -579,6 +580,11 @@ public class CupCarbon {
 		mnNodes.add(mntmAddSensor);
 
 		JMenuItem mntmAddRouter = new JMenuItem("Add Router");
+		mntmAddRouter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WorldMap.addNodeInMap('2');
+			}
+		});
 		mntmAddRouter.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "blank_badge_blue_ciel.png"));
 		mnNodes.add(mntmAddRouter);
@@ -616,7 +622,12 @@ public class CupCarbon {
 		JSeparator separator_6 = new JSeparator();
 		mnNodes.add(separator_6);
 
-		JMenuItem mntmParameters = new JMenuItem("Parameters");
+		JMenuItem mntmParameters = new JMenuItem("Device Parameters");
+		mntmParameters.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openDeviceParemeterWindow() ;
+			}
+		});
 		mntmParameters.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "ui_menu_blue.png"));
 		mnNodes.add(mntmParameters);
@@ -627,6 +638,15 @@ public class CupCarbon {
 				MarkerList.generateGpxFile();
 			}
 		});
+		
+		JMenuItem mntmInsectParameters = new JMenuItem("Insect Parameters");
+		mntmInsectParameters.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openInsectParemeterWindow();
+			}
+		});
+		mntmInsectParameters.setIcon(new ImageIcon(Parameters.IMGPATH+"ui_menu_blue.png"));
+		mnNodes.add(mntmInsectParameters);
 		mntmRouteFromMarkers.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "route.png"));
 		mnNodes.add(mntmRouteFromMarkers);
@@ -1012,35 +1032,13 @@ public class CupCarbon {
 		});
 		toolBar.add(btnMarker);
 
-		JButton btnSensorParameters = new JButton("Sensor Parameters");
+		JButton btnSensorParameters = new JButton("Device Parameters");
 		btnSensorParameters.setIcon(new ImageIcon(Parameters.IMGPATH
-				+ "stylo.png"));
+				+ "ui_menu_blue.png"));
 		btnSensorParameters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				File gpsFiles = new File(Project.getProjectGpsPath());
-				String[] s = gpsFiles.list();
-				if (s == null)
-					s = new String[1];
-				NodeParametersWindow.gpsPathNameComboBox.removeAllItems();
-				for (int i = 0; i < s.length; i++) {
-					NodeParametersWindow.gpsPathNameComboBox.addItem(s[i]);
-				}
-
-				File comFiles = new File(Project.getProjectComPath());
-				s = comFiles.list();
-				if (s == null)
-					s = new String[1];
-				NodeParametersWindow.scriptComComboBox.removeAllItems();
-				for (int i = 0; i < s.length; i++) {
-					NodeParametersWindow.scriptComComboBox.addItem(s[i]);
-				}
-
-				if (!spWindow.isVisible()) {
-					spWindow.setVisible(true);
-					desktopPane.add(spWindow);
-				}
-				spWindow.toFront();
-			}
+				openDeviceParemeterWindow() ;
+			}			
 		});
 		toolBar.add(btnSensorParameters);
 
@@ -1068,6 +1066,7 @@ public class CupCarbon {
 		toolBar.add(btnProvisoire);
 
 		CupCarbonMap cupCarbonMap = new CupCarbonMap();
+		cupCarbonMap.setLocation(280, 91);
 		cupCarbonMap.setFrameIcon(new ImageIcon(
 				"images/cupcarbon_logo_small.png"));
 		cupCarbonMap.setVisible(true);
@@ -1086,5 +1085,39 @@ public class CupCarbon {
 
 		}
 		// moveToFront(cupCarbonMap);
+	}
+	
+	private void openDeviceParemeterWindow() {
+		File gpsFiles = new File(Project.getProjectGpsPath());
+		String[] s = gpsFiles.list();
+		if (s == null)
+			s = new String[1];
+		NodeParametersWindow.gpsPathNameComboBox.removeAllItems();
+		for (int i = 0; i < s.length; i++) {
+			NodeParametersWindow.gpsPathNameComboBox.addItem(s[i]);
+		}
+
+		File comFiles = new File(Project.getProjectComPath());
+		s = comFiles.list();
+		if (s == null)
+			s = new String[1];
+		NodeParametersWindow.scriptComComboBox.removeAllItems();
+		for (int i = 0; i < s.length; i++) {
+			NodeParametersWindow.scriptComComboBox.addItem(s[i]);
+		}
+
+		if (!nodeParametersWindow.isVisible()) {
+			nodeParametersWindow.setVisible(true);
+			desktopPane.add(nodeParametersWindow);
+		}
+		nodeParametersWindow.toFront();				
+	}
+	
+	private void openInsectParemeterWindow() {
+		if (!insectParametersWindow.isVisible()) {
+			insectParametersWindow.setVisible(true);
+			desktopPane.add(insectParametersWindow);
+		}
+		insectParametersWindow.toFront();				
 	}
 }
