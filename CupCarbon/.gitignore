@@ -5,3 +5,5 @@
 *.ear
 =======
 /bin
+/doc
+/gpx
