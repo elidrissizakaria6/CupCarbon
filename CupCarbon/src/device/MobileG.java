@@ -32,7 +32,6 @@ import map.Layer;
 
 public abstract class MobileG extends DeviceWithoutRadio {
 
-	//protected String gpsFileName = "" ;
 	protected int gpsId = 0 ;
 	protected static int gpsNbr = 0 ; 
 	
@@ -69,7 +68,6 @@ public abstract class MobileG extends DeviceWithoutRadio {
 		underSimulation = true;
 		// ------ Mobile -----
 		double totalDistance = 0;
-		selected = false;
 		boolean firstTime = true;
 		FileInputStream fis;
 		BufferedReader b = null;

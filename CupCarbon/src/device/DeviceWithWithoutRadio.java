@@ -28,7 +28,7 @@ package device;
 public abstract class DeviceWithWithoutRadio extends Device {
 	
 	/**
-	 * 
+	 * Empty constructor
 	 */
 	public DeviceWithWithoutRadio() {}
 	

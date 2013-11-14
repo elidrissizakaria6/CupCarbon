@@ -195,7 +195,7 @@ public class CupCarbon {
 					}
 
 					public String getDescription() {
-						return "CupCarbon files";
+						return "CupCarbon Project";
 					}
 				};
 

@@ -34,35 +34,30 @@ public class StreetVertex extends Device {
 
 	private LinkedList<StreetVertex> neighbors = new LinkedList<StreetVertex>();
 	private StreetVertex cNeighbor;
-	private int kNeighbor = 0;
+	//private int kNeighbor = 0;
 	private boolean busStation = false;
 
 	public StreetVertex(double x, double y, double radius, boolean busStation) {
 		super(x, y, radius);
-		this.busStation = busStation ;
+		this.busStation = busStation;
 	}
 
 	public StreetVertex(String x, String y, String radius, String busStation) {
 		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius));
-		this.busStation = Boolean.valueOf(busStation) ;
+		this.busStation = Boolean.valueOf(busStation);
 	}
 
 	@Override
 	public void draw(Graphics g) {
+		double alpha;
+		double dx;
+		double dy;
 		if (visible) {
 			initDraw(g);
 			int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
 			int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
 			int rayon = MapCalc.rayonEnPixel(this.radius);
-			int x2, y2;
-
-			for (StreetVertex sv : neighbors) {
-				x2 = MapCalc.geoToIntPixelMapX(sv.getX(), sv.getY());
-				y2 = MapCalc.geoToIntPixelMapY(sv.getX(), sv.getY());
-				g.setColor(Color.BLUE);
-				g.drawLine(x, y, x2, y2);
-				Layer.drawDistance(this.x, this.y, sv.getX(), sv.getY(),(int)this.distance(sv),g);
-			}
+			int x2, y2;			
 
 			if (cNeighbor != null) {
 				x2 = MapCalc.geoToIntPixelMapX(cNeighbor.getX(),
@@ -71,7 +66,8 @@ public class StreetVertex extends Device {
 						cNeighbor.getY());
 				g.setColor(UColor.ORANGE);
 				g.drawLine(x, y, x2, y2);
-				Layer.drawDistance(this.x, this.y, cNeighbor.getX(), cNeighbor.getY(),(int)this.distance(cNeighbor),g);
+				Layer.drawDistance(this.x, this.y, cNeighbor.getX(),
+						cNeighbor.getY(), (int) this.distance(cNeighbor), g);
 			}
 
 			if (inside || selected) {
@@ -93,17 +89,17 @@ public class StreetVertex extends Device {
 				g.drawLine(x + rayon + 3, y + rayon + 3, x + rayon + 3, y
 						+ rayon - 2);
 			}
-
+			
 			if (selected) {
 				g.setColor(Color.gray);
 				g.drawOval(x - rayon - 4, y - rayon - 4, (rayon + 4) * 2,
 						(rayon + 4) * 2);
 			}
-
+			
 			drawMoveArrows(x, y, g);
 
 			if (hide == 0) {
-				if(busStation) {
+				if (busStation) {
 					g.setColor(Color.ORANGE);
 					g.fillRect(x - 6, y - 6, 12, 12);
 					g.setColor(Color.BLACK);
@@ -111,7 +107,31 @@ public class StreetVertex extends Device {
 				}
 				g.setColor(Color.BLUE);
 				g.fillOval(x - 3, y - 3, 6, 6);
+				g.drawOval(x - 10, y - 10, 20, 20);
 			}
+			
+			for (StreetVertex sv : neighbors) {
+				x2 = MapCalc.geoToIntPixelMapX(sv.getX(), sv.getY());
+				y2 = MapCalc.geoToIntPixelMapY(sv.getX(), sv.getY());
+				g.setColor(Color.DARK_GRAY);
+				g.drawLine(x, y, x2, y2);
+
+				// Draw arrows
+				dx = x2 - x;
+				dy = y2 - y;
+				alpha = Math.atan(dy / dx);
+				alpha = 180 * alpha / Math.PI;
+				if ((dx >= 0 && dy >= 0) || (dx >= 0 && dy <= 0))
+					g.fillArc((int) x2 - 15, (int) y2 - 15, 30, 30,
+							180 - (int) alpha - 10, 20);
+				else
+					g.fillArc((int) x2 - 15, (int) y2 - 15, 30, 30,
+							-(int) alpha - 10, 20);
+
+				Layer.drawDistance(this.x, this.y, sv.getX(), sv.getY(),
+						(int) this.distance(sv), g);
+			}
+			
 			// g.setColor(UColor.WHITE_TRANSPARENT);
 			// g.drawOval(x-3, y-3, 6, 6);
 			drawId(x, y, g);
@@ -161,25 +181,28 @@ public class StreetVertex extends Device {
 	public void keyTyped(KeyEvent e) {
 		super.keyTyped(e);
 		if (selected) {
-			if (e.getKeyChar() == 'u') {
-				while (!(StreetGraph.get(kNeighbor).isVisible()) || (StreetGraph.get(kNeighbor) == this)) {
-					kNeighbor++;
-					if (kNeighbor >= StreetGraph.size())
-						kNeighbor = 0;
-				}
-				cNeighbor = StreetGraph.get(kNeighbor);
-				kNeighbor++;
-				if (kNeighbor >= StreetGraph.size())
-					kNeighbor = 0;
-			}
-			if ((e.getKeyChar() == 't')) {
-				if(neighbors != null || cNeighbor != null) neighbors.add(cNeighbor);
-				if(cNeighbor != null ) cNeighbor.add(this);
-			}
-			if ((e.getKeyChar() == 'y')) {
-				if(neighbors != null || cNeighbor != null) neighbors.remove(cNeighbor);
-				if(cNeighbor != null ) cNeighbor.remove(this);
-			}
+			// if (e.getKeyChar() == 'u') {
+			// while (!(StreetGraph.get(kNeighbor).isVisible()) ||
+			// (StreetGraph.get(kNeighbor) == this)) {
+			// kNeighbor++;
+			// if (kNeighbor >= StreetGraph.size())
+			// kNeighbor = 0;
+			// }
+			// cNeighbor = StreetGraph.get(kNeighbor);
+			// kNeighbor++;
+			// if (kNeighbor >= StreetGraph.size())
+			// kNeighbor = 0;
+			// }
+			// if ((e.getKeyChar() == 't')) {
+			// if(neighbors != null || cNeighbor != null)
+			// neighbors.add(cNeighbor);
+			// if(cNeighbor != null ) cNeighbor.add(this);
+			// }
+			// if ((e.getKeyChar() == 'y')) {
+			// if(neighbors != null || cNeighbor != null)
+			// neighbors.remove(cNeighbor);
+			// if(cNeighbor != null ) cNeighbor.remove(this);
+			// }
 			if ((e.getKeyChar() == 'p')) {
 				busStation = !busStation;
 			}
@@ -221,28 +244,28 @@ public class StreetVertex extends Device {
 	@Override
 	public void setCOMFileName(String comFileName) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public String getGPSFileName() {
 		return "";
 	}
-	
+
 	public LinkedList<StreetVertex> getNeighbors() {
-		return neighbors ;
-	}
-	
-	public boolean hasNeighbor(StreetVertex sv) {
-		for(StreetVertex v : neighbors) {
-			if(v==sv) return true;
-		}
-		return false ;
-	}
-	
-	public boolean isBusStation() {
-		return busStation ;
+		return neighbors;
 	}
 
-	
+	public boolean hasNeighbor(StreetVertex sv) {
+		for (StreetVertex v : neighbors) {
+			if (v == sv)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isBusStation() {
+		return busStation;
+	}
+
 }

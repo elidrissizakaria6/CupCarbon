@@ -23,7 +23,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.util.Vector;
+
+import map.Layer;
+
+import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import utilities.MapCalc;
 import utilities.UColor;
@@ -39,6 +44,7 @@ public class Insects extends MobileG {
 
 	private static String idFL = "I"; // ID First Letter
 	private Vector<SingleInsect> insects;
+	private int insectNumber = 0;
 	private int height = 100000000;
 	private int width = 600000000;
 
@@ -52,22 +58,28 @@ public class Insects extends MobileG {
 	}
 
 	public Insects(double x, double y, double radius, int n) {
-		super(x, y, radius, "");
+		this(x, y, radius);
+		insectNumber = n ;
 		insects = new Vector<SingleInsect>();
 		for (int i = 0; i < n; i++) {
 			insects.add(new SingleInsect(x, y, true));
 		}
 	}
 
-	public Insects(double x, double y, double radius, String gpsFileName) {
-		super(x, y, radius, gpsFileName);
+	public Insects(double x, double y, double radius, int n, String gpsFileName) {
+		this(x, y, radius, n);
+		this.gpsFileName = gpsFileName ;
 	}
 
-	public Insects(String x, String y, String radius, String gpsFileName) {
-		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius),
+	public Insects(String xStr, String yStr, String radiusStr, String nStr, String gpsFileName) {
+		this(Double.valueOf(xStr), Double.valueOf(yStr), Double.valueOf(radiusStr), Integer.parseInt(nStr),
 				gpsFileName);
 	}
 
+	public int getInsectNumber() {
+		return insectNumber ;
+	}
+	
 	public Point closestLocation(double px, double py, double ox, double oy) {
 		double dX = Math.abs(ox - px);
 		double dY = Math.abs(oy - py);
@@ -115,18 +127,12 @@ public class Insects extends MobileG {
 
 	@Override
 	public void run() {
-//		for (int i = 0; i < 5; i++) {
-			for (SingleInsect singleInsect : insects) {
-				//singleInsect.setINSFileName("/Users/bounceur/Desktop/aaaaaaaa/a/gps/a2.gps");
-				singleInsect.start();
-			}
-//			try {
-//				Thread.sleep(4000);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//			reproduire(50);
-//		}
+		underSimulation = true;
+		for (SingleInsect singleInsect : insects) {
+			singleInsect.start();
+		}
+		underSimulation = false;
+		thread = null;
 	}
 
 	public void draw(Graphics g) {
@@ -137,7 +143,7 @@ public class Insects extends MobileG {
 			int rayon = MapCalc.rayonEnPixel(this.radius);
 
 			for (SingleInsect singleInsect : insects) {
-//				3
+				// 3
 				singleInsect.draw(g);
 			}
 
@@ -222,8 +228,10 @@ public class Insects extends MobileG {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// Not yet finshed
 		super.mouseMoved(e);
+		for (SingleInsect singleInsect : insects) {
+			singleInsect.relativeMove(x, y);
+		}
 	}
 
 	@Override
@@ -235,8 +243,8 @@ public class Insects extends MobileG {
 
 	public void reproduire(int v) {
 		for (int i = 0; i < v; i++) {
-			SingleInsect si = new SingleInsect(x, y, true); 
-			si.setINSFileName("gps/a1.gps") ;
+			SingleInsect si = new SingleInsect(x, y, true);
+			si.setINSFileName("gps/a1.gps");
 			insects.add(si);
 		}
 	}

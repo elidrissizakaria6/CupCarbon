@@ -19,6 +19,8 @@
 
 package device;
 
+import insects.Insects;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -84,13 +86,26 @@ public class DeviceList {
 				fos.print(" " + node.getX());
 				fos.print(" " + node.getY());
 				fos.print(" " + node.getRadius());
-				if (node.getType() == 1 || node.getType() == 4 || node.getType() == 5 || node.getType() == 7)
+				
+				if (	node.getType() == Device.SENSOR || 
+						node.getType() == Device.BASE_STATION || 
+						node.getType() == Device.BRIDGE || 
+						node.getType() == Device.MOBILE_WR)
 					fos.print(" " + node.getRadioRadius());
-				if (node.getType() == 1)
+				
+				if (	node.getType() == Device.SENSOR)
 					fos.print(" " + node.getCaptureUnitRadius());
-				if (node.getType() == 1 || node.getType() == 3 || node.getType() == 6 || node.getType() == 7)
+				
+				if(		node.getType() == Device.INSECT ) 
+					fos.print(" " + ((Insects) node).getInsectNumber());
+				
+				if (	node.getType() == Device.SENSOR || 
+						node.getType() == Device.INSECT || 
+						node.getType() == Device.MOBILE || 
+						node.getType() == Device.MOBILE_WR)
 					fos.print(" " + ((node.getGPSFileName()=="")?"#":node.getGPSFileName()));
-				if (node.getType() == 1)
+				
+				if (	node.getType() == Device.SENSOR)
 					fos.print(" " + ((node.getCOMFileName()=="")?"#":node.getCOMFileName()));
 				
 				fos.println();
@@ -147,7 +162,10 @@ public class DeviceList {
 	}
 
 	/**
+	 * Create a node from a set of values (table type)
+	 * 
 	 * @param type
+	 * 		table that contains information about a node to add
 	 */
 	public static void addNodeByType(String... type) {
 		switch (Integer.valueOf(type[0])) {
@@ -158,10 +176,7 @@ public class DeviceList {
 			add(new Gas(type[3], type[4], type[5]));
 			break;
 		case 3:
-			if(type.length==5)
-				add( new SimpleInsect(type[3], type[4], type[5], type[6]));
-			if(type.length==4)
-				add(new SimpleInsect(type[3], "", type[5], type[6]));
+			add(new Insects(type[3], type[4], type[5], type[6], type[7]));
 			break;
 		case 4:
 			add(new BaseStation(type[3], type[4], type[5], type[6]));			

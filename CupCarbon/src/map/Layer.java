@@ -387,7 +387,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			nodeList.setDisplayDistance(!nodeList.getDisplayDistance());
 		}
 
-		if (lastKey == 'o') {
+		if (lastKey == 't' || lastKey == 'o') {
 			int k = 0;
 			StreetVertex sv1 = null;
 			StreetVertex sv2 = null;
@@ -403,9 +403,29 @@ public class Layer implements Painter<Object>, MouseListener,
 			if (k == 2) {
 				if (sv1.hasNeighbor(sv2)) {
 					sv1.remove(sv2);
-					sv2.remove(sv1);
 				} else {
 					sv1.add(sv2);
+				}
+			}
+		}
+		
+		if (lastKey == 'y' || lastKey == 'o') {
+			int k = 0;
+			StreetVertex sv1 = null;
+			StreetVertex sv2 = null;
+			for (StreetVertex sv : streetGraph.getGraph()) {
+				if (sv.isSelected()) {
+					if (k == 0)
+						sv1 = sv;
+					if (k == 1)
+						sv2 = sv;
+					k++;
+				}
+			}
+			if (k == 2) {
+				if (sv2.hasNeighbor(sv1)) {
+					sv2.remove(sv1);
+				} else {
 					sv2.add(sv1);
 				}
 			}

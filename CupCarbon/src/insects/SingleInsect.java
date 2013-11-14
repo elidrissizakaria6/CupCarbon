@@ -24,7 +24,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -43,7 +42,7 @@ import device.MobileG;
  * @author Ahcene Bounceur
  * @author Mahamadou Traore
  */
-public class SingleInsect extends MobileG implements Runnable {
+public class SingleInsect extends MobileG {
 
 	private String insFileName = "";
 	
@@ -60,32 +59,28 @@ public class SingleInsect extends MobileG implements Runnable {
 
 	// ------------------------------------
 
-	public SingleInsect(double x, double y, int theta) {
+	public SingleInsect(double x, double y, int theta, double xc, double yc) {
 		this.x = x;
 		this.y = y;
 		this.direction = theta;
-//		Layer.getMapViewer().addMouseListener(this);
-//		Layer.getMapViewer().addMouseMotionListener(this);
-//		Layer.getMapViewer().addKeyListener(this);
+		this.xc = xc;
+		this.yc = yc;
+		radius = 200 ;
 	}
 
 	public SingleInsect(double x, double y, boolean dispersion) {
-//		Layer.getMapViewer().addMouseListener(this);
-//		Layer.getMapViewer().addMouseMotionListener(this);
-//		Layer.getMapViewer().addKeyListener(this);
 		generate(x, y, dispersion);
 	}
 
 	public void generate(double x, double y, boolean dispersion) {
-		double d1 = 0;
-		double d2 = 0;
 		if (dispersion) {
-			d1 = Math.random() / this.dispersion;
-			d2 = Math.random() / this.dispersion;
+			xc = Math.random() / this.dispersion;
+			yc = Math.random() / this.dispersion;
 		}
-		this.x = x + d1;
-		this.y = y + d2;
+		this.x = x + xc;
+		this.y = y + yc;
 		direction = (int) (Math.random() * 360);
+		radius = 200 ;
 	}
 
 	// ------------------------------------
@@ -127,6 +122,9 @@ public class SingleInsect extends MobileG implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
 				(int) direction - 90 - 20, 40);
+		//int rayon = MapCalc.rayonEnPixel(this.radius) ;
+		//g.setColor(Color.white);
+		//g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
 	}
 
 	public double getX() {
@@ -180,8 +178,6 @@ public class SingleInsect extends MobileG implements Runnable {
 					tmpTime = cTime;
 					x1 = Double.parseDouble(ts[1]) + Math.random() / dispersion;
 					y1 = Double.parseDouble(ts[2]) + Math.random() / dispersion;
-					xc = MapCalc.geoToIntPixelMapX(x1, y1);
-					yc = MapCalc.geoToIntPixelMapY(x1, y1);
 					if (firstTime) {
 						x = x1;
 						y = y1;
@@ -214,6 +210,8 @@ public class SingleInsect extends MobileG implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		underSimulation = false;
+		thread = null;
 	}
 
 	/**
@@ -273,9 +271,11 @@ public class SingleInsect extends MobileG implements Runnable {
     public String getIdFL() {
             return "I";
     }
-
-    public void MouseMoved(MouseEvent e) {
-    	super.mouseMoved(e);
-    	System.out.println("BBBBBB");
+    
+    public void relativeMove(double x, double y) {
+    	if(thread == null ) {
+    		this.x = x+xc;
+    		this.y = y+yc;
+    	}
     }
 }

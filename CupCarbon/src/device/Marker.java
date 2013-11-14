@@ -70,9 +70,6 @@ public class Marker extends Device {
 				g.setColor(Color.RED);
 				g.fillOval(x-3, y-3, 6, 6);
 			}
-			//g.setColor(UColor.WHITE_TRANSPARENT);
-			//g.drawOval(x-3, y-3, 6, 6);
-			//drawId(x,y,g);
 		}
 	}	
 	
