@@ -23,12 +23,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 import java.util.Vector;
-
-import map.Layer;
-
-import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import utilities.MapCalc;
 import utilities.UColor;
