@@ -97,10 +97,11 @@ public class CupCarbon {
 				// }
 
 				try {
-					FileInputStream licenceFile = new FileInputStream("cupcarbon_licence.txt") ;
-					int c ;
-					while((c=licenceFile.read()) != -1) {
-						System.out.print((char)c);
+					FileInputStream licenceFile = new FileInputStream(
+							"cupcarbon_licence.txt");
+					int c;
+					while ((c = licenceFile.read()) != -1) {
+						System.out.print((char) c);
 					}
 					System.out.println();
 					licenceFile.close();
@@ -625,7 +626,7 @@ public class CupCarbon {
 		JMenuItem mntmParameters = new JMenuItem("Device Parameters");
 		mntmParameters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				openDeviceParemeterWindow() ;
+				openDeviceParemeterWindow();
 			}
 		});
 		mntmParameters.setIcon(new ImageIcon(Parameters.IMGPATH
@@ -638,14 +639,15 @@ public class CupCarbon {
 				MarkerList.generateGpxFile();
 			}
 		});
-		
+
 		JMenuItem mntmInsectParameters = new JMenuItem("Insect Parameters");
 		mntmInsectParameters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openInsectParemeterWindow();
 			}
 		});
-		mntmInsectParameters.setIcon(new ImageIcon(Parameters.IMGPATH+"ui_menu_blue.png"));
+		mntmInsectParameters.setIcon(new ImageIcon(Parameters.IMGPATH
+				+ "ui_menu_blue.png"));
 		mnNodes.add(mntmInsectParameters);
 		mntmRouteFromMarkers.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "route.png"));
@@ -662,7 +664,8 @@ public class CupCarbon {
 		});
 
 		JMenuItem mntmToOmnet = new JMenuItem("To OMNeT");
-		mntmToOmnet.setIcon(new ImageIcon("images/loopnone-1.png"));
+		mntmToOmnet
+				.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
 		mntmToOmnet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				OmnetPp.omnetFileGeneration();
@@ -811,23 +814,22 @@ public class CupCarbon {
 				File comFiles = new File(Project.getProjectComPath());
 				String[] c = comFiles.list();
 				ScriptComWindow.txtLoadFileName.removeAllItems();
-				ScriptComWindow.txtLoadFileName.addItem("New scenario ...");
+				ScriptComWindow.txtLoadFileName.addItem("New script ...");
 				for (int i = 0; i < c.length; i++) {
 					ScriptComWindow.txtLoadFileName.addItem(c[i]);
 				}
 
-				if(!comWindow.isVisible()) {
+				if (!comWindow.isVisible()) {
 					desktopPane.add(comWindow);
 					comWindow.show();
 				}
 				comWindow.toFront();
-				
-				
-//				//if (!comWindow.isVisible()) {
-//					desktopPane.add(comWindow);
-//					comWindow.setVisible(true);
-//				//}
-//				comWindow.toFront();
+
+				// //if (!comWindow.isVisible()) {
+				// desktopPane.add(comWindow);
+				// comWindow.setVisible(true);
+				// //}
+				// comWindow.toFront();
 			}
 		});
 
@@ -1023,11 +1025,7 @@ public class CupCarbon {
 				+ "marker_rounded_light_blue.png"));
 		btnMarker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!gpsWindow.isVisible()) {
-					desktopPane.add(gpsWindow);
-					gpsWindow.setVisible(true);
-				}
-				gpsWindow.toFront();
+				WorldMap.addNodeInMap('8');
 			}
 		});
 		toolBar.add(btnMarker);
@@ -1037,9 +1035,23 @@ public class CupCarbon {
 				+ "ui_menu_blue.png"));
 		btnSensorParameters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				openDeviceParemeterWindow() ;
-			}			
+				openDeviceParemeterWindow();
+			}
 		});
+
+		JButton btnNewButton = new JButton("Marker Parameters");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (!gpsWindow.isVisible()) {
+					desktopPane.add(gpsWindow);
+					gpsWindow.setVisible(true);
+				}
+				gpsWindow.toFront();
+			}
+		});
+		btnNewButton.setIcon(new ImageIcon(Parameters.IMGPATH
+				+ "ui_menu_blue.png"));
+		toolBar.add(btnNewButton);
 		toolBar.add(btnSensorParameters);
 
 		JButton btnInfo = new JButton("Info");
@@ -1078,7 +1090,7 @@ public class CupCarbon {
 		}
 		// moveToFront(cupCarbonMap);
 	}
-	
+
 	private void openDeviceParemeterWindow() {
 		File gpsFiles = new File(Project.getProjectGpsPath());
 		String[] s = gpsFiles.list();
@@ -1102,14 +1114,14 @@ public class CupCarbon {
 			nodeParametersWindow.setVisible(true);
 			desktopPane.add(nodeParametersWindow);
 		}
-		nodeParametersWindow.toFront();				
+		nodeParametersWindow.toFront();
 	}
-	
+
 	private void openInsectParemeterWindow() {
 		if (!insectParametersWindow.isVisible()) {
 			insectParametersWindow.setVisible(true);
 			desktopPane.add(insectParametersWindow);
 		}
-		insectParametersWindow.toFront();				
+		insectParametersWindow.toFront();
 	}
 }
