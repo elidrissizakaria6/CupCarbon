@@ -1056,14 +1056,6 @@ public class CupCarbon {
 
 		label = new JLabel("0");
 		toolBar.add(label);
-		
-		JButton btnProvisoire = new JButton("Provisoire");
-		btnProvisoire.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MarkerList.degrees() ;
-			}
-		});
-		toolBar.add(btnProvisoire);
 
 		CupCarbonMap cupCarbonMap = new CupCarbonMap();
 		cupCarbonMap.setLocation(280, 91);

@@ -306,7 +306,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
-	public void run() {
+	public void run() {		
 		state = this.getState();
 		radioRangeRadius = radioRangeRadiusOri;
 		battery.init();
@@ -493,7 +493,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @see device.Device#setGPSFileName(java.lang.String)
 	 */
 	@Override
-	public void setGPSFileName(String gpsFileName) {
+	public void setGPSFileName(String gpsFileName) {		
 		this.gpsFileName = gpsFileName;
 	}
 

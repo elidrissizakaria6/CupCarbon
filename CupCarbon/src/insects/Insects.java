@@ -63,7 +63,7 @@ public class Insects extends MobileG {
 
 	public Insects(double x, double y, double radius, int n, String gpsFileName) {
 		this(x, y, radius, n);
-		this.gpsFileName = gpsFileName ;
+		setGPSFileName(gpsFileName) ;
 	}
 
 	public Insects(String xStr, String yStr, String radiusStr, String nStr, String gpsFileName) {
@@ -231,15 +231,16 @@ public class Insects extends MobileG {
 
 	@Override
 	public void setGPSFileName(String gpsFileName) {
+		this.gpsFileName = gpsFileName ;
 		for (SingleInsect singleInsect : insects) {
-			singleInsect.setINSFileName(gpsFileName);
+			singleInsect.setGPSFileName(gpsFileName);
 		}
 	}
 
 	public void reproduire(int v) {
 		for (int i = 0; i < v; i++) {
 			SingleInsect si = new SingleInsect(x, y, true);
-			si.setINSFileName("gps/a1.gps");
+			si.setGPSFileName("gps/a1.gps");
 			insects.add(si);
 		}
 	}

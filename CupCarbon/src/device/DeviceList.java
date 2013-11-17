@@ -102,8 +102,10 @@ public class DeviceList {
 				if (	node.getType() == Device.SENSOR || 
 						node.getType() == Device.INSECT || 
 						node.getType() == Device.MOBILE || 
-						node.getType() == Device.MOBILE_WR)
+						node.getType() == Device.MOBILE_WR) {
+					System.out.println("----> "+node.getGPSFileName());
 					fos.print(" " + ((node.getGPSFileName()=="")?"#":node.getGPSFileName()));
+				}
 				
 				if (	node.getType() == Device.SENSOR)
 					fos.print(" " + ((node.getCOMFileName()=="")?"#":node.getCOMFileName()));
@@ -471,7 +473,6 @@ public class DeviceList {
 			node = iterator.next();
 			if (node.isSelected()) {
 				node.setGPSFileName(gpsFileName);
-				Layer.getMapViewer().repaint();
 			}
 		}
 	}

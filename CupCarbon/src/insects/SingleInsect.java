@@ -43,8 +43,6 @@ import device.MobileG;
  * @author Mahamadou Traore
  */
 public class SingleInsect extends MobileG {
-
-	private String insFileName = "";
 	
 	protected double x = 0;
 	protected double y = 0;
@@ -150,8 +148,8 @@ public class SingleInsect extends MobileG {
 		double x1, y1, x2, y2;
 		try {
 			Thread.sleep((int) (1000 * Math.random()));
-			if (!insFileName.equals("")) {
-				fis = new FileInputStream(insFileName);
+			if (!gpsFileName.equals("")) {
+				fis = new FileInputStream(gpsFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
 				b.readLine();
 				b.readLine();
@@ -243,10 +241,6 @@ public class SingleInsect extends MobileG {
 		GeoPosition gp = Layer.getMapViewer().convertPointToGeoPosition(p);
 		x = gp.getLatitude();
 		y = gp.getLongitude();
-	}
-
-	public void setINSFileName(String insFileName) {
-		this.insFileName = insFileName ;
 	}
 
 	@Override

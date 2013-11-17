@@ -41,12 +41,12 @@ public abstract class MobileG extends DeviceWithoutRadio {
 	public MobileG(double x, double y, double rayon, String gpsFileName) {
 		super(x,y,rayon);
 		mobile = true ;		
-		if(gpsFileName.equals("")) {
-			gpsId = ++ gpsNbr ;
-			this.gpsFileName = "gps"+gpsId+".gps";
-		}
-		else
-			this.gpsFileName = gpsFileName ;
+//		if(gpsFileName.equals("")) {
+//			gpsId = ++ gpsNbr ;
+//			this.gpsFileName = "gps"+gpsId+".gps";
+//		}
+//		else
+		this.gpsFileName = gpsFileName ;
 	}
 	
 	@Override

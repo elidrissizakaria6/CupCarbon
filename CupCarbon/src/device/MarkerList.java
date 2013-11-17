@@ -367,10 +367,4 @@ public class MarkerList {
 		}
 	}
 
-	public static void degrees() {
-		for (Marker marker : markers) {
-			System.out.println(marker.getX() + " " + marker.getY());
-		}
-	}
-
 }
