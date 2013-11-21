@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package antenna;
+package radiomodule;
 
 import consumer.AConsumption;
 
@@ -27,7 +27,7 @@ import consumer.AConsumption;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class Antenna extends AConsumption {
+public class RadioModule extends AConsumption {
 
 	/* (non-Javadoc)
 	 * @see consumer.AConsumption#getConsumedUnit()

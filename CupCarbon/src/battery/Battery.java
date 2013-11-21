@@ -19,7 +19,7 @@
 
 package battery;
 
-import antenna.Antenna;
+import radiomodule.RadioModule;
 import captureunit.CaptureUnit;
 import controlunit.UControl;
 
@@ -32,7 +32,7 @@ import controlunit.UControl;
 public class Battery implements Cloneable {
 
 	private UControl uProc = new UControl();
-	private Antenna antenna = new Antenna();
+	private RadioModule radioModule = new RadioModule();
 	private CaptureUnit captureUnit;
 	private double initialCapacity = 100000.;
 	private double capacity = initialCapacity;
@@ -95,8 +95,8 @@ public class Battery implements Cloneable {
 
 		if (uProc != null)
 			vUp = uProc.getConsumedUnit();
-		if (antenna != null)
-			vA = antenna.getConsumedUnit();
+		if (radioModule != null)
+			vA = radioModule.getConsumedUnit();
 		if (captureUnit != null)
 			vUc = captureUnit.getConsumedUnit();
 
@@ -121,7 +121,7 @@ public class Battery implements Cloneable {
 
 	/**
 	 * Consume the battery by taking into account the consumptions of the
-	 * elements that are connected to the battery: - Microcontroller - Antenna -
+	 * elements that are connected to the battery: - Microcontroller - RadioModule -
 	 * Capture unit
 	 * 
 	 * @param unit1
@@ -135,8 +135,8 @@ public class Battery implements Cloneable {
 
 		if (uProc != null)
 			vUp = uProc.getConsumedUnit(unit1);
-		if (antenna != null)
-			vA = antenna.getConsumedUnit(unit2);
+		if (radioModule != null)
+			vA = radioModule.getConsumedUnit(unit2);
 		if (captureUnit != null)
 			vUc = captureUnit.getConsumedUnit(unit3);
 
@@ -175,10 +175,10 @@ public class Battery implements Cloneable {
 	/**
 	 * Connect to a Antanna
 	 * 
-	 * @param antenna
+	 * @param radiomodule
 	 */
-	public void setAntenna(Antenna antenna) {
-		this.antenna = antenna;
+	public void setAntenna(RadioModule radioModule) {
+		this.radioModule = radioModule;
 	}
 
 	/*
@@ -191,7 +191,7 @@ public class Battery implements Cloneable {
 		Battery newBattery = (Battery) super.clone();
 		newBattery.setCaptureUnit(captureUnit.clone());
 		newBattery.setUControl((UControl) uProc.clone());
-		newBattery.setAntenna((Antenna) antenna.clone());
+		newBattery.setAntenna((RadioModule) radioModule.clone());
 		return newBattery;
 	}
 }

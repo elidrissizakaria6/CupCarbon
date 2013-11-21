@@ -117,12 +117,16 @@ public class SingleInsect extends MobileG {
 		int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
 		int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
 		int v = 5;
+		int rayon = MapCalc.rayonEnPixel(this.radius) ;
+		
+		//g.setColor(Color.white);
+		//g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
+		
 		g.setColor(Color.BLACK);
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
 				(int) direction - 90 - 20, 40);
-		//int rayon = MapCalc.rayonEnPixel(this.radius) ;
-		//g.setColor(Color.white);
-		//g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
+		g.fillArc((int) x - rayon, (int) y - rayon, rayon * 2, rayon * 2,
+				(int) direction - 90 - 1, 2);
 	}
 
 	public double getX() {
@@ -193,7 +197,7 @@ public class SingleInsect extends MobileG {
 					break;
 				}
 				try {
-					Thread.sleep(toWait / 100);
+					Thread.sleep(toWait / 1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
