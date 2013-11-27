@@ -32,7 +32,7 @@ import controlunit.UControl;
 public class Battery implements Cloneable {
 
 	private UControl uProc = new UControl();
-	private RadioModule radioModule = new RadioModule();
+	private RadioModule radioModule = new RadioModule(0);
 	private CaptureUnit captureUnit;
 	private double initialCapacity = 100000.;
 	private double capacity = initialCapacity;

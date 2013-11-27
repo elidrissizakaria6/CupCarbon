@@ -29,6 +29,12 @@ import consumer.AConsumption;
  */
 public class RadioModule extends AConsumption {
 
+	private int type = RadioType.END_DEVICE ;
+	
+	public RadioModule(int type) {
+		this.type = type ;
+	}
+	
 	/* (non-Javadoc)
 	 * @see consumer.AConsumption#getConsumedUnit()
 	 */
