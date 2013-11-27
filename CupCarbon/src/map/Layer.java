@@ -63,29 +63,30 @@ import device.StreetVertex;
 public class Layer implements Painter<Object>, MouseListener,
 		MouseMotionListener, KeyListener {
 
-	protected static JXMapViewer mapViewer = null;
-	protected static DeviceList nodeList = null;
-	protected static MarkerList markerList = null;
-	protected static StreetGraph streetGraph = null;
-	protected static boolean afficherIndicateur = false;
-	protected static double x = 0;
-	protected static double y = 0;
-	protected static char lastKey = 0;
-	protected static int lastKeyCode = 0;
-	protected boolean debutSelection = false;
-	protected static boolean dessinerCadre = false;
-	protected static int cadreX1 = 0;
-	protected static int cadreY1 = 0;
-	protected static int cadreX2 = 0;
-	protected static int cadreY2 = 0;
+	public static JXMapViewer mapViewer = null;
+	public static DeviceList nodeList = null;
+	public static MarkerList markerList = null;
+	public static StreetGraph streetGraph = null;
+	public static boolean afficherIndicateur = false;
+	public static double x = 0;
+	public static double y = 0;
+	public static char lastKey = 0;
+	public static int lastKeyCode = 0;	
+	public static boolean dessinerCadre = false;
+	public static int cadreX1 = 0;
+	public static int cadreY1 = 0;
+	public static int cadreX2 = 0;
+	public static int cadreY2 = 0;
 	public static int selectType = 0;
-	protected static boolean altDown = false;
-	protected static boolean shiftDown = false;
-	protected static boolean cmdDown = false;
-	protected static boolean ctrlDown = false;
-	protected static boolean mousePressed = false;
-	protected static String projectPath = "";
-	protected static String projectName = "";
+	public static boolean altDown = false;
+	public static boolean shiftDown = false;
+	public static boolean cmdDown = false;
+	public static boolean ctrlDown = false;
+	public static boolean mousePressed = false;
+	public static String projectPath = "";
+	public static String projectName = "";
+	
+	private boolean debutSelection = false;
 
 	public Layer() {
 	}
@@ -118,6 +119,14 @@ public class Layer implements Painter<Object>, MouseListener,
 		mapViewer.addKeyListener(this);
 		// insectinit();
 
+	}	
+
+	public boolean isDebutSelection() {
+		return debutSelection;
+	}
+
+	public void setDebutSelection(boolean debutSelection) {
+		this.debutSelection = debutSelection;
 	}
 
 	public static JXMapViewer getMapViewer() {
@@ -187,7 +196,7 @@ public class Layer implements Painter<Object>, MouseListener,
 					(int) (p2.getY() - p1.getY()));
 		}
 		g.dispose();
-	}
+	}	
 
 	public static DeviceList getDeviceList() {
 		return nodeList;
