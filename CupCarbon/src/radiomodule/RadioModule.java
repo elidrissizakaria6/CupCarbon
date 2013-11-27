@@ -48,6 +48,7 @@ public class RadioModule extends AConsumption {
 	 */
 	@Override
 	public double getConsumedUnit(double unit) {
+		if(type==RadioType.END_DEVICE) {}
 		return consomUnit*unit;
 	}
 }
