@@ -199,8 +199,8 @@ public class Layer implements Painter<Object>, MouseListener,
 		// OSM Test BEGIN
 		// This part is used just to understand how to add shapes on the OSM map
 		// The class OsmTest is required
-		OsmTest osm = new OsmTest() ;
-		osm.drawFromGPS(g);
+		//OsmTest osm = new OsmTest() ;
+		//osm.drawFromGPS(g);
 		// OSM Test END
 		
 		g.dispose();
