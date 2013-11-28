@@ -175,41 +175,26 @@ public class Sensor extends DeviceWithRadio {
 		this.setCOMFileName(comFileName);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.DeviceWithRadio#getGPSFileName()
-	 */
 	@Override
 	public String getGPSFileName() {
 		return gpsFileName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.DeviceWithRadio#setCaptureRadius(double)
-	 */
 	@Override
 	public void setCaptureRadius(double captureRadio) {
 		captureUnit.setRadius(captureRadio);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#dessiner(java.awt.Graphics)
-	 */
 	@Override
 	public void draw(Graphics g) {
 		if (visible) {
 			initDraw(g);
-			//Layer.getMapViewer().setAlpha(100);
+			// Layer.getMapViewer().setAlpha(100);
 			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
 			int x = coord[0];
 			int y = coord[1];
-			//int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
-			//int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
+			// int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
+			// int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
 			int rayon = MapCalc.radiusInPixels(getRadioRadius());
 			int rayon2 = MapCalc.radiusInPixels(this.radius);
 
@@ -271,13 +256,13 @@ public class Sensor extends DeviceWithRadio {
 			}
 
 			if (displayDetails) {
-//				g.setColor(UColor.VERT);
-//				System.out.println(battery.getCapacityInPercent());
-//				g.fillRect(x + rayon + 10, y - battery.getCapacity() + rayon,
-//						5, battery.getCapacityInPercent());
-//				g.setColor(Color.gray);
-//				g.drawRect(x + rayon + 10, y - battery.getCapacity() + rayon,
-//						5, battery.getCapacityInPercent() * 100);
+				// g.setColor(UColor.VERT);
+				// System.out.println(battery.getCapacityInPercent());
+				// g.fillRect(x + rayon + 10, y - battery.getCapacity() + rayon,
+				// 5, battery.getCapacityInPercent());
+				// g.setColor(Color.gray);
+				// g.drawRect(x + rayon + 10, y - battery.getCapacity() + rayon,
+				// 5, battery.getCapacityInPercent() * 100);
 				g.drawLine(x + rayon, y + rayon, x + rayon + 25, y + rayon);
 				g.drawString("" + battery.getCapacityInPercent() + " %", x + 15
 						+ rayon, y + 20 + rayon);
@@ -293,23 +278,13 @@ public class Sensor extends DeviceWithRadio {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#getCaptureRadius()
-	 */
 	@Override
 	public double getCaptureUnitRadius() {
 		return captureUnit.getRadius();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
 	@Override
-	public void run() {		
+	public void run() {
 		state = this.getState();
 		radioRangeRadius = radioRangeRadiusOri;
 		battery.init();
@@ -366,7 +341,7 @@ public class Sensor extends DeviceWithRadio {
 							// y2));
 							totalDistance += MapCalc.distance(x, y, x2, y2);
 						}
-						//Layer.getMapViewer().repaint();
+						// Layer.getMapViewer().repaint();
 					} else {
 						// System.out.println("-----------------");
 						// System.out.println(totalDistance);
@@ -416,21 +391,11 @@ public class Sensor extends DeviceWithRadio {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#getType()
-	 */
 	@Override
 	public int getType() {
 		return Device.SENSOR;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#getIdFL()
-	 */
 	@Override
 	public String getIdFL() {
 		return "S";
@@ -464,11 +429,6 @@ public class Sensor extends DeviceWithRadio {
 		this.battery = battery;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#clone()
-	 */
 	@Override
 	public Sensor clone() throws CloneNotSupportedException {
 		Sensor newSensor = (Sensor) super.clone();
@@ -480,34 +440,16 @@ public class Sensor extends DeviceWithRadio {
 		return newSensor;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#getNodeIdName()
-	 */
 	@Override
 	public String getNodeIdName() {
 		return getIdFL() + id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#setGPSFileName(java.lang.String)
-	 */
 	@Override
-	public void setGPSFileName(String gpsFileName) {		
+	public void setGPSFileName(String gpsFileName) {
 		this.gpsFileName = gpsFileName;
 	}
 
-	// @Override
-	// public void setCOMFileName(String comFileName) {}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#getNivBattery()
-	 */
 	public double getBatteryLevel() {
 		return battery.getCapacity();
 	}
