@@ -129,6 +129,7 @@ public class MarkerList {
 			int ly1 = 0;
 			int lx2 = 0;
 			int ly2 = 0;
+			int[] coord ;
 			for (Marker marker : markers)
 				marker.draw(g);
 			if (links && markers.size() > 0) {
@@ -138,16 +139,22 @@ public class MarkerList {
 						firstTime = false;
 						x1 = marker.getX();
 						y1 = marker.getY();
-						lx1 = MapCalc.geoToIntPixelMapX(x1, y1);
-						ly1 = MapCalc.geoToIntPixelMapY(x1, y1);
+						coord = MapCalc.geoToIntPixelMapXY(x1, y1);
+						lx1 = coord[0];
+						ly1 = coord[1];								
+						//lx1 = MapCalc.geoToIntPixelMapX(x1, y1);
+						//ly1 = MapCalc.geoToIntPixelMapY(x1, y1);
 						g.setColor(Color.red);
 						g.drawOval((int) lx1 - 5, (int) ly1 - 5, (int) 10,
 								(int) 10);
 					} else {
 						x2 = marker.getX();
 						y2 = marker.getY();
-						lx2 = MapCalc.geoToIntPixelMapX(x2, y2);
-						ly2 = MapCalc.geoToIntPixelMapY(x2, y2);
+						coord = MapCalc.geoToIntPixelMapXY(x2, y2);
+						lx2 = coord[0];
+						ly2 = coord[1];
+						//lx2 = MapCalc.geoToIntPixelMapX(x2, y2);
+						//ly2 = MapCalc.geoToIntPixelMapY(x2, y2);
 
 						g.setColor(Color.red);
 
@@ -166,8 +173,11 @@ public class MarkerList {
 									-(int) alpha - 10, 20);
 						x1 = marker.getX();
 						y1 = marker.getY();
-						lx1 = MapCalc.geoToIntPixelMapX(x1, y1);
-						ly1 = MapCalc.geoToIntPixelMapY(x1, y1);
+						coord = MapCalc.geoToIntPixelMapXY(x1, y1);
+						lx1 = coord[0];
+						ly1 = coord[1];	
+						//lx1 = MapCalc.geoToIntPixelMapX(x1, y1);
+						//ly1 = MapCalc.geoToIntPixelMapY(x1, y1);
 					}
 				}
 			}

@@ -67,10 +67,13 @@ public class BaseStation extends DeviceWithRadio {
 	public void draw(Graphics g) {
 		if (visible) {
 			initDraw(g);
-			int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
-			int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
-			int rayon = MapCalc.rayonEnPixel(getRadioRadius());
-			int rayon2 = MapCalc.rayonEnPixel(this.radius);
+			int [] coord = MapCalc.geoToIntPixelMapXY(this.x,this.y) ;
+			int x = coord[0];
+			int y = coord[1];
+			// int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
+			// int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
+			int rayon = MapCalc.radiusInPixels(getRadioRadius());
+			int rayon2 = MapCalc.radiusInPixels(this.radius);
 
 			if (inside || selected) {
 				g.setColor(UColor.NOIR_TRANSPARENT);

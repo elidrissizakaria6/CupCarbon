@@ -32,7 +32,8 @@ import project.Project;
 import synchronization.Lock;
 import device.Device;
 
-public class DeviceSimulator implements SimulableDevice, Runnable {
+public class DeviceSimulator implements Runnable {
+	
 	public static int index = 0;
 	public String scenariofile = "";
 	private String resultFile = "RS";

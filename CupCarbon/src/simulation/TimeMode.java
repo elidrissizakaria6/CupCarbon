@@ -20,5 +20,6 @@
 package simulation;
 
 public enum TimeMode {
-	REALTIME, LOGICALTIME
+	REALTIME, 
+	LOGICALTIME
 }

@@ -54,9 +54,12 @@ public class SimpleInsect extends MobileG {
 	public void draw(Graphics g) {
 		if(visible) {
 			initDraw(g) ;
-			int x = MapCalc.geoToIntPixelMapX(this.x, this.y) ;
-			int y = MapCalc.geoToIntPixelMapY(this.x, this.y) ;		
-			int rayon = MapCalc.rayonEnPixel(this.radius) ;		
+			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int x = coord[0];
+			int y = coord[1];
+			//int x = MapCalc.geoToIntPixelMapX(this.x, this.y) ;
+			//int y = MapCalc.geoToIntPixelMapY(this.x, this.y) ;		
+			int rayon = MapCalc.radiusInPixels(this.radius) ;		
 			
 			if (inside || selected) {
 				g.setColor(UColor.ORANGE);
@@ -83,7 +86,7 @@ public class SimpleInsect extends MobileG {
 			//g.fillOval(x-6, y-6, 12, 12);
 			
 	
-			int fxo = x+MapCalc.rayonEnPixel(this.radius) ;
+			int fxo = x+MapCalc.radiusInPixels(this.radius) ;
 			int fyo = y ;
 			int fx = fxo ;
 			int fy = fyo ;		
@@ -98,15 +101,15 @@ public class SimpleInsect extends MobileG {
 			for(double j=1; j<8; j+=.2) {
 				r = (int) ((this.radius)/j) ;
 				for(double i=0; i<6.28; i+=.4) {
-					v = MapCalc.rayonEnPixel(r)*(rnd.nextInt(20)-10)/100.;
+					v = MapCalc.radiusInPixels(r)*(rnd.nextInt(20)-10)/100.;
 					v2 = rnd.nextInt(30)-15;
 					v3 = rnd.nextInt(30)-15;
-					rayon2 = MapCalc.rayonEnPixel(r*Math.cos(i))+v ;
-					rayon3 = MapCalc.rayonEnPixel(r*Math.sin(i))+v ;
+					rayon2 = MapCalc.radiusInPixels(r*Math.cos(i))+v ;
+					rayon3 = MapCalc.radiusInPixels(r*Math.sin(i))+v ;
 					g.setColor(UColor.NOIR_TRANSPARENT) ;
 					if(hide==0)
-						g.fillOval((int)(x+rayon2+v2), (int)(y+rayon3+v3), (int)MapCalc.rayonEnPixel(4*Layer.getMapViewer().getZoom()), 
-							(int)MapCalc.rayonEnPixel(4*Layer.getMapViewer().getZoom()));
+						g.fillOval((int)(x+rayon2+v2), (int)(y+rayon3+v3), (int)MapCalc.radiusInPixels(4*Layer.getMapViewer().getZoom()), 
+							(int)MapCalc.radiusInPixels(4*Layer.getMapViewer().getZoom()));
 					if(j==1) {
 						g.setColor(UColor.WHITE_TRANSPARENT) ;
 						g.drawLine(fx, fy, (int)(x+rayon2), (int)(y+rayon3));

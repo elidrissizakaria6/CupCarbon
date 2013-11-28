@@ -52,18 +52,23 @@ public class StreetVertex extends Device {
 		double alpha;
 		double dx;
 		double dy;
+		int[] coord;
 		if (visible) {
 			initDraw(g);
-			int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
-			int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
-			int rayon = MapCalc.rayonEnPixel(this.radius);
+			coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int x = coord[0];
+			int y = coord[1];
+			//int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
+			//int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
+			int rayon = MapCalc.radiusInPixels(this.radius);
 			int x2, y2;			
 
 			if (cNeighbor != null) {
-				x2 = MapCalc.geoToIntPixelMapX(cNeighbor.getX(),
-						cNeighbor.getY());
-				y2 = MapCalc.geoToIntPixelMapY(cNeighbor.getX(),
-						cNeighbor.getY());
+				coord = MapCalc.geoToIntPixelMapXY(cNeighbor.getX(), cNeighbor.getY());
+				x2 = coord[0];
+				y2 = coord[1];
+				//x2 = MapCalc.geoToIntPixelMapX(cNeighbor.getX(), cNeighbor.getY());
+				//y2 = MapCalc.geoToIntPixelMapY(cNeighbor.getX(), cNeighbor.getY());
 				g.setColor(UColor.ORANGE);
 				g.drawLine(x, y, x2, y2);
 				Layer.drawDistance(this.x, this.y, cNeighbor.getX(),
@@ -110,9 +115,12 @@ public class StreetVertex extends Device {
 				g.drawOval(x - 10, y - 10, 20, 20);
 			}
 			
-			for (StreetVertex sv : neighbors) {
-				x2 = MapCalc.geoToIntPixelMapX(sv.getX(), sv.getY());
-				y2 = MapCalc.geoToIntPixelMapY(sv.getX(), sv.getY());
+			for (StreetVertex sv : neighbors) {		
+				coord = MapCalc.geoToIntPixelMapXY(sv.getX(), sv.getY());
+				x2 = coord[0];
+				y2 = coord[1];				
+				//x2 = MapCalc.geoToIntPixelMapX(sv.getX(), sv.getY());
+				//y2 = MapCalc.geoToIntPixelMapY(sv.getX(), sv.getY());
 				g.setColor(Color.DARK_GRAY);
 				g.drawLine(x, y, x2, y2);
 

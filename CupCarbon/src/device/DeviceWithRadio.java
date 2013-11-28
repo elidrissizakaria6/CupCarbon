@@ -262,9 +262,12 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	@Override
 	public void drawSelectedByAlgo(Graphics g) {		
 		if(selectedByAlgo) {	
-			int x = MapCalc.geoToIntPixelMapX(this.x,this.y) ;
-			int y = MapCalc.geoToIntPixelMapY(this.x,this.y) ;	
-			int r = MapCalc.rayonEnPixel(this.radioRangeRadius) ;
+			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int x = coord[0];
+			int y = coord[1];
+			//int x = MapCalc.geoToIntPixelMapX(x, y) ;
+			//int y = MapCalc.geoToIntPixelMapY(x, y) ;	
+			int r = MapCalc.radiusInPixels(this.radioRangeRadius) ;
 			g.setColor(Color.RED);
 			if(hide==2) {
 				g.setColor(Color.gray);

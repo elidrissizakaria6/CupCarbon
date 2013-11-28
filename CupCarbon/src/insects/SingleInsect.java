@@ -113,11 +113,13 @@ public class SingleInsect extends MobileG {
 		Graphics2D g = (Graphics2D) gg;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-
-		int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
-		int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
+		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+		int x = coord[0];
+		int y = coord[1];
+		//int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
+		//int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
 		int v = 5;
-		int rayon = MapCalc.rayonEnPixel(this.radius) ;
+		int rayon = MapCalc.radiusInPixels(this.radius) ;
 		
 		//g.setColor(Color.white);
 		//g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);

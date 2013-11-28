@@ -45,9 +45,12 @@ public class Mobile extends MobileG {
 	public void draw(Graphics g) {	
 		if(visible) {
 			initDraw(g) ;
-			int x = MapCalc.geoToIntPixelMapX(this.x,this.y) ;
-			int y = MapCalc.geoToIntPixelMapY(this.x,this.y) ;		
-			int rayon = MapCalc.rayonEnPixel(this.radius) ;
+			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int x = coord[0];
+			int y = coord[1];	
+			//int x = MapCalc.geoToIntPixelMapX(this.x,this.y) ;
+			//int y = MapCalc.geoToIntPixelMapY(this.x,this.y) ;		
+			int rayon = MapCalc.radiusInPixels(this.radius) ;
 					
 			if (inside || selected) {
 				g.setColor(UColor.NOIR_TRANSPARENT);

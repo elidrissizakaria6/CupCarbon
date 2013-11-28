@@ -50,13 +50,16 @@ public class Gas extends DeviceWithoutRadio {
 	public void draw(Graphics g) {
 		if(visible) {
 			initDraw(g) ;
-			int x = MapCalc.geoToIntPixelMapX(this.x,this.y) ;
-			int y = MapCalc.geoToIntPixelMapY(this.x,this.y) ;		
+			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int x = coord[0];
+			int y = coord[1];
+			//int x = MapCalc.geoToIntPixelMapX(x, y) ;
+			//int y = MapCalc.geoToIntPixelMapY(x, y) ;		
 			//int mx = getPixelMX() ;
 			//int my = getPixelMY() ;
 			//int dx = getPixelDX() ;
 			//int dy = getPixelDY() ;
-			int rayon = MapCalc.rayonEnPixel(this.radius) ;		
+			int rayon = MapCalc.radiusInPixels(this.radius) ;		
 			
 			if (inside || selected) {
 				g.setColor(UColor.ORANGE);
@@ -105,15 +108,15 @@ public class Gas extends DeviceWithoutRadio {
 			Random rnd = new Random();
 			double v ;
 			g.setColor(UColor.ORANGE) ;		
-			int fxo = x+MapCalc.rayonEnPixel(this.radius) ;
+			int fxo = x+MapCalc.radiusInPixels(this.radius) ;
 			int fyo = y ;
 			int fx = fxo ;
 			int fy = fyo ;
 			
 			for(double i=0.2; i<6.28; i+=.2) {
-				v = MapCalc.rayonEnPixel(this.radius)*(rnd.nextInt(20)-10)/100.;
-				rayon2 = MapCalc.rayonEnPixel(this.radius*Math.cos(i))+v ;
-				rayon3 = MapCalc.rayonEnPixel(this.radius*Math.sin(i))+v ;					
+				v = MapCalc.radiusInPixels(this.radius)*(rnd.nextInt(20)-10)/100.;
+				rayon2 = MapCalc.radiusInPixels(this.radius*Math.cos(i))+v ;
+				rayon3 = MapCalc.radiusInPixels(this.radius*Math.sin(i))+v ;					
 				if(hide!=2)
 					g.drawLine(fx, fy, (int)(x+rayon2), (int)(y+rayon3));
 				if(hide==0)

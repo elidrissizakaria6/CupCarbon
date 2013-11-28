@@ -447,7 +447,7 @@ public abstract class Device implements Runnable, MouseListener,
 		double d2 = p1.getY() - p2.getY();
 		inside = false;
 		double v = Math.sqrt(d1 * d1 + d2 * d2);
-		if (v < MapCalc.rayonEnPixel(getMaxRadius())) {
+		if (v < MapCalc.radiusInPixels(getMaxRadius())) {
 			inside = true;
 		}
 	}
@@ -993,10 +993,18 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Graphics
 	 */
 	public void drawRadioLink(Device device, Graphics g) {
-		int lx1 = MapCalc.geoToIntPixelMapX(x, y);
-		int ly1 = MapCalc.geoToIntPixelMapY(x, y);
-		int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
-		int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
+
+		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+		int lx1 = coord[0];
+		int ly1 = coord[1];
+		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
+		int lx2 = coord[0];
+		int ly2 = coord[1];
+
+		// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
+		// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
+		// int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
+		// int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
 		g.setColor(Color.BLACK);
 		g.drawLine(lx1, ly1, lx2, ly2);
 	}
@@ -1010,10 +1018,17 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Graphics
 	 */
 	public void drawDetectionLink(Device device, Graphics g) {
-		int lx1 = MapCalc.geoToIntPixelMapX(x, y);
-		int ly1 = MapCalc.geoToIntPixelMapY(x, y);
-		int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
-		int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
+		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);		
+		int lx1 = coord[0];
+		int ly1 = coord[1];
+		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
+		int lx2 = coord[0];
+		int ly2 = coord[1];
+
+		// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
+		// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
+		// int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
+		// int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
 		g.setColor(Color.RED);
 		g.drawLine(lx1, ly1, lx2, ly2);
 	}
@@ -1048,10 +1063,14 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Graphics
 	 */
 	public void drawInfos(Device device, Graphics g) {
+		int[] coord;
 		if (displayInfos && selected && infos != null) {
 			g.setFont(new Font("arial", 1, 10));
-			int lx1 = MapCalc.geoToIntPixelMapX(x, y);
-			int ly1 = MapCalc.geoToIntPixelMapY(x, y);
+			coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int lx1 = coord[0];
+			int ly1 = coord[1];
+			// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
+			// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
 			g.setColor(UColor.WHITED_TRANSPARENT);
 			g.fillRect(lx1 + 20, ly1 - 25, 150, 80);
 			g.setColor(UColor.NOIR_TRANSPARENT);
@@ -1146,7 +1165,7 @@ public abstract class Device implements Runnable, MouseListener,
 	public DeviceSimulator getSimulator() {
 		return simulator;
 	}
-	
+
 	public Thread getThread() {
 		return thread;
 	}

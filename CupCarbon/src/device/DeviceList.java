@@ -50,34 +50,35 @@ public class DeviceList {
 
 	private static List<Device> nodes = new ArrayList<Device>();
 	private boolean liens = true;
-	private boolean liensDetection = true;	
-	private boolean displayConnectionDistance = false ;
+	private boolean liensDetection = true;
+	private boolean displayConnectionDistance = false;
 	private static int size = 0;
-	private LinkedList<Point []> linksCoord = new LinkedList<Point []>();
+	private LinkedList<Point[]> linksCoord = new LinkedList<Point[]>();
 
 	/**
 	 * 
 	 */
 	public DeviceList() {
-		//Thread th = new Thread(this);
-		//th.start();
+		// Thread th = new Thread(this);
+		// th.start();
 	}
 
 	/**
 	 * @return the nodes
 	 */
 	public static List<Device> getNodes() {
-		return nodes ;
+		return nodes;
 	}
-	
+
 	/**
 	 * @param fileName
 	 */
-	public static void save(String fileName) {		
+	public static void save(String fileName) {
 		try {
 			PrintStream fos = new PrintStream(new FileOutputStream(fileName));
 			Device node;
-			for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
+			for (Iterator<Device> iterator = nodes.iterator(); iterator
+					.hasNext();) {
 				node = iterator.next();
 				System.out.println(node.getGPSFileName());
 				fos.print(node.getType());
@@ -86,32 +87,36 @@ public class DeviceList {
 				fos.print(" " + node.getX());
 				fos.print(" " + node.getY());
 				fos.print(" " + node.getRadius());
-				
-				if (	node.getType() == Device.SENSOR || 
-						node.getType() == Device.BASE_STATION || 
-						node.getType() == Device.BRIDGE || 
-						node.getType() == Device.MOBILE_WR)
+
+				if (node.getType() == Device.SENSOR
+						|| node.getType() == Device.BASE_STATION
+						|| node.getType() == Device.BRIDGE
+						|| node.getType() == Device.MOBILE_WR)
 					fos.print(" " + node.getRadioRadius());
-				
-				if (	node.getType() == Device.SENSOR)
+
+				if (node.getType() == Device.SENSOR)
 					fos.print(" " + node.getCaptureUnitRadius());
-				
-				if(		node.getType() == Device.INSECT ) 
+
+				if (node.getType() == Device.INSECT)
 					fos.print(" " + ((Insects) node).getInsectNumber());
-				
-				if (	node.getType() == Device.SENSOR || 
-						node.getType() == Device.INSECT || 
-						node.getType() == Device.MOBILE || 
-						node.getType() == Device.MOBILE_WR) {
-					System.out.println("----> "+node.getGPSFileName());
-					fos.print(" " + ((node.getGPSFileName()=="")?"#":node.getGPSFileName()));
+
+				if (node.getType() == Device.SENSOR
+						|| node.getType() == Device.INSECT
+						|| node.getType() == Device.MOBILE
+						|| node.getType() == Device.MOBILE_WR) {
+					System.out.println("----> " + node.getGPSFileName());
+					fos.print(" "
+							+ ((node.getGPSFileName() == "") ? "#" : node
+									.getGPSFileName()));
 				}
-				
-				if (	node.getType() == Device.SENSOR)
-					fos.print(" " + ((node.getCOMFileName()=="")?"#":node.getCOMFileName()));
-				
+
+				if (node.getType() == Device.SENSOR)
+					fos.print(" "
+							+ ((node.getCOMFileName() == "") ? "#" : node
+									.getCOMFileName()));
+
 				fos.println();
-				
+
 			}
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -131,19 +136,24 @@ public class DeviceList {
 				str = line.split(" ");
 				switch (str.length) {
 				case 6:
-					addNodeByType(str[0], str[1], str[2], str[3], str[4], str[5]);
+					addNodeByType(str[0], str[1], str[2], str[3], str[4],
+							str[5]);
 					break;
 				case 7:
-					addNodeByType(str[0], str[1], str[2], str[3], str[4], str[5], str[6]);
+					addNodeByType(str[0], str[1], str[2], str[3], str[4],
+							str[5], str[6]);
 					break;
-				case 8: 
-					addNodeByType(str[0], str[1], str[2], str[3], str[4], str[5], str[6], str[7]);
+				case 8:
+					addNodeByType(str[0], str[1], str[2], str[3], str[4],
+							str[5], str[6], str[7]);
 					break;
-				case 9: 
-					addNodeByType(str[0], str[1], str[2], str[3], str[4], str[5], str[6], str[7], str[8]);
+				case 9:
+					addNodeByType(str[0], str[1], str[2], str[3], str[4],
+							str[5], str[6], str[7], str[8]);
 					break;
-				case 10: 
-					addNodeByType(str[0], str[1], str[2], str[3], str[4], str[5], str[6], str[7], str[8], str[9]);
+				case 10:
+					addNodeByType(str[0], str[1], str[2], str[3], str[4],
+							str[5], str[6], str[7], str[8], str[9]);
 					break;
 				}
 			}
@@ -167,12 +177,13 @@ public class DeviceList {
 	 * Create a node from a set of values (table type)
 	 * 
 	 * @param type
-	 * 		table that contains information about a node to add
+	 *            table that contains information about a node to add
 	 */
 	public static void addNodeByType(String... type) {
 		switch (Integer.valueOf(type[0])) {
 		case 1:
-			add(new Sensor(type[3], type[4], type[5], type[6], type[7], type[8], type[9]));
+			add(new Sensor(type[3], type[4], type[5], type[6], type[7],
+					type[8], type[9]));
 			break;
 		case 2:
 			add(new Gas(type[3], type[4], type[5]));
@@ -181,7 +192,7 @@ public class DeviceList {
 			add(new Insects(type[3], type[4], type[5], type[6], type[7]));
 			break;
 		case 4:
-			add(new BaseStation(type[3], type[4], type[5], type[6]));			
+			add(new BaseStation(type[3], type[4], type[5], type[6]));
 			break;
 		case 5:
 			add(new Router(type[3], type[4], type[5], type[6]));
@@ -209,146 +220,124 @@ public class DeviceList {
 		size++;
 	}
 
-	//public void drawDistance(int x, int y, int x2, int y2, int d, Graphics g) {
-	//	g.setColor(UColor.WHITED_TRANSPARENT);
-	//	g.drawString(""+d,(x2-x)/2,(y2-y)/2);
-	//}
-	
+	// public void drawDistance(int x, int y, int x2, int y2, int d, Graphics g)
+	// {
+	// g.setColor(UColor.WHITED_TRANSPARENT);
+	// g.drawString(""+d,(x2-x)/2,(y2-y)/2);
+	// }
+
 	/**
 	 * @param g
 	 */
 	public void dessiner(Graphics g) {
 		Device n1 = null;
 		Device n2 = null;
-	
-		ListIterator<Device> iterator ;
+
+		ListIterator<Device> iterator;
 		ListIterator<Device> iterator2;
-		try{
-		if (liens || liensDetection) {
-			iterator = nodes.listIterator();
-			while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
-				n1 = iterator.next();
-				iterator2 = nodes.listIterator(iterator.nextIndex());
-				while (iterator2.hasNext()) {
-					n2 = iterator2.next();
-					if(liensDetection) {						
-						if (n1.detection(n2)) {		
-							n1.setDetection(true);
+		try {
+			if (liens || liensDetection) {
+				iterator = nodes.listIterator();
+				while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
+					n1 = iterator.next();
+					iterator2 = nodes.listIterator(iterator.nextIndex());
+					while (iterator2.hasNext()) {
+						n2 = iterator2.next();
+						if (liensDetection) {
+							if (n1.detection(n2)) {
+								n1.setDetection(true);
+							}
+							if (n2.detection(n1)) {
+								n2.setDetection(true);
+							}
 						}
-						if (n2.detection(n1)) {		
-							n2.setDetection(true);
-						}
-					}					
+					}
 				}
-			}			
-		}
-		
-		for (Device n : nodes) {
-			n.draw(g);
-			n.setDetection(false);
-			if(n.getType()==Device.SENSOR) {
-				((Sensor)n).drawSelectedByAlgo(g);
 			}
-		}		
-		if (liens || liensDetection) {
-			iterator = nodes.listIterator();
-			while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
-				n1 = iterator.next();
-				iterator2 = nodes.listIterator(iterator.nextIndex());
-				while (iterator2.hasNext()) {
-					n2 = iterator2.next();
-					if (n1.radioDetect(n2) && liens) {
-						n1.drawRadioLink(n2, g);
-						if(displayConnectionDistance) {						
-							Layer.drawDistance(n1.getX(),n1.getY(),n2.getX(),n2.getY(),(int)n1.distance(n2),g);
+
+			for (Device n : nodes) {
+				n.draw(g);
+				n.setDetection(false);
+				if (n.getType() == Device.SENSOR) {
+					((Sensor) n).drawSelectedByAlgo(g);
+				}
+			}
+			if (liens || liensDetection) {
+				iterator = nodes.listIterator();
+				while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
+					n1 = iterator.next();
+					iterator2 = nodes.listIterator(iterator.nextIndex());
+					while (iterator2.hasNext()) {
+						n2 = iterator2.next();
+						if (n1.radioDetect(n2) && liens) {
+							n1.drawRadioLink(n2, g);
+							if (displayConnectionDistance) {
+								Layer.drawDistance(n1.getX(), n1.getY(),
+										n2.getX(), n2.getY(),
+										(int) n1.distance(n2), g);
+							}
 						}
-					}
-					if(liensDetection) {
-						if (n1.detection(n2)) {		
-							n1.drawDetectionLink(n2, g);
-						}
-						if (n2.detection(n1)) {		
-							n2.drawDetectionLink(n1, g);
+						if (liensDetection) {
+							if (n1.detection(n2)) {
+								n1.drawDetectionLink(n2, g);
+							}
+							if (n2.detection(n1)) {
+								n2.drawDetectionLink(n1, g);
+							}
 						}
 					}
 				}
-			}			
+			}
+		} catch (Exception e) {
 		}
-		}catch(Exception e) {}
 	}
-	
+
 	/**
 	 * @param g
 	 */
 	public void dessiner2(Graphics g) {
-		//Device n1 = null;
-		//Device n2 = null;
-	
-		//ListIterator<Device> iterator ;
-		//ListIterator<Device> iterator2;		
+		// Device n1 = null;
+		// Device n2 = null;
+
+		// ListIterator<Device> iterator ;
+		// ListIterator<Device> iterator2;
 		/*
-		if (liens || liensDetection) {
-			iterator = nodes.listIterator();
-			while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
-				n1 = iterator.next();
-				iterator2 = nodes.listIterator(iterator.nextIndex());
-				while (iterator2.hasNext()) {
-					n2 = iterator2.next();
-					if(liensDetection) {						
-						if (n1.detection(n2)) {		
-							n1.setDetection(true);
-						}
-						if (n2.detection(n1)) {		
-							n2.setDetection(true);
-						}
-					}					
-				}
-			}			
-		}*/
-		
+		 * if (liens || liensDetection) { iterator = nodes.listIterator(); while
+		 * (iterator.hasNext() && iterator.nextIndex() < size - 1) { n1 =
+		 * iterator.next(); iterator2 =
+		 * nodes.listIterator(iterator.nextIndex()); while (iterator2.hasNext())
+		 * { n2 = iterator2.next(); if(liensDetection) { if (n1.detection(n2)) {
+		 * n1.setDetection(true); } if (n2.detection(n1)) {
+		 * n2.setDetection(true); } } } } }
+		 */
+
 		for (Device n : nodes) {
 			n.draw(g);
 			n.setDetection(false);
-			if(n.getType()==Device.SENSOR) {
-				((Sensor)n).drawSelectedByAlgo(g);
+			if (n.getType() == Device.SENSOR) {
+				((Sensor) n).drawSelectedByAlgo(g);
 			}
 		}
-		
+
 		g.setColor(Color.black);
-		for (Point [] p : linksCoord) {
+		for (Point[] p : linksCoord) {
 			g.drawLine(p[0].x, p[0].y, p[1].x, p[1].y);
 		}
-		
-		
+
 		/*
-		
-		if (liens || liensDetection) {
-			iterator = nodes.listIterator();
-			while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
-				n1 = iterator.next();
-				iterator2 = nodes.listIterator(iterator.nextIndex());
-				while (iterator2.hasNext()) {
-					n2 = iterator2.next();
-					if (n1.radioDetect(n2) && liens) {
-						n1.drawRadioLink(n2, g);
-						if(displayConnectionDistance) {						
-							drawDistance(n1.getX(),n1.getY(),n2.getX(),n2.getY(),(int)n1.distance(n2),g);
-						}
-					}
-					if(liensDetection) {
-						if (n1.detection(n2)) {		
-							n1.drawDetectionLink(n2, g);
-						}
-						if (n2.detection(n1)) {		
-							n2.drawDetectionLink(n1, g);
-						}
-					}
-				}
-			}			
-		}*/
+		 * 
+		 * if (liens || liensDetection) { iterator = nodes.listIterator(); while
+		 * (iterator.hasNext() && iterator.nextIndex() < size - 1) { n1 =
+		 * iterator.next(); iterator2 =
+		 * nodes.listIterator(iterator.nextIndex()); while (iterator2.hasNext())
+		 * { n2 = iterator2.next(); if (n1.radioDetect(n2) && liens) {
+		 * n1.drawRadioLink(n2, g); if(displayConnectionDistance) {
+		 * drawDistance(
+		 * n1.getX(),n1.getY(),n2.getX(),n2.getY(),(int)n1.distance(n2),g); } }
+		 * if(liensDetection) { if (n1.detection(n2)) { n1.drawDetectionLink(n2,
+		 * g); } if (n2.detection(n1)) { n2.drawDetectionLink(n1, g); } } } } }
+		 */
 	}
-	
-	
 
 	// public Graph toGraph2() {
 	// Node n1 = null ;
@@ -379,27 +368,27 @@ public class DeviceList {
 	public void setLiens(boolean b) {
 		liens = b;
 	}
-	
+
 	public boolean getLiens() {
-		return liens ;
+		return liens;
 	}
-	
+
 	public void setLiensDetection(boolean b) {
 		liensDetection = b;
 	}
 
 	public boolean getLiensDetection() {
-		return liensDetection ;
+		return liensDetection;
 	}
 
 	public void setDisplayDistance(boolean b) {
-		displayConnectionDistance = b ;
+		displayConnectionDistance = b;
 	}
-	
+
 	public boolean getDisplayDistance() {
-		return displayConnectionDistance ;
+		return displayConnectionDistance;
 	}
-	
+
 	public void delete(int idx) {
 		Device node = nodes.get(idx);
 		Layer.getMapViewer().removeMouseListener(node);
@@ -433,7 +422,7 @@ public class DeviceList {
 	public static StringBuilder displaySensorGraph() {
 		return SensorSetCover.toSensorGraph(nodes, size).displayNames();
 	}
-	
+
 	public static StringBuilder displaySensorTargetGraph() {
 		return SensorSetCover.toSensorTargetGraph(nodes, size).displayNames();
 	}
@@ -476,10 +465,10 @@ public class DeviceList {
 			}
 		}
 	}
-	
+
 	public static void setComFileName(String comFileName) {
 		Device node;
-		System.out.println("Appel ..."+ comFileName);
+		System.out.println("Appel ..." + comFileName);
 		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
 			node = iterator.next();
 			if (node.isSelected()) {
@@ -487,7 +476,7 @@ public class DeviceList {
 			}
 		}
 	}
-	
+
 	public static void updateFromMap(String xS, String yS, String radiusS,
 			String radioRadiusS, String captureRadiusS, String gpsFileName) {
 		Device node;
@@ -504,17 +493,15 @@ public class DeviceList {
 			}
 		}
 	}
-	
-	//public static void setCover1() {
-	//	Graph gr = toSensorGraph() ;
-	//	gr.display();
-	//}
 
-	//public Graph getSensorGraph() {
-	//	return toSensorGraph() ;
-	//}
-	
-	
+	// public static void setCover1() {
+	// Graph gr = toSensorGraph() ;
+	// gr.display();
+	// }
+
+	// public Graph getSensorGraph() {
+	// return toSensorGraph() ;
+	// }
 
 	public static void initActivation() {
 		for (Device device : nodes) {
@@ -522,67 +509,70 @@ public class DeviceList {
 		}
 		Layer.getMapViewer().repaint();
 	}
-	
+
 	public static void initSelectedActivation() {
 		for (Device device : nodes) {
-			if(device.isSelected())
+			if (device.isSelected())
 				device.setAlgoSelect(false);
 		}
 		Layer.getMapViewer().repaint();
 	}
-	
+
 	public static void setAlgoSelect(boolean b) {
-		for(Device node : nodes) {
+		for (Device node : nodes) {
 			node.setAlgoSelect(false);
 		}
 		Layer.getMapViewer().repaint();
 	}
 
-	public void setSelectionOfAllNodes(boolean selection, int type, boolean addSelect) {
+	public void setSelectionOfAllNodes(boolean selection, int type,
+			boolean addSelect) {
 		for (Device dev : nodes) {
-			if(!addSelect) dev.setSelection(false);
-			if(dev.getType() == type || type==-1) 
+			if (!addSelect)
+				dev.setSelection(false);
+			if (dev.getType() == type || type == -1)
 				dev.setSelection(selection);
 		}
 		Layer.getMapViewer().repaint();
 	}
 
 	public void invertSelection() {
-		for (Device dev : nodes) { 
+		for (Device dev : nodes) {
 			dev.invSelection();
 		}
 		Layer.getMapViewer().repaint();
 	}
-	
-	//@Override
+
+	// @Override
 	public void run() {
-		LinkedList<Point []> tLinksCoord ;
-		while(true) {
-			tLinksCoord = new LinkedList<Point []>();
-			//linksCoord = new LinkedList<Point []>();
+		LinkedList<Point[]> tLinksCoord;
+		while (true) {
+			tLinksCoord = new LinkedList<Point[]>();
+			// linksCoord = new LinkedList<Point []>();
 			Device n1 = null;
 			Device n2 = null;
-		
-			//ListIterator<Device> iterator ;
-			//ListIterator<Device> iterator2;		
-			
+
+			// ListIterator<Device> iterator ;
+			// ListIterator<Device> iterator2;
+
 			if (liens || liensDetection) {
-				//iterator = nodes.listIterator();
-				//while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
-				for(int i=0; i<nodes.size()-1; i++) {
+				// iterator = nodes.listIterator();
+				// while (iterator.hasNext() && iterator.nextIndex() < size - 1)
+				// {
+				for (int i = 0; i < nodes.size() - 1; i++) {
 					n1 = nodes.get(i);
-					//n1 = iterator.next();
-					//iterator2 = nodes.listIterator(iterator.nextIndex());
-					//while (iterator2.hasNext()) {
-					for(int j=i+1; j<nodes.size(); j++) {
+					// n1 = iterator.next();
+					// iterator2 = nodes.listIterator(iterator.nextIndex());
+					// while (iterator2.hasNext()) {
+					for (int j = i + 1; j < nodes.size(); j++) {
 						n2 = nodes.get(j);
-						//n2 = iterator2.next();
+						// n2 = iterator2.next();
 						if (n1.radioDetect(n2) && liens) {
-							
-							tLinksCoord.add(getCouple(n1,n2));
-							//if(displayConnectionDistance) {						
-							//drawDistance(n1.getX(),n1.getY(),n2.getX(),n2.getY(),(int)n1.distance(n2),g);
-							//}
+
+							tLinksCoord.add(getCouple(n1, n2));
+							// if(displayConnectionDistance) {
+							// drawDistance(n1.getX(),n1.getY(),n2.getX(),n2.getY(),(int)n1.distance(n2),g);
+							// }
 						}
 					}
 				}
@@ -597,15 +587,21 @@ public class DeviceList {
 			}
 		}
 	}
-	
-	public Point [] getCouple(Device n1, Device n2) {
-		int lx1 = MapCalc.geoToIntPixelMapX(n1.getX(),n1.getY()) ;
-		int ly1 = MapCalc.geoToIntPixelMapY(n1.getX(),n1.getY()) ;
-		int lx2 = MapCalc.geoToIntPixelMapX(n2.getX(),n2.getY()) ;
-		int ly2 = MapCalc.geoToIntPixelMapY(n2.getX(),n2.getY()) ;
-		Point [] p = new Point[2];
-		p[0] = new Point(lx1,ly1);
-		p[1] = new Point(lx2,ly2);
-		return p ;
+
+	public Point[] getCouple(Device n1, Device n2) {
+		int[] coord = MapCalc.geoToIntPixelMapXY(n1.getX(), n1.getY());		
+		int lx1 = coord[0];
+		int ly1 = coord[1];
+		coord = MapCalc.geoToIntPixelMapXY(n2.getX(), n2.getY());
+		int lx2 = coord[0];
+		int ly2 = coord[1];
+		// int lx1 = MapCalc.geoToIntPixelMapX(n1.getX(),n1.getY()) ;
+		// int ly1 = MapCalc.geoToIntPixelMapY(n1.getX(),n1.getY()) ;
+		// int lx2 = MapCalc.geoToIntPixelMapX(n2.getX(),n2.getY()) ;
+		// int ly2 = MapCalc.geoToIntPixelMapY(n2.getX(),n2.getY()) ;
+		Point[] p = new Point[2];
+		p[0] = new Point(lx1, ly1);
+		p[1] = new Point(lx2, ly2);
+		return p;
 	}
 }

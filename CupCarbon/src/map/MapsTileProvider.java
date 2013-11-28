@@ -24,14 +24,13 @@ import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
 
 public class MapsTileProvider {
-	//private static final String VERSION = "2.75";
+	
 	private static final int minZoom = 1;
 	private static final int maxZoom = 16;
 	private static final int mapZoom = 17;
 	private static final int tileSize = 256;
 	private static final boolean xr2l = true;
 	private static final boolean yt2b = true;
-	//private static final String baseURL = "http://mt2.google.com/mt?n=404&v=w" + VERSION;
 	private static final String baseURL = "http://tile.openstreetmap.org";
 	private static final String x = "x";
 	private static final String y = "y";

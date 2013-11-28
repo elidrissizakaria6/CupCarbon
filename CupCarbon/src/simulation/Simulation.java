@@ -22,7 +22,6 @@ package simulation;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -33,7 +32,7 @@ import battery.Battery;
 import device.Device;
 import device.DeviceList;
 
-public class Simulation implements Simulator, Runnable {
+public class Simulation implements Simulator_Interface, Runnable {
 
 	// In the following, the values are in milli-seconds
 	private static long defaulSimulationDelay = 360000000; // 100 hours
@@ -275,40 +274,6 @@ public class Simulation implements Simulator, Runnable {
 	public int getNumberSentMessages(Device device, long delai1, long delai2,
 			TimeMode tmode) {
 		return 0;
-	}
-
-	@Override
-	public void addConstraint(Constraint constraint) {
-	}
-
-	@Override
-	public Constraint getConstraint(int index) {
-		return null;
-	}
-
-	@Override
-	public void removeConstraint(int index) {
-	}
-
-	@Override
-	public void removeConstraint(Constraint constraint) {
-	}
-
-	@Override
-	public void removeAllConstraints() {
-	}
-
-	@Override
-	public void enableConstraintSystem() {
-	}
-
-	@Override
-	public void desableConstraintSystem() {
-	}
-
-	@Override
-	public Vector<Constraint> getConstraints() {
-		return null;
 	}
 
 	@Override

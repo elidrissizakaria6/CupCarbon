@@ -98,14 +98,14 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 		if (detection)
 			g.setColor(UColor.JAUNE_SENSOR);
 		if (mode == 0)
-			g.fillOval((int) x - MapCalc.rayonEnPixel(radius), (int) y
-					- MapCalc.rayonEnPixel(radius),
-					MapCalc.rayonEnPixel(radius) * 2,
-					MapCalc.rayonEnPixel(radius) * 2);
-		g.drawOval((int) x - MapCalc.rayonEnPixel(radius),
-				(int) y - MapCalc.rayonEnPixel(radius),
-				MapCalc.rayonEnPixel(radius) * 2,
-				MapCalc.rayonEnPixel(radius) * 2);
+			g.fillOval((int) x - MapCalc.radiusInPixels(radius), (int) y
+					- MapCalc.radiusInPixels(radius),
+					MapCalc.radiusInPixels(radius) * 2,
+					MapCalc.radiusInPixels(radius) * 2);
+		g.drawOval((int) x - MapCalc.radiusInPixels(radius),
+				(int) y - MapCalc.radiusInPixels(radius),
+				MapCalc.radiusInPixels(radius) * 2,
+				MapCalc.radiusInPixels(radius) * 2);
 	}
 
 	/**

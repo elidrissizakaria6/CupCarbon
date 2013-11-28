@@ -195,6 +195,14 @@ public class Layer implements Painter<Object>, MouseListener,
 					(int) (p2.getX() - p1.getX()),
 					(int) (p2.getY() - p1.getY()));
 		}
+		
+		// OSM Test BEGIN
+		// This part is used just to understand how to add shapes on the OSM map
+		// The class OsmTest is required
+		OsmTest osm = new OsmTest() ;
+		osm.drawFromGPS(g);
+		// OSM Test END
+		
 		g.dispose();
 	}	
 
@@ -683,12 +691,17 @@ public class Layer implements Painter<Object>, MouseListener,
 		streetGraph.setSelectionOfAllVertices(selection, type, addSelection);
 	}
 
-	public static void drawDistance(double x, double y, double x2, double y2,
-			int d, Graphics g) {
-		int lx1 = MapCalc.geoToIntPixelMapX(x, y);
-		int ly1 = MapCalc.geoToIntPixelMapY(x, y);
-		int lx2 = MapCalc.geoToIntPixelMapX(x2, y2);
-		int ly2 = MapCalc.geoToIntPixelMapY(x2, y2);
+	public static void drawDistance(double x, double y, double x2, double y2, int d, Graphics g) {
+		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+		int lx1 = coord[0];
+		int ly1 = coord[1];
+		coord = MapCalc.geoToIntPixelMapXY(x2, y2);
+		int lx2 = coord[0];
+		int ly2 = coord[1];
+//		int lx1 = MapCalc.geoToIntPixelMapX(x, y);
+//		int ly1 = MapCalc.geoToIntPixelMapY(x, y);
+//		int lx2 = MapCalc.geoToIntPixelMapX(x2, y2);
+//		int ly2 = MapCalc.geoToIntPixelMapY(x2, y2);
 		g.setColor(Color.DARK_GRAY);
 		g.drawString("" + d, ((lx1 + lx2) / 2), ((ly1 + ly2) / 2));
 		// g.drawLine(lx1,ly1,lx2,ly2);
