@@ -89,12 +89,12 @@ public class AboutCupCarbon extends JDialog {
 				panel.add(lblCupcarbonV);
 			}
 			{
-				JLabel lblLabsticc = new JLabel("Lab-STICC & LIMED");
+				JLabel lblLabsticc = new JLabel("Lab-STICC - LIMED - CSI");
 				lblLabsticc.setHorizontalAlignment(SwingConstants.CENTER);
 				panel.add(lblLabsticc);
 			}
 			{
-				JLabel lblUniversitDeBretagne = new JLabel("UBO & Universit\u00E9 de B\u00E9jaia");
+				JLabel lblUniversitDeBretagne = new JLabel("UBO - Université de Béjaia - UCD");
 				lblUniversitDeBretagne.setHorizontalAlignment(SwingConstants.CENTER);
 				panel.add(lblUniversitDeBretagne);
 			}
