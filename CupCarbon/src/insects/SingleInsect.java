@@ -118,12 +118,14 @@ public class SingleInsect extends MobileG {
 		int y = coord[1];
 		//int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
 		//int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
-		int v = 5;
+		//int v = 5*(Layer.getMapViewer().getZoom()-10);
+		int v = 10-Layer.getMapViewer().getZoom();
+		if(v<0) v=1;
 		int rayon = MapCalc.radiusInPixels(this.radius) ;
 		
 		//g.setColor(Color.white);
 		//g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
-		
+
 		g.setColor(Color.BLACK);
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
 				(int) direction - 90 - 20, 40);

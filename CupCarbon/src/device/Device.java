@@ -103,7 +103,6 @@ public abstract class Device implements Runnable, MouseListener,
 	protected DeviceSimulator simulator = null;
 	protected Simulation simulation = null;
 	protected String comFile = "";
-	protected String resultFile = "RS";
 	protected String gpsFileName = "";
 
 	protected boolean state = ALIVE;

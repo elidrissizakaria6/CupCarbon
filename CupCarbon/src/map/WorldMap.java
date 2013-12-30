@@ -49,10 +49,11 @@ public class WorldMap extends JXMapKit {
 				// return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom +
 				// "/"
 				// + x + "/" + y + ".jpg";
-				return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/"
-						+ x + "/" + y + ".png";
-				// return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/"
-				// + x + "/" + y + ".png";
+				 return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom +
+				 "/"
+				 + x + "/" + y + ".png";
+				//return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/"
+				//		+ x + "/" + y + ".png";
 				// return
 				// "http://tile.stamen.com/terrain-background/"+zoom+"/"+x+"/"+y+".png";
 				// return
@@ -87,8 +88,7 @@ public class WorldMap extends JXMapKit {
 		setName("CapCarbonMapStreet");
 		// setCenterPosition(new
 		// GeoPosition(43.461142978339005,-3.830108642578125));//Santander
-		// setCenterPosition(new GeoPosition(36.75140145092604,
-		// 5.055642127990723));// Bejaia
+		//setCenterPosition(new GeoPosition(36.75140145092604, 5.055642127990723));// Bejaia
 		// setCenterPosition(new GeoPosition(25.14, 55.2)); //Dubai
 		// setCenterPosition(new GeoPosition(47.720520033704954,
 		// -3.3709144592285156));//Lorient

@@ -71,7 +71,6 @@ public class GraphViewer extends JInternalFrame implements ActionListener {
 	private LinkedList<JCheckBox> sensors;
 	private LinkedList<JCheckBox> sensors1;
 	private Db db;
-
 	
 	public GraphViewer() {
 	

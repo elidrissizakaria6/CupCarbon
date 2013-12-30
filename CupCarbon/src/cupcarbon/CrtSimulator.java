@@ -115,8 +115,8 @@ public class CrtSimulator extends JInternalFrame {
 		txtSimulationName = new JTextField();
 		PNorthCenter.add(txtSimulationName);
 
-		Object[] Items = { "", "Standard", "Leach", "Extern plugin" };
-		ProtocolSimulation = new JComboBox(Items);
+		String [] items = { "", "Standard", "Leach", "Extern plugin" };
+		ProtocolSimulation = new JComboBox(items);
 		ProtocolSimulation.setBackground(txtSimulationName.getBackground());
 		PNorthCenter.add(ProtocolSimulation);
 

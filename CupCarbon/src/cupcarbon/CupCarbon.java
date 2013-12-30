@@ -77,7 +77,7 @@ public class CupCarbon {
 	private NodeParametersWindow nodeParametersWindow = new NodeParametersWindow();
 	private InsectParametersWindow insectParametersWindow = new InsectParametersWindow();
 	private InformationWindow infoWindow = new InformationWindow();
-	private GraphViewer graphViewer = new GraphViewer();
+	private GraphViewer graphViewer ;
 
 	public static JMenuItem simulations = null;
 	public static int simulationNumber = 0;
@@ -876,6 +876,7 @@ public class CupCarbon {
 		mntmEnergyGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(Project.getProjectResultsPath());
+				GraphViewer graphViewer =  new GraphViewer();
 				if (!graphViewer.isVisible()) {
 					desktopPane.add(graphViewer);
 					graphViewer.setVisible(true);

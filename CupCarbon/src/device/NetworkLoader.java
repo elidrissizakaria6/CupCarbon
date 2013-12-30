@@ -45,7 +45,7 @@ public class NetworkLoader extends Thread {
 			String s;
 			String[] ps;
 			String[] ics;			
-			for (int i = 0; i < 1000; i++) {
+			for (int i = 0; i < 7; i++) {
 				s = br.readLine();
 			//int k=0;
 			//while (((s = br.readLine()) != null) && (k++<40)) {
@@ -89,7 +89,7 @@ public class NetworkLoader extends Thread {
 						info[0][1] = ics[1];
 					if (ics[0].equals("Temperature")) {
 						info[1][0] = "Temperature : ";
-						info[1][1] = ics[1]+" Â°C";
+						info[1][1] = ics[1]+" ¡C";
 					}
 					
 					if (ics[0].equals("Status_Desc")) {
