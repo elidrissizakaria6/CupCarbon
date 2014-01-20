@@ -29,7 +29,7 @@ import java.io.File;
  */
 public class Parameters {
 
-	public static String CAPCARBONPATH = "/Users/bounceur/TRAVAIL/WORK UBO/CupCarbon/application/CupCarbon" ;
+	public static String CAPCARBONPATH = "" ;
 	
 	public static String SEPARATOR = File.separator ;
 	//public static String DirSEPARATOR = System.getProperty("path.separator") ;

@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 
 import map.Layer;
 import utilities.MapCalc;
@@ -283,7 +284,112 @@ public class Sensor extends DeviceWithRadio {
 		return captureUnit.getRadius();
 	}
 
-	@Override
+	//@Override
+	public void run2() {
+		state = this.getState();
+		radioRangeRadius = radioRangeRadiusOri;
+		battery.init();
+		selected = false;
+		underSimulation = true;
+		double err = 0;
+		double rayonOri = radioRangeRadius;
+		// ------ Mobile -----
+		double totalDistance = 0;
+		selected = false;
+		boolean firstTime = true;
+		FileInputStream fis;
+		BufferedReader b = null;
+		String[] ts;
+		String s;
+		double x2, y2;
+		try {
+			if (!gpsFileName.equals("")) {
+				fis = new FileInputStream(gpsFileName);
+				b = new BufferedReader(new InputStreamReader(fis));
+				underSimulation = true;
+				String desc_str = b.readLine();
+				String from_str = b.readLine();
+				String to_str = b.readLine();
+				System.out.println("Description : " + desc_str);
+				System.out.println("From : " + from_str);
+				System.out.println("To : " + to_str);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// ------ END Mobile ----
+		long tmpTime = -3600000;
+		long cTime = 0;
+		long toWait = 0;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+		LinkedList<String> sb = new LinkedList<String>();
+		try {
+			if (b != null) {
+				if (((s = b.readLine()) != null)) {
+					sb.add(s);
+				}
+				b.close();
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		while (!battery.empty()) {
+			try {
+				for (int i = 0; i < sb.size(); i++) {
+					x2 = x;
+					y2 = y;
+					ts = sb.get(i).split(" ");
+					cTime = simpleDateFormat.parse(ts[0]).getTime();
+					toWait = cTime - tmpTime;
+					tmpTime = cTime;
+					x = Double.parseDouble(ts[1]);
+					y = Double.parseDouble(ts[2]);
+					if (firstTime)
+						firstTime = false;
+					else {
+						// System.out.println((int) MapCalc.distance(x, y,
+						// x2,
+						// y2));
+						totalDistance += MapCalc.distance(x, y, x2, y2);
+					}
+					// Layer.getMapViewer().repaint();
+				}
+				try {
+					Thread.sleep(toWait / 10);
+					battery.consume();
+					err = this.radioRangeRadius
+							* (porteeErr * random.nextGaussian()) / 1000000.;
+					radioRangeRadius = (rayonOri + err)
+							- (rayonOri
+									* (100 - battery.getCapacityInPercent()) / 10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				Layer.getMapViewer().repaint();
+				// battery.consommer();
+				// err = this.radioRadius * (porteeErr * random.nextGaussian())/
+				// 100.;
+				// radioRadius = (rayonOri + err) - (rayonOri * (100 -
+				// battery.getCapacite()) / 100);
+				// Thread.sleep(100);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(totalDistance);
+		// Layer.getMapViewer().repaint();
+		underSimulation = false;
+		thread = null;
+		try {
+			if (b != null)
+				b.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public void run() {
 		state = this.getState();
 		radioRangeRadius = radioRangeRadiusOri;

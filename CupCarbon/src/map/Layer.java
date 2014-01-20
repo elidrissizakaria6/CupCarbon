@@ -179,9 +179,9 @@ public class Layer implements Painter<Object>, MouseListener,
 			// g.fillArc((int) (x - 10), (int) (y - 10), 20, 20, -15, 30);
 		}
 
-		markerList.draw(g, true);
+		markerList.draw(g);
 		streetGraph.dessiner(g);
-		nodeList.dessiner(g);
+		nodeList.draw(g);
 
 		if (dessinerCadre) {
 			Point2D p1 = MapCalc.pixelPanelToPixelMap(cadreX1, cadreY1);
@@ -385,6 +385,10 @@ public class Layer implements Painter<Object>, MouseListener,
 		if (lastKey == 'v') {
 			nodeList.setLiens(!nodeList.getLiens());
 			markerList.setLinks(!markerList.getLinks());
+		}
+		
+		if (lastKey == 'A') {
+			markerList.setArrows(!markerList.getArrows());
 		}
 
 		if (lastKey == 'b') {

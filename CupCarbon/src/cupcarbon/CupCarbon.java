@@ -77,7 +77,7 @@ public class CupCarbon {
 	private NodeParametersWindow nodeParametersWindow = new NodeParametersWindow();
 	private InsectParametersWindow insectParametersWindow = new InsectParametersWindow();
 	private InformationWindow infoWindow = new InformationWindow();
-	private GraphViewer graphViewer ;
+	//private GraphViewer graphViewer ;
 
 	public static JMenuItem simulations = null;
 	public static int simulationNumber = 0;

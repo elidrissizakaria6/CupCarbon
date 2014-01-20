@@ -2,7 +2,7 @@
  * CupCarbon: OSM based Wireless Sensor Network design and simulation tool
  * www.cupcarbon.com
  * ----------------------------------------------------------------------------------------------------------------
- * Copyright (C) 2013 Ahcene Bounceur
+ * Copyright (C) 2014 Ahcene Bounceur
  * ----------------------------------------------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,8 @@ import utilities.MapCalc;
 public class MarkerList {
 
 	private static List<Marker> markers;
-	private boolean links = true;
+	private boolean drawLinks = true;
+	private boolean drawArrows = true;
 
 	public MarkerList() {
 		markers = new ArrayList<Marker>();
@@ -116,7 +117,7 @@ public class MarkerList {
 	 * @param drawArrow
 	 *            True to draw the arrows, false otherwise
 	 */
-	public void draw(Graphics g, boolean drawArrow) {
+	public void draw(Graphics g) {
 		try {
 			double x1 = 0;
 			double y1 = 0;
@@ -132,7 +133,7 @@ public class MarkerList {
 			int[] coord ;
 			for (Marker marker : markers)
 				marker.draw(g);
-			if (links && markers.size() > 0) {
+			if (drawLinks && markers.size() > 0) {
 				boolean firstTime = true;
 				for (Marker marker : markers) {
 					if (firstTime) {
@@ -161,16 +162,18 @@ public class MarkerList {
 						// Draw the link between markers
 						g.drawLine((int) lx1, (int) ly1, (int) lx2, (int) ly2);
 						// Draw arrows
-						dx = lx2 - lx1;
-						dy = ly2 - ly1;
-						alpha = Math.atan(dy / dx);
-						alpha = 180 * alpha / Math.PI;
-						if ((dx >= 0 && dy >= 0) || (dx >= 0 && dy <= 0))
-							g.fillArc((int) lx2 - 15, (int) ly2 - 15, 30, 30,
-									180 - (int) alpha - 10, 20);
-						else
-							g.fillArc((int) lx2 - 15, (int) ly2 - 15, 30, 30,
-									-(int) alpha - 10, 20);
+						if(drawArrows) {
+							dx = lx2 - lx1;
+							dy = ly2 - ly1;
+							alpha = Math.atan(dy / dx);
+							alpha = 180 * alpha / Math.PI;
+							if ((dx >= 0 && dy >= 0) || (dx >= 0 && dy <= 0))
+								g.fillArc((int) lx2 - 15, (int) ly2 - 15, 30, 30,
+										180 - (int) alpha - 10, 20);
+							else
+								g.fillArc((int) lx2 - 15, (int) ly2 - 15, 30, 30,
+										-(int) alpha - 10, 20);							
+						}
 						x1 = marker.getX();
 						y1 = marker.getY();
 						coord = MapCalc.geoToIntPixelMapXY(x1, y1);
@@ -198,11 +201,19 @@ public class MarkerList {
 	}
 
 	public void setLinks(boolean b) {
-		links = b;
+		drawLinks = b;
 	}
 
 	public boolean getLinks() {
-		return links;
+		return drawLinks;
+	}
+	
+	public void setArrows(boolean b) {
+		drawArrows = b;
+	}
+
+	public boolean getArrows() {
+		return drawArrows;
 	}
 
 	public static int size() {
@@ -218,7 +229,7 @@ public class MarkerList {
 		marker = null;
 	}
 
-	public void simuler() {
+	public void simulate() {
 		// for (int i = 0; i < markers.size(); i++) {
 		// markers.get(i).start();
 		// }

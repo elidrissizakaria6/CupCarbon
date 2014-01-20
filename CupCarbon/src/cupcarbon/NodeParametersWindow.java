@@ -178,11 +178,11 @@ public class NodeParametersWindow extends JInternalFrame {
 		panel_11.add(panel_12);
 
 		JButton button_10 = new JButton("");
-		button_10.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bPrev.png"));
+		button_10.setIcon(new ImageIcon(Parameters.IMGPATH + "bPrev.png"));
 		panel_12.add(button_10);
 
 		JButton button_11 = new JButton("");
-		button_11.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bNext.png"));
+		button_11.setIcon(new ImageIcon(Parameters.IMGPATH + "bNext.png"));
 		panel_12.add(button_11);
 
 		JPanel panel_13 = new JPanel();
@@ -192,11 +192,11 @@ public class NodeParametersWindow extends JInternalFrame {
 		panel_11.add(panel_13);
 
 		JButton button_12 = new JButton("");
-		button_12.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bPrev.png"));
+		button_12.setIcon(new ImageIcon(Parameters.IMGPATH + "bPrev.png"));
 		panel_13.add(button_12);
 
 		JButton button_13 = new JButton("");
-		button_13.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bNext.png"));
+		button_13.setIcon(new ImageIcon(Parameters.IMGPATH + "bNext.png"));
 		panel_13.add(button_13);
 
 		JPanel panel_14 = new JPanel();
@@ -206,11 +206,11 @@ public class NodeParametersWindow extends JInternalFrame {
 		panel_11.add(panel_14);
 
 		JButton button_14 = new JButton("");
-		button_14.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bPrev.png"));
+		button_14.setIcon(new ImageIcon(Parameters.IMGPATH + "bPrev.png"));
 		panel_14.add(button_14);
 
 		JButton button_15 = new JButton("");
-		button_15.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bNext.png"));
+		button_15.setIcon(new ImageIcon(Parameters.IMGPATH + "bNext.png"));
 		panel_14.add(button_15);
 
 		JPanel panel_15 = new JPanel();
@@ -220,11 +220,11 @@ public class NodeParametersWindow extends JInternalFrame {
 		panel_11.add(panel_15);
 
 		JButton button_16 = new JButton("");
-		button_16.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bPrev.png"));
+		button_16.setIcon(new ImageIcon(Parameters.IMGPATH + "bPrev.png"));
 		panel_15.add(button_16);
 
 		JButton button_17 = new JButton("");
-		button_17.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bNext.png"));
+		button_17.setIcon(new ImageIcon(Parameters.IMGPATH + "bNext.png"));
 		panel_15.add(button_17);
 
 		JPanel panel_16 = new JPanel();
@@ -234,11 +234,11 @@ public class NodeParametersWindow extends JInternalFrame {
 		panel_11.add(panel_16);
 
 		JButton button_18 = new JButton("");
-		button_18.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bPrev.png"));
+		button_18.setIcon(new ImageIcon(Parameters.IMGPATH + "bPrev.png"));
 		panel_16.add(button_18);
 
 		JButton button_19 = new JButton("");
-		button_19.setIcon(new ImageIcon(Parameters.IMGPATH + "new/bNext.png"));
+		button_19.setIcon(new ImageIcon(Parameters.IMGPATH + "bNext.png"));
 		panel_16.add(button_19);
 
 		JPanel panel_1_ = new JPanel();

@@ -1,4 +1,4 @@
-CupCarbon Copyright (C) 2013 Ahcene Bounceur - UBO - Lab-STICC
+CupCarbon Copyright (C) 2014 Ahcene Bounceur - UBO - Lab-STICC
 ----------------------------------------------
 CupCarbon V 1.0: OSM based Wireless Sensor Network design and simulation tool
 www.cupcarbon.com

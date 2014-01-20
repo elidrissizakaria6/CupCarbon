@@ -49,8 +49,8 @@ import utilities.MapCalc;
 public class DeviceList {
 
 	private static List<Device> nodes = new ArrayList<Device>();
-	private boolean liens = true;
-	private boolean liensDetection = true;
+	private boolean drawLinks = true;
+	private boolean linksDetection = true;
 	private boolean displayConnectionDistance = false;
 	private static int size = 0;
 	private LinkedList<Point[]> linksCoord = new LinkedList<Point[]>();
@@ -227,23 +227,26 @@ public class DeviceList {
 	// }
 
 	/**
+	 * Draw Links between
+	 * 
 	 * @param g
+	 *            Graphics
 	 */
-	public void dessiner(Graphics g) {
+	public void draw(Graphics g) {
 		Device n1 = null;
 		Device n2 = null;
 
 		ListIterator<Device> iterator;
 		ListIterator<Device> iterator2;
 		try {
-			if (liens || liensDetection) {
+			if (drawLinks || linksDetection) {
 				iterator = nodes.listIterator();
 				while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
 					n1 = iterator.next();
 					iterator2 = nodes.listIterator(iterator.nextIndex());
 					while (iterator2.hasNext()) {
 						n2 = iterator2.next();
-						if (liensDetection) {
+						if (linksDetection) {
 							if (n1.detection(n2)) {
 								n1.setDetection(true);
 							}
@@ -262,14 +265,14 @@ public class DeviceList {
 					((Sensor) n).drawSelectedByAlgo(g);
 				}
 			}
-			if (liens || liensDetection) {
+			if (drawLinks || linksDetection) {
 				iterator = nodes.listIterator();
 				while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
 					n1 = iterator.next();
 					iterator2 = nodes.listIterator(iterator.nextIndex());
 					while (iterator2.hasNext()) {
 						n2 = iterator2.next();
-						if (n1.radioDetect(n2) && liens) {
+						if (n1.radioDetect(n2) && drawLinks) {
 							n1.drawRadioLink(n2, g);
 							if (displayConnectionDistance) {
 								Layer.drawDistance(n1.getX(), n1.getY(),
@@ -277,7 +280,7 @@ public class DeviceList {
 										(int) n1.distance(n2), g);
 							}
 						}
-						if (liensDetection) {
+						if (linksDetection) {
 							if (n1.detection(n2)) {
 								n1.drawDetectionLink(n2, g);
 							}
@@ -295,18 +298,18 @@ public class DeviceList {
 	/**
 	 * @param g
 	 */
-	public void dessiner2(Graphics g) {
+	public void draw2(Graphics g) {
 		// Device n1 = null;
 		// Device n2 = null;
 
 		// ListIterator<Device> iterator ;
 		// ListIterator<Device> iterator2;
 		/*
-		 * if (liens || liensDetection) { iterator = nodes.listIterator(); while
-		 * (iterator.hasNext() && iterator.nextIndex() < size - 1) { n1 =
+		 * if (drawLinks || linksDetection) { iterator = nodes.listIterator();
+		 * while (iterator.hasNext() && iterator.nextIndex() < size - 1) { n1 =
 		 * iterator.next(); iterator2 =
 		 * nodes.listIterator(iterator.nextIndex()); while (iterator2.hasNext())
-		 * { n2 = iterator2.next(); if(liensDetection) { if (n1.detection(n2)) {
+		 * { n2 = iterator2.next(); if(linksDetection) { if (n1.detection(n2)) {
 		 * n1.setDetection(true); } if (n2.detection(n1)) {
 		 * n2.setDetection(true); } } } } }
 		 */
@@ -326,15 +329,15 @@ public class DeviceList {
 
 		/*
 		 * 
-		 * if (liens || liensDetection) { iterator = nodes.listIterator(); while
-		 * (iterator.hasNext() && iterator.nextIndex() < size - 1) { n1 =
+		 * if (drawLinks || linksDetection) { iterator = nodes.listIterator();
+		 * while (iterator.hasNext() && iterator.nextIndex() < size - 1) { n1 =
 		 * iterator.next(); iterator2 =
 		 * nodes.listIterator(iterator.nextIndex()); while (iterator2.hasNext())
-		 * { n2 = iterator2.next(); if (n1.radioDetect(n2) && liens) {
+		 * { n2 = iterator2.next(); if (n1.radioDetect(n2) && drawLinks) {
 		 * n1.drawRadioLink(n2, g); if(displayConnectionDistance) {
 		 * drawDistance(
 		 * n1.getX(),n1.getY(),n2.getX(),n2.getY(),(int)n1.distance(n2),g); } }
-		 * if(liensDetection) { if (n1.detection(n2)) { n1.drawDetectionLink(n2,
+		 * if(linksDetection) { if (n1.detection(n2)) { n1.drawDetectionLink(n2,
 		 * g); } if (n2.detection(n1)) { n2.drawDetectionLink(n1, g); } } } } }
 		 */
 	}
@@ -366,19 +369,19 @@ public class DeviceList {
 	}
 
 	public void setLiens(boolean b) {
-		liens = b;
+		drawLinks = b;
 	}
 
 	public boolean getLiens() {
-		return liens;
+		return drawLinks;
 	}
 
 	public void setLiensDetection(boolean b) {
-		liensDetection = b;
+		linksDetection = b;
 	}
 
 	public boolean getLiensDetection() {
-		return liensDetection;
+		return linksDetection;
 	}
 
 	public void setDisplayDistance(boolean b) {
@@ -555,7 +558,7 @@ public class DeviceList {
 			// ListIterator<Device> iterator ;
 			// ListIterator<Device> iterator2;
 
-			if (liens || liensDetection) {
+			if (drawLinks || linksDetection) {
 				// iterator = nodes.listIterator();
 				// while (iterator.hasNext() && iterator.nextIndex() < size - 1)
 				// {
@@ -567,7 +570,7 @@ public class DeviceList {
 					for (int j = i + 1; j < nodes.size(); j++) {
 						n2 = nodes.get(j);
 						// n2 = iterator2.next();
-						if (n1.radioDetect(n2) && liens) {
+						if (n1.radioDetect(n2) && drawLinks) {
 
 							tLinksCoord.add(getCouple(n1, n2));
 							// if(displayConnectionDistance) {
@@ -582,14 +585,13 @@ public class DeviceList {
 				Layer.getMapViewer().repaint();
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
 	public Point[] getCouple(Device n1, Device n2) {
-		int[] coord = MapCalc.geoToIntPixelMapXY(n1.getX(), n1.getY());		
+		int[] coord = MapCalc.geoToIntPixelMapXY(n1.getX(), n1.getY());
 		int lx1 = coord[0];
 		int ly1 = coord[1];
 		coord = MapCalc.geoToIntPixelMapXY(n2.getX(), n2.getY());
