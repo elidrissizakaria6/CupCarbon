@@ -19,9 +19,6 @@
 
 package device;
 
-import insects.Insects;
-import insects.SingleInsect;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.BufferedReader;
