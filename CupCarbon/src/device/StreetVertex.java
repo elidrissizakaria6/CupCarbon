@@ -2,7 +2,7 @@
  * CupCarbon: OSM based Wireless Sensor Network design and simulation tool
  * www.cupcarbon.com
  * ----------------------------------------------------------------------------------------------------------------
- * Copyright (C) 2013 Ahcene Bounceur
+ * Copyright (C) 2014 Ahcene Bounceur
  * ----------------------------------------------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,9 +106,9 @@ public class StreetVertex extends Device {
 			if (hide == 0) {
 				if (busStation) {
 					g.setColor(Color.ORANGE);
-					g.fillRect(x - 6, y - 6, 12, 12);
-					g.setColor(Color.BLACK);
-					g.drawRect(x - 6, y - 6, 12, 12);
+					g.fillOval(x - 10, y - 10, 20, 20);
+					//g.setColor(Color.BLACK);
+					//g.drawRect(x - 6, y - 6, 12, 12);
 				}
 				g.setColor(Color.BLUE);
 				g.fillOval(x - 3, y - 3, 6, 6);

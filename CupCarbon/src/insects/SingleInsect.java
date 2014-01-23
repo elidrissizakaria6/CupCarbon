@@ -21,9 +21,7 @@ package insects;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,6 +33,7 @@ import map.Layer;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import utilities.MapCalc;
+import utilities.UColor;
 import device.Device;
 import device.MobileG;
 
@@ -52,8 +51,9 @@ public class SingleInsect extends MobileG {
 	// Insect parameters
 	private double speedOnX = .00001;
 	private double speedOnY = .00001;
-	private double rotationAngle = .3;
-	private double dispersion = 100.;
+	private double rotationAngle = .2;
+	private double dispersion = 50.;
+	private boolean detected = false; 
 
 	// ------------------------------------
 
@@ -63,7 +63,7 @@ public class SingleInsect extends MobileG {
 		this.direction = theta;
 		this.xc = xc;
 		this.yc = yc;
-		radius = 200 ;
+		radius = 100 ;
 	}
 
 	public SingleInsect(double x, double y, boolean dispersion) {
@@ -78,7 +78,7 @@ public class SingleInsect extends MobileG {
 		this.x = x + xc;
 		this.y = y + yc;
 		direction = (int) (Math.random() * 360);
-		radius = 200 ;
+		radius = 100 ;
 	}
 
 	// ------------------------------------
@@ -109,10 +109,10 @@ public class SingleInsect extends MobileG {
 	 * @param gg
 	 *            Graphics
 	 */
-	public void draw(Graphics gg) {
-		Graphics2D g = (Graphics2D) gg;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+	public void draw(Graphics g) {
+		//Graphics2D g = (Graphics2D) gg;
+		//g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		//		RenderingHints.VALUE_ANTIALIAS_ON);
 		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
 		int x = coord[0];
 		int y = coord[1];
@@ -123,14 +123,22 @@ public class SingleInsect extends MobileG {
 		if(v<0) v=1;
 		int rayon = MapCalc.radiusInPixels(this.radius) ;
 		
-		//g.setColor(Color.white);
-		//g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
-
+		if(detected) {
+			g.setColor(UColor.ROUGE);
+			g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
+		}
 		g.setColor(Color.BLACK);
+//		g.drawArc((int) x - rayon/2, (int) y - rayon/2, rayon, rayon,
+//				(int) direction - 90 - 40, 80);
+//		g.drawArc((int) x - rayon*2/3, (int) y - rayon*2/3, rayon*4/3, rayon*4/3,
+//				(int) direction - 90 - 40, 80);
+		
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
 				(int) direction - 90 - 20, 40);
 		g.fillArc((int) x - rayon, (int) y - rayon, rayon * 2, rayon * 2,
 				(int) direction - 90 - 1, 2);
+		
+		
 	}
 
 	public double getX() {
@@ -279,5 +287,13 @@ public class SingleInsect extends MobileG {
     		this.x = x+xc;
     		this.y = y+yc;
     	}
+    }
+    
+    public void setDetected(boolean b) {
+    	detected = b;
+	}
+    
+    public boolean getDetected() {
+    	return detected ;
     }
 }

@@ -19,6 +19,9 @@
 
 package device;
 
+import insects.Insects;
+import insects.SingleInsect;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.BufferedReader;
@@ -43,6 +46,7 @@ import captureunit.CaptureUnit;
 public class Sensor extends DeviceWithRadio {
 
 	protected CaptureUnit captureUnit;
+	protected boolean insectDetection = false ;
 
 	/**
 	 * Constructor 1 Instanciate the capture unit Instanciate the battery
@@ -243,6 +247,11 @@ public class Sensor extends DeviceWithRadio {
 						(rayon + 4) * 2);
 			}
 
+			if(insectDetection) {
+				g.setColor(UColor.ROUGE_TRANSPARENT);
+				g.fillOval(x - rayon*2, y - rayon*2, rayon * 4, rayon * 4);
+			}
+			
 			drawIncRedDimNode(x, y, g);
 			dessinAugDimRadio(x, y, g);
 			drawRadius(x, y, rayon, g);
@@ -271,7 +280,27 @@ public class Sensor extends DeviceWithRadio {
 				g.drawString("(" + battery.getCapacity() + ")", (int) (x + 10),
 						(int) (y + 20));
 			}
-
+			
+//			for(int i=0; i<Layer.getDeviceList().size(); i++) {
+//				if(Layer.getDeviceList().get(i).getType()==Device.INSECT) {
+//					Insects insects = (Insects) Layer.getDeviceList().get(i) ;				
+//					for(int j=0; j<insects.size(); j++) {
+//						SingleInsect insect = insects.getIthInsect(j);
+//						if(detection(insect)) {
+//							insect.setDetected(true);
+//							insectDetection = true ;
+//							this.drawDetectionLink(insect, g);
+//							Layer.getMapViewer().repaint();
+//						}
+//						else { 
+//							insect.setDetected(false);
+//							insectDetection = false ;
+//							Layer.getMapViewer().repaint();
+//						}
+//					}
+//				}
+//			}
+			
 			drawMoveArrows(x, y, g);
 			drawId(x, y, g);
 			drawInfos(this, g);
@@ -446,7 +475,7 @@ public class Sensor extends DeviceWithRadio {
 							// x2,
 							// y2));
 							totalDistance += MapCalc.distance(x, y, x2, y2);
-						}
+						}						
 						// Layer.getMapViewer().repaint();
 					} else {
 						// System.out.println("-----------------");

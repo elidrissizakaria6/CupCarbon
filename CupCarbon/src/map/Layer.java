@@ -2,7 +2,7 @@
  * CupCarbon: OSM based Wireless Sensor Network design and simulation tool
  * www.cupcarbon.com
  * ----------------------------------------------------------------------------------------------------------------
- * Copyright (C) 2013 Ahcene Bounceur
+ * Copyright (C) 2014 Ahcene Bounceur
  * ----------------------------------------------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -235,7 +235,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			}
 			if (lastKey == '3') {
 				DeviceList.add(new Insects(gp.getLatitude(), gp.getLongitude(),
-						500, 100));
+						500, 10));
 				mapViewer.repaint();
 			}
 			if (lastKey == '4') {

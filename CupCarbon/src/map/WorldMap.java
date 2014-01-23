@@ -45,13 +45,9 @@ public class WorldMap extends JXMapKit {
 			// true,"file:/myLocalMapServer/tiles","x","y","z") {
 			public String getTileUrl(int x, int y, int zoom) {
 				zoom = max - zoom;
-				// return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
-				// return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom +
-				// "/"
-				// + x + "/" + y + ".jpg";
-				 return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom +
-				 "/"
-				 + x + "/" + y + ".png";
+				 //return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
+				 //return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom + "/" + x + "/" + y + ".jpg";
+				 return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".png";
 				//return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/"
 				//		+ x + "/" + y + ".png";
 				// return

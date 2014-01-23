@@ -246,5 +246,13 @@ public class Insects extends MobileG {
 			si.setGPSFileName("gps/a1.gps");
 			insects.add(si);
 		}
+	}	
+	
+	public SingleInsect getIthInsect(int i) {
+		return insects.get(i);
+	}
+	
+	public int size() {
+		return insects.size();
 	}
 }

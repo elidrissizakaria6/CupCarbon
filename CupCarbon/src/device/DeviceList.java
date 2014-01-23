@@ -239,24 +239,24 @@ public class DeviceList {
 		ListIterator<Device> iterator;
 		ListIterator<Device> iterator2;
 		try {
-			if (drawLinks || linksDetection) {
-				iterator = nodes.listIterator();
-				while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
-					n1 = iterator.next();
-					iterator2 = nodes.listIterator(iterator.nextIndex());
-					while (iterator2.hasNext()) {
-						n2 = iterator2.next();
-						if (linksDetection) {
-							if (n1.detection(n2)) {
-								n1.setDetection(true);
-							}
-							if (n2.detection(n1)) {
-								n2.setDetection(true);
-							}
-						}
-					}
-				}
-			}
+//			if (drawLinks || linksDetection) {
+//				iterator = nodes.listIterator();
+//				while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
+//					n1 = iterator.next();
+//					iterator2 = nodes.listIterator(iterator.nextIndex());
+//					while (iterator2.hasNext()) {
+//						n2 = iterator2.next();
+//						if (linksDetection) {
+//							if (n1.detection(n2)) {
+//								n1.setDetection(true);
+//							}
+//							if (n2.detection(n1)) {
+//								n2.setDetection(true);
+//							}
+//						}
+//					}
+//				}
+//			}
 
 			for (Device n : nodes) {
 				n.draw(g);
