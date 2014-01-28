@@ -114,8 +114,6 @@ public class MarkerList {
 	 * 
 	 * @param g
 	 *            Graphical object
-	 * @param drawArrow
-	 *            True to draw the arrows, false otherwise
 	 */
 	public void draw(Graphics g) {
 		try {

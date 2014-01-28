@@ -175,8 +175,8 @@ public class Battery implements Cloneable {
 	/**
 	 * Connect to a Antanna
 	 * 
-	 * @param radiomodule
-	 */
+	 * @param radioModule
+	 */	
 	public void setAntenna(RadioModule radioModule) {
 		this.radioModule = radioModule;
 	}

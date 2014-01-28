@@ -106,7 +106,7 @@ public class SingleInsect extends MobileG {
 	/**
 	 * Draw the insect
 	 * 
-	 * @param gg
+	 * @param g
 	 *            Graphics
 	 */
 	public void draw(Graphics g) {

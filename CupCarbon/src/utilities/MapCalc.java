@@ -161,7 +161,7 @@ public class MapCalc {
 	/**
 	 * Calculate the number of pixels that corresponds to a given radius
 	 * 
-	 * @param rayon
+	 * @param radius
 	 * @return The number of pixels that corresponds to a given radius
 	 */
 	public static int radiusInPixels(double radius) {
