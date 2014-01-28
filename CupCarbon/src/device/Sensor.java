@@ -263,19 +263,19 @@ public class Sensor extends DeviceWithRadio {
 			}
 
 			if (displayDetails) {
-				// g.setColor(UColor.VERT);
+				 g.setColor(UColor.VERT);
 				// System.out.println(battery.getCapacityInPercent());
-				// g.fillRect(x + rayon + 10, y - battery.getCapacity() + rayon,
-				// 5, battery.getCapacityInPercent());
-				// g.setColor(Color.gray);
-				// g.drawRect(x + rayon + 10, y - battery.getCapacity() + rayon,
-				// 5, battery.getCapacityInPercent() * 100);
+				 g.fillRect(x + rayon + 10, y - battery.getCapacity() + rayon,
+				 5, battery.getCapacityInPercent());
+				 g.setColor(Color.gray);
+				 g.drawRect(x + rayon + 10, y - battery.getCapacity()*100 + rayon,
+				 5, battery.getCapacityInPercent() * 100);
 				g.drawLine(x + rayon, y + rayon, x + rayon + 25, y + rayon);
 				g.drawString("" + battery.getCapacityInPercent() + " %", x + 15
 						+ rayon, y + 20 + rayon);
-				g.setColor(Color.MAGENTA);
-				g.drawString("(" + battery.getCapacity() + ")", (int) (x + 10),
-						(int) (y + 20));
+				//g.setColor(Color.MAGENTA);
+				//g.drawString("(" + battery.getCapacity() + ")", (int) (x + 10),
+				//		(int) (y + 20));
 			}
 			
 //			for(int i=0; i<Layer.getDeviceList().size(); i++) {
