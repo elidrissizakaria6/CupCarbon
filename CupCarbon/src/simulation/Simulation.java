@@ -142,9 +142,10 @@ public class Simulation implements Simulator_Interface, Runnable {
 				}
 			}
 
-			Battery btry1 = nextEvent.getDevice().getBattery();
-			btry1.setCapacity(btry1.getCapacity() - (0.00000000008 / 100.)
-					* nextEvent.getPowerRatio());
+			nextEvent.getDevice().getBattery().setCapacity(nextEvent.getDevice().getBattery().getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio());
+			//Battery btry1 = nextEvent.getDevice().getBattery();			
+			//btry1.setCapacity(btry1.getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio());
+			
 			logps.println((System.nanoTime() - startTime) + " "
 					+ nextEvent.getDevice().getId() + " "
 					+ nextEvent.getDevice().getUserId() + " send "
@@ -152,15 +153,16 @@ public class Simulation implements Simulator_Interface, Runnable {
 					+ (nextEvent.getEventDate() * 1000000) + " + eps "
 					+ nextEvent.getEpsilon());
 
-			for (Device D : DeviceList.getNodes()) {
-				if ((nextEvent.getDevice() != D)
-						&& (nextEvent.getDevice().radioDetect(D))) {
-					Battery btry2 = D.getBattery();
-					btry2.setCapacity(btry2.getCapacity()
-							- (0.00000000008 / 100.)
-							* nextEvent.getPowerRatio());
+			for (Device device : DeviceList.getNodes()) {
+				if ((nextEvent.getDevice() != device) && (nextEvent.getDevice().radioDetect(device))) {
+					// cosommation des capteurs recepteurs
+					device.getBattery().setCapacity(device.getBattery().getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio());
+					
+					//Battery btry2 = device.getBattery();
+					//btry2.setCapacity(btry2.getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio());
+					
 					logps.println((System.nanoTime() - startTime) + " "
-							+ D.getId() + " " + D.getUserId() + " recive "
+							+ device.getId() + " " + device.getUserId() + " recive "
 							+ nextEvent.getMessage() + ", date : "
 							+ (nextEvent.getEventDate() * 1000000) + " + eps "
 							+ nextEvent.getEpsilon());
