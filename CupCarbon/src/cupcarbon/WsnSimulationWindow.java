@@ -33,6 +33,10 @@ import device.Device;
 public class WsnSimulationWindow extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	private CpuSimulation cpuSimulation ;
+	private GpuSimulation gpuSimulation ;
+	
 	private JTextField iterNumberTextField;
 	private JComboBox freqComboBox;
 	private ButtonGroup buttonGroup = new ButtonGroup();
@@ -71,7 +75,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 		setTitle("Simulation Parameters");
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(100, 100, 377, 426);
+		setBounds(100, 100, 456, 483);
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(7, 7, 7, 7));
@@ -304,6 +308,55 @@ public class WsnSimulationWindow extends JInternalFrame {
 		progressBar.setFont(new Font("Arial", Font.PLAIN, 12));
 		progressBar.setStringPainted(true);
 		panel_6.add(progressBar);
+		
+		JSeparator separator_4 = new JSeparator();
+		panel_1.add(separator_4);
+		
+		JPanel panel_15 = new JPanel();
+		panel_1.add(panel_15);
+		panel_15.setLayout(new GridLayout(0, 3, 0, 0));
+		
+		JButton btnNewButton_2 = new JButton("Stop Simulation");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (rdbtnCpuSimulation.isSelected()) {
+					stopSimulation(1);
+				}
+				if (rdbtnGpuSimulation.isSelected()) {
+					stopSimulation(2);
+				}			
+			}
+		});
+		btnNewButton_2.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_15.add(btnNewButton_2);
+		
+		JButton btnRestartSimulation = new JButton("Restart Simulation");
+		btnRestartSimulation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if (rdbtnCpuSimulation.isSelected()) {
+					resumeSimulation(1);
+				}
+				if (rdbtnGpuSimulation.isSelected()) {
+					resumeSimulation(2);
+				}
+			}
+		});
+		
+		JButton btnSuspendSimulation = new JButton("Suspend Simulation");
+		btnSuspendSimulation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnCpuSimulation.isSelected()) {
+					suspendSimulation(1);
+				}
+				if (rdbtnGpuSimulation.isSelected()) {
+					suspendSimulation(2);
+				}	
+			}
+		});
+		btnSuspendSimulation.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_15.add(btnSuspendSimulation);
+		btnRestartSimulation.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_15.add(btnRestartSimulation);
 
 	}
 
@@ -342,15 +395,45 @@ public class WsnSimulationWindow extends JInternalFrame {
 		}
 		if (v == 2 || v == 3) {
 			if (cpugpu == 1) {
-				CpuSimulation simulation = new CpuSimulation();
-				simulation.init();
-				simulation.start();
+				cpuSimulation = new CpuSimulation();
+				cpuSimulation.init();
+				cpuSimulation.start();
 			}
 			if (cpugpu == 2) {
-				GpuSimulation simulation = new GpuSimulation();
-				simulation.init();
-				simulation.start();
+				gpuSimulation = new GpuSimulation();
+				gpuSimulation.init();
+				gpuSimulation.start();
 			}
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void stopSimulation(int cpugpu) {
+		if (cpugpu == 1) {
+			cpuSimulation.stop();
+		}
+		if (cpugpu == 2) {
+			gpuSimulation.stop();
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void suspendSimulation(int cpugpu) {
+		if (cpugpu == 1) {
+			cpuSimulation.suspend();
+		}
+		if (cpugpu == 2) {
+			gpuSimulation.suspend();
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void resumeSimulation(int cpugpu) {
+		if (cpugpu == 1) {
+			cpuSimulation.resume();
+		}
+		if (cpugpu == 2) {
+			gpuSimulation.resume();
 		}
 	}
 

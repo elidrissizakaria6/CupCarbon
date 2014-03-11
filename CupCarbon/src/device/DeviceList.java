@@ -455,7 +455,7 @@ public class DeviceList {
 		Device node;
 		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
 			node = iterator.next();
-			if (node.isSelected()) {
+			if (node.isSelected() && node.getHide()==0) {
 				Layer.getMapViewer().removeMouseListener(node);
 				Layer.getMapViewer().removeMouseMotionListener(node);
 				Layer.getMapViewer().removeKeyListener(node);

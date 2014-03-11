@@ -466,10 +466,6 @@ public class Layer implements Painter<Object>, MouseListener,
 			CupCarbon.updateInfos();
 		}
 
-		// if (lastKey == 'g') {
-		// afficherDetail = false;
-		// }
-
 		if (lastKeyCode == 8) {
 			nodeList.deleteIfSelected();
 			markerList.deleteIfSelected();

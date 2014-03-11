@@ -592,5 +592,17 @@ public class Sensor2 extends DeviceWithRadio {
 //	public double getBatteryLevel() {
 //		return battery.getCapacity();
 //	}
+	
+	@Override
+	public int getNextTime() { return 0 ;}
+	
+	@Override
+	public void loadRouteFromFile() {}
+	
+	@Override
+	public void exeNext(boolean visual, int visualDelay) {}
+	
+	@Override
+	public boolean canMove() {return false;}
 
 }

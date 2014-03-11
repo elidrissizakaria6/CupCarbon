@@ -274,5 +274,17 @@ public class StreetVertex extends Device {
 	public boolean isBusStation() {
 		return busStation;
 	}
+	
+	@Override
+	public int getNextTime() { return 0 ;}
+	
+	@Override
+	public void loadRouteFromFile() {}
+	
+	@Override
+	public void exeNext(boolean visual, int visualDelay) {}
+	
+	@Override
+	public boolean canMove() {return false;}
 
 }

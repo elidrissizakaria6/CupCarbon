@@ -320,6 +320,7 @@ public class Sensor extends DeviceWithRadio {
 		}
 	}
 
+	@Override
 	public void preprocessing() {
 		routeIndex = 0;
 	}
@@ -358,81 +359,13 @@ public class Sensor extends DeviceWithRadio {
 			} while (hasNext());
 			routeIndex = 0;
 			selected = false;
-			// stopSimulation();
 			x = xori;
 			y = yori;
 			thread = null;
 			underSimulation = false;
 
 			Layer.getMapViewer().repaint();
-			// while (!battery.empty()) {
-			// try {
-			// if (hasNext()) {
-			// cTime = routeTime.get(routeIndex);
-			// toWait = cTime - tmpTime;
-			// tmpTime = cTime;
-			// x = routeX.get(routeIndex);
-			// y = routeY.get(routeIndex);
-			// exeNext();
-			// if (stopSim) {
-			// // underSimulation = false;
-			// stopSimulation();
-			// // thread = null;
-			// // System.out.println("AAAAAA");
-			// // break;
-			// }
-			// }
-			//
-			// if (toWait < 0) {
-			// toWait = cTime;
-			// }
-			//
-			// try {
-			// Thread.sleep(toWait * Device.moveSpeed);
-			// battery.consume();
-			// } catch (InterruptedException e) {
-			// e.printStackTrace();
-			// }
-			// Layer.getMapViewer().repaint();
-			// } catch (Exception e) {
-			// e.printStackTrace();
-			// }
-			// }
 		}
-	}
-
-	public void fixori() {
-		xori = x;
-		yori = y;
-	}
-
-	public void tori() {
-		x = xori;
-		y = yori;
-	}
-
-	@Override
-	public int getNextTime() {
-		if (routeTime.size() > 0) {
-			int diff = 0;
-			if (routeIndex == 0)
-				diff = (int) (1 * routeTime.get(routeIndex));
-			else
-				diff = (int) (routeTime.get(routeIndex) - routeTime
-						.get(routeIndex - 1));
-			return ((diff * 100) * Device.frequency / 1000);
-		}
-		return 0;
-	}
-
-	@Override
-	public double getCurrX() {
-		return routeX.get(routeIndex);
-	}
-
-	@Override
-	public double getCurrY() {
-		return routeY.get(routeIndex);
 	}
 
 	@Override
@@ -458,7 +391,9 @@ public class Sensor extends DeviceWithRadio {
 		}
 	}
 
-	@Override
+	/**
+	 * 
+	 */
 	public void goToNext() {
 		if (routeTime != null) {
 			routeIndex++;
@@ -467,22 +402,8 @@ public class Sensor extends DeviceWithRadio {
 					routeIndex = 0;
 				}
 			}
-			// if ((routeIndex > (routeTime.size()))) {
-			// if (!loop) {
-			// routeIndex--;
-			// stopSim = true;
-			// }
-			// else
-			// routeIndex = 0;
-			// }
 		}
 	}
-
-	/*
-	 * public void goToNext() { routeIndex++; if (routeIndex >
-	 * (routeTime.size())) { routeIndex = 0; if (!loop) { stopSim = true;
-	 * stopSimulation(); } } }
-	 */
 
 	public boolean hasNext() {
 		if (routeIndex < routeTime.size())
@@ -544,4 +465,7 @@ public class Sensor extends DeviceWithRadio {
 			return false;
 		return true;
 	}
+
+	public int getNextTime() { return 0 ;}
+
 }

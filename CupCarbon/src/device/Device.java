@@ -152,7 +152,7 @@ public abstract class Device implements Runnable, MouseListener,
 	public abstract String getIdFL();
 
 	/**
-	 * @return the naime of the identifier
+	 * @return the name of the identifier
 	 */
 	public abstract String getNodeIdName();
 
@@ -212,22 +212,6 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public void consume(double v) {
 	}
-
-	// public String getResultFile() {
-	// return resultFile + id;
-	// }
-
-	// /**
-	// * @return
-	// */
-	// public String getPrefResultFile() {
-	// return resultFile;
-	// }
-
-	// public void setResultFile(String resultFile) {
-	// this.resultFile = resultFile;
-	// resultFile.replaceAll(" ", "_");
-	// }
 
 	/**
 	 * @return the id of the device
@@ -1200,35 +1184,24 @@ public abstract class Device implements Runnable, MouseListener,
 	public static void incNumber() {
 		number++;
 	}
-
-	public int getNextTime() {
-		return 0;
-	}
-
-	public void loadRouteFromFile() {
-	}
-
-	public double getCurrX() {
-		return 0.0;
-	}
-
-	public double getCurrY() {
-		return 0.0;
-	}
-
-	public void exeNext(boolean visual, int visualDelay) {
-	}
-
-	public void goToNext() {
-	}
-
+	
 	public void fixori() {
+		xori = x;
+		yori = y;
 	}
 
 	public void tori() {
+		x = xori;
+		y = yori;
+	}
+	
+	public int getHide() {
+		return this.hide;
 	}
 
-	public boolean canMove() {
-		return false;
-	}
+	public abstract int getNextTime();
+	public abstract void loadRouteFromFile();
+	public abstract void exeNext(boolean visual, int visualDelay);
+	public abstract boolean canMove();
+	
 }

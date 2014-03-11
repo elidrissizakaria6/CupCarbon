@@ -254,4 +254,16 @@ public class FlyingGroup extends MobileG {
 	public int size() {
 		return insects.size();
 	}
+	
+	@Override
+	public int getNextTime() { return 0 ;}
+	
+	@Override
+	public void loadRouteFromFile() {}
+	
+	@Override
+	public void exeNext(boolean visual, int visualDelay) {}
+	
+	@Override
+	public boolean canMove() {return false;}
 }
