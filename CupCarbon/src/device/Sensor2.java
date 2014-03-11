@@ -23,7 +23,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 import map.Layer;
@@ -38,21 +40,15 @@ import captureunit.CaptureUnit;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class Sensor extends DeviceWithRadio {
+public class Sensor2 extends DeviceWithRadio {
 
 	protected CaptureUnit captureUnit;
 	protected boolean insectDetection = false;
-	private LinkedList<Long> routeTime;
-	private LinkedList<Double> routeX;
-	private LinkedList<Double> routeY;
-	private boolean loop = false;
-	private int routeIndex = 0;
-	private boolean readyForSimulation = false;
 
 	/**
 	 * Constructor 1 Instanciate the capture unit Instanciate the battery
 	 */
-	public Sensor() {
+	public Sensor2() {
 		super();
 		captureUnit = new CaptureUnit(this.x, this.y, this);
 		battery = new Battery(captureUnit);
@@ -72,7 +68,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @param radioRadius
 	 *            Radius (range) of the radio (in meter)
 	 */
-	public Sensor(double x, double y, double radius, double radioRadius) {
+	public Sensor2(double x, double y, double radius, double radioRadius) {
 		super(x, y, radius, radioRadius);
 		captureUnit = new CaptureUnit(this.x, this.y, this);
 		battery = new Battery(captureUnit);
@@ -94,7 +90,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @param cuRadius
 	 *            Radius of the capture unit (default value = 10 meters)
 	 */
-	public Sensor(double x, double y, double radius, double radioRadius,
+	public Sensor2(double x, double y, double radius, double radioRadius,
 			double cuRadius) {
 		super(x, y, radius, radioRadius);
 		captureUnit = new CaptureUnit(this.x, this.y, cuRadius, this);
@@ -122,7 +118,7 @@ public class Sensor extends DeviceWithRadio {
 	 *            contains the name of the parameter The second column contains
 	 *            the value of the corresponding parameter
 	 */
-	public Sensor(double x, double y, double radius, double radioRadius,
+	public Sensor2(double x, double y, double radius, double radioRadius,
 			double cuRadius, String[][] sb) {
 		this(x, y, radius, radioRadius, cuRadius);
 		this.setInfos(sb);
@@ -143,7 +139,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @param cuRadius
 	 *            Radius of the capture unit (default value = 10 meters)
 	 */
-	public Sensor(String x, String y, String radius, String radioRadius,
+	public Sensor2(String x, String y, String radius, String radioRadius,
 			String cuRadius) {
 		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius),
 				Double.valueOf(radioRadius));
@@ -172,7 +168,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @param scriptFileName
 	 *            The path of the script file
 	 */
-	public Sensor(String x, String y, String radius, String radioRadius,
+	public Sensor2(String x, String y, String radius, String radioRadius,
 			String cuRadius, String gpsFileName, String scriptFileName) {
 		this(x, y, radius, radioRadius, cuRadius);
 		gpsFileName = (gpsFileName.equals("#") ? "" : gpsFileName);
@@ -267,14 +263,51 @@ public class Sensor extends DeviceWithRadio {
 			}
 
 			if (displayDetails) {
+				// g.setColor(UColor.VERT);
+				// System.out.println(battery.getCapacityInPercent());
+				// g.fillRect(x + rayon + 10, y - battery.getCapacityInPercent()
+				// + rayon,
+				// 5, battery.getCapacityInPercent());
+				// g.setColor(Color.gray);
+				// g.drawRect(x + rayon + 10, y - battery.getCapacityInPercent()
+				// + rayon,
+				// 5, battery.getCapacityInPercent() * 100);
+				// g.drawLine(x + rayon, y + rayon, x + rayon + 25, y + rayon);
+				// g.drawString("" + battery.getCapacity(), x + 15
+				// + rayon, y + 20 + rayon);
 				g.setColor(Color.gray);
-				g.drawString("" + battery.getCapacity(), x + 2 + rayon / 2, y
-						+ 2 + rayon / 2);
+				g.drawString("" + battery.getCapacity(), x + 2 + rayon/2, y + 2
+						+ rayon/2);
+				// g.setColor(Color.MAGENTA);
+				// g.drawString("(" + battery.getCapacity() + ")", (int) (x +
+				// 10),
+				// (int) (y + 20));
 			}
+
+			// for(int i=0; i<Layer.getDeviceList().size(); i++) {
+			// if(Layer.getDeviceList().get(i).getType()==Device.INSECT) {
+			// Insects insects = (Insects) Layer.getDeviceList().get(i) ;
+			// for(int j=0; j<insects.size(); j++) {
+			// SingleInsect insect = insects.getIthInsect(j);
+			// if(detection(insect)) {
+			// insect.setDetected(true);
+			// insectDetection = true ;
+			// this.drawDetectionLink(insect, g);
+			// Layer.getMapViewer().repaint();
+			// }
+			// else {
+			// insect.setDetected(false);
+			// insectDetection = false ;
+			// Layer.getMapViewer().repaint();
+			// }
+			// }
+			// }
+			// }
 
 			drawMoveArrows(x, y, g);
 			drawId(x, y, g);
 			drawInfos(this, g);
+			// dessinerSelectAlgo(x,y,rayon,g);
 		}
 	}
 
@@ -283,211 +316,218 @@ public class Sensor extends DeviceWithRadio {
 		return captureUnit.getRadius();
 	}
 
-	// ------------------------------------------------------------------------
-	// Load Route from file to Lists
-	// ------------------------------------------------------------------------
-	public void loadRouteFromFile() {
-		routeIndex = 0;
-		routeTime = new LinkedList<Long>();
-		routeX = new LinkedList<Double>();
-		routeY = new LinkedList<Double>();
+	// @Override
+	public void run2() {
+		state = this.getState();
+		radioRangeRadius = radioRangeRadiusOri;
+		battery.init();
+		selected = false;
+		underSimulation = true;
+		double err = 0;
+		double rayonOri = radioRangeRadius;
+		// ------ Mobile -----
+		double totalDistance = 0;
+		selected = false;
+		boolean firstTime = true;
 		FileInputStream fis;
 		BufferedReader b = null;
-		String s;
 		String[] ts;
+		String s;
+		double x2, y2;
 		try {
 			if (!gpsFileName.equals("")) {
-				readyForSimulation = true;
 				fis = new FileInputStream(gpsFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
 				underSimulation = true;
-				b.readLine();
-				b.readLine();
-				b.readLine();
-				loop = Boolean.parseBoolean(b.readLine());
-				while ((s = b.readLine()) != null) {
-					ts = s.split(" ");
-					routeTime.add(Long.parseLong(ts[0]));
-					routeX.add(Double.parseDouble(ts[1]));
-					routeY.add(Double.parseDouble(ts[2]));
-				}
-				b.close();
-				fis.close();
-			} else
-				readyForSimulation = false;
+				String desc_str = b.readLine();
+				String from_str = b.readLine();
+				String to_str = b.readLine();
+				System.out.println("Description : " + desc_str);
+				System.out.println("From : " + from_str);
+				System.out.println("To : " + to_str);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void preprocessing() {
-		routeIndex = 0;
-	}
-
-	// ------------------------------------------------------------------------
-	// Run
-	// ------------------------------------------------------------------------
-	@Override
-	public void run() {
-		loadRouteFromFile();
-		xori = x;
-		yori = y;
-		if (readyForSimulation) {
-			underSimulation = true;
-			routeIndex = 0;
-			selected = false;
-			long tmpTime = 0;
-			long cTime = 0;
-			long toWait = 0;
-			do {
-				cTime = routeTime.get(routeIndex);
-				toWait = cTime - tmpTime;
-				tmpTime = cTime;
-				if (toWait < 0) {
-					toWait = cTime;
+		// ------ END Mobile ----
+		long tmpTime = -3600000;
+		long cTime = 0;
+		long toWait = 0;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+		LinkedList<String> sb = new LinkedList<String>();
+		try {
+			if (b != null) {
+				if (((s = b.readLine()) != null)) {
+					sb.add(s);
 				}
-				x = routeX.get(routeIndex);
-				y = routeY.get(routeIndex);
-				Layer.getMapViewer().repaint();
+				b.close();
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		while (!battery.empty()) {
+			try {
+				for (int i = 0; i < sb.size(); i++) {
+					x2 = x;
+					y2 = y;
+					ts = sb.get(i).split(" ");
+					cTime = simpleDateFormat.parse(ts[0]).getTime();
+					toWait = cTime - tmpTime;
+					tmpTime = cTime;
+					x = Double.parseDouble(ts[1]);
+					y = Double.parseDouble(ts[2]);
+					if (firstTime)
+						firstTime = false;
+					else {
+						// System.out.println((int) MapCalc.distance(x, y,
+						// x2,
+						// y2));
+						totalDistance += MapCalc.distance(x, y, x2, y2);
+					}
+					// Layer.getMapViewer().repaint();
+				}
 				try {
-					Thread.sleep(toWait * Device.moveSpeed);
+					Thread.sleep(toWait / 10);
+					battery.consume();
+					err = this.radioRangeRadius
+							* (porteeErr * random.nextGaussian()) / 1000000.;
+					radioRangeRadius = (rayonOri + err)
+							- (rayonOri
+									* (100 - battery.getCapacityInPercent()) / 10000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				goToNext();
-			} while (hasNext());
-			routeIndex = 0;
-			selected = false;
-			// stopSimulation();
-			x = xori;
-			y = yori;
-			thread = null;
-			underSimulation = false;
-
-			Layer.getMapViewer().repaint();
-			// while (!battery.empty()) {
-			// try {
-			// if (hasNext()) {
-			// cTime = routeTime.get(routeIndex);
-			// toWait = cTime - tmpTime;
-			// tmpTime = cTime;
-			// x = routeX.get(routeIndex);
-			// y = routeY.get(routeIndex);
-			// exeNext();
-			// if (stopSim) {
-			// // underSimulation = false;
-			// stopSimulation();
-			// // thread = null;
-			// // System.out.println("AAAAAA");
-			// // break;
-			// }
-			// }
-			//
-			// if (toWait < 0) {
-			// toWait = cTime;
-			// }
-			//
-			// try {
-			// Thread.sleep(toWait * Device.moveSpeed);
-			// battery.consume();
-			// } catch (InterruptedException e) {
-			// e.printStackTrace();
-			// }
-			// Layer.getMapViewer().repaint();
-			// } catch (Exception e) {
-			// e.printStackTrace();
-			// }
-			// }
-		}
-	}
-
-	public void fixori() {
-		xori = x;
-		yori = y;
-	}
-
-	public void tori() {
-		x = xori;
-		y = yori;
-	}
-
-	@Override
-	public int getNextTime() {
-		if (routeTime.size() > 0) {
-			int diff = 0;
-			if (routeIndex == 0)
-				diff = (int) (1 * routeTime.get(routeIndex));
-			else
-				diff = (int) (routeTime.get(routeIndex) - routeTime
-						.get(routeIndex - 1));
-			return ((diff * 100) * Device.frequency / 1000);
-		}
-		return 0;
-	}
-
-	@Override
-	public double getCurrX() {
-		return routeX.get(routeIndex);
-	}
-
-	@Override
-	public double getCurrY() {
-		return routeY.get(routeIndex);
-	}
-
-	@Override
-	public void exeNext(boolean visual, int visualDelay) {
-		if (routeTime != null) {
-			routeIndex++;
-			if ((routeIndex == (routeTime.size()))) {
-				if (!loop) {
-					routeIndex--;
-				} else
-					routeIndex = 0;
-			}
-			x = routeX.get(routeIndex);
-			y = routeY.get(routeIndex);
-		}
-		if (visual) {
-			try {
 				Layer.getMapViewer().repaint();
-				Thread.sleep(visualDelay);
-			} catch (InterruptedException e) {
+				// battery.consommer();
+				// err = this.radioRadius * (porteeErr * random.nextGaussian())/
+				// 100.;
+				// radioRadius = (rayonOri + err) - (rayonOri * (100 -
+				// battery.getCapacite()) / 100);
+				// Thread.sleep(100);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public void goToNext() {
-		if (routeTime != null) {
-			routeIndex++;
-			if (routeIndex == routeTime.size()) {
-				if (loop) {
-					routeIndex = 0;
-				}
-			}
-			// if ((routeIndex > (routeTime.size()))) {
-			// if (!loop) {
-			// routeIndex--;
-			// stopSim = true;
-			// }
-			// else
-			// routeIndex = 0;
-			// }
+		System.out.println(totalDistance);
+		// Layer.getMapViewer().repaint();
+		underSimulation = false;
+		thread = null;
+		try {
+			if (b != null)
+				b.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
 	}
 
-	/*
-	 * public void goToNext() { routeIndex++; if (routeIndex >
-	 * (routeTime.size())) { routeIndex = 0; if (!loop) { stopSim = true;
-	 * stopSimulation(); } } }
-	 */
+	public void run() {
+		state = this.getState();
+		radioRangeRadius = radioRangeRadiusOri;
+		battery.init();
+		selected = false;
+		underSimulation = true;
+		double err = 0;
+		double rayonOri = radioRangeRadius;
+		// ------ Mobile -----
+		double totalDistance = 0;
+		selected = false;
+		boolean firstTime = true;
+		FileInputStream fis;
+		BufferedReader b = null;
+		String[] ts;
+		String s;
+		double x2, y2;
+		try {
+			if (!gpsFileName.equals("")) {
+				fis = new FileInputStream(gpsFileName);
+				b = new BufferedReader(new InputStreamReader(fis));
+				underSimulation = true;
+				String desc_str = b.readLine();
+				String from_str = b.readLine();
+				String to_str = b.readLine();
+				System.out.println("Description : " + desc_str);
+				System.out.println("From : " + from_str);
+				System.out.println("To : " + to_str);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// ------ END Mobile ----
+		long tmpTime = -3600000;
+		long cTime = 0;
+		long toWait = 0;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+		double xori = x;
+		double yori = y;
+		while (!battery.empty()) {
+			try {
+				if (b != null) {
+					if (((s = b.readLine()) != null)) {
+						x2 = x;
+						y2 = y;
+						ts = s.split(" ");
+						cTime = simpleDateFormat.parse(ts[0]).getTime();
+						toWait = cTime - tmpTime;
+						tmpTime = cTime;
+						x = Double.parseDouble(ts[1]);
+						y = Double.parseDouble(ts[2]);
+						if (firstTime)
+							firstTime = false;
+						else {
+							// System.out.println((int) MapCalc.distance(x, y,
+							// x2,
+							// y2));
+							totalDistance += MapCalc.distance(x, y, x2, y2);
+						}
+						// Layer.getMapViewer().repaint();
+					} else {
+						// System.out.println("-----------------");
+						// System.out.println(totalDistance);
+						// JOptionPane.showMessageDialog(new JFrame(), "" +
+						// totalDistance);
+						// Layer.getMapViewer().repaint();
 
-	public boolean hasNext() {
-		if (routeIndex < routeTime.size())
-			return true;
-		return false;
+						break;
+
+						// break; // Comment this line if you want to simulate
+						// the
+						// sensor until the battery is empty
+					}
+				}
+				try {
+					Thread.sleep(toWait / 10);
+					battery.consume();
+					err = this.radioRangeRadius * (porteeErr * random.nextGaussian()) / 1000000.;
+					radioRangeRadius = (rayonOri + err) - (rayonOri * (100 - battery.getCapacityInPercent()) / 10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				Layer.getMapViewer().repaint();
+				// battery.consommer();
+				// err = this.radioRadius * (porteeErr * random.nextGaussian())/
+				// 100.;
+				// radioRadius = (rayonOri + err) - (rayonOri * (100 -
+				// battery.getCapacite()) / 100);
+				// Thread.sleep(100);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		x = xori ;
+		y = yori ;
+		System.out.println(totalDistance);
+		// Layer.getMapViewer().repaint();
+		underSimulation = false;
+		thread = null;
+		try {
+			if (b != null)
+				b.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
@@ -499,6 +539,16 @@ public class Sensor extends DeviceWithRadio {
 	public String getIdFL() {
 		return "S";
 	}
+
+	/*
+	 * public void dessinerSelectAlgo(int x, int y, int r, Graphics g) {
+	 * if(selectedByAlgo) { g.setColor(Color.RED); if(hide==2) {
+	 * g.setColor(Color.gray); g.drawOval(x-r-3, y-r-3, (r+3)*2, (r+3)*2);
+	 * g.drawOval(x-r-4, y-r-4, (r+4)*2, (r+4)*2);
+	 * g.setColor(UColor.VERTF_TRANSPARENT); g.fillOval(x-r-3, y-r-3, (r+3)*2,
+	 * (r+3)*2); } g.setColor(Color.DARK_GRAY); g.drawOval(x-6, y-6, 12, 12);
+	 * g.drawOval(x-7, y-7, 14, 14); } }
+	 */
 
 	/**
 	 * Set the capture unit
@@ -519,8 +569,8 @@ public class Sensor extends DeviceWithRadio {
 	}
 
 	@Override
-	public Sensor clone() throws CloneNotSupportedException {
-		Sensor newSensor = (Sensor) super.clone();
+	public Sensor2 clone() throws CloneNotSupportedException {
+		Sensor2 newSensor = (Sensor2) super.clone();
 		CaptureUnit newCaptureUnit = (CaptureUnit) captureUnit.clone();
 		Battery newBattery = (Battery) battery.clone();
 		newSensor.setCaptureUnit(newCaptureUnit);
@@ -539,9 +589,8 @@ public class Sensor extends DeviceWithRadio {
 		this.gpsFileName = gpsFileName;
 	}
 
-	public boolean canMove() {
-		if (getGPSFileName().equals(""))
-			return false;
-		return true;
-	}
+//	public double getBatteryLevel() {
+//		return battery.getCapacity();
+//	}
+
 }

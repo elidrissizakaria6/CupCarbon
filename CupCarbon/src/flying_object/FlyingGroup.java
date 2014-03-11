@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package insects;
+package flying_object;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -32,41 +32,40 @@ import device.MobileG;
 
 /**
  * @author Ahcene Bounceur
- * @author Mahamadou Traore
  * @version 1.0
  */
-public class Insects extends MobileG {
+public class FlyingGroup extends MobileG {
 
 	private static String idFL = "I"; // ID First Letter
-	private Vector<SingleInsect> insects;
+	private Vector<FlyingObject> insects;
 	private int insectNumber = 0;
 	private int height = 100000000;
 	private int width = 600000000;
 
-	public Insects() {
-		insects = new Vector<SingleInsect>();
+	public FlyingGroup() {
+		insects = new Vector<FlyingObject>();
 	}
 
-	public Insects(double x, double y, double radius) {
+	public FlyingGroup(double x, double y, double radius) {
 		super(x, y, radius, "");
-		insects = new Vector<SingleInsect>();
+		insects = new Vector<FlyingObject>();
 	}
 
-	public Insects(double x, double y, double radius, int n) {
+	public FlyingGroup(double x, double y, double radius, int n) {
 		this(x, y, radius);
 		insectNumber = n ;
-		insects = new Vector<SingleInsect>();
+		insects = new Vector<FlyingObject>();
 		for (int i = 0; i < n; i++) {
-			insects.add(new SingleInsect(x, y, true));
+			insects.add(new FlyingObject(x, y, true));
 		}
 	}
 
-	public Insects(double x, double y, double radius, int n, String gpsFileName) {
+	public FlyingGroup(double x, double y, double radius, int n, String gpsFileName) {
 		this(x, y, radius, n);
 		setGPSFileName(gpsFileName) ;
 	}
 
-	public Insects(String xStr, String yStr, String radiusStr, String nStr, String gpsFileName) {
+	public FlyingGroup(String xStr, String yStr, String radiusStr, String nStr, String gpsFileName) {
 		this(Double.valueOf(xStr), Double.valueOf(yStr), Double.valueOf(radiusStr), Integer.parseInt(nStr),
 				gpsFileName);
 	}
@@ -123,8 +122,8 @@ public class Insects extends MobileG {
 	@Override
 	public void run() {
 		underSimulation = true;
-		for (SingleInsect singleInsect : insects) {
-			singleInsect.start();
+		for (FlyingObject flyingObject : insects) {
+			flyingObject.start();
 		}
 		underSimulation = false;
 		thread = null;
@@ -140,9 +139,9 @@ public class Insects extends MobileG {
 			//int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
 			int rayon = MapCalc.radiusInPixels(this.radius);
 
-			for (SingleInsect singleInsect : insects) {
+			for (FlyingObject flyingObject : insects) {
 				// 3
-				singleInsect.draw(g);
+				flyingObject.draw(g);
 			}
 
 			if (inside || selected) {
@@ -193,7 +192,7 @@ public class Insects extends MobileG {
 
 	@Override
 	public int getType() {
-		return Device.INSECT;
+		return Device.FLYING_OBJECT;
 	}
 
 	@Override
@@ -220,35 +219,35 @@ public class Insects extends MobileG {
 	}
 
 	@Override
-	public void setCOMFileName(String comFileName) {
+	public void setScriptFileName(String scriptFileName) {
 
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		super.mouseMoved(e);
-		for (SingleInsect singleInsect : insects) {
-			singleInsect.relativeMove(x, y);
+		for (FlyingObject flyingObject : insects) {
+			flyingObject.relativeMove(x, y);
 		}
 	}
 
 	@Override
 	public void setGPSFileName(String gpsFileName) {
 		this.gpsFileName = gpsFileName ;
-		for (SingleInsect singleInsect : insects) {
-			singleInsect.setGPSFileName(gpsFileName);
+		for (FlyingObject flyingObject : insects) {
+			flyingObject.setGPSFileName(gpsFileName);
 		}
 	}
 
 	public void reproduire(int v) {
 		for (int i = 0; i < v; i++) {
-			SingleInsect si = new SingleInsect(x, y, true);
+			FlyingObject si = new FlyingObject(x, y, true);
 			si.setGPSFileName("gps/a1.gps");
 			insects.add(si);
 		}
 	}	
 	
-	public SingleInsect getIthInsect(int i) {
+	public FlyingObject getIthInsect(int i) {
 		return insects.get(i);
 	}
 	

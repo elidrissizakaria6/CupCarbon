@@ -20,8 +20,9 @@
 package cupcarbon;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -33,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -41,10 +43,13 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
 import project.Project;
@@ -55,7 +60,7 @@ import project.Project;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class ScriptComWindow extends JInternalFrame {
+public class ScriptWindow extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtFileName;
@@ -69,7 +74,7 @@ public class ScriptComWindow extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ScriptComWindow frame = new ScriptComWindow();
+					ScriptWindow frame = new ScriptWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -81,38 +86,94 @@ public class ScriptComWindow extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ScriptComWindow() {
-		super("Com File Name");
+	public ScriptWindow() {
+		super("Script");
 
-		this.setName("COM");
+		this.setName("Script");
 		setIconifiable(true);
 		setClosable(true);
 		setResizable(true);
-		setBounds(300, 30, 800, 600);
+		setBounds(300, 30, 609, 502);
 
 		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(new JLabel("<html>&nbsp;<br/><html>"),
-				BorderLayout.NORTH);
-
-		JPanel PWZ = new JPanel(new BorderLayout());
-		PWZ.add(new JLabel("<html>&nbsp;&nbsp;Laod file<html>"),
-				BorderLayout.NORTH);
-
-		JPanel PWest = new JPanel(new BorderLayout());
-		PWest.add(new JLabel("<html>&nbsp;&nbsp;File name<html>"),
-				BorderLayout.NORTH);
-		PWest.add(
-				new JLabel("<html>&nbsp;&nbsp;Instructions&nbsp;&nbsp;<html>"),
-				BorderLayout.CENTER);
-		PWZ.add(PWest, BorderLayout.CENTER);
-		getContentPane().add(PWZ, BorderLayout.WEST);
 
 		Border loweredetched = BorderFactory
 				.createEtchedBorder(EtchedBorder.LOWERED);
-		txtFileName = new JTextField();
-		txtFileName.setBorder(loweredetched);
+
+		JButton button_1 = new JButton("");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				txtFileName.setText(Project.getGpsFileExtension(txtFileName
+						.getText()));
+			}
+		});
+		button_1.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+
+		JButton button = new JButton("");
+
+		button.setIcon(new ImageIcon(Parameters.IMGPATH + "Ouvrir.png"));
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				FileFilter ff = new FileFilter() {
+					public boolean accept(File f) {
+						if (f.isDirectory())
+							return true;
+						else if (f.getName().endsWith(".scr"))
+							return true;
+						else
+							return false;
+					}
+
+					public String getDescription() {
+						return "Scripts";
+					}
+				};
+
+				JFileChooser fc = new JFileChooser();
+				fc.setFileFilter(ff);
+				int val = fc.showDialog(fc, "Save");
+				if (val == 0)
+					txtFileName.setText(fc.getSelectedFile().toString());
+			}
+		});
+
+		JPanel panel = new JPanel();
+		getContentPane().add(panel, BorderLayout.CENTER);
+		panel.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(105, 105, 105));
+		panel_1.setBorder(new EmptyBorder(10, 10, 10, 10));
+		panel.add(panel_1);
+		panel_1.setLayout(new BorderLayout(0, 0));
+
+		txtArea = new JTextArea();
+		txtArea.setLineWrap(true);
+		panel_1.add(txtArea, BorderLayout.CENTER);
+		txtArea.setFont(new Font("Courier New", Font.BOLD, 14));
+		txtArea.setForeground(Color.ORANGE);
+		txtArea.setBackground(new Color(0, 51, 102));
+		txtArea.setText("psend 1000\ndelay 500\npsend 1500\ndelay 500");
+		txtArea.setBorder(new LineBorder(new Color(0, 0, 0)));
+
+		JScrollPane scrollPane = new JScrollPane(txtArea);
+		panel_1.add(scrollPane, BorderLayout.CENTER);
+
+		JPanel panel_3 = new JPanel();
+		panel.add(panel_3, BorderLayout.NORTH);
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.Y_AXIS));
+
+		JPanel panel_4 = new JPanel();
+		panel_3.add(panel_4);
+		panel_4.setLayout(new BorderLayout(0, 0));
+		JLabel label = new JLabel("<html>&nbsp;&nbsp;Laod file<html>");
+		label.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_4.add(label, BorderLayout.WEST);
 
 		txtLoadFileName = new JComboBox();
+		txtLoadFileName.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_4.add(txtLoadFileName);
 
 		txtLoadFileName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -123,7 +184,7 @@ public class ScriptComWindow extends JInternalFrame {
 					try {
 
 						FileInputStream in = new FileInputStream(new File(
-								Project.getComFileFromName(txtLoadFileName
+								Project.getScriptFileFromName(txtLoadFileName
 										.getSelectedItem().toString())));
 						byte[] bytes = new byte[in.available()];
 						in.read(bytes);
@@ -149,87 +210,52 @@ public class ScriptComWindow extends JInternalFrame {
 			}
 		});
 
-		txtArea = new JTextArea();
-		txtArea.setBorder(loweredetched);
-
-		JPanel PCZ = new JPanel(new BorderLayout());
-		JPanel PCenter = new JPanel(new BorderLayout());
-		PCenter.add(txtArea, BorderLayout.CENTER);
-		PCenter.add(txtFileName, BorderLayout.NORTH);
-		PCZ.add(txtLoadFileName, BorderLayout.NORTH);
-		PCZ.add(PCenter, BorderLayout.CENTER);
-		getContentPane().add(PCZ, BorderLayout.CENTER);
-
-		JButton button_1 = new JButton("");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				txtFileName.setText(Project.getGpsFileExtension(txtFileName
-						.getText()));
-			}
-		});
-		button_1.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
-
-		JButton button = new JButton("");
-
-		button.setIcon(new ImageIcon(Parameters.IMGPATH + "Ouvrir.png"));
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				FileFilter ff = new FileFilter() {
-					public boolean accept(File f) {
-						if (f.isDirectory())
-							return true;
-						else if (f.getName().endsWith(".com"))
-							return true;
-						else
-							return false;
-					}
-
-					public String getDescription() {
-						return "COM files";
-					}
-				};
-
-				JFileChooser fc = new JFileChooser();
-				fc.setFileFilter(ff);
-				int val = fc.showDialog(fc, "Save");
-				if (val == 0)
-					txtFileName.setText(fc.getSelectedFile().toString());
-			}
-		});
-
-		JPanel PSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel panel_5 = new JPanel();
+		panel_3.add(panel_5);
+		panel_5.setLayout(new BorderLayout(0, 0));
+		JLabel label_1 = new JLabel("<html>&nbsp;&nbsp;File name<html>");
+		label_1.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_5.add(label_1, BorderLayout.WEST);
+		txtFileName = new JTextField();
+		txtFileName.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_5.add(txtFileName);
+		txtFileName.setBorder(loweredetched);
 
 		JButton Save = new JButton("<html>Save  </html>");
+		Save.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel.add(Save, BorderLayout.SOUTH);
 		Save.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {
+			}
 
 			@Override
-			public void mousePressed(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {
+			}
 
 			@Override
-			public void mouseExited(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {
+			}
 
 			@Override
-			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseEntered(MouseEvent arg0) {
+			}
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
 					PrintStream ps;
-					ps = new PrintStream(
-							new FileOutputStream(Project
-									.getComFileFromName(Project
-											.getComFileExtension(txtFileName
-													.getText()))));
+					ps = new PrintStream(new FileOutputStream(Project
+							.getScriptFileFromName(Project
+									.getScriptFileExtension(txtFileName
+											.getText()))));
 					ps.print(txtArea.getText());
 					ps.close();
 					txtArea.setText("");
 					txtFileName.setText("");
 
-					File comFiles = new File(Project.getProjectComPath());
-					String[] c = comFiles.list();
+					File scriptFiles = new File(Project.getProjectScriptPath());
+					String[] c = scriptFiles.list();
 					txtLoadFileName.removeAllItems();
 					txtLoadFileName.addItem("New scenario ...");
 					for (int i = 0; i < c.length; i++) {
@@ -244,8 +270,6 @@ public class ScriptComWindow extends JInternalFrame {
 			}
 		});
 		Save.setIcon(new ImageIcon(Parameters.IMGPATH + "Enregistrer.png"));
-		PSouth.add(Save);
-		getContentPane().add(PSouth, BorderLayout.SOUTH);
 
 		setVisible(false);
 	}

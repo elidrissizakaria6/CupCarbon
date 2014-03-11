@@ -19,8 +19,6 @@
 
 package map;
 
-import insects.Insects;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -46,8 +44,10 @@ import org.jdesktop.swingx.painter.Painter;
 import project.Project;
 import utilities.MapCalc;
 import utilities.UColor;
-import cupcarbon.NodeParametersWindow;
+import cupcarbon.CupCarbon;
+import cupcarbon.DeviceParametersWindow;
 import device.BaseStation;
+import device.Device;
 import device.DeviceList;
 import device.Gas;
 import device.Marker;
@@ -59,6 +59,7 @@ import device.Router;
 import device.Sensor;
 import device.StreetGraph;
 import device.StreetVertex;
+import flying_object.FlyingGroup;
 
 public class Layer implements Painter<Object>, MouseListener,
 		MouseMotionListener, KeyListener {
@@ -234,8 +235,8 @@ public class Layer implements Painter<Object>, MouseListener,
 				mapViewer.repaint();
 			}
 			if (lastKey == '3') {
-				DeviceList.add(new Insects(gp.getLatitude(), gp.getLongitude(),
-						500, 10));
+				DeviceList.add(new FlyingGroup(gp.getLatitude(), gp.getLongitude(),
+						500, 200));
 				mapViewer.repaint();
 			}
 			if (lastKey == '4') {
@@ -269,6 +270,7 @@ public class Layer implements Painter<Object>, MouseListener,
 				mapViewer.repaint();
 			}
 		}
+		CupCarbon.updateInfos();
 	}
 
 	// public static void addNode(Device node) {
@@ -451,6 +453,18 @@ public class Layer implements Painter<Object>, MouseListener,
 				}
 			}
 		}
+		
+		if (lastKey == '>') {
+			Device.moveSpeed += 5;
+			CupCarbon.updateInfos();
+		}
+		
+		if (lastKey == '<') {
+			Device.moveSpeed -= 5;
+			if(Device.moveSpeed<0)
+				Device.moveSpeed = 0;
+			CupCarbon.updateInfos();
+		}
 
 		// if (lastKey == 'g') {
 		// afficherDetail = false;
@@ -460,6 +474,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			nodeList.deleteIfSelected();
 			markerList.deleteIfSelected();
 			streetGraph.deleteIfSelected();
+			CupCarbon.updateInfos();
 			mapViewer.repaint();
 		}
 	}
@@ -491,19 +506,19 @@ public class Layer implements Painter<Object>, MouseListener,
 	}
 
 	public static void sensorParametersInit() {
-		NodeParametersWindow.textField_5.setText("");
-		NodeParametersWindow.textField_6.setText("");
-		NodeParametersWindow.textField_7.setText("");
-		NodeParametersWindow.textField_8.setText("");
-		NodeParametersWindow.textField_9.setText("");
+		DeviceParametersWindow.textField_5.setText("");
+		DeviceParametersWindow.textField_6.setText("");
+		DeviceParametersWindow.textField_7.setText("");
+		DeviceParametersWindow.textField_8.setText("");
+		DeviceParametersWindow.textField_9.setText("");
 	}
 
-	public void loadSantanderNodes() {
+	public void loadCityNodes() {
 		NetworkLoader nl = new NetworkLoader(mapViewer);
 		nl.start();
 	}
 
-	public void loadSantanderNodes2() {
+	public void loadCityNodes2() {
 		try {
 			double x = 0;
 			double y = 0;

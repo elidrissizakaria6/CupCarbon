@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package simulation;
+package mt_simulation;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
 import project.Project;
 import synchronization.Scheduler;
 import synchronization.Semaphore;
-import battery.Battery;
+import cupcarbon.MtSimulationWindow;
 import device.Device;
 import device.DeviceList;
 
@@ -36,27 +36,19 @@ public class Simulation implements Simulator_Interface, Runnable {
 
 	// In the following, the values are in milli-seconds
 	private static long defaulSimulationDelay = 360000000; // 100 hours
-	protected long simulationDelai = 0;
-
-	private static long defaulSimulationLogicDelay = 60000; // 60 seconds
-
-	protected long simulationLogicDelai = 0;
-
-	protected long step = 3600000; // a step of one hour
-
-	protected long iStep = 0;
-
-	protected Semaphore semaphore = null;
-
-	protected Scheduler scheduler = null;
-
+	private long simulationDelay = 0;
+	private long defaulSimulationLogicDelay = 60000; // 60 seconds
+	private long simulationLogicDelay = 0;
+	private long step = 3600000; // a step of one hour
+	private long iStep = 0;
+	private Semaphore semaphore = null;
+	private Scheduler scheduler = null;
 	private Thread thread = null;
-	private boolean More;
-
+	private boolean more;
 	private String logFileName = "log";
 	private String simulationName = "Name";
 	private PrintStream logps;
-	protected long startTime;
+	private long startTime;
 	private long endTime;
 
 	public Simulation(String name, String log) {
@@ -64,9 +56,21 @@ public class Simulation implements Simulator_Interface, Runnable {
 		setLogFileName(log);
 		setSimulationMode(SimulationMode.PARALLELMODE);
 		setSimulationDelay(Simulation.defaulSimulationDelay);
-		setSimulationLogicDelay(Simulation.defaulSimulationLogicDelay);
+		setSimulationLogicDelay(defaulSimulationLogicDelay);
 	}
 
+	public long getStartTime() {
+		return startTime ;
+	}
+	
+	public Scheduler getScheduler() {
+		return scheduler ;
+	}
+	
+	public Semaphore getSemaphore() {
+		return semaphore ;
+	}
+	
 	public long getStep() {
 		return step;
 	}
@@ -79,7 +83,7 @@ public class Simulation implements Simulator_Interface, Runnable {
 	public void initSimulation() {
 		scheduler = new Scheduler();
 		semaphore = new Semaphore(1);
-		More = true;
+		more = true;
 		for (Device device : DeviceList.getNodes()) {
 			device.initSimulator(this);
 			device.getSimulator().start();
@@ -109,21 +113,21 @@ public class Simulation implements Simulator_Interface, Runnable {
 
 	@Override
 	public void run() {
-		while (More) {
+		while (more) {
 			semaphore.P();
-			Action();
+			action();
 		}
 		endSimulation();
 	}
 
-	private void Action() {
+	public void action() {
 		Event nextEvent = scheduler.getNextEvent();
 
 		if ((nextEvent == null)
 				|| (nextEvent.getEventDate() > getSimulationDelay())
 				|| ((System.nanoTime() - startTime) > (getSimulationLogicDelay() * 1000000))) {
 			if (nextEvent == null)
-				JOptionPane.showMessageDialog(null, "nextEvent Null");
+				JOptionPane.showMessageDialog(null, "NextEvent Null");
 
 			if (nextEvent.getEventDate() > getSimulationDelay())
 				JOptionPane.showMessageDialog(null, "SimDelay -");
@@ -131,7 +135,7 @@ public class Simulation implements Simulator_Interface, Runnable {
 			if ((System.nanoTime() - startTime) > (getSimulationLogicDelay() * 1000000))
 				JOptionPane.showMessageDialog(null, "SimLogicDelay -");
 
-			More = false;
+			more = false;
 		} else {
 
 			if ((nextEvent.getEventDate() / step) >= iStep) {
@@ -142,7 +146,7 @@ public class Simulation implements Simulator_Interface, Runnable {
 				}
 			}
 
-			nextEvent.getDevice().getBattery().setCapacity(nextEvent.getDevice().getBattery().getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio());
+			nextEvent.getDevice().getBattery().setCapacity((long)(nextEvent.getDevice().getBattery().getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio()));
 			//Battery btry1 = nextEvent.getDevice().getBattery();			
 			//btry1.setCapacity(btry1.getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio());
 			
@@ -153,10 +157,11 @@ public class Simulation implements Simulator_Interface, Runnable {
 					+ (nextEvent.getEventDate() * 1000000) + " + eps "
 					+ nextEvent.getEpsilon());
 
+			MtSimulationWindow.setState("Simulate (MT) ...");
 			for (Device device : DeviceList.getNodes()) {
 				if ((nextEvent.getDevice() != device) && (nextEvent.getDevice().radioDetect(device))) {
 					// cosommation des capteurs recepteurs
-					device.getBattery().setCapacity(device.getBattery().getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio());
+					device.getBattery().setCapacity((long)(device.getBattery().getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio()));
 					
 					//Battery btry2 = device.getBattery();
 					//btry2.setCapacity(btry2.getCapacity() - (0.00000000008 / 100.) * nextEvent.getPowerRatio());
@@ -168,7 +173,7 @@ public class Simulation implements Simulator_Interface, Runnable {
 							+ nextEvent.getEpsilon());
 				}
 			}
-
+			MtSimulationWindow.setState("End of Simulation (MT) ...");
 			// nextEvent.getDevice().
 			nextEvent.getDevicesimulator().lock.V();
 		}
@@ -218,22 +223,22 @@ public class Simulation implements Simulator_Interface, Runnable {
 
 	@Override
 	public long getSimulationLogicDelay() {
-		return simulationLogicDelai;
+		return simulationLogicDelay;
 	}
 
 	@Override
 	public void setSimulationLogicDelay(long simulationLogicDelay) {
-		this.simulationLogicDelai = simulationLogicDelay;
+		this.simulationLogicDelay = simulationLogicDelay;
 	}
 
 	@Override
 	public void setSimulationDelay(long delay) {
-		simulationDelai = delay;
+		simulationDelay = delay;
 	}
 
 	@Override
 	public long getSimulationDelay() {
-		return simulationDelai;
+		return simulationDelay;
 	}
 
 	public String getLogFileName() {

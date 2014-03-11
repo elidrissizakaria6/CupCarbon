@@ -218,6 +218,6 @@ public class BaseStation extends DeviceWithRadio {
 	 * @see device.Device#setCOMFileName(java.lang.String)
 	 */
 	@Override
-	public void setCOMFileName(String comFileName) {
+	public void setScriptFileName(String scriptFileName) {
 	}
 }

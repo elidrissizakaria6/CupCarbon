@@ -163,9 +163,7 @@ private static String idFL = "R" ; // ID First Letter
 	}
 
 	@Override
-	public void setCOMFileName(String comFileName) {
-		// TODO Auto-generated method stub
+	public void setScriptFileName(String comFileName) {
 		
 	}	
-	
 }

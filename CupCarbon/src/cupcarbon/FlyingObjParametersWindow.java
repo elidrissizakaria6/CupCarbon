@@ -2,7 +2,7 @@ package cupcarbon;
 
 import javax.swing.JInternalFrame;
 
-public class InsectParametersWindow extends JInternalFrame {
+public class FlyingObjParametersWindow extends JInternalFrame {
 
 	/**
 	 * Serial
@@ -12,7 +12,7 @@ public class InsectParametersWindow extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InsectParametersWindow() {
+	public FlyingObjParametersWindow() {
 		setTitle("Insect Parameters");
 		setClosable(true);
 		setBounds(100, 100, 605, 556);

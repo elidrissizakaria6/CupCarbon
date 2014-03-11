@@ -135,9 +135,7 @@ public class MobileWithRadio extends MobileGWR {
 	}
 
 	@Override
-	public void setCOMFileName(String comFileName) {
-		// TODO Auto-generated method stub
+	public void setScriptFileName(String comFileName) {
 		
 	}
-	
 }

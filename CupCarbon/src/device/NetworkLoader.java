@@ -38,7 +38,7 @@ public class NetworkLoader extends Thread {
 		try {
 			double x = 0;
 			double y = 0;
-			FileInputStream fis = new FileInputStream("santander.txt");
+			FileInputStream fis = new FileInputStream("sensors.txt");
 			//FileInputStream fis = new FileInputStream("dubai.txt");
 			//FileInputStream fis = new FileInputStream("morlaix.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));

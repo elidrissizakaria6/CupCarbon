@@ -39,7 +39,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
@@ -239,6 +238,10 @@ public class CrtSimulator extends JInternalFrame {
 
 		JButton Save = new JButton(
 				"<html>&nbsp;&nbsp;&nbsp; Create &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</html>");
+		Save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		Save.addMouseListener(new MouseListener() {
 
 			// String name = txtSimulationName.getText();
@@ -296,9 +299,9 @@ public class CrtSimulator extends JInternalFrame {
 
 						JOptionPane.showMessageDialog(null,
 								"Simulation created ! ");
-						if (CupCarbon.simulationNumber == 0) {
-							CupCarbon.simulations.add(new JSeparator(), 0);
-						}
+//						if (CupCarbon.simulationNumber == 0) {
+//							CupCarbon.simulations.add(new JSeparator(), 0);
+//						}
 
 						JMenuItem mntmComSimulate = new JMenuItem(
 								txtSimulationName.getText());
@@ -318,7 +321,7 @@ public class CrtSimulator extends JInternalFrame {
 						});
 						mntmComSimulate.setIcon(new ImageIcon(Parameters.IMGPATH
 								+ "flag_green.png"));
-						CupCarbon.simulations.add(mntmComSimulate, 0);
+//						CupCarbon.simulations.add(mntmComSimulate, 0);
 						CupCarbon.simulationNumber++;
 
 						txtSimulationName.setText("");

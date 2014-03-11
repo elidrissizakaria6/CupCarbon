@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package simulation;
+package mt_simulation;
 
 import device.Device;
 
@@ -26,21 +26,19 @@ public class Event implements Comparable<Event> {
 	private int message;
 	private long eventDate;
 	private int epsilon;
-	private int powerratio = 100;
+	private int powerRatio = 100;
 	private Commands eventType;
-	private DeviceSimulator devicesimulator = null;
-
+	private DeviceSimulator deviceSimulator = null;
 	private Device device = null;
-
+	private Simulation simulation = null;
+	
 	public Device getDevice() {
 		return device;
 	}
 
 	public void setDevice(Device device) {
 		this.device = device;
-	}
-
-	private Simulation simulation = null;
+	}	
 
 	public Event() {
 		this(0, 0, 0, Commands.COM_UNKNOWN, 100);
@@ -65,7 +63,7 @@ public class Event implements Comparable<Event> {
 		this(message, eventdate, epsilon, eventtype, 100);
 	}
 
-	public void upDate(int message, long date, int epsilon, Commands eventtype,
+	public void update(int message, long date, int epsilon, Commands eventtype,
 			int powratio) {
 		setMessage(message);
 		setEventDate(date);
@@ -73,7 +71,7 @@ public class Event implements Comparable<Event> {
 		setEventType(eventtype);
 		setPowerRatio(powratio);
 		if (simulation != null) {
-			simulation.scheduler.sort();
+			simulation.getScheduler().sort();
 		}
 	}
 
@@ -108,11 +106,11 @@ public class Event implements Comparable<Event> {
 	}
 
 	public int getPowerRatio() {
-		return powerratio;
+		return powerRatio;
 	}
 
 	public void setPowerRatio(int powratio) {
-		this.powerratio = powratio;
+		this.powerRatio = powratio;
 	}
 
 	public Simulation getSimulation() {
@@ -124,11 +122,11 @@ public class Event implements Comparable<Event> {
 	}
 
 	public DeviceSimulator getDevicesimulator() {
-		return devicesimulator;
+		return deviceSimulator;
 	}
 
 	public void setDevicesimulator(DeviceSimulator devicesimulator) {
-		this.devicesimulator = devicesimulator;
+		this.deviceSimulator = devicesimulator;
 	}
 
 	public int getEpsilon() {

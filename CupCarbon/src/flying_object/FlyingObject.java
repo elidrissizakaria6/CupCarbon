@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package insects;
+package flying_object;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -39,9 +39,8 @@ import device.MobileG;
 
 /**
  * @author Ahcene Bounceur
- * @author Mahamadou Traore
  */
-public class SingleInsect extends MobileG {
+public class FlyingObject extends MobileG {
 	
 	protected double x = 0;
 	protected double y = 0;
@@ -57,7 +56,7 @@ public class SingleInsect extends MobileG {
 
 	// ------------------------------------
 
-	public SingleInsect(double x, double y, int theta, double xc, double yc) {
+	public FlyingObject(double x, double y, int theta, double xc, double yc) {
 		this.x = x;
 		this.y = y;
 		this.direction = theta;
@@ -66,7 +65,7 @@ public class SingleInsect extends MobileG {
 		radius = 100 ;
 	}
 
-	public SingleInsect(double x, double y, boolean dispersion) {
+	public FlyingObject(double x, double y, boolean dispersion) {
 		generate(x, y, dispersion);
 	}
 
@@ -266,7 +265,7 @@ public class SingleInsect extends MobileG {
 
     @Override
     public int getType() {
-            return Device.INSECT;
+            return Device.FLYING_OBJECT;
     }
 
     @Override

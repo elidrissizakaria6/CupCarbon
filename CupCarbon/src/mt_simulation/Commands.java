@@ -17,16 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package synchronization;
+package mt_simulation;
 
-import java.util.Comparator;
-
-import mt_simulation.Event;
-
-public class SchedulerComparator implements Comparator<Event> {
-
-	@Override
-	public int compare(Event e1, Event e2) {
-		return e1.compareTo(e2);
-	}
+public enum Commands {
+	COM_SEND, 
+	COM_DELAY, 
+	COM_BREAK, 
+	COM_RECEIVE,  
+	COM_HEADER, 
+	COM_UNKNOWN
 }

@@ -33,6 +33,8 @@ import map.Layer;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
+import cupcarbon.CupCarbon;
+import cupcarbon.Version;
 import device.DeviceList;
 import device.MarkerList;
 import device.StreetGraph;
@@ -67,9 +69,14 @@ public final class Project {
 		return projectPath + "/gps";
 	}
 
-	public static String getProjectComPath() {
-		return projectPath + "/pcom";
+	public static String getProjectScriptPath() {
+		return projectPath + "/scripts";
 	}
+	
+	public static String getProjectNetworkPath() {
+		return projectPath + "/network";
+	}
+
 
 	public static String getProjectLogPath() {
 		return projectPath + "/logs";
@@ -99,6 +106,7 @@ public final class Project {
 		DeviceList.open(getProjectNodePathName());
 		MarkerList.open(getProjectMarkerPathName());
 		StreetGraph.open(getProjectStreetVertexPathName());
+		CupCarbon.updateInfos();
 	}
 
 	public static void newProject(String path, String name) {
@@ -113,7 +121,9 @@ public final class Project {
 		file.mkdir();
 		file = new File(path + "/omnet");
 		file.mkdir();
-		file = new File(path + "/pcom");
+		file = new File(path + "/scripts");
+		file.mkdir();
+		file = new File(path + "/network");
 		file.mkdir();
 		file = new File(path + "/logs");
 		file.mkdir();
@@ -138,7 +148,6 @@ public final class Project {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -147,7 +156,7 @@ public final class Project {
 		try {
 			PrintStream fos = new PrintStream(new FileOutputStream(
 					getProjectPathName()));
-			fos.println("CupCarbon v. 1.0");
+			fos.println("CupCarbon v. "+Version.VERSION);
 			fos.println("----------------");
 			fos.println("Name "
 					+ projectName.substring(0, projectName.length() - 4));
@@ -176,18 +185,18 @@ public final class Project {
 			return name + ".gps";
 	}
 
-	public static String getComFileFromName(String name) {
-		if (name.endsWith(".com"))
-			return getProjectComPath() + "/" + name;
+	public static String getScriptFileFromName(String name) {
+		if (name.endsWith(".scr"))
+			return getProjectScriptPath() + "/" + name;
 		else
-			return getProjectComPath() + "/" + name + ".com";
+			return getProjectScriptPath() + "/" + name + ".scr";
 	}
 
-	public static String getComFileExtension(String name) {
-		if (name.endsWith(".com"))
+	public static String getScriptFileExtension(String name) {
+		if (name.endsWith(".scr"))
 			return name;
 		else
-			return name + ".com";
+			return name + ".scr";
 	}
 
 	public static String getLogFileFromName(String name) {

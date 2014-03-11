@@ -17,47 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package simulation;
+package mt_simulation;
 
-import device.Device;
-
-public interface Simulator_Interface {
-
-	public void initSimulation();
-
-	public void startSimulation();
-
-	public void stopSimulation();
-
-	public void pauseSimulation();
-
-	public void endSimulation();
-
-	public void consumptionEnergy(Event event);
-
-	public void setSimulationMode(SimulationMode sMode);
-
-	public SimulationMode getSimulationMode();
-
-	public void setSimulationDelay(long delay);
-
-	public long getSimulationDelay();
-
-	public void setSimulationLogicDelay(long delay);
-
-	public long getSimulationLogicDelay();
-
-	public long getRemainingSimulationTime();
-
-	public int getNumberSentMessages();
-
-	public int getNumberSentMessages(long delai1, long delai2, TimeMode tMode);
-
-	public int getNumberSentMessages(Device device);
-
-	public int getNumberSentMessages(Device device, long delai1, long delai2,
-			TimeMode tMode);
-
-	public Object getSimulationState();
-
+public enum SimulationMode {
+	PARALLELMODE,
+	SEQUENTIALMODE
 }

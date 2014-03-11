@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package simulation;
+package mt_simulation;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -33,29 +33,34 @@ import synchronization.Lock;
 import device.Device;
 
 public class DeviceSimulator implements Runnable {
+
+	// private static int index = 0;
+	// private int id;
 	
-	public static int index = 0;
-	public String scenariofile = "";
+	private String scriptFile = "";
 	private String resultFile = "RS";
 	public Lock lock;
-	public Thread thread = null;
-	public Event currentEvent;
-	public int id;
-	private long horloge = 0;
-	public List<Event> events = null;
+	private Thread thread = null;
+	private Event currentEvent;
+	private long clock = 0;
+	private List<Event> events = null;
 	private int eventsNumber = 0;
-	private Simulation simulator = null;
+	private Simulation simulation = null;
 	private Device device;
 	private int eps = 0;
 	private PrintStream rbr = null;
 
+	public void setScriptFile(String scriptFile) {
+		this.scriptFile = scriptFile ;
+	}
+	
 	public void saveResult(long date) {
 		rbr.println("" + date + " " + device.getId() + " " + device.getUserId()
 				+ " " + device.getBatteryLevel());
 	}
 
 	public void saveResult2() {
-		rbr.println("" + (System.nanoTime() - simulator.startTime) + " "
+		rbr.println("" + (System.nanoTime() - simulation.getStartTime()) + " "
 				+ device.getId() + " " + device.getUserId() + " "
 				+ device.getBatteryLevel());
 	}
@@ -70,11 +75,11 @@ public class DeviceSimulator implements Runnable {
 	}
 
 	public Simulation getSimulator() {
-		return simulator;
+		return simulation;
 	}
 
 	public void setSimulator(Simulation simulator) {
-		this.simulator = simulator;
+		this.simulation = simulator;
 	}
 
 	public DeviceSimulator() {
@@ -82,20 +87,20 @@ public class DeviceSimulator implements Runnable {
 	}
 
 	public DeviceSimulator(Device device) {
-		id = ++index;
+		// id = ++index;
 		this.setDevice(device);
 		lock = new Lock();
 	}
 
-	public boolean scenarioAssigned() {
-		return (scenariofile != "");
+	public boolean scriptAssigned() {
+		return (scriptFile != "");
 	}
 
-	public void loadScenario() {
+	public void loadScript() {
 
 		try {
 			events = new Vector<Event>();
-			BufferedReader br = new BufferedReader(new FileReader(scenariofile));
+			BufferedReader br = new BufferedReader(new FileReader(scriptFile));
 			String line;
 			String[] str;
 			Event e = null;
@@ -151,23 +156,23 @@ public class DeviceSimulator implements Runnable {
 			e.printStackTrace();
 		}
 
-		this.simulator = simulator;
-		if (scenarioAssigned()) {
-			loadScenario();
+		this.simulation = simulator;
+		if (scriptAssigned()) {
+			loadScript();
 
 			eventsNumber = events.size();
-			horloge = 0;
+			clock = 0;
 			currentEvent = null;
 			if (eventsNumber > 0) {
 				Event First = getNextEvent2();
 				if (First.getEventType() != Commands.COM_BREAK) {
-					horloge = First.getEventDate();
-					currentEvent = new Event(First.getMessage(), horloge,
+					clock = First.getEventDate();
+					currentEvent = new Event(First.getMessage(), clock,
 							First.getEpsilon(), First.getEventType());
 					currentEvent.setDevice(getDevice());
 					currentEvent.setDevicesimulator(this);
 					currentEvent.setSimulation(getSimulator());
-					simulator.scheduler.addEvent(currentEvent);
+					simulator.getScheduler().addEvent(currentEvent);
 				}
 			}
 		}
@@ -195,16 +200,16 @@ public class DeviceSimulator implements Runnable {
 			// rbr.println(""+(System.nanoTime() -
 			// simulator.startTime)+"  "+device.getId()+"  "+device.getUserid()+"  "+device.getNivBattery());
 			// }
-			horloge += Next.getEventDate();
-			currentEvent.upDate(Next.getMessage(), horloge, Next.getEpsilon(),
+			clock += Next.getEventDate();
+			currentEvent.update(Next.getMessage(), clock, Next.getEpsilon(),
 					Next.getEventType(), Next.getPowerRatio());
-			simulator.semaphore.V();
+			simulation.getSemaphore().V();
 			Next = getNextEvent2();
 
 		}
 		lock.P();
-		simulator.scheduler.removeEvent(currentEvent);
-		simulator.semaphore.V();
+		simulation.getScheduler().removeEvent(currentEvent);
+		simulation.getSemaphore().V();
 		System.out.println(" -> " + getDevice().getUserId());
 	}
 

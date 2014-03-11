@@ -250,8 +250,7 @@ public class StreetVertex extends Device {
 	}
 
 	@Override
-	public void setCOMFileName(String comFileName) {
-		// TODO Auto-generated method stub
+	public void setScriptFileName(String scriptFileName) {
 
 	}
 

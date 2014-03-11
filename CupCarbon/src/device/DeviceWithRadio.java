@@ -26,7 +26,7 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 
 import map.Layer;
-import simulation.DeviceSimulator;
+import mt_simulation.DeviceSimulator;
 import utilities.MapCalc;
 import utilities.UColor;
 import battery.Battery;
@@ -64,7 +64,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	 */
 	public DeviceWithRadio(double x, double y, double radius, double radioRangeRadius) {
 		super(x, y, radius);
-		simulator = new DeviceSimulator(this);
+		deviceSimulator = new DeviceSimulator(this);
 		this.radioRangeRadius = radioRangeRadius ;
 		radioRangeRadiusOri = radioRangeRadius ;
 	}

@@ -2,7 +2,7 @@
  * CupCarbon: OSM based Wireless Sensor Network design and simulation tool
  * www.cupcarbon.com
  * ----------------------------------------------------------------------------------------------------------------
- * Copyright (C) 2013 Ahcene Bounceur
+ * Copyright (C) 2014 Ahcene Bounceur
  * ----------------------------------------------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,16 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package synchronization;
+package script;
 
-import java.util.Comparator;
-
-import mt_simulation.Event;
-
-public class SchedulerComparator implements Comparator<Event> {
-
-	@Override
-	public int compare(Event e1, Event e2) {
-		return e1.compareTo(e2);
+public final class CommandType {
+	
+	public static final int DELAY = 0 ;
+	public static final int PSEND = 1 ;
+	public static final int SEND = 2 ;
+	public static final int BREAK = 3 ;
+	
+	public static String getCommandName(int i) {
+		if(i==0) return "DELAY";
+		if(i==1) return "PSEND";
+		if(i==2) return "SEND";
+		if(i==3) return "BREAK";
+		return "";
 	}
+	
 }

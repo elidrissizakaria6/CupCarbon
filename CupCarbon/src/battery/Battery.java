@@ -31,11 +31,12 @@ import controlunit.UControl;
  */
 public class Battery implements Cloneable {
 
+	public static long eMax = 100000000;
+	
 	private UControl uProc = new UControl();
 	private RadioModule radioModule = new RadioModule(0);
 	private CaptureUnit captureUnit;
-	private double initialCapacity = 100000.;
-	private double capacity = initialCapacity;
+	private long capacity = eMax;
 
 	/**
 	 * Battery initialization
@@ -51,7 +52,7 @@ public class Battery implements Cloneable {
 	 */
 	public int getInitialCapacity() {
 		// return (int)(capacite/capaciteDeBase*100.) ;
-		return (int) (initialCapacity);
+		return (int) (eMax);
 	}
 	
 	/**
@@ -66,7 +67,8 @@ public class Battery implements Cloneable {
 	 * @return the capacity of the battery (in percent)
 	 */
 	public int getCapacityInPercent() {
-		return (int) (capacity / initialCapacity * 100.);
+		return (int) (capacity / eMax * 100.);
+		//return (int) (capacity);
 	}
 
 	/**
@@ -74,15 +76,23 @@ public class Battery implements Cloneable {
 	 * 
 	 * @param capacity
 	 */
-	public void setCapacity(double capacity) {
+	public void setCapacity(long capacity) {
 		this.capacity = capacity;
 	}
 
 	/**
+	 * Initialization of the battery (energy max given)
+	 */
+	public void init(long eMax) {
+		Battery.eMax = eMax;
+		capacity = eMax;
+	}
+	
+	/**
 	 * Initialization of the battery (energy max)
 	 */
 	public void init() {
-		capacity = initialCapacity;
+		capacity = eMax;
 	}
 
 	/**
@@ -151,7 +161,7 @@ public class Battery implements Cloneable {
 	 * @return if the battery is empty
 	 */
 	public boolean empty() {
-		return (capacity <= (30. * initialCapacity / 100.));
+		return (capacity <= (30. * eMax / 100.));
 	}
 
 	/**

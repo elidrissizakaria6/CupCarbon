@@ -32,9 +32,7 @@ import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,6 +59,7 @@ public class MarkerList {
 			fos.print("# CupCarbon\n");
 			fos.print("# Markers\n");
 			fos.print("# -----------------------\n");
+			fos.print("# -----------------------\n");
 			for (Iterator<Marker> iterator = markers.iterator(); iterator
 					.hasNext();) {
 				marker = iterator.next();
@@ -81,6 +80,7 @@ public class MarkerList {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			String[] str;
+			line = br.readLine();
 			line = br.readLine();
 			line = br.readLine();
 			line = br.readLine();
@@ -233,7 +233,8 @@ public class MarkerList {
 		// }
 	}
 
-	public static void saveGpsCoords(String fileName, String title,
+	/*
+	 public static void saveGpsCoords(String fileName, String title,
 			String from, String to) {
 		try {
 			PrintStream ps;
@@ -256,6 +257,43 @@ public class MarkerList {
 				date.setTime(initialDate += 1000);
 				ps.println(s + " " + marker.getX() + " " + marker.getY() + " "
 						+ marker.getRadius());
+			}
+			ps.close();
+			JOptionPane.showMessageDialog(null, "File saved!", "Save",
+					JOptionPane.INFORMATION_MESSAGE);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	 */
+	public static void saveGpsCoords(String fileName, String title, String from, String to, boolean loop, int delay) {
+		try {
+			PrintStream ps;
+			ps = new PrintStream(new FileOutputStream(
+					Project.getGpsFileFromName(fileName)));
+			ps.println(title);
+			ps.println(from);
+			ps.println(to);
+			ps.println(loop);
+			Marker marker;
+
+			//int initialDate = 0;
+			//Date date = new Date(initialDate);
+			//String s = "";
+			int s = 0;
+			//SimpleDateFormat formateur = new SimpleDateFormat("HH:mm:ss");
+
+			for (Iterator<Marker> iterator = markers.iterator(); iterator.hasNext();) {
+				marker = iterator.next();
+				//s = formateur.format(date);
+				//date.setTime(initialDate += 1000);
+				if(iterator.hasNext() || !loop)
+					s++;
+				else {
+					s+=delay;
+				}
+				ps.println(s + " " + marker.getX() + " " + marker.getY() + " "
+						+ marker.getRadius());				
 			}
 			ps.close();
 			JOptionPane.showMessageDialog(null, "File saved!", "Save",

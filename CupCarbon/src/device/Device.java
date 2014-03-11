@@ -31,16 +31,17 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 
 import map.Layer;
+import mt_simulation.DeviceSimulator;
+import mt_simulation.Simulation;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
-import simulation.DeviceSimulator;
-import simulation.Simulation;
-import utilities._Constantes;
+import script.Script;
 import utilities.MapCalc;
 import utilities.UColor;
+import utilities._Constantes;
 import battery.Battery;
-import cupcarbon.NodeParametersWindow;
+import cupcarbon.DeviceParametersWindow;
 import cupcarbon.Parameters;
 
 /**
@@ -54,7 +55,7 @@ public abstract class Device implements Runnable, MouseListener,
 
 	public static final int SENSOR = 1;
 	public static final int GAS = 2;
-	public static final int INSECT = 3;
+	public static final int FLYING_OBJECT = 3;
 	public static final int BASE_STATION = 4;
 	public static final int BRIDGE = 5;
 	public static final int MOBILE = 6;
@@ -64,6 +65,8 @@ public abstract class Device implements Runnable, MouseListener,
 
 	public static final boolean DEAD = false;
 	public static final boolean ALIVE = true;
+
+	public static int moveSpeed = 100;
 
 	protected boolean altDown = false;
 	protected boolean shiftDown = false;
@@ -77,6 +80,8 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String userId = "";
 
 	protected double x, y;
+	protected double xori;
+	protected double yori;
 	protected double dx, dy;
 	protected double radius = 0;
 	protected double radiusOri = 0;
@@ -100,10 +105,12 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String[][] infos;
 	protected static boolean displayInfos = false;
 
-	protected DeviceSimulator simulator = null;
+	protected DeviceSimulator deviceSimulator = null;
 	protected Simulation simulation = null;
-	protected String comFile = "";
+	protected String scriptFileName = "";
 	protected String gpsFileName = "";
+	protected Script script = null;
+	public static int frequency = 9600;
 
 	protected boolean state = ALIVE;
 
@@ -126,7 +133,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Radius
 	 */
 	public Device(double x, double y, double radius) {
-		id = ++number;
+		id = number++;
 		userId = "S" + id;
 		this.x = x;
 		this.y = y;
@@ -256,20 +263,20 @@ public abstract class Device implements Runnable, MouseListener,
 	}
 
 	/**
-	 * Set a path and name for the communication script file
+	 * Set a path and name for the script file
 	 * 
-	 * @param comFileName
+	 * @param scriptFileName
 	 */
-	public void setCOMFileName(String comFileName) {
-		comFile = comFileName;
-		simulator.scenariofile = comFileName;
+	public void setScriptFileName(String scriptFileName) {
+		this.scriptFileName = scriptFileName;
+		deviceSimulator.setScriptFile(scriptFileName);
 	}
 
 	/**
 	 * @return the path of the communication script file
 	 */
-	public String getCOMFileName() {
-		return comFile;
+	public String getScriptFileName() {
+		return scriptFileName;
 	}
 
 	/**
@@ -279,7 +286,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public void initSimulator(Simulation simulation) {
 		this.simulation = simulation;
-		simulator.init(simulation);
+		deviceSimulator.init(simulation);
 	}
 
 	/**
@@ -513,16 +520,26 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public void sensorParametersUpdate() {
 		if (selected) {
-			NodeParametersWindow.textField_5.setText("" + x);
-			NodeParametersWindow.textField_6.setText("" + y);
-			NodeParametersWindow.textField_7.setText("" + getRadius());
-			NodeParametersWindow.textField_8.setText("" + getRadioRadius());
-			NodeParametersWindow.textField_9.setText(""
+			DeviceParametersWindow.textField_5.setText("" + x);
+			DeviceParametersWindow.textField_6.setText("" + y);
+			DeviceParametersWindow.textField_7.setText("" + getRadius());
+			DeviceParametersWindow.textField_8.setText("" + getRadioRadius());
+			DeviceParametersWindow.textField_9.setText(""
 					+ getCaptureUnitRadius());
+
 			String[] gpsFile = getGPSFileName()
 					.split(Parameters.SEPARATOR + "");
-			NodeParametersWindow.gpsPathNameComboBox
-					.setSelectedItem(gpsFile[gpsFile.length - 1]);
+			String gpsFileName = gpsFile[gpsFile.length - 1];
+			if (!gpsFileName.equals(""))
+				DeviceParametersWindow.gpsPathNameComboBox
+						.setSelectedItem(gpsFileName);
+
+			String[] scriptFile = getScriptFileName().split(
+					Parameters.SEPARATOR + "");
+			String scriptFileName = scriptFile[scriptFile.length - 1];
+			if (!scriptFileName.equals(""))
+				DeviceParametersWindow.scriptComboBox
+						.setSelectedItem(scriptFileName);
 		}
 	}
 
@@ -709,7 +726,7 @@ public abstract class Device implements Runnable, MouseListener,
 			Device.displayInfos = true;
 		}
 
-		if (key == 's' && (!ctrlDown && !cmdDown)) {
+		if (key == 'S') {// && (!ctrlDown && !cmdDown)) {
 			simulate();
 		}
 
@@ -762,6 +779,9 @@ public abstract class Device implements Runnable, MouseListener,
 		Layer.getMapViewer().repaint();
 	}
 
+	public void preprocessing() {
+	};
+
 	/**
 	 * Stop the simulation
 	 */
@@ -769,11 +789,15 @@ public abstract class Device implements Runnable, MouseListener,
 	public void stopSimulation() {
 		// synchronized(this) {
 		// this.wait(4000);
-		if (selected)
-			if (thread != null) {
-				thread.stop();
-				thread = null;
-			}
+		// if (selected)
+		preprocessing();
+		if (thread != null) {
+			thread.stop();
+			x = xori;
+			y = yori;
+		}		
+		thread = null;
+		underSimulation = false;
 	}
 
 	/**
@@ -1017,7 +1041,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Graphics
 	 */
 	public void drawDetectionLink(Device device, Graphics g) {
-		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);		
+		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
 		int lx1 = coord[0];
 		int ly1 = coord[1];
 		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
@@ -1162,10 +1186,49 @@ public abstract class Device implements Runnable, MouseListener,
 	 * @return the simulation instance
 	 */
 	public DeviceSimulator getSimulator() {
-		return simulator;
+		return deviceSimulator;
 	}
 
 	public Thread getThread() {
 		return thread;
+	}
+
+	public static void initNumber() {
+		number = 0;
+	}
+
+	public static void incNumber() {
+		number++;
+	}
+
+	public int getNextTime() {
+		return 0;
+	}
+
+	public void loadRouteFromFile() {
+	}
+
+	public double getCurrX() {
+		return 0.0;
+	}
+
+	public double getCurrY() {
+		return 0.0;
+	}
+
+	public void exeNext(boolean visual, int visualDelay) {
+	}
+
+	public void goToNext() {
+	}
+
+	public void fixori() {
+	}
+
+	public void tori() {
+	}
+
+	public boolean canMove() {
+		return false;
 	}
 }

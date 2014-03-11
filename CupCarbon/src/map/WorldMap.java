@@ -19,13 +19,13 @@
 
 package map;
 
+import mt_simulation.Simulation;
+
 import org.jdesktop.swingx.JXMapKit;
 import org.jdesktop.swingx.mapviewer.DefaultTileFactory;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
-
-import simulation.Simulation;
 
 public class WorldMap extends JXMapKit {
 
@@ -45,9 +45,9 @@ public class WorldMap extends JXMapKit {
 			// true,"file:/myLocalMapServer/tiles","x","y","z") {
 			public String getTileUrl(int x, int y, int zoom) {
 				zoom = max - zoom;
-				 //return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
+				 return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
 				 //return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom + "/" + x + "/" + y + ".jpg";
-				 return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".png";
+				 //return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".png";
 				//return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/"
 				//		+ x + "/" + y + ".png";
 				// return
@@ -91,14 +91,22 @@ public class WorldMap extends JXMapKit {
 		setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
 		// setCenterPosition(new
 		// GeoPosition(48.58273977037357,-3.8297653198242188));//Morlaix
-		setZoom(4);
+		setZoom(2);
 		layer = new Layer(getMainMap());
 	}
 
 	public static Layer getLayer() {
 		return layer;
 	}
-
+	
+	public static void deSimulation() {
+		System.out.println("DE simulation");
+	}
+	
+	public static void gpuSimulation() {
+		System.out.println("GPU simulation");
+	}
+	
 	public static void simulate() {
 		layer.simulate();
 	}
@@ -110,8 +118,8 @@ public class WorldMap extends JXMapKit {
 		simulation.setSimulationLogicDelay(v2);
 		simulation.setStep(v3);
 		simulation.startSimulation();
-	}
-
+	}	
+	
 	public static void comSimulate(String name, String log) {
 		Simulation simulation = new Simulation(name, log);
 		simulation.startSimulation();
@@ -130,8 +138,8 @@ public class WorldMap extends JXMapKit {
 		// (new Layer()).loadNodes();
 	}
 
-	public static void loadSantanderNodes() {
-		layer.loadSantanderNodes();
+	public static void loadCityNodes() {
+		layer.loadCityNodes();
 	}
 
 	public static void setSelectionOfAllNodes(boolean selection, int type,

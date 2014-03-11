@@ -22,7 +22,7 @@ package synchronization;
 import java.util.Collections;
 import java.util.Vector;
 
-import simulation.Event;
+import mt_simulation.Event;
 
 public class Scheduler {
 

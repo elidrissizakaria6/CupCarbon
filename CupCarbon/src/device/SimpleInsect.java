@@ -171,7 +171,7 @@ public class SimpleInsect extends MobileG {
 
 	@Override
 	public int getType() {
-		return Device.INSECT;
+		return Device.FLYING_OBJECT;
 	}
 
 	@Override
@@ -196,7 +196,7 @@ public class SimpleInsect extends MobileG {
 	public void setCaptureRadius(double captureRadius) {}
 
 	@Override
-	public void setCOMFileName(String comFileName) {
+	public void setScriptFileName(String scriptFileName) {
 		
 	}
 }

@@ -142,8 +142,7 @@ public class Marker extends Device {
 	}
 
 	@Override
-	public void setCOMFileName(String comFileName) {
-		// TODO Auto-generated method stub
+	public void setScriptFileName(String comFileName) {
 		
 	}
 }

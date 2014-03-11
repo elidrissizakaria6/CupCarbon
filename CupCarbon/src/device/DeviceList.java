@@ -19,7 +19,7 @@
 
 package device;
 
-import insects.Insects;
+import flying_object.FlyingGroup;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -80,7 +80,7 @@ public class DeviceList {
 			for (Iterator<Device> iterator = nodes.iterator(); iterator
 					.hasNext();) {
 				node = iterator.next();
-				System.out.println(node.getGPSFileName());
+				//System.out.println(node.getGPSFileName());
 				fos.print(node.getType());
 				fos.print(" " + node.getId());
 				fos.print(" " + node.getUserId());
@@ -97,14 +97,14 @@ public class DeviceList {
 				if (node.getType() == Device.SENSOR)
 					fos.print(" " + node.getCaptureUnitRadius());
 
-				if (node.getType() == Device.INSECT)
-					fos.print(" " + ((Insects) node).getInsectNumber());
+				if (node.getType() == Device.FLYING_OBJECT)
+					fos.print(" " + ((FlyingGroup) node).getInsectNumber());
 
 				if (node.getType() == Device.SENSOR
-						|| node.getType() == Device.INSECT
+						|| node.getType() == Device.FLYING_OBJECT
 						|| node.getType() == Device.MOBILE
 						|| node.getType() == Device.MOBILE_WR) {
-					System.out.println("----> " + node.getGPSFileName());
+					//System.out.println("----> " + node.getGPSFileName());
 					fos.print(" "
 							+ ((node.getGPSFileName() == "") ? "#" : node
 									.getGPSFileName()));
@@ -112,8 +112,8 @@ public class DeviceList {
 
 				if (node.getType() == Device.SENSOR)
 					fos.print(" "
-							+ ((node.getCOMFileName() == "") ? "#" : node
-									.getCOMFileName()));
+							+ ((node.getScriptFileName() == "") ? "#" : node
+									.getScriptFileName()));
 
 				fos.println();
 
@@ -189,7 +189,7 @@ public class DeviceList {
 			add(new Gas(type[3], type[4], type[5]));
 			break;
 		case 3:
-			add(new Insects(type[3], type[4], type[5], type[6], type[7]));
+			add(new FlyingGroup(type[3], type[4], type[5], type[6], type[7]));
 			break;
 		case 4:
 			add(new BaseStation(type[3], type[4], type[5], type[6]));
@@ -413,12 +413,19 @@ public class DeviceList {
 	}
 
 	public void simulateAll() {
-		Device node;
-		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
-			node = iterator.next();
+		//Device node;
+		for (Device node : nodes) {//Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
+			//node = iterator.next();
 			node.setSelection(true);
 			node.start();
 
+		}
+	}
+	
+	public static void stopSimulation() {
+		for (Device node : nodes) {
+			node.setSelection(false);
+			node.stopSimulation();;
 		}
 	}
 
@@ -469,13 +476,13 @@ public class DeviceList {
 		}
 	}
 
-	public static void setComFileName(String comFileName) {
+	public static void setScriptFileName(String scriptFileName) {
 		Device node;
-		System.out.println("Appel ..." + comFileName);
+		System.out.println("Appel ..." + scriptFileName);
 		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
 			node = iterator.next();
 			if (node.isSelected()) {
-				node.setCOMFileName(comFileName);
+				node.setScriptFileName(scriptFileName);
 			}
 		}
 	}
@@ -605,5 +612,21 @@ public class DeviceList {
 		p[0] = new Point(lx1, ly1);
 		p[1] = new Point(lx2, ly2);
 		return p;
+	}
+	
+	public void initId() {
+		int k = 0;
+		Device.initNumber() ;
+		for(Device d : nodes) {
+			d.setId(k++);
+			Device.incNumber();
+		}
+		Layer.getMapViewer().repaint();
+	}
+	
+	public void loadRoutesFromFiles() {
+		for(Device d : nodes) {
+			d.loadRouteFromFile();
+		}
 	}
 }
