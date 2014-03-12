@@ -66,7 +66,7 @@ public final class OpenCLScriptLoader {
 	 * Load the OpenCL script of the consumption method
 	 */
 	public static String loadConsumptionOCLScript() {
-		return "";
+		return loadScriptFile("opencl_scripts/consumption.cl");
 	}
 
 	// ------------------------------------------------------------
@@ -78,7 +78,7 @@ public final class OpenCLScriptLoader {
 	 * Load the OpenCL script of the next instruction method
 	 */
 	public static String loadNextInstructionOCLScript() {
-		return "";
+		return loadScriptFile("opencl_scripts/nextinstruction.cl");
 	}
 
 	// ------------------------------------------------------------
@@ -90,6 +90,6 @@ public final class OpenCLScriptLoader {
 	 * Load the OpenCL script of the stop condition method
 	 */
 	public static String loadStopConditionOCLScript() {
-		return "";
+		return loadScriptFile("opencl_scripts/stopcondition.cl");
 	}
 }

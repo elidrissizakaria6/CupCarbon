@@ -67,8 +67,7 @@ public class NetworkGeneratorForCpu extends Thread {
 		int j = 0;
 		iterator = nodes.listIterator();
 
-		WsnSimulationWindow
-				.setState("Network Generating for CPU Simulation ...");
+		WsnSimulationWindow.setState("Network Generating for CPU Simulation ...");
 		int iterNumber = n * (n + 1) / 2;
 		int iter = 0;
 		while (iterator.hasNext()) {
@@ -76,8 +75,7 @@ public class NetworkGeneratorForCpu extends Thread {
 			d1.getBattery().init(SimulationInputs.energyMax);
 			String s = "";
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(
-						d1.getScriptFileName()));
+				BufferedReader br = new BufferedReader(new FileReader(d1.getScriptFileName()));
 				for (int j2 = 0; j2 < scriptSize; j2++) {
 					s = br.readLine();
 					String[] inst = s.split(" ");
@@ -104,8 +102,7 @@ public class NetworkGeneratorForCpu extends Thread {
 				j = i + 1;
 				iterator2 = nodes.listIterator(iterator.nextIndex());
 				while (iterator2.hasNext()) {
-					WsnSimulationWindow
-							.setProgress((int) (1000 * (iter++) / iterNumber));
+					WsnSimulationWindow.setProgress((int) (1000 * (iter++) / iterNumber));
 					d2 = iterator2.next();
 					if (d1.radioDetect(d2)) {
 						SimulationInputs.links[i][j] = 1;

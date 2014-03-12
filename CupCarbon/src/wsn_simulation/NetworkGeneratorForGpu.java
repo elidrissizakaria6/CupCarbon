@@ -19,17 +19,6 @@
 
 package wsn_simulation;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
-import java.util.ListIterator;
-
-import map.Layer;
-import cupcarbon.WsnSimulationWindow;
-import device.Device;
-import device.DeviceList;
 
 /**
  * @author Ahcene Bounceur
@@ -45,86 +34,6 @@ public class NetworkGeneratorForGpu extends Thread {
 	// ------------------------------------------------------------------------
 	@Override
 	public void run() {
-		System.out.println("Network Generation For GPU ...");
-
-		Layer.getDeviceList().initId();
-
-		Device n1 = null;
-		Device n2 = null;
-
-		ListIterator<Device> iterator;
-		ListIterator<Device> iterator2;
-
-		List<Device> nodes = DeviceList.getNodes();
-		int n = nodes.size();
-		int scriptSize = SimulationInputs.scriptSize;
-
-		SimulationInputs.gpuLinks = new byte[n * n];
-		SimulationInputs.gpuScript = new int[n * scriptSize * 2];
-
-		iterator = nodes.listIterator();
-		int i = 0;
-		int j = 0;
-		String s = "";
-
-		WsnSimulationWindow
-				.setState("Network Generating for GPU Simulation ...");
-		int iterNumber = n * (n + 1) / 2;
-		int iter = 0;
-		while (iterator.hasNext()) {			
-			try {
-				sleep(10);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-
-			n1 = iterator.next();
-			n1.getBattery().init(SimulationInputs.energyMax);
-			SimulationInputs.gpuLinks[i * n + i] = 1;
-
-			try {
-				BufferedReader br = new BufferedReader(new FileReader(
-						n1.getScriptFileName()));
-				for (int j2 = 0; j2 < (scriptSize * 2); j2 += 2) {
-					s = br.readLine();
-					String[] inst = s.split(" ");
-					if (inst[0].toLowerCase().equals("psend")) {
-						SimulationInputs.gpuScript[i * scriptSize * 2 + j2] = Integer
-								.parseInt(inst[1]) * 8;
-						SimulationInputs.gpuScript[i * scriptSize * 2 + j2 + 1] = 1;
-					}
-					if (inst[0].toLowerCase().equals("delay")) {
-						SimulationInputs.gpuScript[i * scriptSize * 2 + j2] = Integer
-								.parseInt(inst[1]) * Device.frequency / 1000;
-						SimulationInputs.gpuScript[i * scriptSize * 2 + j2 + 1] = 0;
-					}
-				}
-				br.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			iterator2 = nodes.listIterator(iterator.nextIndex());
-			if (iterator.nextIndex() < n) {
-				j = i + 1;
-				while (iterator2.hasNext()) {
-					WsnSimulationWindow
-							.setProgress((int) (1000 * (iter++) / iterNumber));
-					n2 = iterator2.next();
-					if (n1.radioDetect(n2)) {
-						SimulationInputs.gpuLinks[i * n + j] = 1;
-						SimulationInputs.gpuLinks[j * n + i] = 1;
-					}
-					j++;
-				}
-			}
-			i++;
-		}
-		WsnSimulationWindow.setProgress(0);
-		SimulationInputs.nbSensors = n;
-		System.out.println("End of network generating.");
-		WsnSimulationWindow.setState("End of network generating.");
+		
 	}
 }
