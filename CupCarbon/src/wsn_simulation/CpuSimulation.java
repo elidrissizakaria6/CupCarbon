@@ -22,7 +22,6 @@ package wsn_simulation;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -41,27 +40,24 @@ import device.DeviceList;
  */
 public class CpuSimulation extends Thread {
 
-	public static boolean discreteEvent = true;
-	public boolean mobility = false;
-	public static int step = 1;
-	public static int energyMax = 0;
-	public static int iterNumber = 0;
-	public static int nbSensors = 0;
-	public static int scriptSize = 0;
-
-	public static LinkedList<double[][][]> tours;
-
-	public static int[][][] script;
-	public static byte[] iscript;
-	public static int[] event;
-	public static int[] event2;
-	public static int[] deadSensor;
-	public static int[] energy;
-	public static byte eRTx = 1;
-	public static byte[][] links;
+	private boolean discreteEvent = true;
+	private boolean mobility = false;
+	private int step = 1;
+	private int energyMax = 0;
+	private int iterNumber = 0;
+	private int nbSensors = 0;
+	private int scriptSize = 0;
+	private int[][][] script;
+	private byte[] iscript;
+	private int[] event;
+	private int[] event2;
+	private int[] deadSensor;
+	private int[] energy;
+	private byte eRTx = 1;
+	private byte[][] links;
 	
-	public boolean visual;
-	public int visualDelay;
+	private boolean visual;
+	private int visualDelay;
 
 	public CpuSimulation() {
 		init();
@@ -102,7 +98,6 @@ public class CpuSimulation extends Thread {
 		System.out.println("Initialization ... ");
 		List<Device> devices = DeviceList.getNodes();
 		int k = 0;
-		// for (int k = 0; k < nbSensors; k++) {
 		for (Device device : devices) {
 			event[k] = script[k][0][1];
 			energy[k] = energyMax;
@@ -154,9 +149,8 @@ public class CpuSimulation extends Thread {
 					Device d2 = null;
 					ListIterator<Device> iterator;
 					ListIterator<Device> iterator2;
-					List<Device> nodes = DeviceList.getNodes();
-					iterator = nodes.listIterator();
-					int n = nodes.size();
+					iterator = devices.listIterator();
+					int n = devices.size();
 					int ii = 0;
 					int jj = 0;
 					while (iterator.hasNext()) {
@@ -164,8 +158,7 @@ public class CpuSimulation extends Thread {
 						links[ii][ii] = 1;
 						if (iterator.nextIndex() < n) {
 							jj = ii + 1;
-							iterator2 = nodes
-									.listIterator(iterator.nextIndex());
+							iterator2 = devices.listIterator(iterator.nextIndex());
 							while (iterator2.hasNext()) {
 								d2 = iterator2.next();
 								if (d1.radioDetect(d2)) {
@@ -181,19 +174,18 @@ public class CpuSimulation extends Thread {
 						}
 					}
 					if (discreteEvent) {
-						min1 = min();
-						min2 = min2();
+						min1 = getMin();
+						min2 = getMin2();
 					} else {
 						min1 = step;
 						min2 = step;
 					}
-
 					if (min1 <= min2)
 						min = min1;
 					if (min2 < min1)
 						min = min2;
 				} else
-					min = min();
+					min = getMin();		
 				// ============================================================
 
 				time += min;
@@ -201,8 +193,7 @@ public class CpuSimulation extends Thread {
 				for (int i = 0; i < nbSensors; i++) {
 					conso = 0;
 					for (int j = 0; j < nbSensors; j++) {
-						conso += links[i][j] * script[i][iscript[j]][0]
-								* (1 - deadSensor[j]);
+						conso += links[i][j] * script[i][iscript[j]][0] * (1 - deadSensor[j]);
 					}
 					energy[i] -= min * conso * eRTx;
 					if (energy[i] < 0)
@@ -220,9 +211,9 @@ public class CpuSimulation extends Thread {
 					}
 					if (mobility)
 						if (event2[i] == 0) {
-							if(DeviceList.getNodes().get(i).canMove()) {
-								DeviceList.getNodes().get(i).exeNext(visual, visualDelay);
-								event2[i] = DeviceList.getNodes().get(i).getNextTime();
+							if(devices.get(i).canMove()) {
+								devices.get(i).exeNext(visual, visualDelay);
+								event2[i] = devices.get(i).getNextTime();
 							}
 						}
 					if (energy[i] <= 0) {
@@ -244,7 +235,7 @@ public class CpuSimulation extends Thread {
 				+ " sec.");
 		WsnSimulationWindow.setProgress(0);
 		int i = 0;
-		for (Device d : DeviceList.getNodes()) {
+		for (Device d : devices) {
 			d.getBattery().setCapacity(energy[i++]);
 		}
 		if(mobility) {
@@ -267,7 +258,7 @@ public class CpuSimulation extends Thread {
 	// ------------------------------------------------------------
 	//
 	// ------------------------------------------------------------
-	public int min() {
+	public int getMin() {
 		int min = (int) 10e8;
 		for (int i = 0; i < nbSensors; i++)
 			if ((min > event[i]))
@@ -275,7 +266,7 @@ public class CpuSimulation extends Thread {
 		return min;
 	}
 
-	public int min2() {
+	public int getMin2() {
 		int min = (int) 10e8;
 		for (int i = 0; i < nbSensors; i++)
 			if ((min > event2[i]))

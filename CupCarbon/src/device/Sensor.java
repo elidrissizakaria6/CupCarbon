@@ -320,16 +320,14 @@ public class Sensor extends DeviceWithRadio {
 		}
 	}
 
-	@Override
 	public void preprocessing() {
 		routeIndex = 0;
 	}
 
 	// ------------------------------------------------------------------------
-	// Run
+	// Simulate
 	// ------------------------------------------------------------------------
-	@Override
-	public void run() {
+	public void simulate() {
 		loadRouteFromFile();
 		xori = x;
 		yori = y;
@@ -363,11 +361,37 @@ public class Sensor extends DeviceWithRadio {
 			y = yori;
 			thread = null;
 			underSimulation = false;
-
 			Layer.getMapViewer().repaint();
 		}
 	}
+	// ------------------------------------------------------------------------
+	// Run
+	// ------------------------------------------------------------------------
+	@Override
+	public void run() {
+		simulate();
+	}
 
+	// ------------------------------------------------------------------------
+	// Duration to Next Time 
+	// ------------------------------------------------------------------------
+	@Override
+	public int getNextTime() {
+		if (routeTime.size() > 0) {
+			int diff = 0;
+			if (routeIndex == 0)
+				diff = (int) (1 * routeTime.get(routeIndex));
+			else
+				diff = (int) (routeTime.get(routeIndex) - routeTime
+						.get(routeIndex - 1));
+			return ((diff * 100) * Device.frequency / 1000);
+		}
+		return 0;
+	}
+
+	// ------------------------------------------------------------------------
+	// Go to next point and update 
+	// ------------------------------------------------------------------------
 	@Override
 	public void exeNext(boolean visual, int visualDelay) {
 		if (routeTime != null) {
@@ -391,9 +415,10 @@ public class Sensor extends DeviceWithRadio {
 		}
 	}
 
-	/**
-	 * 
-	 */
+	// ------------------------------------------------------------------------
+	// Go to next index (routeIndex)
+	// ------------------------------------------------------------------------
+	//@Override
 	public void goToNext() {
 		if (routeTime != null) {
 			routeIndex++;
@@ -405,12 +430,18 @@ public class Sensor extends DeviceWithRadio {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// Test the existence of a next ponit
+	// ------------------------------------------------------------------------
 	public boolean hasNext() {
 		if (routeIndex < routeTime.size())
 			return true;
 		return false;
 	}
 
+	// ------------------------------------------------------------------------
+	// 
+	// ------------------------------------------------------------------------
 	@Override
 	public int getType() {
 		return Device.SENSOR;
@@ -465,7 +496,4 @@ public class Sensor extends DeviceWithRadio {
 			return false;
 		return true;
 	}
-
-	public int getNextTime() { return 0 ;}
-
 }
