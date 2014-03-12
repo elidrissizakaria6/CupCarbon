@@ -60,7 +60,7 @@ public class DeviceParametersWindow extends JInternalFrame {
 
 	/**
 	 * Launch the application.
-	 *
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -89,7 +89,8 @@ public class DeviceParametersWindow extends JInternalFrame {
 		getContentPane().add(panel_2, BorderLayout.SOUTH);
 
 		JButton btnNewButton = new JButton("Apply");
-		btnNewButton.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+		btnNewButton.setIcon(new ImageIcon(Parameters.IMGPATH
+				+ "loopnone-1.png"));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DeviceList.updateFromMap(textField_5.getText(),
@@ -108,14 +109,14 @@ public class DeviceParametersWindow extends JInternalFrame {
 		JPanel panel_9 = new JPanel();
 		panel_8.add(panel_9, BorderLayout.WEST);
 		panel_9.setLayout(new GridLayout(7, 1, 0, 0));
-		
-				JLabel lblscript = new JLabel("Script File");
-				lblscript.setFont(new Font("Arial", Font.PLAIN, 11));
-				panel_9.add(lblscript);
-		
-				JLabel lblGpsFile = new JLabel("GPS File");
-				lblGpsFile.setFont(new Font("Arial", Font.PLAIN, 11));
-				panel_9.add(lblGpsFile);
+
+		JLabel lblscript = new JLabel("Script File");
+		lblscript.setFont(new Font("Arial", Font.PLAIN, 11));
+		panel_9.add(lblscript);
+
+		JLabel lblGpsFile = new JLabel("GPS File");
+		lblGpsFile.setFont(new Font("Arial", Font.PLAIN, 11));
+		panel_9.add(lblGpsFile);
 
 		JLabel label = new JLabel("Latitude");
 		label.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -140,12 +141,12 @@ public class DeviceParametersWindow extends JInternalFrame {
 		JPanel panel_10 = new JPanel();
 		panel_8.add(panel_10, BorderLayout.CENTER);
 		panel_10.setLayout(new GridLayout(7, 1, 0, 0));
-		
-				scriptComboBox = new JComboBox();
-				panel_10.add(scriptComboBox);
-		
-				gpsPathNameComboBox = new JComboBox();
-				panel_10.add(gpsPathNameComboBox);
+
+		scriptComboBox = new JComboBox();
+		panel_10.add(scriptComboBox);
+
+		gpsPathNameComboBox = new JComboBox();
+		panel_10.add(gpsPathNameComboBox);
 
 		textField_5 = new JTextField();
 		panel_10.add(textField_5);
@@ -170,98 +171,98 @@ public class DeviceParametersWindow extends JInternalFrame {
 		JPanel panel_11 = new JPanel();
 		panel_8.add(panel_11, BorderLayout.EAST);
 		panel_11.setLayout(new GridLayout(7, 1, 0, 0));
-		
-				JPanel panel_1_ = new JPanel();
-				FlowLayout flowLayout_5 = (FlowLayout) panel_1_.getLayout();
-				flowLayout_5.setVgap(0);
-				flowLayout_5.setHgap(0);
-				panel_11.add(panel_1_);
-				
-						JButton button_ = new JButton("");
-						button_.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-								FileFilter ff = new FileFilter() {
-									public boolean accept(File f) {
-										if (f.isDirectory())
-											return true;
-										else if (f.getName().endsWith(".scr"))
-											return true;
-										else
-											return false;
-									}
 
-									public String getDescription() {
-										return "Script files";
-									}
-								};
+		JPanel panel_1_ = new JPanel();
+		FlowLayout flowLayout_5 = (FlowLayout) panel_1_.getLayout();
+		flowLayout_5.setVgap(0);
+		flowLayout_5.setHgap(0);
+		panel_11.add(panel_1_);
 
-								JFileChooser fc = new JFileChooser();
-								fc.setFileFilter(ff);
-								int val = fc.showDialog(fc, "Open Script File");
-								if (val == 0) {
-									// textField.setText(fc.getSelectedFile().toString());
-								}
-							}
-						});
-						
-								JButton button_1_ = new JButton("");
-								button_1_.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										DeviceList.setScriptFileName(Project.getProjectScriptPath()
-												+ Parameters.SEPARATOR
-												+ scriptComboBox.getSelectedItem());
-									}
-								});
-								button_1_.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
-								panel_1_.add(button_1_);
-								button_.setIcon(new ImageIcon(Parameters.IMGPATH + "Ouvrir.png"));
-								panel_1_.add(button_);
-		
-				JPanel panel_1 = new JPanel();
-				FlowLayout flowLayout_6 = (FlowLayout) panel_1.getLayout();
-				flowLayout_6.setVgap(0);
-				flowLayout_6.setHgap(0);
-				panel_11.add(panel_1);
-				
-						JButton button = new JButton("");
-						button.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-								FileFilter ff = new FileFilter() {
-									public boolean accept(File f) {
-										if (f.isDirectory())
-											return true;
-										else if (f.getName().endsWith(".gps"))
-											return true;
-										else
-											return false;
-									}
+		JButton button_ = new JButton("");
+		button_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FileFilter ff = new FileFilter() {
+					public boolean accept(File f) {
+						if (f.isDirectory())
+							return true;
+						else if (f.getName().endsWith(".scr"))
+							return true;
+						else
+							return false;
+					}
 
-									public String getDescription() {
-										return "GPS files";
-									}
-								};
+					public String getDescription() {
+						return "Script files";
+					}
+				};
 
-								JFileChooser fc = new JFileChooser();
-								fc.setFileFilter(ff);
-								int val = fc.showDialog(fc, "Open GPS File");
-								if (val == 0) {
-									// textField.setText(fc.getSelectedFile().toString());
-								}
-							}
-						});
-						
-								JButton button_1 = new JButton("");
-								button_1.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										DeviceList.setGpsFileName(Project.getProjectGpsPath()
-												+ Parameters.SEPARATOR
-												+ gpsPathNameComboBox.getSelectedItem());
-									}
-								});
-								button_1.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
-								panel_1.add(button_1);
-								button.setIcon(new ImageIcon(Parameters.IMGPATH + "Ouvrir.png"));
-								panel_1.add(button);
+				JFileChooser fc = new JFileChooser();
+				fc.setFileFilter(ff);
+				int val = fc.showDialog(fc, "Open Script File");
+				if (val == 0) {
+					// textField.setText(fc.getSelectedFile().toString());
+				}
+			}
+		});
+
+		JButton button_1_ = new JButton("");
+		button_1_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DeviceList.setScriptFileName(Project.getProjectScriptPath()
+						+ Parameters.SEPARATOR
+						+ scriptComboBox.getSelectedItem());
+			}
+		});
+		button_1_.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+		panel_1_.add(button_1_);
+		button_.setIcon(new ImageIcon(Parameters.IMGPATH + "Ouvrir.png"));
+		panel_1_.add(button_);
+
+		JPanel panel_1 = new JPanel();
+		FlowLayout flowLayout_6 = (FlowLayout) panel_1.getLayout();
+		flowLayout_6.setVgap(0);
+		flowLayout_6.setHgap(0);
+		panel_11.add(panel_1);
+
+		JButton button = new JButton("");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FileFilter ff = new FileFilter() {
+					public boolean accept(File f) {
+						if (f.isDirectory())
+							return true;
+						else if (f.getName().endsWith(".gps"))
+							return true;
+						else
+							return false;
+					}
+
+					public String getDescription() {
+						return "GPS files";
+					}
+				};
+
+				JFileChooser fc = new JFileChooser();
+				fc.setFileFilter(ff);
+				int val = fc.showDialog(fc, "Open GPS File");
+				if (val == 0) {
+					// textField.setText(fc.getSelectedFile().toString());
+				}
+			}
+		});
+
+		JButton button_1 = new JButton("");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DeviceList.setGpsFileName(Project.getProjectGpsPath()
+						+ Parameters.SEPARATOR
+						+ gpsPathNameComboBox.getSelectedItem());
+			}
+		});
+		button_1.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+		panel_1.add(button_1);
+		button.setIcon(new ImageIcon(Parameters.IMGPATH + "Ouvrir.png"));
+		panel_1.add(button);
 
 		JPanel panel_12 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_12.getLayout();

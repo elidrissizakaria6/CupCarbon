@@ -1190,7 +1190,7 @@ public abstract class Device implements Runnable, MouseListener,
 		yori = y;
 	}
 
-	public void tori() {
+	public void toori() {
 		x = xori;
 		y = yori;
 	}

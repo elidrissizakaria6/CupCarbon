@@ -80,8 +80,6 @@ public class CupCarbon {
 	private JCheckBoxMenuItem chckbxmntmAddSelection;
 	private ScriptWindow scriptWindow = new ScriptWindow();
 	
-	//private CrtSimulator crtSimulator = new CrtSimulator();
-	
 	private MtSimulationWindow mtSimulator = new MtSimulationWindow(); 
 	
 	private GpsWindow gpsWindow = new GpsWindow();

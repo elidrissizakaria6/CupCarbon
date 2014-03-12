@@ -327,10 +327,9 @@ public class Sensor extends DeviceWithRadio {
 	// ------------------------------------------------------------------------
 	// Simulate
 	// ------------------------------------------------------------------------
-	public void simulate() {
+	public void runSensorSimulation() {
 		loadRouteFromFile();
-		xori = x;
-		yori = y;
+		fixori();
 		if (readyForSimulation) {
 			underSimulation = true;
 			routeIndex = 0;
@@ -352,13 +351,12 @@ public class Sensor extends DeviceWithRadio {
 					Thread.sleep(toWait * Device.moveSpeed);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-				}
+				}				
 				goToNext();
 			} while (hasNext());
 			routeIndex = 0;
 			selected = false;
-			x = xori;
-			y = yori;
+			toori();
 			thread = null;
 			underSimulation = false;
 			Layer.getMapViewer().repaint();
@@ -369,7 +367,7 @@ public class Sensor extends DeviceWithRadio {
 	// ------------------------------------------------------------------------
 	@Override
 	public void run() {
-		simulate();
+		runSensorSimulation();
 	}
 
 	// ------------------------------------------------------------------------
