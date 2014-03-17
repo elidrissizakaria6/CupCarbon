@@ -1133,7 +1133,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 * @return the battery level
 	 */
 	public double getBatteryLevel() {
-		return 0;
+		return this.getBattery().getCapacity();
 	}
 
 	/**
