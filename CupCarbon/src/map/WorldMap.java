@@ -19,13 +19,13 @@
 
 package map;
 
-import mt_simulation.Simulation;
-
 import org.jdesktop.swingx.JXMapKit;
 import org.jdesktop.swingx.mapviewer.DefaultTileFactory;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
+
+import wisen_simulation.Simulation;
 
 public class WorldMap extends JXMapKit {
 
@@ -34,7 +34,6 @@ public class WorldMap extends JXMapKit {
 	final int max = 18;
 
 	public WorldMap() {
-
 		// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
 		// true,"file:/myLocalMapServer/tiles","x","y","z") {
 		TileFactoryInfo info = new TileFactoryInfo(0, max, max, 256, true,
@@ -45,9 +44,9 @@ public class WorldMap extends JXMapKit {
 			// true,"file:/myLocalMapServer/tiles","x","y","z") {
 			public String getTileUrl(int x, int y, int zoom) {
 				zoom = max - zoom;
-				 return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
+				 //return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
 				 //return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom + "/" + x + "/" + y + ".jpg";
-				 //return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".png";
+				 return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".png";
 				//return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/"
 				//		+ x + "/" + y + ".png";
 				// return

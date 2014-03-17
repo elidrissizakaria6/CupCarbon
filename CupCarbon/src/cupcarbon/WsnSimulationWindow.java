@@ -1,6 +1,7 @@
 package cupcarbon;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -23,11 +24,12 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.MatteBorder;
 
-import wsn_simulation.CpuSimulation;
-import wsn_simulation.GpuSimulation;
-import wsn_simulation.NetworkGenerator;
-import wsn_simulation.SimulationInputs;
+import simbox_simulation.CpuSimulation;
+import simbox_simulation.GpuSimulation;
+import simbox_simulation.NetworkGenerator;
+import simbox_simulation.SimulationInputs;
 import device.Device;
 
 public class WsnSimulationWindow extends JInternalFrame {
@@ -51,6 +53,8 @@ public class WsnSimulationWindow extends JInternalFrame {
 	private JCheckBox cboxMobility;
 	private JTextField vdTextField;
 	private JCheckBox cbVisual;
+	private JTextField textField;
+	private final ButtonGroup buttonGroup_1 = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -75,7 +79,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 		setTitle("Simulation Parameters");
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(100, 100, 456, 483);
+		setBounds(100, 100, 456, 558);
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(7, 7, 7, 7));
@@ -98,7 +102,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 		iterNumberTextField = new JTextField();
 		panel_8.add(iterNumberTextField);
 		iterNumberTextField.setFont(new Font("Arial", Font.PLAIN, 12));
-		iterNumberTextField.setText("100");
+		iterNumberTextField.setText("1000");
 		iterNumberTextField.setColumns(10);
 
 		JPanel panel_9 = new JPanel();
@@ -112,7 +116,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 
 		energyMaxTextField = new JTextField();
 		energyMaxTextField.setFont(new Font("Arial", Font.PLAIN, 12));
-		energyMaxTextField.setText("100000");
+		energyMaxTextField.setText("1000000");
 		panel_9.add(energyMaxTextField);
 		energyMaxTextField.setColumns(10);
 
@@ -146,17 +150,14 @@ public class WsnSimulationWindow extends JInternalFrame {
 		scriptSizeTextField.setColumns(10);
 		panel_11.add(scriptSizeTextField);
 
-		JSeparator separator_3 = new JSeparator();
-		panel.add(separator_3);
-
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new EmptyBorder(0, 0, 0, 0));
+		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_1.add(panel_3);
-		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.Y_AXIS));
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -180,17 +181,51 @@ public class WsnSimulationWindow extends JInternalFrame {
 		JLabel lblBaudRate = new JLabel("Baud rate");
 		lblBaudRate.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_4.add(lblBaudRate);
-
-		JSeparator separator_1 = new JSeparator();
-		panel_1.add(separator_1);
+		
+		JPanel panel_18 = new JPanel();
+		panel_18.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_3.add(panel_18);
+		panel_18.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JRadioButton rdbtnBits = new JRadioButton("Bits");
+		rdbtnBits.setSelected(true);
+		buttonGroup_1.add(rdbtnBits);
+		rdbtnBits.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_18.add(rdbtnBits);
+		
+		JRadioButton rdbtnByte = new JRadioButton("Byte");
+		buttonGroup_1.add(rdbtnByte);
+		rdbtnByte.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_18.add(rdbtnByte);
+		
+		JPanel panel_17 = new JPanel();
+		panel_3.add(panel_17);
+		panel_17.setLayout(new BoxLayout(panel_17, BoxLayout.X_AXIS));
+		
+		JLabel lblCommunication = new JLabel("  Failure Probability   ");
+		lblCommunication.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_17.add(lblCommunication);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Arial", Font.PLAIN, 12));
+		textField.setText("0");
+		panel_17.add(textField);
+		textField.setColumns(10);
 
 		JPanel panel_7 = new JPanel();
+		panel_7.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		panel_1.add(panel_7);
 		panel_7.setLayout(new GridLayout(0, 2, 0, 0));
 
 		JPanel panel_14 = new JPanel();
+		panel_14.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_7.add(panel_14);
-		panel_14.setLayout(new GridLayout(0, 1, 0, 0));
+		panel_14.setLayout(new GridLayout(3, 1, 0, 0));
+		
+				cboxDEvent = new JCheckBox("Discrete Event");
+				panel_14.add(cboxDEvent);
+				cboxDEvent.setFont(new Font("Arial", Font.PLAIN, 12));
+				cboxDEvent.setSelected(true);
 
 		rdbtnCpuSimulation = new JRadioButton("CPU Based Simulation");
 		panel_14.add(rdbtnCpuSimulation);
@@ -204,28 +239,36 @@ public class WsnSimulationWindow extends JInternalFrame {
 		buttonGroup.add(rdbtnGpuSimulation);
 
 		JPanel panel_13 = new JPanel();
+		panel_13.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_7.add(panel_13);
-		panel_13.setLayout(new GridLayout(2, 2, 0, 0));
-
-		cboxDEvent = new JCheckBox("Discrete Event");
-		cboxDEvent.setFont(new Font("Arial", Font.PLAIN, 12));
-		cboxDEvent.setSelected(true);
-		panel_13.add(cboxDEvent);
+		panel_13.setLayout(new GridLayout(3, 1, 0, 0));
 
 		cboxMobility = new JCheckBox("Mobility");
 		cboxMobility.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_13.add(cboxMobility);
 		
-		cbVisual = new JCheckBox("Visual: d=");
+		cbVisual = new JCheckBox("View mobiles");
 		cbVisual.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_13.add(cbVisual);
 		
+		JPanel panel_16 = new JPanel();
+		panel_13.add(panel_16);
+		panel_16.setLayout(new BoxLayout(panel_16, BoxLayout.X_AXIS));
+		
+		JLabel lblSpeed = new JLabel(" Speed  ");
+		lblSpeed.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_16.add(lblSpeed);
+		
 		vdTextField = new JTextField();
+		panel_16.add(vdTextField);
 		vdTextField.setToolTipText("Visual Delay");
 		vdTextField.setFont(new Font("Arial", Font.PLAIN, 12));
 		vdTextField.setText("100");
-		panel_13.add(vdTextField);
 		vdTextField.setColumns(10);
+		
+		JLabel lblMs = new JLabel("  ms   ");
+		lblMs.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_16.add(lblMs);
 
 		JSeparator separator = new JSeparator();
 		panel_1.add(separator);

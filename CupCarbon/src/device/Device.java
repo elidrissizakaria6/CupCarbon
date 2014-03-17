@@ -31,8 +31,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 
 import map.Layer;
-import mt_simulation.DeviceSimulator;
-import mt_simulation.Simulation;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
@@ -40,6 +38,8 @@ import script.Script;
 import utilities.MapCalc;
 import utilities.UColor;
 import utilities._Constantes;
+import wisen_simulation.DeviceSimulator;
+import wisen_simulation.Simulation;
 import battery.Battery;
 import cupcarbon.DeviceParametersWindow;
 import cupcarbon.Parameters;

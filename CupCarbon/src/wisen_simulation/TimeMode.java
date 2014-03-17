@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package mt_simulation;
+package wisen_simulation;
 
-public enum SimulationMode {
-	PARALLELMODE,
-	SEQUENTIALMODE
+public enum TimeMode {
+	REALTIME, 
+	LOGICALTIME
 }

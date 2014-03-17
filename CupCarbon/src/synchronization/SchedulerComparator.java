@@ -21,7 +21,7 @@ package synchronization;
 
 import java.util.Comparator;
 
-import mt_simulation.Event;
+import wisen_simulation.Event;
 
 public class SchedulerComparator implements Comparator<Event> {
 

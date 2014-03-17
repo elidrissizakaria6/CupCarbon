@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wsn_simulation;
+package simbox_simulation;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -193,7 +193,7 @@ public class CpuSimulation extends Thread {
 				for (int i = 0; i < nbSensors; i++) {
 					conso = 0;
 					for (int j = 0; j < nbSensors; j++) {
-						conso += links[i][j] * script[i][iscript[j]][0] * (1 - deadSensor[j]);
+						conso += links[i][j] * script[j][iscript[j]][0] * (1 - deadSensor[j]);
 					}
 					energy[i] -= min * conso * eRTx;
 					if (energy[i] < 0)
@@ -240,7 +240,7 @@ public class CpuSimulation extends Thread {
 		}
 		if(mobility) {
 			for (Device device : devices) {
-				device.tori();
+				device.toori();
 				device.stopSimulation();
 			}
 			Layer.getMapViewer().repaint();

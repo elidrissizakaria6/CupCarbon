@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wsn_simulation;
+package simbox_simulation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

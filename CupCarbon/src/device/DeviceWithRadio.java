@@ -26,9 +26,9 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 
 import map.Layer;
-import mt_simulation.DeviceSimulator;
 import utilities.MapCalc;
 import utilities.UColor;
+import wisen_simulation.DeviceSimulator;
 import battery.Battery;
 
 /**
