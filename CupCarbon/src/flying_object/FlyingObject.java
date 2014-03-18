@@ -24,9 +24,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 
 import map.Layer;
 
@@ -41,7 +40,7 @@ import device.MobileG;
  * @author Ahcene Bounceur
  */
 public class FlyingObject extends MobileG {
-	
+
 	protected double x = 0;
 	protected double y = 0;
 	protected double xc = 0;
@@ -51,8 +50,15 @@ public class FlyingObject extends MobileG {
 	private double speedOnX = .00001;
 	private double speedOnY = .00001;
 	private double rotationAngle = .2;
-	private double dispersion = 50.;
-	private boolean detected = false; 
+	private double dispersion = 200.;
+	private boolean detected = false;
+
+	private LinkedList<Long> routeTime;
+	private LinkedList<Double> routeX;
+	private LinkedList<Double> routeY;
+	private boolean loop = false;
+	private int routeIndex = 0;
+	//private boolean readyForSimulation = false;
 
 	// ------------------------------------
 
@@ -62,7 +68,7 @@ public class FlyingObject extends MobileG {
 		this.direction = theta;
 		this.xc = xc;
 		this.yc = yc;
-		radius = 100 ;
+		radius = 100;
 	}
 
 	public FlyingObject(double x, double y, boolean dispersion) {
@@ -77,7 +83,7 @@ public class FlyingObject extends MobileG {
 		this.x = x + xc;
 		this.y = y + yc;
 		direction = (int) (Math.random() * 360);
-		radius = 100 ;
+		radius = 100;
 	}
 
 	// ------------------------------------
@@ -109,35 +115,37 @@ public class FlyingObject extends MobileG {
 	 *            Graphics
 	 */
 	public void draw(Graphics g) {
-		//Graphics2D g = (Graphics2D) gg;
-		//g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		//		RenderingHints.VALUE_ANTIALIAS_ON);
+		// Graphics2D g = (Graphics2D) gg;
+		// g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		// RenderingHints.VALUE_ANTIALIAS_ON);
 		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
 		int x = coord[0];
 		int y = coord[1];
-		//int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
-		//int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
-		//int v = 5*(Layer.getMapViewer().getZoom()-10);
-		int v = 10-Layer.getMapViewer().getZoom();
-		if(v<0) v=1;
-		int rayon = MapCalc.radiusInPixels(this.radius) ;
-		
-		if(detected) {
+		// int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
+		// int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
+		// int v = 5*(Layer.getMapViewer().getZoom()-10);
+		int v = 10 - Layer.getMapViewer().getZoom();
+		if (v < 0)
+			v = 1;
+		int rayon = MapCalc.radiusInPixels(this.radius);
+
+		if (detected) {
 			g.setColor(UColor.ROUGE);
-			g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
+			g.drawOval(x - rayon - 4, y - rayon - 4, (rayon + 4) * 2,
+					(rayon + 4) * 2);
 		}
 		g.setColor(Color.BLACK);
-//		g.drawArc((int) x - rayon/2, (int) y - rayon/2, rayon, rayon,
-//				(int) direction - 90 - 40, 80);
-//		g.drawArc((int) x - rayon*2/3, (int) y - rayon*2/3, rayon*4/3, rayon*4/3,
-//				(int) direction - 90 - 40, 80);
-		
+		// g.drawArc((int) x - rayon/2, (int) y - rayon/2, rayon, rayon,
+		// (int) direction - 90 - 40, 80);
+		// g.drawArc((int) x - rayon*2/3, (int) y - rayon*2/3, rayon*4/3,
+		// rayon*4/3,
+		// (int) direction - 90 - 40, 80);
+
 		g.fillArc((int) x - v, (int) y - v, v * 2, v * 2,
 				(int) direction - 90 - 20, 40);
 		g.fillArc((int) x - rayon, (int) y - rayon, rayon * 2, rayon * 2,
 				(int) direction - 90 - 1, 2);
-		
-		
+
 	}
 
 	public double getX() {
@@ -152,79 +160,108 @@ public class FlyingObject extends MobileG {
 		return direction;
 	}
 
-	@Override
-	public void run() {
-		double distance;
-		boolean firstTime = true;
+	// ------------------------------------------------------------------------
+	// Load Route from file to Lists
+	// ------------------------------------------------------------------------
+	public void loadRouteFromFile() {
+		routeIndex = 0;
+		routeTime = new LinkedList<Long>();
+		routeX = new LinkedList<Double>();
+		routeY = new LinkedList<Double>();
 		FileInputStream fis;
 		BufferedReader b = null;
-		String[] ts;
 		String s;
-		double x1, y1, x2, y2;
+		String[] ts;
 		try {
-			Thread.sleep((int) (1000 * Math.random()));
+			//readyForSimulation = false;
 			if (!gpsFileName.equals("")) {
+				//readyForSimulation = true;
 				fis = new FileInputStream(gpsFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
+				underSimulation = true;
 				b.readLine();
 				b.readLine();
 				b.readLine();
-			}
+				loop = Boolean.parseBoolean(b.readLine());
+				while ((s = b.readLine()) != null) {
+					ts = s.split(" ");
+					routeTime.add(Long.parseLong(ts[0]));
+					routeX.add(Double.parseDouble(ts[1]));
+					routeY.add(Double.parseDouble(ts[2]));
+				}
+				b.close();
+				fis.close();
+			}				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
-		long tmpTime = -3600000;
-		long cTime = 0;
-		long toWait = 0;
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-		while (true) {
-			if (b == null)
-				break;
-			try {
-				if (((s = b.readLine()) != null)) {
-					x2 = x;
-					y2 = y;
-					ts = s.split(" ");
-					cTime = simpleDateFormat.parse(ts[0]).getTime();
-					toWait = cTime - tmpTime;
-					tmpTime = cTime;
-					x1 = Double.parseDouble(ts[1]) + Math.random() / dispersion;
-					y1 = Double.parseDouble(ts[2]) + Math.random() / dispersion;
-					if (firstTime) {
-						x = x1;
-						y = y1;
-						firstTime = false;
-					} else {
-						distance = 1.35 * MapCalc.distance(x1, y1, x2, y2);
-						int d = 1;
-						for (int i = 0; i < distance; i++) {
-							move(getAngle(x1, y1, x2, y2));
-							Layer.getMapViewer().repaint();
-							Thread.sleep(d);
-						}
-					}
-				} else {
-					break;
+	// ------------------------------------------------------------------------
+	// Go to next index (routeIndex)
+	// ------------------------------------------------------------------------
+	// @Override
+	public void goToNext() {
+		if (routeTime != null) {
+			routeIndex++;
+			if (routeIndex == routeTime.size()) {
+				if (loop) {
+					routeIndex = 0;
 				}
-				try {
-					Thread.sleep(toWait / 1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Layer.getMapViewer().repaint();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
-		try {
-			if (b != null)
-				b.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		underSimulation = false;
+	}
+
+	// ------------------------------------------------------------------------
+	// Test the existence of a next ponit
+	// ------------------------------------------------------------------------
+	public boolean hasNext() {
+		if (routeIndex < routeTime.size())
+			return true;
+		return false;
+	}
+
+	@Override
+	public void run() {
+		loadRouteFromFile();
+		fixori();
+		underSimulation = true;
+		routeIndex = 0;
+		selected = false;
+		double x1, y1, x2, y2;
+		boolean firstTime = true;
+		double distance;
+		
+		do {
+			x2 = x;
+			y2 = y;
+			x1 = routeX.get(routeIndex) + Math.random() / dispersion;
+			y1 = routeY.get(routeIndex) + Math.random() / dispersion;
+			if (firstTime) {
+				x = x1;
+				y = y1;
+				firstTime = false;
+			} else {
+				distance = 1.35 * MapCalc.distance(x1, y1, x2, y2);
+				int d = 1;
+				for (int i = 0; i < distance; i++) {
+					move(getAngle(x1, y1, x2, y2));
+					Layer.getMapViewer().repaint();
+					try {
+						Thread.sleep(d);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			goToNext();
+		} while (hasNext());
+		routeIndex = 0;
+		selected = false;
+		toori();
 		thread = null;
+		underSimulation = false;
+		Layer.getMapViewer().repaint();
 	}
 
 	/**
@@ -259,52 +296,54 @@ public class FlyingObject extends MobileG {
 	}
 
 	@Override
-    public String getNodeIdName() {
-            return getIdFL() + id;
-    }
-
-    @Override
-    public int getType() {
-            return Device.FLYING_OBJECT;
-    }
-
-    @Override
-    public void setRadioRadius(double radiuRadius) {
-    }
-
-    @Override
-    public void setCaptureRadius(double captureRadius) {
-    }
-
-    @Override
-    public String getIdFL() {
-            return "I";
-    }
-    
-    public void relativeMove(double x, double y) {
-    	if(thread == null ) {
-    		this.x = x+xc;
-    		this.y = y+yc;
-    	}
-    }
-    
-    public void setDetected(boolean b) {
-    	detected = b;
+	public String getNodeIdName() {
+		return getIdFL() + id;
 	}
-    
-    public boolean getDetected() {
-    	return detected ;
-    }
-    
-    @Override
-	public int getNextTime() { return 0 ;}
-	
+
 	@Override
-	public void loadRouteFromFile() {}
-	
+	public int getType() {
+		return Device.FLYING_OBJECT;
+	}
+
 	@Override
-	public void exeNext(boolean visual, int visualDelay) {}
-	
+	public void setRadioRadius(double radiuRadius) {
+	}
+
 	@Override
-	public boolean canMove() {return false;}
+	public void setCaptureRadius(double captureRadius) {
+	}
+
+	@Override
+	public String getIdFL() {
+		return "I";
+	}
+
+	public void relativeMove(double x, double y) {
+		if (thread == null) {
+			this.x = x + xc;
+			this.y = y + yc;
+		}
+	}
+
+	public void setDetected(boolean b) {
+		detected = b;
+	}
+
+	public boolean getDetected() {
+		return detected;
+	}
+
+	@Override
+	public int getNextTime() {
+		return 0;
+	}
+
+	@Override
+	public void exeNext(boolean visual, int visualDelay) {
+	}
+
+	@Override
+	public boolean canMove() {
+		return false;
+	}
 }

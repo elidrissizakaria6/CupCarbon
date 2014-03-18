@@ -154,14 +154,16 @@ public class Gas extends DeviceWithoutRadio {
 	public void run() {
 		selected = false ;
 		underSimulation = true ;
+		fixori();
 		while(duree>0) {
 			radius++ ;
 			duree-- ;
 			Layer.getMapViewer().repaint();
 			try {
-				Thread.sleep(30);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {e.printStackTrace();}
 		}
+		toori();
 		underSimulation = false ;
 		thread = null ;
 		Layer.getMapViewer().repaint();

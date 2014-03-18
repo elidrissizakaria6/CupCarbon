@@ -58,9 +58,9 @@ public class Battery implements Cloneable {
 	/**
 	 * @return the capacity of the battery
 	 */
-	public int getCapacity() {
+	public long getCapacity() {
 		// return (int)(capacite/capaciteDeBase*100.) ;
-		return (int) (capacity);
+		return capacity;
 	}
 
 	/**

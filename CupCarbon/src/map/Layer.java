@@ -236,7 +236,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			}
 			if (lastKey == '3') {
 				DeviceList.add(new FlyingGroup(gp.getLatitude(), gp.getLongitude(),
-						500, 200));
+					10, 100));
 				mapViewer.repaint();
 			}
 			if (lastKey == '4') {
