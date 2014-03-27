@@ -1,7 +1,7 @@
 CupCarbon
 =========
 
-WSN Design and Simulation Tool
+Wireless Sensor Network Design and Simulation Tool
 
 Introduction
 ------------
