@@ -78,8 +78,8 @@ public class CupCarbon {
 	private static JLabel label;
 	private static JLabel sspeedLabel;
 	private JCheckBoxMenuItem chckbxmntmAddSelection;
-	private ComScriptWindow comScriptWindow = new ComScriptWindow(); 
-	
+	private ComScriptWindow comScriptWindow = new ComScriptWindow();
+
 	private GpsWindow gpsWindow = new GpsWindow();
 	private DeviceParametersWindow deviceParametersWindow = new DeviceParametersWindow();
 	private FlyingObjParametersWindow flyingObjParametersWindow = new FlyingObjParametersWindow();
@@ -441,7 +441,8 @@ public class CupCarbon {
 		mntmSelectAllRouters.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "select_node.png"));
 
-		JMenuItem mntmSelectAllFlyingObjects = new JMenuItem("Select All Flying Objects");
+		JMenuItem mntmSelectAllFlyingObjects = new JMenuItem(
+				"Select All Flying Objects");
 		mnSelectAll.add(mntmSelectAllFlyingObjects);
 		mntmSelectAllFlyingObjects.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -528,11 +529,13 @@ public class CupCarbon {
 		mntmDeselectAllRouters.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "deselect_node.png"));
 
-		JMenuItem mntmDeselectAllFlyingObjects = new JMenuItem("Deselect All Flying Objects");
+		JMenuItem mntmDeselectAllFlyingObjects = new JMenuItem(
+				"Deselect All Flying Objects");
 		mnDeselectAll.add(mntmDeselectAllFlyingObjects);
 		mntmDeselectAllFlyingObjects.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WorldMap.setSelectionOfAllNodes(false, Device.FLYING_OBJECT, true);
+				WorldMap.setSelectionOfAllNodes(false, Device.FLYING_OBJECT,
+						true);
 			}
 		});
 		mntmDeselectAllFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH
@@ -615,8 +618,8 @@ public class CupCarbon {
 		mnNodes.add(mntmAddBaseStation);
 
 		JMenuItem mntmAddFlyingObjects = new JMenuItem("Add Flying Objects");
-		mntmAddFlyingObjects
-				.setIcon(new ImageIcon(Parameters.IMGPATH + "insects.png"));
+		mntmAddFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH
+				+ "insects.png"));
 		mnNodes.add(mntmAddFlyingObjects);
 
 		JMenuItem mntmAddGas = new JMenuItem("Add Gas");
@@ -649,7 +652,8 @@ public class CupCarbon {
 			}
 		});
 
-		JMenuItem mntmFlyingObjectParameters = new JMenuItem("Flying Object Parameters");
+		JMenuItem mntmFlyingObjectParameters = new JMenuItem(
+				"Flying Object Parameters");
 		mntmFlyingObjectParameters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openFlyingObjectParemeterWindow();
@@ -846,9 +850,10 @@ public class CupCarbon {
 				// comWindow.toFront();
 			}
 		});
-		
+
 		JMenuItem mntmSimulation = new JMenuItem("WSN Simulation");
-		mntmSimulation.setIcon(new ImageIcon(Parameters.IMGPATH + "settings_right_rest.png"));
+		mntmSimulation.setIcon(new ImageIcon(Parameters.IMGPATH
+				+ "settings_right_rest.png"));
 		mntmSimulation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WorldMap.deSimulation();
@@ -859,7 +864,7 @@ public class CupCarbon {
 				wsnSimWindow.toFront();
 			}
 		});
-		
+
 		JSeparator separator_12 = new JSeparator();
 		mnSimulation.add(separator_12);
 		mnSimulation.add(mntmSimulation);
@@ -880,7 +885,7 @@ public class CupCarbon {
 		mntmEnergyGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(Project.getProjectResultsPath());
-				GraphViewer graphViewer =  new GraphViewer();
+				GraphViewer graphViewer = new GraphViewer();
 				if (!graphViewer.isVisible()) {
 					desktopPane.add(graphViewer);
 					graphViewer.setVisible(true);
@@ -985,7 +990,8 @@ public class CupCarbon {
 		toolBar.add(btnGas);
 
 		JButton btnFlyingObjects = new JButton("3 Flying Objects");
-		btnFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH + "insects.png"));
+		btnFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH
+				+ "insects.png"));
 		btnFlyingObjects.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WorldMap.addNodeInMap('3');
@@ -1058,37 +1064,37 @@ public class CupCarbon {
 				+ "ui_menu_blue.png"));
 		toolBar.add(btnNewButton);
 		toolBar.add(btnSensorParameters);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EmptyBorder(2, 2, 2, 2));
 		toolBar.add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
-		
+
 		JPanel panel = new JPanel();
 		panel_1.add(panel);
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-				panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		
-				lblNodesNumber = new JLabel(" N : ");
-				lblNodesNumber.setFont(new Font("Arial", Font.PLAIN, 12));
-				panel.add(lblNodesNumber);
-				
-						label = new JLabel("0");
-						label.setFont(new Font("Arial", Font.PLAIN, 12));
-						panel.add(label);
-						
-						JPanel panel_2 = new JPanel();
-						panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-						panel_1.add(panel_2);
-						panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
-						
-						JLabel lblNewLabel = new JLabel("  Agent Speed:  ");
-						lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-						panel_2.add(lblNewLabel);
-						
-						sspeedLabel = new JLabel("100  ");
-						sspeedLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-						panel_2.add(sspeedLabel);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+
+		lblNodesNumber = new JLabel(" N : ");
+		lblNodesNumber.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel.add(lblNodesNumber);
+
+		label = new JLabel("0");
+		label.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel.add(label);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_1.add(panel_2);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
+
+		JLabel lblNewLabel = new JLabel("  Agent Speed:  ");
+		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_2.add(lblNewLabel);
+
+		sspeedLabel = new JLabel("100  ");
+		sspeedLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_2.add(sspeedLabel);
 
 		CupCarbonMap cupCarbonMap = new CupCarbonMap();
 		cupCarbonMap.setLocation(280, 91);
@@ -1139,8 +1145,6 @@ public class CupCarbon {
 		deviceParametersWindow.toFront();
 	}
 
-	
-	
 	private void openFlyingObjectParemeterWindow() {
 		if (!flyingObjParametersWindow.isVisible()) {
 			flyingObjParametersWindow.setVisible(true);
@@ -1148,9 +1152,9 @@ public class CupCarbon {
 		}
 		flyingObjParametersWindow.toFront();
 	}
-	
+
 	public static void updateInfos() {
 		label.setText("" + DeviceList.size() + "  ");
-		sspeedLabel.setText("" + Device.moveSpeed+ "  ");
+		sspeedLabel.setText("" + Device.moveSpeed + "  ");
 	}
 }

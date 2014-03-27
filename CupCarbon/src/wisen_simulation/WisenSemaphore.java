@@ -8,21 +8,19 @@ public class WisenSemaphore {
 		this.b = b;
 	}
 
-	public synchronized void P(int i) {
-		if (i < 100) {
-			boolean waitNonExe;
-			b = !b;
-			if (b) {
-				do {
-					waitNonExe = false;
-					try {
-						wait();
-					} catch (InterruptedException e) {
-						System.out.println("Oups : error");
-						waitNonExe = true;
-					}
-				} while (waitNonExe);
-			}
+	public synchronized void P() {
+		boolean waitNonExe;
+		b = !b;
+		if (b) {
+			do {
+				waitNonExe = false;
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					System.out.println("Oups : error");
+					waitNonExe = true;
+				}
+			} while (waitNonExe);
 		}
 	}
 

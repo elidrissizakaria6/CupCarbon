@@ -15,11 +15,13 @@ public class WisenPong extends Thread {
 
 	@Override
 	public void run() {
-		int i=0;
-		while (i<500) {
-			wisenSemaphorePong.P(i++);			
-			wisenSimulation.eventExecutor();			
+		boolean b=true;
+		while (b) {
+			wisenSemaphorePong.P();			
+			b = wisenSimulation.eventExecutor();
 			wisenSemaphorePing.V();			
 		}
+		wisenSemaphorePing.V();
+		wisenSemaphorePong.V();
 	}
 }

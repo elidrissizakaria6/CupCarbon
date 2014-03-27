@@ -116,17 +116,17 @@ public class WisenSimulation extends Thread {
 		min = 0;
 		time = 0;
 		long startTime = System.currentTimeMillis();
-		System.out.println("Start Simulation (CPU : D-Event) ... ");
+		System.out.println("Start Simulation (CPU-WISEN : D-Event) ... ");
 
 		WsnSimulationWindow.setState("Simulation : End of initialization.");
-		WsnSimulationWindow.setState("Simulate (CPU) ...");
+		WsnSimulationWindow.setState("Simulate (CPU-WISEN) ...");
 
 		try {
 			String as = "";
 			if (mobility)
 				as = "_mob";
 			ps = new PrintStream(new FileOutputStream(
-					Project.getProjectResultsPath() + "/cpu_simulation" + as
+					Project.getProjectResultsPath() + "/cpu_wisen_simulation" + as
 							+ ".csv"));			
 
 			//----------------------------------------------------------------
@@ -142,7 +142,12 @@ public class WisenSimulation extends Thread {
 			WisenPong wisenPong = new WisenPong(wisenSemaphorePing, wisenSemaphorePong, this);
 			wisenPing.start();
 			wisenPong.start();	
-			System.out.println("yes");
+			try {
+				wisenPong.join();
+				wisenPong.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			
 			//----------------------------------------------------------------
 			//----------------------------------------------------------------
@@ -153,7 +158,7 @@ public class WisenSimulation extends Thread {
 			e.printStackTrace();
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("End of Simulation (CPU : D-Event).");
+		System.out.println("End of Simulation (CPU-WISEN : D-Event).");
 		System.out.println(((endTime - startTime) / 1000.) + " sec");
 		WsnSimulationWindow.setState("End (CPU Sim) at iter " + iter
 				+ ". Simulation Time : " + ((endTime - startTime) / 1000.)
@@ -176,12 +181,19 @@ public class WisenSimulation extends Thread {
 	private long time ;
 	private int min ;
 	private long iter;
-	//private boolean endOfIter = false;
+	private long iterMax;
 	
 	public void fermer() {
 		ps.close();
 	}
 	
+	public void incIter() {
+		iter++;
+	}
+	
+	public long getIterMax() {
+		return iterMax;
+	}
 	// ------------------------------------------------------------
 	// Event Generator
 	// ------------------------------------------------------------
@@ -195,11 +207,6 @@ public class WisenSimulation extends Thread {
 		}
 		ps.println();
 
-		for (int i = 0; i < nbSensors; i++) {
-			System.out.print(energy[i] + "\t");
-		}
-		System.out.println();
-		
 		if (mobility) {
 			Device d1 = null;
 			Device d2 = null;
@@ -295,7 +302,7 @@ public class WisenSimulation extends Thread {
 	}
 	
 	// ------------------------------------------------------------
-	//
+	// Run simulation
 	// ------------------------------------------------------------
 	@Override
 	public void run() {

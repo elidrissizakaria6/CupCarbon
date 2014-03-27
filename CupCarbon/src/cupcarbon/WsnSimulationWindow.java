@@ -30,15 +30,17 @@ import simbox_simulation.CpuSimulation;
 import simbox_simulation.GpuSimulation;
 import simbox_simulation.NetworkGenerator;
 import simbox_simulation.SimulationInputs;
+import wisen_simulation.WisenSimulation;
 import device.Device;
 
 public class WsnSimulationWindow extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
-	
-	private CpuSimulation cpuSimulation ;
-	private GpuSimulation gpuSimulation ;
-	
+
+	private CpuSimulation cpuSimulation;
+	private GpuSimulation gpuSimulation;
+	private WisenSimulation wisenSimulation;
+
 	private JTextField iterNumberTextField;
 	private JComboBox freqComboBox;
 	private ButtonGroup buttonGroup = new ButtonGroup();
@@ -46,6 +48,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 	private static JLabel stateLabel;
 	private JRadioButton rdbtnCpuSimulation;
 	private JRadioButton rdbtnGpuSimulation;
+	private JRadioButton rdbtnPingPongSimulation;
 	private JTextField energyMaxTextField;
 	private JTextField stepTextField;
 	private JTextField scriptSizeTextField;
@@ -181,31 +184,31 @@ public class WsnSimulationWindow extends JInternalFrame {
 		JLabel lblBaudRate = new JLabel("Baud rate");
 		lblBaudRate.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_4.add(lblBaudRate);
-		
+
 		JPanel panel_18 = new JPanel();
 		panel_18.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_3.add(panel_18);
 		panel_18.setLayout(new GridLayout(0, 2, 0, 0));
-		
+
 		JRadioButton rdbtnBits = new JRadioButton("Bits");
 		rdbtnBits.setSelected(true);
 		buttonGroup_1.add(rdbtnBits);
 		rdbtnBits.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_18.add(rdbtnBits);
-		
+
 		JRadioButton rdbtnByte = new JRadioButton("Byte");
 		buttonGroup_1.add(rdbtnByte);
 		rdbtnByte.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_18.add(rdbtnByte);
-		
+
 		JPanel panel_17 = new JPanel();
 		panel_3.add(panel_17);
 		panel_17.setLayout(new BoxLayout(panel_17, BoxLayout.X_AXIS));
-		
+
 		JLabel lblCommunication = new JLabel("  Failure Probability   ");
 		lblCommunication.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_17.add(lblCommunication);
-		
+
 		textField = new JTextField();
 		textField.setFont(new Font("Arial", Font.PLAIN, 12));
 		textField.setText("0");
@@ -213,7 +216,8 @@ public class WsnSimulationWindow extends JInternalFrame {
 		textField.setColumns(10);
 
 		JPanel panel_7 = new JPanel();
-		panel_7.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panel_7.setBorder(new MatteBorder(1, 1, 1, 1,
+				(Color) new Color(0, 0, 0)));
 		panel_1.add(panel_7);
 		panel_7.setLayout(new GridLayout(0, 2, 0, 0));
 
@@ -221,11 +225,6 @@ public class WsnSimulationWindow extends JInternalFrame {
 		panel_14.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_7.add(panel_14);
 		panel_14.setLayout(new GridLayout(3, 1, 0, 0));
-		
-				cboxDEvent = new JCheckBox("Discrete Event");
-				panel_14.add(cboxDEvent);
-				cboxDEvent.setFont(new Font("Arial", Font.PLAIN, 12));
-				cboxDEvent.setSelected(true);
 
 		rdbtnCpuSimulation = new JRadioButton("CPU Based Simulation");
 		panel_14.add(rdbtnCpuSimulation);
@@ -237,38 +236,52 @@ public class WsnSimulationWindow extends JInternalFrame {
 		panel_14.add(rdbtnGpuSimulation);
 		rdbtnGpuSimulation.setFont(new Font("Arial", Font.PLAIN, 12));
 		buttonGroup.add(rdbtnGpuSimulation);
+		
+		rdbtnPingPongSimulation = new JRadioButton("PingPong Based Simulation");
+		buttonGroup.add(rdbtnPingPongSimulation);
+		rdbtnPingPongSimulation.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_14.add(rdbtnPingPongSimulation);
 
 		JPanel panel_13 = new JPanel();
 		panel_13.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_7.add(panel_13);
 		panel_13.setLayout(new GridLayout(3, 1, 0, 0));
+		
+				cboxDEvent = new JCheckBox("Discrete Event");
+				panel_13.add(cboxDEvent);
+				cboxDEvent.setFont(new Font("Arial", Font.PLAIN, 12));
+				cboxDEvent.setSelected(true);
 
-		cboxMobility = new JCheckBox("Mobility");
-		cboxMobility.setFont(new Font("Arial", Font.PLAIN, 12));
-		panel_13.add(cboxMobility);
-		
-		cbVisual = new JCheckBox("View mobiles");
-		cbVisual.setFont(new Font("Arial", Font.PLAIN, 12));
-		panel_13.add(cbVisual);
-		
 		JPanel panel_16 = new JPanel();
 		panel_13.add(panel_16);
 		panel_16.setLayout(new BoxLayout(panel_16, BoxLayout.X_AXIS));
-		
+
 		JLabel lblSpeed = new JLabel(" Speed  ");
 		lblSpeed.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_16.add(lblSpeed);
-		
+
 		vdTextField = new JTextField();
 		panel_16.add(vdTextField);
 		vdTextField.setToolTipText("Visual Delay");
 		vdTextField.setFont(new Font("Arial", Font.PLAIN, 12));
 		vdTextField.setText("10");
 		vdTextField.setColumns(10);
-		
+
 		JLabel lblMs = new JLabel("  ms   ");
 		lblMs.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_16.add(lblMs);
+		
+		JPanel panel_19 = new JPanel();
+		panel_13.add(panel_19);
+				panel_19.setLayout(new BoxLayout(panel_19, BoxLayout.X_AXIS));
+		
+				cbVisual = new JCheckBox("View mobiles");
+				panel_19.add(cbVisual);
+				cbVisual.setFont(new Font("Arial", Font.PLAIN, 12));
+				
+						cboxMobility = new JCheckBox("Mobility");
+						panel_19.add(cboxMobility);
+						cboxMobility.setFont(new Font("Arial", Font.PLAIN, 12));
 
 		JSeparator separator = new JSeparator();
 		panel_1.add(separator);
@@ -318,6 +331,9 @@ public class WsnSimulationWindow extends JInternalFrame {
 				if (rdbtnGpuSimulation.isSelected()) {
 					simulateCallBack(3, 2);
 				}
+				if (rdbtnPingPongSimulation.isSelected()) {
+					simulateCallBack(3, 3);
+				}
 			}
 		});
 		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -329,6 +345,9 @@ public class WsnSimulationWindow extends JInternalFrame {
 				}
 				if (rdbtnGpuSimulation.isSelected()) {
 					simulateCallBack(2, 2);
+				}
+				if (rdbtnPingPongSimulation.isSelected()) {
+					simulateCallBack(2, 3);
 				}
 			}
 		});
@@ -351,14 +370,14 @@ public class WsnSimulationWindow extends JInternalFrame {
 		progressBar.setFont(new Font("Arial", Font.PLAIN, 12));
 		progressBar.setStringPainted(true);
 		panel_6.add(progressBar);
-		
+
 		JSeparator separator_4 = new JSeparator();
 		panel_1.add(separator_4);
-		
+
 		JPanel panel_15 = new JPanel();
 		panel_1.add(panel_15);
 		panel_15.setLayout(new GridLayout(0, 3, 0, 0));
-		
+
 		JButton btnNewButton_2 = new JButton("Stop Simulation");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -367,15 +386,15 @@ public class WsnSimulationWindow extends JInternalFrame {
 				}
 				if (rdbtnGpuSimulation.isSelected()) {
 					stopSimulation(2);
-				}			
+				}
 			}
 		});
 		btnNewButton_2.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_15.add(btnNewButton_2);
-		
+
 		JButton btnRestartSimulation = new JButton("Restart Simulation");
 		btnRestartSimulation.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
+			public void actionPerformed(ActionEvent e) {
 				if (rdbtnCpuSimulation.isSelected()) {
 					resumeSimulation(1);
 				}
@@ -384,7 +403,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 				}
 			}
 		});
-		
+
 		JButton btnSuspendSimulation = new JButton("Suspend Simulation");
 		btnSuspendSimulation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -393,7 +412,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 				}
 				if (rdbtnGpuSimulation.isSelected()) {
 					suspendSimulation(2);
-				}	
+				}
 			}
 		});
 		btnSuspendSimulation.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -417,6 +436,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 		// v = 3 : generate network & simulate
 		// cpugpu = 1 : cpu
 		// cpugpu = 2 : gpu
+		// cpugpu = 3 : ping pong
 		if (v == 1 || v == 3) {
 			Device.frequency = Integer.parseInt((String) freqComboBox
 					.getSelectedItem());
@@ -430,8 +450,9 @@ public class WsnSimulationWindow extends JInternalFrame {
 			SimulationInputs.mobility = cboxMobility.isSelected();
 			SimulationInputs.step = Integer.parseInt(stepTextField.getText());
 			SimulationInputs.visual = cbVisual.isSelected();
-			SimulationInputs.visualDelay = Integer.parseInt(vdTextField.getText());
-			if (cpugpu == 1)
+			SimulationInputs.visualDelay = Integer.parseInt(vdTextField
+					.getText());
+			if (cpugpu == 1 || cpugpu == 3)
 				NetworkGenerator.generateForCpu();
 			if (cpugpu == 2)
 				NetworkGenerator.generateForGpu();
@@ -446,10 +467,15 @@ public class WsnSimulationWindow extends JInternalFrame {
 				gpuSimulation = new GpuSimulation();
 				gpuSimulation.init();
 				gpuSimulation.start();
+			}			
+			if (cpugpu == 3) {
+				wisenSimulation = new WisenSimulation();
+				wisenSimulation.init();
+				wisenSimulation.start();
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public void stopSimulation(int cpugpu) {
 		if (cpugpu == 1) {
@@ -458,8 +484,11 @@ public class WsnSimulationWindow extends JInternalFrame {
 		if (cpugpu == 2) {
 			gpuSimulation.stop();
 		}
+		if (cpugpu == 3) {
+			wisenSimulation.stop();
+		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public void suspendSimulation(int cpugpu) {
 		if (cpugpu == 1) {
@@ -468,8 +497,11 @@ public class WsnSimulationWindow extends JInternalFrame {
 		if (cpugpu == 2) {
 			gpuSimulation.suspend();
 		}
+		if (cpugpu == 3) {
+			wisenSimulation.suspend();
+		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public void resumeSimulation(int cpugpu) {
 		if (cpugpu == 1) {
@@ -477,6 +509,9 @@ public class WsnSimulationWindow extends JInternalFrame {
 		}
 		if (cpugpu == 2) {
 			gpuSimulation.resume();
+		}
+		if (cpugpu == 3) {
+			wisenSimulation.resume();
 		}
 	}
 

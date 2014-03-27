@@ -4,6 +4,7 @@ public class WisenPing extends Thread {
 	private WisenSemaphore wisenSemaphorePing = null;
 	private WisenSemaphore wisenSemaphorePong = null;
 	private WisenSimulation wisenSimulation = null;
+	
 
 	public WisenPing(WisenSemaphore wisenSemaphorePing,
 			WisenSemaphore wisenSemaphorePong, WisenSimulation wisenSimulation) {
@@ -14,9 +15,8 @@ public class WisenPing extends Thread {
 
 	@Override
 	public void run() {
-		int i=0;
-		while (i<500) {
-			wisenSemaphorePing.P(i++);
+		while (true) {			
+			wisenSemaphorePing.P();
 			wisenSimulation.eventGenerator();			
 			wisenSemaphorePong.V();
 		}
