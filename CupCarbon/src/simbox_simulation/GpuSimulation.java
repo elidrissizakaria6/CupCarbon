@@ -134,13 +134,13 @@ public class GpuSimulation extends Thread {
 	private int visualDelay;
 	
 	// ------------------------------------------------------------
-	//
+	// Constructor
 	// ------------------------------------------------------------
 	public GpuSimulation() {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Initializaation
 	// ------------------------------------------------------------
 	public void init() {
 		discreteEvent = SimulationInputs.discreteEvent;
@@ -178,8 +178,6 @@ public class GpuSimulation extends Thread {
 		pNbSensors = Pointer.to(nbSensors);
 		pScriptSizeBuffer = Pointer.to(scriptSizeBuffer);
 
-		// loadFiles() ;
-
 		energy = new int[nbSensors[0]];
 
 		List<Device> devices = DeviceList.getNodes();
@@ -204,7 +202,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Release
 	// ------------------------------------------------------------
 	public void release() {
 		clReleaseMemObject(memNextInstruction[0]);
@@ -229,7 +227,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Display the energy vector
 	// ------------------------------------------------------------
 	public void displayEnergy() {
 		for (int i = 0; i < nbSensors[0]; i++) {
@@ -239,7 +237,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Get the currentEvent1 : Min
 	// ------------------------------------------------------------
 	public int getMin() {
 		int min = event[0];
@@ -248,7 +246,10 @@ public class GpuSimulation extends Thread {
 				min = event[i];
 		return min ;
 	}
-	
+
+	// ------------------------------------------------------------
+	// Get the currentEvent2 : Min
+	// ------------------------------------------------------------
 	public int getMin2() {
 		int min = (int) 10e8;
 		for (int i = 0; i < nbSensors[0]; i++)
@@ -258,14 +259,14 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// getInt
 	// ------------------------------------------------------------
 	private int getInt(cl_device_id device, int paramName) {
 		return getInts(device, paramName, 1)[0];
 	}
 
 	// ------------------------------------------------------------
-	//
+	// getInts
 	// ------------------------------------------------------------
 	private int[] getInts(cl_device_id device, int paramName, int numValues) {
 		int values[] = new int[numValues];
@@ -275,7 +276,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// getPlatform
 	// ------------------------------------------------------------
 	public int getPlatform() {
 		platformIDs = new cl_platform_id[1];
@@ -311,7 +312,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create command queue
 	// ------------------------------------------------------------
 	public void createCommandeQueue() {
 		commandQueue = clCreateCommandQueue(context, devices[0],
@@ -319,7 +320,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create the program of the next instruction
 	// ------------------------------------------------------------
 	public int createProgramNextInstruction() {
 		String programSource = OpenCLScriptLoader.loadNextInstructionOCLScript();
@@ -339,7 +340,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create the programe of the consumption
 	// ------------------------------------------------------------
 	public int createProgramConsumption() {
 		String programSource = OpenCLScriptLoader.loadConsumptionOCLScript();
@@ -359,7 +360,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create the program of the stop condition
 	// ------------------------------------------------------------
 	public int createProgramStopCondition() {
 		String programSource = OpenCLScriptLoader.loadStopConditionOCLScript();
@@ -380,7 +381,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create kernels
 	// ------------------------------------------------------------
 	public void createKernels() {
 		kernelNextInstruction = clCreateKernel(programNextInstruction,
@@ -392,7 +393,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create the buffer of the next instruction
 	// ------------------------------------------------------------
 	public void createBufferNextInstruction() {
 		pEvent = Pointer.to(event);
@@ -428,7 +429,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create the kernel of the next instruction 
 	// ------------------------------------------------------------
 	public void setKernelNextInstructionArg() {
 		clSetKernelArg(kernelNextInstruction, 0, Sizeof.cl_mem,
@@ -448,7 +449,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Launch the kernel of the next instruction
 	// ------------------------------------------------------------
 	public void launchKernelNextInstruction() {
 		long global_work_size_NEXT[] = new long[] { nbSensors[0] };
@@ -467,7 +468,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create the buffer of the consumption 
 	// ------------------------------------------------------------
 	public void createBufferConsumption(Boolean first) {
 		memConsumption = new cl_mem[8];
@@ -490,7 +491,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Set the kernel of the consumption Args
 	// ------------------------------------------------------------
 	public void setKernelConsumptionArg(Boolean first) {
 		clSetKernelArg(kernelConsumption, 1, Sizeof.cl_mem, Pointer.to(memConsumption[1]));
@@ -506,7 +507,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Launch the kerlnel of the consumption 
 	// ------------------------------------------------------------
 	public void launchKernelConsumption() {
 		long global_work_size_2[] = new long[] { nbSensors[0] };
@@ -519,7 +520,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Create the final buffer
 	// ------------------------------------------------------------
 	public void createBufferFinal() {
 		memStopCondition = new cl_mem[2];
@@ -532,7 +533,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Set the kernle of the stop condition
 	// ------------------------------------------------------------
 	public void setKernelStopConditionArg() {
 		clSetKernelArg(kernelStopCondition, 0, Sizeof.cl_mem,
@@ -542,7 +543,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Launch the final kernel
 	// ------------------------------------------------------------
 	public void launchKernelFinal() {
 		long global_work_size_2[] = new long[] { nbSensors[0] };
@@ -695,7 +696,7 @@ public class GpuSimulation extends Thread {
 	}
 	
 	// ------------------------------------------------------------
-	// Run Simulation
+	// Run Simulation (call the method: simulate) 
 	// ------------------------------------------------------------
 	@Override
 	public void run() {
@@ -703,7 +704,7 @@ public class GpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Stop condition
 	// ------------------------------------------------------------
 	public boolean stopSimulation() {
 		for (int k = 0; k < nbSensors[0]; k++) {

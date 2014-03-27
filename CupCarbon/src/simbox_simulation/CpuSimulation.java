@@ -64,7 +64,7 @@ public class CpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Initialization 
 	// ------------------------------------------------------------
 	public void init() {
 		discreteEvent = SimulationInputs.discreteEvent;
@@ -91,7 +91,7 @@ public class CpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Run simulation 
 	// ------------------------------------------------------------
 	public void simulate() {
 		WsnSimulationWindow.setState("Simulation : initialization ...");
@@ -254,7 +254,7 @@ public class CpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Run simulation (call the simulate() method)
 	// ------------------------------------------------------------
 	@Override
 	public void run() {
@@ -262,7 +262,7 @@ public class CpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Min : currEvent1
 	// ------------------------------------------------------------
 	public int getMin() {
 		int min = (int) 10e8;
@@ -272,6 +272,9 @@ public class CpuSimulation extends Thread {
 		return min;
 	}
 
+	// ------------------------------------------------------------
+	// Min : currEvent2
+	// ------------------------------------------------------------
 	public int getMin2() {
 		int min = (int) 10e8;
 		for (int i = 0; i < nbSensors; i++)
@@ -281,7 +284,7 @@ public class CpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Stop Simulation !
 	// ------------------------------------------------------------
 	public boolean stopSimulation() {
 		for (int k = 0; k < nbSensors; k++) {
@@ -290,9 +293,5 @@ public class CpuSimulation extends Thread {
 		}
 		return true;
 	}
-
-	// ------------------------------------------------------------
-	//
-	// ------------------------------------------------------------
 
 }

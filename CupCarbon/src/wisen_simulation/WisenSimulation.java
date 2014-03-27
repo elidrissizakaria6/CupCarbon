@@ -34,10 +34,8 @@ import device.DeviceList;
 
 /**
  * @author Ahcene Bounceur
- * @author Arezki Laga
+ * @author Kamal Mehdi
  * @version 1.0
- * 
- * 
  */
 public class WisenSimulation extends Thread {
 
@@ -57,6 +55,10 @@ public class WisenSimulation extends Thread {
 	private byte eRTx = 1;
 	private byte[][] links;
 	private List<Device> deviceList = DeviceList.getNodes();
+	private PrintStream ps;
+	private long time ;
+	private int min ;
+	private long iter;
 
 	private boolean visual;
 	private int visualDelay;
@@ -66,7 +68,7 @@ public class WisenSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Initialization
 	// ------------------------------------------------------------
 	public void init() {
 		discreteEvent = SimulationInputs.discreteEvent;
@@ -175,25 +177,8 @@ public class WisenSimulation extends Thread {
 			}
 			Layer.getMapViewer().repaint();
 		}
-	}
+	}	
 	
-	private PrintStream ps;
-	private long time ;
-	private int min ;
-	private long iter;
-	private long iterMax;
-	
-	public void fermer() {
-		ps.close();
-	}
-	
-	public void incIter() {
-		iter++;
-	}
-	
-	public long getIterMax() {
-		return iterMax;
-	}
 	// ------------------------------------------------------------
 	// Event Generator
 	// ------------------------------------------------------------
@@ -310,7 +295,7 @@ public class WisenSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Min : CurrentEvent 1
 	// ------------------------------------------------------------
 	public int getMin() {
 		int min = (int) 10e8;
@@ -320,6 +305,9 @@ public class WisenSimulation extends Thread {
 		return min;
 	}
 
+	// ------------------------------------------------------------
+	// Min : CurrentEvent 2
+	// ------------------------------------------------------------
 	public int getMin2() {
 		int min = (int) 10e8;
 		for (int i = 0; i < nbSensors; i++)
@@ -329,7 +317,7 @@ public class WisenSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// StopSimulation 
 	// ------------------------------------------------------------
 	public boolean stopSimulation() {
 		for (int k = 0; k < nbSensors; k++) {
@@ -338,9 +326,5 @@ public class WisenSimulation extends Thread {
 		}
 		return true;
 	}
-
-	// ------------------------------------------------------------
-	//
-	// ------------------------------------------------------------
 
 }
