@@ -84,6 +84,8 @@ public class MarkerList {
 			line = br.readLine();
 			line = br.readLine();
 			line = br.readLine();
+			line = br.readLine();
+			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				str = line.split(" ");
 				addNodeByType(str[1], str[2], str[3]);
@@ -266,7 +268,7 @@ public class MarkerList {
 		}
 	}
 	 */
-	public static void saveGpsCoords(String fileName, String title, String from, String to, boolean loop, int delay) {
+	public static void saveGpsCoords(String fileName, String title, String from, String to, boolean loop, int delay, int nLoop) {
 		try {
 			PrintStream ps;
 			ps = new PrintStream(new FileOutputStream(
@@ -275,6 +277,7 @@ public class MarkerList {
 			ps.println(from);
 			ps.println(to);
 			ps.println(loop);
+			ps.println(nLoop);
 			Marker marker;
 
 			//int initialDate = 0;

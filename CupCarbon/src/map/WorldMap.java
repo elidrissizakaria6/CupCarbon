@@ -25,7 +25,7 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
 
-import wisen_simulation.Simulation;
+import wisen_simulation2.Simulation;
 
 public class WorldMap extends JXMapKit {
 

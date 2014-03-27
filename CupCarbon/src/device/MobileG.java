@@ -49,7 +49,6 @@ public abstract class MobileG extends DeviceWithoutRadio {
 		this.gpsFileName = gpsFileName ;
 	}
 	
-	@Override
 	public void setGPSFileName(String fileName) {
 		gpsFileName = fileName ;
 	}

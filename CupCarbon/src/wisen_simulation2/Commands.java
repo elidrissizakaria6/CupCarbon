@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wisen_simulation;
+package wisen_simulation2;
 
 public enum Commands {
 	COM_SEND, 

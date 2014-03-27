@@ -46,6 +46,7 @@ public class Sensor extends DeviceWithRadio {
 	private LinkedList<Double> routeX;
 	private LinkedList<Double> routeY;
 	private boolean loop = false;
+	private int nLoop = 0;
 	private int routeIndex = 0;
 	private boolean readyForSimulation = false;
 
@@ -294,7 +295,7 @@ public class Sensor extends DeviceWithRadio {
 		FileInputStream fis;
 		BufferedReader b = null;
 		String s;
-		String[] ts;
+		String[] ts;		
 		try {
 			if (!gpsFileName.equals("")) {
 				readyForSimulation = true;
@@ -305,6 +306,7 @@ public class Sensor extends DeviceWithRadio {
 				b.readLine();
 				b.readLine();
 				loop = Boolean.parseBoolean(b.readLine());
+				nLoop = Integer.parseInt(b.readLine());
 				while ((s = b.readLine()) != null) {
 					ts = s.split(" ");
 					routeTime.add(Long.parseLong(ts[0]));
@@ -313,6 +315,7 @@ public class Sensor extends DeviceWithRadio {
 				}
 				b.close();
 				fis.close();
+				
 			} else
 				readyForSimulation = false;
 		} catch (Exception e) {
@@ -320,6 +323,9 @@ public class Sensor extends DeviceWithRadio {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// Do some actions before the simulation
+	// ------------------------------------------------------------------------
 	public void preprocessing() {
 		routeIndex = 0;
 	}
@@ -352,8 +358,8 @@ public class Sensor extends DeviceWithRadio {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}				
-				goToNext();
-			} while (hasNext());
+				goToNext();				
+			} while (hasNext());			
 			routeIndex = 0;
 			selected = false;
 			toori();
@@ -392,13 +398,16 @@ public class Sensor extends DeviceWithRadio {
 	// ------------------------------------------------------------------------
 	@Override
 	public void exeNext(boolean visual, int visualDelay) {
-		if (routeTime != null) {
+		if (routeTime != null && nLoop>0) {
 			routeIndex++;
 			if ((routeIndex == (routeTime.size()))) {
-				if (!loop) {
+				nLoop--;
+				if (!loop || nLoop==0) {
 					routeIndex--;
-				} else
-					routeIndex = 0;
+				} else {
+					routeIndex = 0;					
+				}
+				
 			}
 			x = routeX.get(routeIndex);
 			y = routeY.get(routeIndex);
@@ -422,6 +431,7 @@ public class Sensor extends DeviceWithRadio {
 			routeIndex++;
 			if (routeIndex == routeTime.size()) {
 				if (loop) {
+					nLoop--;
 					routeIndex = 0;
 				}
 			}
@@ -429,9 +439,10 @@ public class Sensor extends DeviceWithRadio {
 	}
 
 	// ------------------------------------------------------------------------
-	// Test the existence of a next ponit
+	// Test the existence of a next point
 	// ------------------------------------------------------------------------
 	public boolean hasNext() {
+		if(nLoop==0 && loop) return false;
 		if (routeIndex < routeTime.size())
 			return true;
 		return false;
@@ -482,11 +493,6 @@ public class Sensor extends DeviceWithRadio {
 	@Override
 	public String getNodeIdName() {
 		return getIdFL() + id;
-	}
-
-	@Override
-	public void setGPSFileName(String gpsFileName) {
-		this.gpsFileName = gpsFileName;
 	}
 
 	public boolean canMove() {

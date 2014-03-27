@@ -246,10 +246,6 @@ public class StreetVertex extends Device {
 	}
 
 	@Override
-	public void setGPSFileName(String gpsFileName) {
-	}
-
-	@Override
 	public void setScriptFileName(String scriptFileName) {
 
 	}

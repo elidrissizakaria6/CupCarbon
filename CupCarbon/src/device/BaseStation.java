@@ -202,16 +202,7 @@ public class BaseStation extends DeviceWithRadio {
 	public String getNodeIdName() {
 		return getIdFL() + id;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see device.Device#setGPSFileName(java.lang.String)
-	 */
-	@Override
-	public void setGPSFileName(String gpsFileName) {
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -28,7 +28,7 @@ import java.util.Random;
 import map.Layer;
 import utilities.MapCalc;
 import utilities.UColor;
-import wisen_simulation.DeviceSimulator;
+import wisen_simulation2.DeviceSimulator;
 import battery.Battery;
 
 /**

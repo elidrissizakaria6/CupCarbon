@@ -22,28 +22,28 @@ package cupcarbon;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileFilter;
 
 import project.Project;
 import device.MarkerList;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import java.awt.Font;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 
 /**
  * @author Ahcene Bounceur
@@ -61,6 +61,7 @@ public class GpsWindow extends JInternalFrame {
 	private static GpsWindow frame;
 	private JTextField delayTextField;
 	private JCheckBox cbLoop;
+	private JTextField nLoopTextField;
 
 	/**
 	 * Launch the application.
@@ -88,7 +89,7 @@ public class GpsWindow extends JInternalFrame {
 		this.setName("GPS Coords");
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(6, 95, 447, 276);
+		setBounds(6, 95, 447, 308);
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 0));
@@ -203,7 +204,7 @@ public class GpsWindow extends JInternalFrame {
 
 		JPanel panel_6 = new JPanel();
 		panel.add(panel_6, BorderLayout.CENTER);
-		panel_6.setLayout(new GridLayout(4, 1, 2, 2));
+		panel_6.setLayout(new GridLayout(5, 1, 2, 2));
 
 		JPanel panel_10 = new JPanel();
 		panel_6.add(panel_10);
@@ -267,13 +268,32 @@ public class GpsWindow extends JInternalFrame {
 		JLabel lblSeconds = new JLabel("Seconds");
 		panel_1.add(lblSeconds);
 		lblSeconds.setFont(new Font("Arial", Font.PLAIN, 12));
+		
+		JPanel panel_5 = new JPanel();
+		panel_6.add(panel_5);
+		panel_5.setLayout(new GridLayout(1, 2, 0, 0));
+		
+		JPanel panel_14 = new JPanel();
+		panel_5.add(panel_14);
+		panel_14.setLayout(new BoxLayout(panel_14, BoxLayout.X_AXIS));
+		
+		JLabel lblNumberOfLoops = new JLabel("Number of loops");
+		lblNumberOfLoops.setFont(new Font("Arial", Font.PLAIN, 12));
+		panel_14.add(lblNumberOfLoops);
+		
+		nLoopTextField = new JTextField();
+		nLoopTextField.setFont(new Font("Arial", Font.PLAIN, 12));
+		nLoopTextField.setText("1");
+		panel_14.add(nLoopTextField);
+		nLoopTextField.setColumns(10);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				txtFileName.setText(Project.getGpsFileExtension(txtFileName
 						.getText()));
 				MarkerList.saveGpsCoords(txtFileName.getText(),
 						txtTitle.getText(), txtFrom.getText(), txtTo.getText(),
-						cbLoop.isSelected(), Integer.parseInt(delayTextField.getText()));
+						cbLoop.isSelected(), Integer.parseInt(delayTextField.getText()),
+						Integer.parseInt(nLoopTextField.getText()));
 			}
 		});
 		setVisible(false);

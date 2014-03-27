@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wisen_simulation;
+package wisen_simulation2;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

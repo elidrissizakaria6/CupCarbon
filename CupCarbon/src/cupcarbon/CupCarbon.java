@@ -32,6 +32,7 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileInputStream;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -43,8 +44,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileFilter;
 
 import map.WorldMap;
@@ -57,10 +61,6 @@ import utilities.GraphViewer;
 import device.Device;
 import device.DeviceList;
 import device.MarkerList;
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.EmptyBorder;
 
 /**
  * @author Ahcene Bounceur
@@ -78,9 +78,7 @@ public class CupCarbon {
 	private static JLabel label;
 	private static JLabel sspeedLabel;
 	private JCheckBoxMenuItem chckbxmntmAddSelection;
-	private ScriptWindow scriptWindow = new ScriptWindow();
-	
-	private MtSimulationWindow mtSimulator = new MtSimulationWindow(); 
+	private ComScriptWindow comScriptWindow = new ComScriptWindow(); 
 	
 	private GpsWindow gpsWindow = new GpsWindow();
 	private DeviceParametersWindow deviceParametersWindow = new DeviceParametersWindow();
@@ -829,17 +827,17 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				File comFiles = new File(Project.getProjectScriptPath());
 				String[] c = comFiles.list();
-				ScriptWindow.txtLoadFileName.removeAllItems();
-				ScriptWindow.txtLoadFileName.addItem("New script ...");
+				ComScriptWindow.txtLoadFileName.removeAllItems();
+				ComScriptWindow.txtLoadFileName.addItem("New script ...");
 				for (int i = 0; i < c.length; i++) {
-					ScriptWindow.txtLoadFileName.addItem(c[i]);
+					ComScriptWindow.txtLoadFileName.addItem(c[i]);
 				}
 
-				if (!scriptWindow.isVisible()) {
-					desktopPane.add(scriptWindow);
-					scriptWindow.show();
+				if (!comScriptWindow.isVisible()) {
+					desktopPane.add(comScriptWindow);
+					comScriptWindow.show();
 				}
-				scriptWindow.toFront();
+				comScriptWindow.toFront();
 
 				// //if (!comWindow.isVisible()) {
 				// desktopPane.add(comWindow);
@@ -865,25 +863,13 @@ public class CupCarbon {
 		JSeparator separator_12 = new JSeparator();
 		mnSimulation.add(separator_12);
 		mnSimulation.add(mntmSimulation);
-		
-		JMenuItem mntmWsnMtSimulation = new JMenuItem("WSN MT Simulation");
-		mntmWsnMtSimulation.setIcon(new ImageIcon(Parameters.IMGPATH + "settings_right_rest.png"));
-		mntmWsnMtSimulation.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(!mtSimulator.isVisible()) {
-					desktopPane.add(mtSimulator);
-					mtSimulator.setVisible(true);
-				}
-				mtSimulator.toFront();
-			}
-		});
-		mnSimulation.add(mntmWsnMtSimulation);
 
 		JSeparator separator_4 = new JSeparator();
 		mnSimulation.add(separator_4);
 
 		JMenuItem mntmSimulationParameters = new JMenuItem(
 				"Simulation parameters");
+		mntmSimulationParameters.setEnabled(false);
 		mntmSimulationParameters.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "ui_menu_blue.png"));
 		mnSimulation.add(mntmSimulationParameters);
@@ -1132,6 +1118,7 @@ public class CupCarbon {
 		if (s == null)
 			s = new String[1];
 		DeviceParametersWindow.gpsPathNameComboBox.removeAllItems();
+		DeviceParametersWindow.gpsPathNameComboBox.addItem("");
 		for (int i = 0; i < s.length; i++) {
 			DeviceParametersWindow.gpsPathNameComboBox.addItem(s[i]);
 		}

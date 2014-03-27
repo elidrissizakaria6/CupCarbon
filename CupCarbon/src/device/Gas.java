@@ -36,8 +36,17 @@ import utilities.UColor;
 public class Gas extends DeviceWithoutRadio {
 
 	private static String idFL = "G" ; // ID First Letter
+	private int [] polyX = new int[62];
+	private int [] polyY = new int[62];
+	private double [] power = new double[62];
 	
-	private int duree = 1000 ;
+	private int duration = 1000 ;
+	
+	{
+		for(int i=0; i<62; i++) {
+			power[i]=1;
+		}
+	}
 	
 	public Gas(double x, double y, double radius) {
 		super(x, y, radius);
@@ -103,28 +112,33 @@ public class Gas extends DeviceWithoutRadio {
 			g.setColor(Color.orange);		
 			g.fillOval(x-6, y-6, 12, 12);
 			
-			double rayon2 ;
-			double rayon3 ;
+			double rayon2=0;
+			double rayon3=0;
+
 			Random rnd = new Random();
 			double v ;
-			g.setColor(UColor.ORANGE) ;		
 			int fxo = x+MapCalc.radiusInPixels(this.radius) ;
 			int fyo = y ;
-			int fx = fxo ;
-			int fy = fyo ;
-			
-			for(double i=0.2; i<6.28; i+=.2) {
-				v = MapCalc.radiusInPixels(this.radius)*(rnd.nextInt(20)-10)/100.;
-				rayon2 = MapCalc.radiusInPixels(this.radius*Math.cos(i))+v ;
-				rayon3 = MapCalc.radiusInPixels(this.radius*Math.sin(i))+v ;					
-				if(hide!=2)
-					g.drawLine(fx, fy, (int)(x+rayon2), (int)(y+rayon3));
-				if(hide==0)
-					g.drawLine(x, y, (int)(x+rayon2), (int)(y+rayon3));
-				fx = (int)(x+rayon2) ;
-				fy = (int)(y+rayon3) ;
+			polyX[0]=fxo;
+			polyY[0]=fyo;
+			int k=1;			
+			for(double i=0.2; i<6.28; i+=.1) {				
+				v = MapCalc.radiusInPixels(this.radius)*(rnd.nextInt(12)-10)/100.;
+				rayon2 = MapCalc.radiusInPixels(this.radius*power[k]*Math.cos(i)+v/1.) ;
+				v = MapCalc.radiusInPixels(this.radius)*(rnd.nextInt(12)-10)/100.;
+				rayon3 = MapCalc.radiusInPixels(this.radius*power[k]*Math.sin(i)+v/1.) ;
+				polyX[k]=(int)(x+rayon2);
+				polyY[k]=(int)(y+rayon3);
+				k++;
 			}
-			if(hide!=2) g.drawLine(fx, fy, fxo, fyo);
+			if(hide!=2) {
+				g.setColor(UColor.ORANGE) ;
+				g.drawPolygon(polyX, polyY, 62);
+			}
+			if(hide==0) {
+				g.setColor(UColor.ORANGE_TRANSPARENT);
+				g.fillPolygon(polyX, polyY, 62);				
+			}
 			
 			drawMoveArrows(x,y,g) ;
 			drawIncRedDimNode(x,y,g);
@@ -135,7 +149,7 @@ public class Gas extends DeviceWithoutRadio {
 			
 			if(displayDetails) {
 				g.setColor(Color.RED);
-				g.drawString(""+duree+" mn", x+15, y+20);
+				g.drawString(""+duration+" mn", x+15, y+20);
 			}
 			
 			if(underSimulation) {
@@ -155,9 +169,40 @@ public class Gas extends DeviceWithoutRadio {
 		selected = false ;
 		underSimulation = true ;
 		fixori();
-		while(duree>0) {
+		while(duration>0) {
 			radius++ ;
-			duree-- ;
+			power[10]+=.0024;
+			power[11]+=.0026;
+			power[12]+=.0028;
+			power[13]+=.0024;
+			power[14]+=.0022;
+			power[15]+=.002;
+			
+			power[20]+=.0001;
+			power[21]+=.0003;
+			power[22]+=.0004;
+			power[23]+=.0005;
+			power[24]+=.0002;
+			power[25]+=.0001;
+			
+			
+			power[30]+=.0001;
+			power[31]+=.0003;
+			power[32]+=.0002;
+			power[33]+=.0004;
+			power[34]+=.0003;
+			power[35]+=.0001;
+			
+			
+			power[50]+=.0012;
+			power[51]+=.0013;
+			power[52]+=.0014;
+			power[53]+=.0012;
+			power[54]+=.0011;
+			power[55]+=.001;
+			power[56]+=.0011;
+			
+			duration-- ;
 			Layer.getMapViewer().repaint();
 			try {
 				Thread.sleep(100);
@@ -194,9 +239,6 @@ public class Gas extends DeviceWithoutRadio {
 
 	@Override
 	public void setCaptureRadius(double captureRadius) {}
-
-	@Override
-	public void setGPSFileName(String gpsFileName) {}
 
 	@Override
 	public String getGPSFileName() {

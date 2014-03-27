@@ -263,7 +263,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 		panel_16.add(vdTextField);
 		vdTextField.setToolTipText("Visual Delay");
 		vdTextField.setFont(new Font("Arial", Font.PLAIN, 12));
-		vdTextField.setText("100");
+		vdTextField.setText("10");
 		vdTextField.setColumns(10);
 		
 		JLabel lblMs = new JLabel("  ms   ");

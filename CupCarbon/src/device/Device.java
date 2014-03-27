@@ -38,8 +38,8 @@ import script.Script;
 import utilities.MapCalc;
 import utilities.UColor;
 import utilities._Constantes;
-import wisen_simulation.DeviceSimulator;
-import wisen_simulation.Simulation;
+import wisen_simulation2.DeviceSimulator;
+import wisen_simulation2.Simulation;
 import battery.Battery;
 import cupcarbon.DeviceParametersWindow;
 import cupcarbon.Parameters;
@@ -188,7 +188,12 @@ public abstract class Device implements Runnable, MouseListener,
 	 * 
 	 * @param gpsFileName
 	 */
-	public abstract void setGPSFileName(String gpsFileName);
+	public void setGPSFileName(String gpsFileName) {
+		if(gpsFileName.endsWith(".gps"))
+			this.gpsFileName = gpsFileName;
+		else
+			this.gpsFileName = "";
+	}
 
 	/**
 	 * @return the GPS file path

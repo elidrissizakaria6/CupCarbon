@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package simbox_simulation;
+package wisen_simulation;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,6 +27,7 @@ import java.util.ListIterator;
 
 import map.Layer;
 import project.Project;
+import simbox_simulation.SimulationInputs;
 import cupcarbon.WsnSimulationWindow;
 import device.Device;
 import device.DeviceList;
@@ -38,7 +39,7 @@ import device.DeviceList;
  * 
  * 
  */
-public class CpuSimulation extends Thread {
+public class WisenSimulation extends Thread {
 
 	private boolean discreteEvent = true;
 	private boolean mobility = false;
@@ -55,11 +56,12 @@ public class CpuSimulation extends Thread {
 	private int[] energy;
 	private byte eRTx = 1;
 	private byte[][] links;
+	private List<Device> deviceList = DeviceList.getNodes();
 
 	private boolean visual;
 	private int visualDelay;
 
-	public CpuSimulation() {
+	public WisenSimulation() {
 		init();
 	}
 
@@ -91,14 +93,13 @@ public class CpuSimulation extends Thread {
 	}
 
 	// ------------------------------------------------------------
-	//
+	// Run simulation
 	// ------------------------------------------------------------
 	public void simulate() {
 		WsnSimulationWindow.setState("Simulation : initialization ...");
 		System.out.println("Initialization ... ");
-		List<Device> devices = DeviceList.getNodes();
 		int k = 0;
-		for (Device device : devices) {
+		for (Device device : deviceList) {
 			event[k] = script[k][0][1];
 			energy[k] = energyMax;
 			if (mobility) {
@@ -112,13 +113,11 @@ public class CpuSimulation extends Thread {
 			k++;
 		}
 		System.out.println("End of Initialization.");
-		int min = 0;
-		int min1;
-		int min2;
-		long time = 0;
+		min = 0;
+		time = 0;
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Simulation (CPU : D-Event) ... ");
-		long iter = 0;
+
 		WsnSimulationWindow.setState("Simulation : End of initialization.");
 		WsnSimulationWindow.setState("Simulate (CPU) ...");
 
@@ -126,109 +125,29 @@ public class CpuSimulation extends Thread {
 			String as = "";
 			if (mobility)
 				as = "_mob";
-			PrintStream ps = new PrintStream(new FileOutputStream(
+			ps = new PrintStream(new FileOutputStream(
 					Project.getProjectResultsPath() + "/cpu_simulation" + as
-							+ ".csv"));
-			int conso;
-			for (iter = 0; (iter < iterNumber) && (!stopSimulation()); iter++) {
-				ps.print(time + ";");
+							+ ".csv"));			
 
-				for (int i = 0; i < nbSensors; i++) {
-					ps.print(energy[i] + ";");
-				}
-				ps.println();
-
-				// for (int i = 0; i < nbSensors; i++) {
-				// System.out.print(event[i]+" ");
-				// }
-				// for (int i = 0; i < nbSensors; i++) {
-				// System.out.print(event2[i]+" ");
-				// }
-				// System.out.println();
-
-				// ============================================================
-				if (mobility) {
-					Device d1 = null;
-					Device d2 = null;
-					ListIterator<Device> iterator;
-					ListIterator<Device> iterator2;
-					iterator = devices.listIterator();
-					int n = devices.size();
-					int ii = 0;
-					int jj = 0;
-					while (iterator.hasNext()) {
-						d1 = iterator.next();
-						links[ii][ii] = 1;
-						if (iterator.nextIndex() < n) {
-							jj = ii + 1;
-							iterator2 = devices.listIterator(iterator
-									.nextIndex());
-							while (iterator2.hasNext()) {
-								d2 = iterator2.next();
-								if (d1.radioDetect(d2)) {
-									links[ii][jj] = 1;
-									links[jj][ii] = 1;
-								} else {
-									links[ii][jj] = 0;
-									links[jj][ii] = 0;
-								}
-								jj++;
-							}
-							ii++;
-						}
-					}
-					if (discreteEvent) {
-						min1 = getMin();
-						min2 = getMin2();
-					} else {
-						min1 = step;
-						min2 = step;
-					}
-					if (min1 <= min2)
-						min = min1;
-					if (min2 < min1)
-						min = min2;
-				} else
-					min = getMin();
-				// ============================================================
-
-				time += min;
-
-				for (int i = 0; i < nbSensors; i++) {
-					conso = 0;
-					for (int j = 0; j < nbSensors; j++) {
-						conso += links[i][j] * script[j][iscript[j]][0]
-								* (1 - deadSensor[j]);
-					}
-					energy[i] -= min * conso * eRTx;
-					if (energy[i] < 0)
-						energy[i] = 0;
-					event[i] -= min;
-					if (mobility)
-						event2[i] -= min;
-				}
-
-				for (int i = 0; i < nbSensors; i++) {
-					if (event[i] == 0) {
-						iscript[i]++;
-						iscript[i] = (byte) (iscript[i] % scriptSize);
-						event[i] = script[i][iscript[i]][1];
-					}
-					if (mobility)
-						if (event2[i] == 0) {
-							if (devices.get(i).canMove()) {
-								devices.get(i).exeNext(visual, visualDelay);
-								event2[i] = devices.get(i).getNextTime();
-							}
-						}
-					if (energy[i] <= 0) {
-						event[i] = 99999999;
-						deadSensor[i] = 1;
-					}
-				}
-				WsnSimulationWindow
-						.setProgress((int) (1000 * iter / iterNumber));
-			}
+			//----------------------------------------------------------------
+			//----------------------------------------------------------------
+			//----------------------------------------------------------------						
+			
+			iter = 0;
+			
+			WisenSemaphore wisenSemaphorePing = new WisenSemaphore(false) ;
+			WisenSemaphore wisenSemaphorePong = new WisenSemaphore(true) ;
+			
+			WisenPing wisenPing = new WisenPing(wisenSemaphorePing, wisenSemaphorePong, this);
+			WisenPong wisenPong = new WisenPong(wisenSemaphorePing, wisenSemaphorePong, this);
+			wisenPing.start();
+			wisenPong.start();	
+			System.out.println("yes");
+			
+			//----------------------------------------------------------------
+			//----------------------------------------------------------------
+			//----------------------------------------------------------------			
+			
 			ps.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -241,18 +160,140 @@ public class CpuSimulation extends Thread {
 				+ " sec.");
 		WsnSimulationWindow.setProgress(0);
 		int i = 0;
-		for (Device d : devices) {
-			d.getBattery().setCapacity(energy[i++]);
+		for (Device device : deviceList) {
+			device.getBattery().setCapacity(energy[i++]);
 		}
 		if (mobility) {
-			for (Device device : devices) {
+			for (Device device : deviceList) {
 				device.toori();
 				device.stopSimulation();
 			}
 			Layer.getMapViewer().repaint();
 		}
 	}
+	
+	private PrintStream ps;
+	private long time ;
+	private int min ;
+	private long iter;
+	//private boolean endOfIter = false;
+	
+	public void fermer() {
+		ps.close();
+	}
+	
+	// ------------------------------------------------------------
+	// Event Generator
+	// ------------------------------------------------------------
+	public void eventGenerator() {
+		int min1;
+		int min2;
+		ps.print(time + ";");
 
+		for (int i = 0; i < nbSensors; i++) {
+			ps.print(energy[i] + ";");
+		}
+		ps.println();
+
+		for (int i = 0; i < nbSensors; i++) {
+			System.out.print(energy[i] + "\t");
+		}
+		System.out.println();
+		
+		if (mobility) {
+			Device d1 = null;
+			Device d2 = null;
+			ListIterator<Device> iterator;
+			ListIterator<Device> iterator2;
+			iterator = DeviceList.getNodes().listIterator();
+			int n = DeviceList.size();
+			int ii = 0;
+			int jj = 0;
+			while (iterator.hasNext()) {
+				d1 = iterator.next();
+				links[ii][ii] = 1;
+				if (iterator.nextIndex() < n) {
+					jj = ii + 1;
+					iterator2 = DeviceList.getNodes().listIterator(iterator
+							.nextIndex());
+					while (iterator2.hasNext()) {
+						d2 = iterator2.next();
+						if (d1.radioDetect(d2)) {
+							links[ii][jj] = 1;
+							links[jj][ii] = 1;
+						} else {
+							links[ii][jj] = 0;
+							links[jj][ii] = 0;
+						}
+						jj++;
+					}
+					ii++;
+				}
+			}
+			if (discreteEvent) {
+				min1 = getMin();
+				min2 = getMin2();
+			} else {
+				min1 = step;
+				min2 = step;
+			}
+			if (min1 <= min2)
+				min = min1;
+			if (min2 < min1)
+				min = min2;
+		} else
+			min = getMin();
+	}
+
+	// ------------------------------------------------------------
+	// Event Executor
+	// ------------------------------------------------------------
+	public boolean eventExecutor() {
+		time += min;
+		int conso;
+		for (int i = 0; i < nbSensors; i++) {
+			conso = 0;
+			for (int j = 0; j < nbSensors; j++) {
+				conso += links[i][j] * script[j][iscript[j]][0]
+						* (1 - deadSensor[j]);
+			}
+			energy[i] -= min * conso * eRTx;
+			if (energy[i] < 0)
+				energy[i] = 0;
+			event[i] -= min;
+			if (mobility)
+				event2[i] -= min;
+		}
+
+		for (int i = 0; i < nbSensors; i++) {
+			if (event[i] == 0) {
+				iscript[i]++;
+				iscript[i] = (byte) (iscript[i] % scriptSize);
+				event[i] = script[i][iscript[i]][1];
+			}
+			if (mobility)
+				if (event2[i] == 0) {
+					if (deviceList.get(i).canMove()) {
+						deviceList.get(i).exeNext(visual, visualDelay);
+						event2[i] = deviceList.get(i).getNextTime();
+					}
+				}
+			if (energy[i] <= 0) {
+				event[i] = 99999999;
+				deadSensor[i] = 1;
+			}
+		}
+		WsnSimulationWindow.setProgress((int) (1000 * iter / iterNumber));
+		iter++;
+		if((iter<iterNumber) && (!stopSimulation())) {
+			return true;
+		}
+		else {
+			ps.close();
+			return false;
+		}
+	}
+	
 	// ------------------------------------------------------------
 	//
 	// ------------------------------------------------------------

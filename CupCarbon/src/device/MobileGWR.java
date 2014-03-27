@@ -51,11 +51,6 @@ public abstract class MobileGWR extends DeviceWithRadio {
 	}
 
 	@Override
-	public void setGPSFileName(String fileName) {
-		gpsFileName = fileName;
-	}
-
-	@Override
 	public String getGPSFileName() {
 		if (gpsFileName.equals(""))
 			gpsFileName = "-";

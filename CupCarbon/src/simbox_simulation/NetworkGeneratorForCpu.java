@@ -113,6 +113,7 @@ public class NetworkGeneratorForCpu extends Thread {
 				i++;
 			}
 		}
+		
 		WsnSimulationWindow.setProgress(0);
 		SimulationInputs.nbSensors = n;
 		System.out.println("End of network generating.");

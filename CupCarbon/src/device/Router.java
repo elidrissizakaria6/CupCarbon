@@ -157,12 +157,6 @@ private static String idFL = "R" ; // ID First Letter
 	}
 
 	@Override
-	public void setGPSFileName(String gpsFileName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void setScriptFileName(String comFileName) {
 		
 	}

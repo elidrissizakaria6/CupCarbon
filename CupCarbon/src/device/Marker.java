@@ -132,9 +132,6 @@ public class Marker extends Device {
 
 	@Override
 	public void setCaptureRadius(double captureRadius) {}
-
-	@Override
-	public void setGPSFileName(String gpsFileName) {}
 	
 	@Override
 	public String getGPSFileName() {

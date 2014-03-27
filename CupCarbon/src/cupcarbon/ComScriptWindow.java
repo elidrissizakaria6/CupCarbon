@@ -60,7 +60,7 @@ import project.Project;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class ScriptWindow extends JInternalFrame {
+public class ComScriptWindow extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtFileName;
@@ -74,7 +74,7 @@ public class ScriptWindow extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ScriptWindow frame = new ScriptWindow();
+					ComScriptWindow frame = new ComScriptWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -86,7 +86,7 @@ public class ScriptWindow extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ScriptWindow() {
+	public ComScriptWindow() {
 		super("Script");
 
 		this.setName("Script");
