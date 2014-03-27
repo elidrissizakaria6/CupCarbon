@@ -154,27 +154,27 @@ public class CpuSimulation extends Thread {
 					ListIterator<Device> iterator2;
 					iterator = devices.listIterator();
 					int n = devices.size();
-					int ii = 0;
-					int jj = 0;
+					int i2 = 0;
+					int j2 = 0;
 					while (iterator.hasNext()) {
 						d1 = iterator.next();
-						links[ii][ii] = 1;
+						links[i2][i2] = 1;
 						if (iterator.nextIndex() < n) {
-							jj = ii + 1;
+							j2 = i2 + 1;
 							iterator2 = devices.listIterator(iterator
 									.nextIndex());
 							while (iterator2.hasNext()) {
 								d2 = iterator2.next();
 								if (d1.radioDetect(d2)) {
-									links[ii][jj] = 1;
-									links[jj][ii] = 1;
+									links[i2][j2] = 1;
+									links[j2][i2] = 1;
 								} else {
-									links[ii][jj] = 0;
-									links[jj][ii] = 0;
+									links[i2][j2] = 0;
+									links[j2][i2] = 0;
 								}
-								jj++;
+								j2++;
 							}
-							ii++;
+							i2++;
 						}
 					}
 					if (discreteEvent) {
