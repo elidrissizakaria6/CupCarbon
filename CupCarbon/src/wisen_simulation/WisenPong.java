@@ -15,6 +15,7 @@ public class WisenPong extends Thread {
 
 	@Override
 	public void run() {
+		//
 		boolean b=true;
 		while (b) {
 			wisenSemaphorePong.P();			

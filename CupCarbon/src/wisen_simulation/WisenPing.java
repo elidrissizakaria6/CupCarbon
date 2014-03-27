@@ -15,6 +15,7 @@ public class WisenPing extends Thread {
 
 	@Override
 	public void run() {
+		//
 		while (true) {			
 			wisenSemaphorePing.P();
 			wisenSimulation.eventGenerator();			
