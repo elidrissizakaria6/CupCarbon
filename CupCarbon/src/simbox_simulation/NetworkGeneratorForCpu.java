@@ -75,6 +75,7 @@ public class NetworkGeneratorForCpu extends Thread {
 			d1.getBattery().init(SimulationInputs.energyMax);
 			String s = "";
 			try {
+				System.out.println("---> " + d1.getScriptFileName());
 				BufferedReader br = new BufferedReader(new FileReader(d1.getScriptFileName()));
 				for (int j2 = 0; j2 < scriptSize; j2++) {
 					s = br.readLine();

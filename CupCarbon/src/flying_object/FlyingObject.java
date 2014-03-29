@@ -182,6 +182,8 @@ public class FlyingObject extends MobileG {
 				b.readLine();
 				b.readLine();
 				b.readLine();
+				b.readLine();
+				b.readLine();
 				loop = Boolean.parseBoolean(b.readLine());
 				while ((s = b.readLine()) != null) {
 					ts = s.split(" ");

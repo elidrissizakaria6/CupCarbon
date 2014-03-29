@@ -79,7 +79,7 @@ public class CupCarbon {
 	private static JLabel sspeedLabel;
 	private JCheckBoxMenuItem chckbxmntmAddSelection;
 	private ComScriptWindow comScriptWindow = new ComScriptWindow();
-
+	private CupCarbonMap cupCarbonMap;
 	private GpsWindow gpsWindow = new GpsWindow();
 	private DeviceParametersWindow deviceParametersWindow = new DeviceParametersWindow();
 	private FlyingObjParametersWindow flyingObjParametersWindow = new FlyingObjParametersWindow();
@@ -248,6 +248,7 @@ public class CupCarbon {
 				if (val == 0) {
 					Project.openProject(fc.getSelectedFile().getParent(), fc
 							.getSelectedFile().getName());
+					cupCarbonMap.setTitle("CupCarbon Map : "+fc.getSelectedFile().getName());
 				}
 			}
 		});
@@ -1096,7 +1097,7 @@ public class CupCarbon {
 		sspeedLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_2.add(sspeedLabel);
 
-		CupCarbonMap cupCarbonMap = new CupCarbonMap();
+		cupCarbonMap = new CupCarbonMap();
 		cupCarbonMap.setLocation(280, 91);
 		cupCarbonMap.setFrameIcon(new ImageIcon(
 				"images/cupcarbon_logo_small.png"));
@@ -1134,6 +1135,7 @@ public class CupCarbon {
 		if (s == null)
 			s = new String[1];
 		DeviceParametersWindow.scriptComboBox.removeAllItems();
+		DeviceParametersWindow.scriptComboBox.addItem("");
 		for (int i = 0; i < s.length; i++) {
 			DeviceParametersWindow.scriptComboBox.addItem(s[i]);
 		}

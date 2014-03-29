@@ -136,6 +136,9 @@ public class CpuSimulation extends Thread {
 				for (int i = 0; i < nbSensors; i++) {
 					ps.print(energy[i] + ";");
 				}
+				for (int i = 0; i < nbSensors; i++) {
+					ps.print(event[i] + ";");
+				}
 				ps.println();
 
 				// for (int i = 0; i < nbSensors; i++) {

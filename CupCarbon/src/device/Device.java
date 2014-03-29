@@ -519,16 +519,13 @@ public abstract class Device implements Runnable, MouseListener,
 			String[] gpsFile = getGPSFileName()
 					.split(Parameters.SEPARATOR + "");
 			String gpsFileName = gpsFile[gpsFile.length - 1];
-			if (!gpsFileName.equals(""))
-				DeviceParametersWindow.gpsPathNameComboBox
-						.setSelectedItem(gpsFileName);
+			//if (!gpsFileName.equals(""))
+			DeviceParametersWindow.gpsPathNameComboBox.setSelectedItem(gpsFileName);
 
-			String[] scriptFile = getScriptFileName().split(
-					Parameters.SEPARATOR + "");
+			String[] scriptFile = getScriptFileName().split(Parameters.SEPARATOR + "");
 			String scriptFileName = scriptFile[scriptFile.length - 1];
-			if (!scriptFileName.equals(""))
-				DeviceParametersWindow.scriptComboBox
-						.setSelectedItem(scriptFileName);
+			//if (!scriptFileName.equals(""))
+			DeviceParametersWindow.scriptComboBox.setSelectedItem(scriptFileName);
 		}
 	}
 
