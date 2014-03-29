@@ -41,16 +41,14 @@ import device.MobileG;
  */
 public class FlyingObject extends MobileG {
 
-	protected double x = 0;
-	protected double y = 0;
 	protected double xc = 0;
 	protected double yc = 0;
 	private double direction;
 	// Insect parameters
-	private double speedOnX = .00001;
-	private double speedOnY = .00001;
+	private double speedOnX = .000005;
+	private double speedOnY = .000005;
 	private double rotationAngle = .2;
-	private double dispersion = 200.;
+	private double dispersion = 400.;
 	private boolean detected = false;
 
 	private LinkedList<Long> routeTime;
@@ -58,7 +56,6 @@ public class FlyingObject extends MobileG {
 	private LinkedList<Double> routeY;
 	private boolean loop = false;
 	private int routeIndex = 0;
-	//private boolean readyForSimulation = false;
 
 	// ------------------------------------
 
@@ -68,7 +65,7 @@ public class FlyingObject extends MobileG {
 		this.direction = theta;
 		this.xc = xc;
 		this.yc = yc;
-		radius = 100;
+		radius = 30;
 	}
 
 	public FlyingObject(double x, double y, boolean dispersion) {
@@ -83,7 +80,7 @@ public class FlyingObject extends MobileG {
 		this.x = x + xc;
 		this.y = y + yc;
 		direction = (int) (Math.random() * 360);
-		radius = 100;
+		radius = 30;
 	}
 
 	// ------------------------------------
@@ -173,9 +170,7 @@ public class FlyingObject extends MobileG {
 		String s;
 		String[] ts;
 		try {
-			//readyForSimulation = false;
 			if (!gpsFileName.equals("")) {
-				//readyForSimulation = true;
 				fis = new FileInputStream(gpsFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
 				underSimulation = true;
