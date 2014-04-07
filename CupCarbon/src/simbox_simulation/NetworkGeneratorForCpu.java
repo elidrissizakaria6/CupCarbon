@@ -79,6 +79,7 @@ public class NetworkGeneratorForCpu extends Thread {
 				BufferedReader br = new BufferedReader(new FileReader(d1.getScriptFileName()));
 				for (int j2 = 0; j2 < scriptSize; j2++) {
 					s = br.readLine();
+					System.out.println(s);
 					String[] inst = s.split(" ");
 					if (inst[0].toLowerCase().equals("psend")) {
 						SimulationInputs.script[i][j2][0] = 1;

@@ -312,6 +312,9 @@ public class WsnSimulationWindow extends JInternalFrame {
 				if (rdbtnGpuSimulation.isSelected()) {
 					simulateCallBack(1, 2);
 				}
+				if (rdbtnPingPongSimulation.isSelected()) {
+					simulateCallBack(1, 3);
+				}
 			}
 		});
 		panel_2.add(btnGenerateNetwork);
