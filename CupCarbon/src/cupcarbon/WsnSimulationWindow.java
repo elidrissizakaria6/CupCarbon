@@ -167,21 +167,19 @@ public class WsnSimulationWindow extends JInternalFrame {
 		panel_3.add(panel_4);
 		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.X_AXIS));
 
-		JLabel lblSerialFrequency = new JLabel("Serial Frequency");
+		JLabel lblSerialFrequency = new JLabel("Data Rate");
 		lblSerialFrequency.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_4.add(lblSerialFrequency);
 
 		freqComboBox = new JComboBox();
 		freqComboBox.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_4.add(freqComboBox);
-		freqComboBox.setToolTipText("Baud Rate");
-		freqComboBox.setModel(new DefaultComboBoxModel(new String[] { "110",
-				"300", "1200", "2400", "4800", "9600", "19200", "38400",
-				"57600", "115200", "230400", "460800", "921600", "1843200",
-				"3686400" }));
-		freqComboBox.setSelectedIndex(5);
+		freqComboBox.setToolTipText("Data Rate");
+		freqComboBox.setModel(new DefaultComboBoxModel(new String[] { "20000",
+				"40000", "256000" }));
+		freqComboBox.setSelectedIndex(2);
 
-		JLabel lblBaudRate = new JLabel("Baud rate");
+		JLabel lblBaudRate = new JLabel("bps");
 		lblBaudRate.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_4.add(lblBaudRate);
 

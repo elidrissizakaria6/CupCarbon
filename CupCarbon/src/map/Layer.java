@@ -149,7 +149,7 @@ public class Layer implements Painter<Object>, MouseListener,
 				g.drawString("   Gas", (float) x, (float) y);
 			}
 			if (lastKey == '3') {
-				g.drawString("   Insects", (float) x, (float) y);
+				g.drawString("   Flying Object", (float) x, (float) y);
 			}
 			if (lastKey == '4') {
 				g.drawString("   Router", (float) x, (float) y);

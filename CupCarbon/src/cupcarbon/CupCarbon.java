@@ -56,7 +56,6 @@ import project.Project;
 import solver.OmnetPp;
 import solver.SensorSetCover;
 import solver.SensorTargetCoverageRun;
-import solver.SevauxCoverage;
 import utilities.GraphViewer;
 import device.Device;
 import device.DeviceList;
@@ -752,29 +751,25 @@ public class CupCarbon {
 				SensorSetCover.sensorSetCover();
 			}
 		});
-
-		JMenuItem mntmCoverage = new JMenuItem("Coverage (Sevaux & Rossi)");
-		mntmCoverage.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Thread th = new Thread(new SevauxCoverage());
-				th.start();
-			}
-		});
-		mntmCoverage.setIcon(new ImageIcon(Parameters.IMGPATH
-				+ "edu_mathematics-1.png"));
-		mnResolution.add(mntmCoverage);
 		mnResolution.add(mntmMinSetCover);
 
 		JMenuItem mntmNewMenuItem = new JMenuItem("Target Coverage");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// SensorSetCover.sensorTargetSetCover() ;
-				(new SensorTargetCoverageRun()).start();
+				SensorSetCover.sensorTargetSetCover() ;				
 			}
 		});
 		mntmNewMenuItem.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "edu_mathematics-1.png"));
 		mnResolution.add(mntmNewMenuItem);
+		
+		JMenuItem mntmTargetCoverageth = new JMenuItem("Target Coverage (Th)");
+		mntmTargetCoverageth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				(new SensorTargetCoverageRun()).start();
+			}
+		});
+		mnResolution.add(mntmTargetCoverageth);
 
 		JSeparator separator_7 = new JSeparator();
 		mnResolution.add(separator_7);

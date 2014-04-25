@@ -106,7 +106,7 @@ public class SensorTargetCoverageRun implements Runnable {
 		while (true) {
 			sensorTargetSetCover();
 			try {
-				Thread.sleep(5);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

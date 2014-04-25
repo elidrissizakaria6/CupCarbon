@@ -30,7 +30,7 @@ public final class UColor {
 	public static final Color JAUNEF_TRANSPARENT = new Color(255, 198, 0, 150);
 	public static final Color ROSE_TRANSPARENT = new Color(210, 255, 0, 100);
 	public static final Color VERTF_TRANSPARENT = new Color(210, 255, 0, 150);
-	public static final Color MAUVE_TRANSPARENT = new Color(134, 20, 143, 70);
+	public static final Color MAUVE_TRANSPARENT = new Color(134, 20, 143, 50);
 	public static final Color MAUVEF_TRANSPARENT = new Color(134, 20, 143, 100);
 	public static final Color ROUGE_TTRANSPARENT = new Color(255, 200, 103, 20);
 	public static final Color ROUGE_TRANSPARENT = new Color(255, 200, 103, 120);

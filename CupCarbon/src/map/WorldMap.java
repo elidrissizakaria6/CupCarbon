@@ -31,7 +31,7 @@ public class WorldMap extends JXMapKit {
 
 	private static final long serialVersionUID = 1L;
 	public static Layer layer;
-	final int max = 18;
+	final int max = 19;
 
 	public WorldMap() {
 		// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
@@ -46,7 +46,8 @@ public class WorldMap extends JXMapKit {
 				zoom = max - zoom;
 				 //return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
 				 //return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom + "/" + x + "/" + y + ".jpg";
-				 return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".png";
+				 return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".jpg";
+				 //return "http://a.tile.openstreetmap.org/"+zoom+"/"+x+"/"+y+".png";
 				//return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/"
 				//		+ x + "/" + y + ".png";
 				// return
@@ -63,7 +64,7 @@ public class WorldMap extends JXMapKit {
 			}
 		};
 
-		// info.setDefaultZoomLevel(1);
+		info.setDefaultZoomLevel(19);
 
 		// WMSService wms = new WMSService();
 		// wms.setLayer("BMNG");
@@ -79,7 +80,7 @@ public class WorldMap extends JXMapKit {
 		// setDefaultProvider(JXMapKit.DefaultProviders.OpenStreetMaps);
 
 		// setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
-		// setDataProviderCreditShown(true);
+		setDataProviderCreditShown(true);
 		setName("CapCarbonMapStreet");
 		// setCenterPosition(new
 		// GeoPosition(43.461142978339005,-3.830108642578125));//Santander

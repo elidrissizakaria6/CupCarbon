@@ -110,7 +110,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String scriptFileName = "";
 	protected String gpsFileName = "";
 	protected Script script = null;
-	public static int frequency = 9600;
+	public static int frequency = 0;
 
 	protected boolean state = ALIVE;
 
