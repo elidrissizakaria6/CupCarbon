@@ -229,8 +229,12 @@ public class Sensor extends DeviceWithRadio {
 			case 0: {
 				if (inside) {
 					g.setColor(UColor.MAUVEF_TRANSPARENT);
-				} else
-					g.setColor(UColor.MAUVE_TRANSPARENT);
+				} else {
+					if(channel ==0)
+						g.setColor(UColor.MAUVE_TRANSPARENT);
+					else 
+						g.setColor(UColor.channelColor[channel]);
+				}
 				g.fillOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
 				g.fillOval(x - rayon2, y - rayon2, rayon2 * 2, rayon2 * 2);
 				captureUnit.setXY(x, y);
@@ -388,7 +392,7 @@ public class Sensor extends DeviceWithRadio {
 			else
 				diff = (int) (routeTime.get(routeIndex) - routeTime
 						.get(routeIndex - 1));
-			return ((diff * 100) * Device.frequency / 1000);
+			return ((diff * 100) * Device.dataRate / 1000);
 		}
 		return 0;
 	}

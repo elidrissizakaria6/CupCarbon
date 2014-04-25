@@ -110,7 +110,10 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String scriptFileName = "";
 	protected String gpsFileName = "";
 	protected Script script = null;
-	public static int frequency = 0;
+	protected int channel = 0;
+	
+	public static int dataRate = 0;
+	
 
 	protected boolean state = ALIVE;
 
@@ -1205,5 +1208,13 @@ public abstract class Device implements Runnable, MouseListener,
 	public abstract void loadRouteFromFile();
 	public abstract void exeNext(boolean visual, int visualDelay);
 	public abstract boolean canMove();
+
+	public void setChannel(int channel) {
+		this.channel = channel;
+	}
+	
+	public int getChannel() {
+		return channel;
+	}
 	
 }

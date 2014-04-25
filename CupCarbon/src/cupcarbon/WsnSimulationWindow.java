@@ -439,7 +439,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 		// cpugpu = 2 : gpu
 		// cpugpu = 3 : ping pong
 		if (v == 1 || v == 3) {
-			Device.frequency = Integer.parseInt((String) freqComboBox
+			Device.dataRate = Integer.parseInt((String) freqComboBox
 					.getSelectedItem());
 			SimulationInputs.iterNumber = Integer.parseInt(iterNumberTextField
 					.getText());

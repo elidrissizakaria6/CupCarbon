@@ -19,8 +19,6 @@
 
 package device;
 
-import flying_object.FlyingGroup;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -37,8 +35,9 @@ import java.util.List;
 import java.util.ListIterator;
 
 import map.Layer;
-import solver.SensorSetCover;
+import solver.SensorGraph;
 import utilities.MapCalc;
+import flying_object.FlyingGroup;
 
 /**
  * @author Ahcene Bounceur
@@ -430,11 +429,11 @@ public class DeviceList {
 	}
 
 	public static StringBuilder displaySensorGraph() {
-		return SensorSetCover.toSensorGraph(nodes, size).displayNames();
+		return SensorGraph.toSensorGraph(nodes, size).displayNames();
 	}
 
 	public static StringBuilder displaySensorTargetGraph() {
-		return SensorSetCover.toSensorTargetGraph(nodes, size).displayNames();
+		return SensorGraph.toSensorTargetGraph(nodes, size).displayNames();
 	}
 
 	public void selectInNodeSelection(int cadreX1, int cadreY1, int cadreX2,

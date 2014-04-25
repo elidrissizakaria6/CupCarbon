@@ -54,6 +54,7 @@ import javax.swing.filechooser.FileFilter;
 import map.WorldMap;
 import project.Project;
 import solver.OmnetPp;
+import solver.SensorColoring;
 import solver.SensorSetCover;
 import solver.SensorTargetCoverageRun;
 import utilities.GraphViewer;
@@ -764,12 +765,25 @@ public class CupCarbon {
 		mnResolution.add(mntmNewMenuItem);
 		
 		JMenuItem mntmTargetCoverageth = new JMenuItem("Target Coverage (Th)");
+		mntmTargetCoverageth.setIcon(new ImageIcon(Parameters.IMGPATH
+				+ "edu_mathematics-1.png"));
 		mntmTargetCoverageth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				(new SensorTargetCoverageRun()).start();
 			}
 		});
 		mnResolution.add(mntmTargetCoverageth);
+		
+		JMenuItem mntmChannelColoring = new JMenuItem("Channel Coloring");
+		mntmChannelColoring.setIcon(new ImageIcon(Parameters.IMGPATH
+				+ "edu_mathematics-1.png"));
+		mntmChannelColoring.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				SensorColoring sc = new SensorColoring() ;
+				sc.executeColoring();
+			}
+		});
+		mnResolution.add(mntmChannelColoring);
 
 		JSeparator separator_7 = new JSeparator();
 		mnResolution.add(separator_7);

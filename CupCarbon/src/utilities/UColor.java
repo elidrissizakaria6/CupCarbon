@@ -48,4 +48,28 @@ public final class UColor {
 	public static final Color NOIR_TTRANSPARENT = new Color(0, 0, 0, 100);
 	public static final Color NOIRF_TTTRANSPARENT = new Color(0, 0, 0, 70);
 
+	public static final Color [] channelColor = {
+		new Color(0, 20, 143, 50),
+		new Color(30, 20, 143, 50),
+		new Color(60, 20, 143, 50),
+		new Color(90, 20, 143, 50),
+		new Color(120, 20, 143, 50),
+		new Color(150, 20, 143, 50),
+		new Color(180, 20, 143, 50),
+		new Color(210, 20, 143, 50),
+		new Color(240, 20, 143, 50),
+		new Color(134, 20, 143, 50),
+		new Color(134, 40, 143, 50),
+		new Color(134, 60, 143, 50),
+		new Color(134, 80, 143, 50),
+		new Color(134, 100, 143, 50),
+		new Color(134, 120, 143, 50),
+		new Color(134, 140, 143, 50),
+		new Color(134, 20, 23, 50),
+		new Color(134, 20, 43, 50),
+		new Color(134, 20, 83, 50),
+		new Color(134, 20, 143, 50),
+		new Color(134, 20, 243, 50)
+	};
+	
 }

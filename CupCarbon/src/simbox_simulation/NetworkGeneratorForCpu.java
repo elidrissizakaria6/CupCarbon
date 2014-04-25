@@ -89,7 +89,7 @@ public class NetworkGeneratorForCpu extends Thread {
 					if (inst[0].toLowerCase().equals("delay")) {
 						SimulationInputs.script[i][j2][0] = 0;
 						SimulationInputs.script[i][j2][1] = Integer
-								.parseInt(inst[1]) * Device.frequency / 1000;
+								.parseInt(inst[1]) * Device.dataRate / 1000;
 					}
 				}
 				br.close();

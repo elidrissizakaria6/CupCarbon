@@ -85,7 +85,7 @@ public class NetworkGeneratorForGpu extends Thread {
 						SimulationInputs.gpuScript[i * scriptSize * 2 + j2 + 1] = 1;
 					}
 					if (inst[0].toLowerCase().equals("delay")) {
-						SimulationInputs.gpuScript[i * scriptSize * 2 + j2] = Integer.parseInt(inst[1]) * Device.frequency / 1000;
+						SimulationInputs.gpuScript[i * scriptSize * 2 + j2] = Integer.parseInt(inst[1]) * Device.dataRate / 1000;
 						SimulationInputs.gpuScript[i * scriptSize * 2 + j2 + 1] = 0;
 					}
 				}
