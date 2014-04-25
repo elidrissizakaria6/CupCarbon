@@ -36,16 +36,23 @@ import device.DeviceList;
 public class SensorColoring {
 
 	public void executeColoring() {
-		GraphStd graphe = null;
 		
-		List<Device> nodes = DeviceList.getNodes();
-		
+		// From sensors to Graph
+		GraphStd graphe = null;		
+		List<Device> nodes = DeviceList.getNodes();		
 		graphe = SensorGraph.toSensorGraph(nodes, DeviceList.size());
 		
+		//------------------------------------------------------------
+		// Begin : example 
 		int c=0;
 		for (int i = 0; i < graphe.size(); i++) {
-			nodes.get(graphe.get(i).getNumber()).setChannel(c++);
+			nodes.get(i).setChannel(c++);
 		}
+		// End : example
+		//------------------------------------------------------------
+		
+		
+		// Update sensors (coloring)
 		Layer.getMapViewer().repaint();
 	}
 	
