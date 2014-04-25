@@ -22,7 +22,7 @@ package utilities;
 import java.awt.Color;
 
 public final class UColor {
-	private static int transpa = 100;
+	private static int transpa = 150;
 	// User Colors
 	public static final Color BLEU_TRANSPARENT = new Color(18, 188, 228, 100);
 	public static final Color BLEUF_TRANSPARENT = new Color(18, 188, 228, 150);
