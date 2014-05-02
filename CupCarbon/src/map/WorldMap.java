@@ -37,7 +37,7 @@ public class WorldMap extends JXMapKit {
 		// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
 		// true,"file:/myLocalMapServer/tiles","x","y","z") {
 		TileFactoryInfo info = new TileFactoryInfo(0, max, max, 256, true,
-				true, "http://tile.openstreetmap.org", "x", "y", "z") {
+				true, "http://tile.openseamap.org", "x", "y", "z") {
 			// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
 			// true,"http://www.openseamap.org/map","x","y","z") {
 			// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
@@ -54,8 +54,8 @@ public class WorldMap extends JXMapKit {
 				// "http://tile.stamen.com/terrain-background/"+zoom+"/"+x+"/"+y+".png";
 				// return
 				// "http://a.tile2.opencyclemap.org/transport/"+zoom+"/"+x+"/"+y+".png";
-				// return
-				// "http://tiles.openseamap.org/seamark/"+zoom+"/"+x+"/"+y+".png";
+				//return
+				//"http://tiles.openseamap.org/seamark/"+zoom+"/"+x+"/"+y+".png";
 				// return this.baseURL + x+"_"+y+"_"+"z"+".jpg";
 				// return
 				// "http://a.tile.opencyclemap.org/cycle/"+zoom+"/"+x+"/"+y+".png";

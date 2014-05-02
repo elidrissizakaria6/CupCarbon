@@ -19,6 +19,7 @@
 
 package device;
 
+
 /**
  * @author Ahcene Bounceur
  * @author Kamal Mehdi
@@ -26,7 +27,7 @@ package device;
  * @version 1.0
  */
 public abstract class DeviceWithoutRadio extends DeviceWithWithoutRadio {
-	
+
 	/**
 	 * Empty constructor
 	 */

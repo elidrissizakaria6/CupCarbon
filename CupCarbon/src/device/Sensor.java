@@ -21,12 +21,7 @@ package device;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
 
-import map.Layer;
 import utilities.MapCalc;
 import utilities.UColor;
 import battery.Battery;
@@ -41,14 +36,7 @@ import captureunit.CaptureUnit;
 public class Sensor extends DeviceWithRadio {
 
 	protected CaptureUnit captureUnit;
-	protected boolean insectDetection = false;
-	private LinkedList<Long> routeTime;
-	private LinkedList<Double> routeX;
-	private LinkedList<Double> routeY;
-	private boolean loop = false;
-	private int nLoop = 0;
-	private int routeIndex = 0;
-	private boolean readyForSimulation = false;
+	protected boolean insectDetection = false;	
 
 	/**
 	 * Constructor 1 Instanciate the capture unit Instanciate the battery
@@ -286,171 +274,7 @@ public class Sensor extends DeviceWithRadio {
 	@Override
 	public double getCaptureUnitRadius() {
 		return captureUnit.getRadius();
-	}
-
-	// ------------------------------------------------------------------------
-	// Load Route from file to Lists
-	// ------------------------------------------------------------------------
-	public void loadRouteFromFile() {
-		routeIndex = 0;
-		routeTime = new LinkedList<Long>();
-		routeX = new LinkedList<Double>();
-		routeY = new LinkedList<Double>();
-		FileInputStream fis;
-		BufferedReader b = null;
-		String s;
-		String[] ts;		
-		try {
-			if (!gpsFileName.equals("")) {
-				readyForSimulation = true;
-				fis = new FileInputStream(gpsFileName);
-				b = new BufferedReader(new InputStreamReader(fis));
-				underSimulation = true;
-				b.readLine();
-				b.readLine();
-				b.readLine();
-				loop = Boolean.parseBoolean(b.readLine());
-				nLoop = Integer.parseInt(b.readLine());
-				while ((s = b.readLine()) != null) {
-					ts = s.split(" ");
-					routeTime.add(Long.parseLong(ts[0]));
-					routeX.add(Double.parseDouble(ts[1]));
-					routeY.add(Double.parseDouble(ts[2]));
-				}
-				b.close();
-				fis.close();
-				
-			} else
-				readyForSimulation = false;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// ------------------------------------------------------------------------
-	// Do some actions before the simulation
-	// ------------------------------------------------------------------------
-	public void preprocessing() {
-		routeIndex = 0;
-	}
-
-	// ------------------------------------------------------------------------
-	// Simulate
-	// ------------------------------------------------------------------------
-	public void runSensorSimulation() {
-		loadRouteFromFile();
-		fixori();
-		if (readyForSimulation) {
-			underSimulation = true;
-			routeIndex = 0;
-			selected = false;
-			long tmpTime = 0;
-			long cTime = 0;
-			long toWait = 0;
-			do {
-				cTime = routeTime.get(routeIndex);
-				toWait = cTime - tmpTime;
-				tmpTime = cTime;
-				if (toWait < 0) {
-					toWait = cTime;
-				}
-				x = routeX.get(routeIndex);
-				y = routeY.get(routeIndex);
-				Layer.getMapViewer().repaint();
-				try {
-					Thread.sleep(toWait * Device.moveSpeed);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}				
-				goToNext();				
-			} while (hasNext());			
-			routeIndex = 0;
-			selected = false;
-			toori();
-			thread = null;
-			underSimulation = false;
-			Layer.getMapViewer().repaint();
-		}
-	}
-	// ------------------------------------------------------------------------
-	// Run
-	// ------------------------------------------------------------------------
-	@Override
-	public void run() {
-		runSensorSimulation();
-	}
-
-	// ------------------------------------------------------------------------
-	// Duration to Next Time 
-	// ------------------------------------------------------------------------
-	@Override
-	public int getNextTime() {
-		if (routeTime.size() > 0) {
-			int diff = 0;
-			if (routeIndex == 0)
-				diff = (int) (1 * routeTime.get(routeIndex));
-			else
-				diff = (int) (routeTime.get(routeIndex) - routeTime
-						.get(routeIndex - 1));
-			return ((diff * 100) * Device.dataRate / 1000);
-		}
-		return 0;
-	}
-
-	// ------------------------------------------------------------------------
-	// Go to next point and update 
-	// ------------------------------------------------------------------------
-	@Override
-	public void exeNext(boolean visual, int visualDelay) {
-		if (routeTime != null && nLoop>0) {
-			routeIndex++;
-			if ((routeIndex == (routeTime.size()))) {
-				nLoop--;
-				if (!loop || nLoop==0) {
-					routeIndex--;
-				} else {
-					routeIndex = 0;					
-				}
-				
-			}
-			x = routeX.get(routeIndex);
-			y = routeY.get(routeIndex);
-		}
-		if (visual) {
-			try {
-				Layer.getMapViewer().repaint();
-				Thread.sleep(visualDelay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	// ------------------------------------------------------------------------
-	// Go to next index (routeIndex)
-	// ------------------------------------------------------------------------
-	//@Override
-	public void goToNext() {
-		if (routeTime != null) {
-			routeIndex++;
-			if (routeIndex == routeTime.size()) {
-				if (loop) {
-					nLoop--;
-					routeIndex = 0;
-				}
-			}
-		}
-	}
-
-	// ------------------------------------------------------------------------
-	// Test the existence of a next point
-	// ------------------------------------------------------------------------
-	public boolean hasNext() {
-		if(nLoop==0 && loop) return false;
-		if (routeIndex < routeTime.size())
-			return true;
-		return false;
-	}
+	}	
 
 	// ------------------------------------------------------------------------
 	// 
@@ -498,10 +322,5 @@ public class Sensor extends DeviceWithRadio {
 	public String getNodeIdName() {
 		return getIdFL() + id;
 	}
-
-	public boolean canMove() {
-		if (getGPSFileName().equals(""))
-			return false;
-		return true;
-	}
+	
 }

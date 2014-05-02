@@ -20,18 +20,8 @@
 package device;
 
 import java.awt.Graphics;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-import map.Layer;
 import project.Project;
-import utilities.MapCalc;
 
 public abstract class MobileGWR extends DeviceWithRadio {
 
@@ -55,10 +45,11 @@ public abstract class MobileGWR extends DeviceWithRadio {
 		if (gpsFileName.equals(""))
 			gpsFileName = "-";
 		return gpsFileName;
-	}
+	}	
 
 	public abstract void draw(Graphics g);
-
+	
+	/*
 	@Override
 	public void run() {
 		state = this.getState();
@@ -177,7 +168,7 @@ public abstract class MobileGWR extends DeviceWithRadio {
 		} catch (Exception e1) {
 		}
 	}
-
+	*/
 	@Override
 	public double getCaptureUnitRadius() {
 		return radius;
