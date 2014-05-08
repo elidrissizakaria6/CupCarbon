@@ -298,13 +298,27 @@ public class CupCarbon {
 		mnEdition
 				.setIcon(new ImageIcon(Parameters.IMGPATH + "blockdevice.png"));
 		menuBar.add(mnEdition);
-
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Cancel");
+		
+		// USTH - HA NOI
+		// Add the UNDO method
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Undo");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("UNDO Method from Ha Noi !");
+			}
+		});
 		mntmNewMenuItem_2.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "arrow_rotate_clockwise.png"));
 		mnEdition.add(mntmNewMenuItem_2);
 
-		JMenuItem mntmRetry = new JMenuItem("Retry");
+		// USTH - HA NOI
+		// Add the REDO method
+		JMenuItem mntmRetry = new JMenuItem("Redo");
+		mntmRetry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("REDO Method from Ha Noi !");
+			}
+		});
 		mntmRetry.setIcon(new ImageIcon(Parameters.IMGPATH
 				+ "arrow_rotate_anticlockwise.png"));
 		mnEdition.add(mntmRetry);
