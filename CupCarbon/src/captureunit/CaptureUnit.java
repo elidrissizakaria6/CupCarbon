@@ -41,6 +41,7 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 	protected double x;
 	protected double y;
 	protected Device node;
+	protected int service = 14;
 
 	/**
 	 * Constructor 1 : radius is equal to 10 meter
