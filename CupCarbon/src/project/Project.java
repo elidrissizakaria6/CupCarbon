@@ -50,40 +50,40 @@ public final class Project {
 	}
 
 	public static String getProjectPathName() {
-		return projectPath + "/" + projectName;
+		return projectPath + File.separator + projectName;
 	}
 
 	public static String getProjectNodePathName() {
-		return projectPath + "/config/nodes.cfg";
+		return projectPath + File.separator + "config/nodes.cfg";
 	}
 
 	public static String getProjectMarkerPathName() {
-		return projectPath + "/config/markers.cfg";
+		return projectPath + File.separator + "config/markers.cfg";
 	}
 
 	public static String getProjectStreetVertexPathName() {
-		return projectPath + "/config/graph.cfg";
+		return projectPath + File.separator + "config/graph.cfg";
 	}
 
 	public static String getProjectGpsPath() {
-		return projectPath + "/gps";
+		return projectPath + File.separator + "gps";
 	}
 
 	public static String getProjectScriptPath() {
-		return projectPath + "/scripts";
+		return projectPath + File.separator + "scripts";
 	}
 	
 	public static String getProjectNetworkPath() {
-		return projectPath + "/network";
+		return projectPath + File.separator + "network";
 	}
 
 
 	public static String getProjectLogPath() {
-		return projectPath + "/logs";
+		return projectPath + File.separator + "logs";
 	}
 
 	public static String getProjectResultsPath() {
-		return projectPath + "/results";
+		return projectPath + File.separator + "results";
 	}
 
 	public static void saveProject() {
@@ -113,21 +113,21 @@ public final class Project {
 		setProjectName(path, name + ".cup");
 		File file = new File(path);
 		file.mkdir();
-		file = new File(path + "/gps");
+		file = new File(path + File.separator + "gps");
 		file.mkdir();
-		file = new File(path + "/tmp");
+		file = new File(path + File.separator + "tmp");
 		file.mkdir();
-		file = new File(path + "/config");
+		file = new File(path + File.separator + "config");
 		file.mkdir();
-		file = new File(path + "/omnet");
+		file = new File(path + File.separator + "omnet");
 		file.mkdir();
-		file = new File(path + "/scripts");
+		file = new File(path + File.separator + "scripts");
 		file.mkdir();
-		file = new File(path + "/network");
+		file = new File(path + File.separator + "network");
 		file.mkdir();
-		file = new File(path + "/logs");
+		file = new File(path + File.separator + "logs");
 		file.mkdir();
-		file = new File(path + "/results");
+		file = new File(path + File.separator + "results");
 		file.mkdir();
 		saveParameters();
 	}
@@ -173,9 +173,9 @@ public final class Project {
 
 	public static String getGpsFileFromName(String name) {
 		if (name.endsWith(".gps"))
-			return getProjectGpsPath() + "/" + name;
+			return getProjectGpsPath() + File.separator + name;
 		else
-			return getProjectGpsPath() + "/" + name + ".gps";
+			return getProjectGpsPath() + File.separator + name + ".gps";
 	}
 
 	public static String getGpsFileExtension(String name) {
@@ -187,9 +187,9 @@ public final class Project {
 
 	public static String getScriptFileFromName(String name) {
 		if (name.endsWith(".scr"))
-			return getProjectScriptPath() + "/" + name;
+			return getProjectScriptPath() + File.separator + name;
 		else
-			return getProjectScriptPath() + "/" + name + ".scr";
+			return getProjectScriptPath() + File.separator + name + ".scr";
 	}
 
 	public static String getScriptFileExtension(String name) {
@@ -201,9 +201,9 @@ public final class Project {
 
 	public static String getLogFileFromName(String name) {
 		if (name.endsWith(".log"))
-			return getProjectLogPath() + "/" + name;
+			return getProjectLogPath() + File.separator + name;
 		else
-			return getProjectLogPath() + "/" + name + ".log";
+			return getProjectLogPath() + File.separator + name + ".log";
 	}
 
 	public static String getLogFileExtension(String name) {
@@ -215,9 +215,9 @@ public final class Project {
 
 	public static String getResultFileFromName(String name) {
 		if (name.endsWith(".res"))
-			return getProjectResultsPath() + "/" + name;
+			return getProjectResultsPath() + File.separator + name;
 		else
-			return getProjectResultsPath() + "/" + name + ".res";
+			return getProjectResultsPath() + File.separator + name + ".res";
 	}
 
 	public static String getResultFileExtension(String name) {

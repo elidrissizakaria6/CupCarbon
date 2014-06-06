@@ -187,11 +187,11 @@ public class Layer implements Painter<Object>, MouseListener,
 		if (dessinerCadre) {
 			Point2D p1 = MapCalc.pixelPanelToPixelMap(cadreX1, cadreY1);
 			Point2D p2 = MapCalc.pixelPanelToPixelMap(cadreX2, cadreY2);
-			g.setColor(UColor.WHITE_DTRANSPARENT);
+			g.setColor(UColor.WHITE_LLTRANSPARENT);
 			g.fillRect((int) p1.getX(), (int) p1.getY(),
 					(int) (p2.getX() - p1.getX()),
 					(int) (p2.getY() - p1.getY()));
-			g.setColor(UColor.WHITE_TRANSPARENT);
+			g.setColor(UColor.WHITE_LTRANSPARENT);
 			g.drawRect((int) p1.getX(), (int) p1.getY(),
 					(int) (p2.getX() - p1.getX()),
 					(int) (p2.getY() - p1.getY()));
@@ -246,7 +246,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			}
 			if (lastKey == '5') {
 				DeviceList.add(new BaseStation(gp.getLatitude(), gp
-						.getLongitude(), 0, 500));
+						.getLongitude(), 0, 100));
 				mapViewer.repaint();
 			}
 			if (lastKey == '6') {

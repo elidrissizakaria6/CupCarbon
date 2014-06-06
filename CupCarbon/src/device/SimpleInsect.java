@@ -111,7 +111,7 @@ public class SimpleInsect extends MobileG {
 						g.fillOval((int)(x+rayon2+v2), (int)(y+rayon3+v3), (int)MapCalc.radiusInPixels(4*Layer.getMapViewer().getZoom()), 
 							(int)MapCalc.radiusInPixels(4*Layer.getMapViewer().getZoom()));
 					if(j==1) {
-						g.setColor(UColor.WHITE_TRANSPARENT) ;
+						g.setColor(UColor.WHITE_LTRANSPARENT) ;
 						g.drawLine(fx, fy, (int)(x+rayon2), (int)(y+rayon3));
 						fx = (int)(x+rayon2) ;
 						fy = (int)(y+rayon3) ;

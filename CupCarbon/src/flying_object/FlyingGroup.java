@@ -169,7 +169,7 @@ public class FlyingGroup extends MobileG {
 				g.drawOval(x - rayon - 4, y - rayon - 4, (rayon + 4) * 2,
 						(rayon + 4) * 2);
 			}
-			g.setColor(UColor.WHITE_TRANSPARENT);
+			g.setColor(UColor.WHITE_LTRANSPARENT);
 			g.drawOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
 			drawMoveArrows(x, y, g);
 			drawIncRedDimNode(x, y, g);

@@ -487,7 +487,9 @@ public class DeviceList {
 	}
 
 	public static void updateFromMap(String xS, String yS, String radiusS,
-			String radioRadiusS, String captureRadiusS, String gpsFileName) {
+			String radioRadiusS, String captureRadiusS, String gpsFileName,
+			String eMax, String eTx, String eRx, String eS, String beta
+			) {
 		Device node;
 		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
 			node = iterator.next();
@@ -498,6 +500,11 @@ public class DeviceList {
 				node.setRadioRadius(Double.valueOf(radioRadiusS));
 				node.setCaptureRadius(Double.valueOf(captureRadiusS));
 				node.setGPSFileName(gpsFileName);
+				node.seteMax(Double.valueOf(eMax));
+				node.seteTx(Double.valueOf(eTx));
+				node.seteRx(Double.valueOf(eRx));
+				node.seteS(Double.valueOf(eS));
+				node.setBeta(Double.valueOf(beta));
 				Layer.getMapViewer().repaint();
 			}
 		}

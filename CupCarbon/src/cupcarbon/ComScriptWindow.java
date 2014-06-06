@@ -107,11 +107,11 @@ public class ComScriptWindow extends JInternalFrame {
 						.getText()));
 			}
 		});
-		button_1.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+		button_1.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "loopnone-1.png"));
 
 		JButton button = new JButton("");
 
-		button.setIcon(new ImageIcon(Parameters.IMGPATH + "Ouvrir.png"));
+		button.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "Ouvrir.png"));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -269,7 +269,7 @@ public class ComScriptWindow extends JInternalFrame {
 
 			}
 		});
-		Save.setIcon(new ImageIcon(Parameters.IMGPATH + "Enregistrer.png"));
+		Save.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "Enregistrer.png"));
 
 		setVisible(false);
 	}

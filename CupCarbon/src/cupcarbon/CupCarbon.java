@@ -29,8 +29,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyVetoException;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -60,6 +65,8 @@ import solver.SensorTargetCoverageRun;
 import utilities.GraphViewer;
 import device.Device;
 import device.DeviceList;
+import device.DeviceWithWithoutRadio;
+import device.Marker;
 import device.MarkerList;
 
 /**
@@ -73,6 +80,7 @@ public class CupCarbon {
 
 	private JFrame mainFrame;
 	private AboutCupCarbon aboutBox = null;
+	private HelpCupCarbon helpWindow = new HelpCupCarbon();
 	private JDesktopPane desktopPane = new JDesktopPane();
 	private JLabel lblNodesNumber;
 	private static JLabel label;
@@ -90,7 +98,10 @@ public class CupCarbon {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+			public void run() {		
+				//System.getProperties().put("http.proxySet", "true"); 
+				//System.getProperties().put("http.proxyPort", "3128"); 
+				//System.getProperties().put("http.proxyHost", "193.52.48.67");
 				// try
 				// {
 				// //UIManager.put("Panel.background", new Color(230,210,250));
@@ -113,6 +124,11 @@ public class CupCarbon {
 					licenceFile.close();
 					CupCarbon window = new CupCarbon();
 					window.mainFrame.setVisible(true);
+//					DeviceList.add(new Sensor(48.39248851994976, -4.445117712020874, 50, 100, 10));
+//					DeviceList.add(new Sensor(48.39184021522957, -4.441298246383667, 0, 100, 20));
+//					DeviceList.add(new Sensor(48.390344098226706, -4.444688558578491, 0, 100, 20));
+//					Layer.getMapViewer().repaint();
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -151,7 +167,7 @@ public class CupCarbon {
 		mainFrame.setJMenuBar(menuBar);
 
 		JMenu mnProject = new JMenu("Project");
-		mnProject.setIcon(new ImageIcon(Parameters.IMGPATH
+		mnProject.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "projects_folder_badged.png"));
 		menuBar.add(mnProject);
 		mainFrame.addWindowListener(new WindowListener() {
@@ -214,13 +230,13 @@ public class CupCarbon {
 				int val = fc.showDialog(fc, "New Project");
 				if (val == 0) {
 					Project.newProject(fc.getSelectedFile().getParent()
-							+ Parameters.SEPARATOR
+							+ File.separator
 							+ fc.getSelectedFile().getName(), fc
 							.getSelectedFile().getName());
 				}
 			}
 		});
-		mntmNewProject.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmNewProject.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "folder_new.png"));
 		mnProject.add(mntmNewProject);
 
@@ -253,7 +269,7 @@ public class CupCarbon {
 			}
 		});
 		mntmOpenProject
-				.setIcon(new ImageIcon(Parameters.IMGPATH + "folder.png"));
+				.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "folder.png"));
 		mnProject.add(mntmOpenProject);
 
 		JMenuItem mntmSaveProject = new JMenuItem("Save Project");
@@ -262,17 +278,17 @@ public class CupCarbon {
 				Project.saveProject();
 			}
 		});
-		mntmSaveProject.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSaveProject.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "Enregistrer.png"));
 		mnProject.add(mntmSaveProject);
 
 		JMenuItem mntmSaveProjectAs = new JMenuItem("Save Project As");
-		mntmSaveProjectAs.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSaveProjectAs.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "Enregistrer sous.png"));
 		mnProject.add(mntmSaveProjectAs);
 
 		JMenuItem mntmDuplicateProject = new JMenuItem("Duplicate Project");
-		mntmDuplicateProject.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDuplicateProject.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "gnome_panel_window_menu-1.png"));
 		mnProject.add(mntmDuplicateProject);
 
@@ -280,7 +296,7 @@ public class CupCarbon {
 		mnProject.add(separator);
 
 		JMenuItem mntmQuit = new JMenuItem("Quit");
-		mntmQuit.setIcon(new ImageIcon(Parameters.IMGPATH + "gnome_logout.png"));
+		mntmQuit.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "gnome_logout.png"));
 		mntmQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int n = JOptionPane.showConfirmDialog(mainFrame,
@@ -296,7 +312,7 @@ public class CupCarbon {
 
 		JMenu mnEdition = new JMenu("Edition");
 		mnEdition
-				.setIcon(new ImageIcon(Parameters.IMGPATH + "blockdevice.png"));
+				.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "blockdevice.png"));
 		menuBar.add(mnEdition);
 		
 		// USTH - HA NOI
@@ -307,7 +323,7 @@ public class CupCarbon {
 				System.out.println("UNDO Method from Ha Noi !");
 			}
 		});
-		mntmNewMenuItem_2.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmNewMenuItem_2.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "arrow_rotate_clockwise.png"));
 		mnEdition.add(mntmNewMenuItem_2);
 
@@ -319,7 +335,7 @@ public class CupCarbon {
 				System.out.println("REDO Method from Ha Noi !");
 			}
 		});
-		mntmRetry.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmRetry.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "arrow_rotate_anticlockwise.png"));
 		mnEdition.add(mntmRetry);
 
@@ -327,30 +343,30 @@ public class CupCarbon {
 		mnEdition.add(separator_2);
 
 		JMenuItem mntmCut = new JMenuItem("Cut");
-		mntmCut.setIcon(new ImageIcon(Parameters.IMGPATH + "cut.png"));
+		mntmCut.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "cut.png"));
 		mnEdition.add(mntmCut);
 
 		JMenuItem mntmCopy = new JMenuItem("Copy");
-		mntmCopy.setIcon(new ImageIcon(Parameters.IMGPATH + "copy.png"));
+		mntmCopy.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "copy.png"));
 		mnEdition.add(mntmCopy);
 
 		JMenuItem mntmPaste = new JMenuItem("Paste");
-		mntmPaste.setIcon(new ImageIcon(Parameters.IMGPATH + "paste.png"));
+		mntmPaste.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "paste.png"));
 		mnEdition.add(mntmPaste);
 
 		JMenuItem mntmDelete = new JMenuItem("Delete");
-		mntmDelete.setIcon(new ImageIcon(Parameters.IMGPATH + "Supprimer.png"));
+		mntmDelete.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "Supprimer.png"));
 		mnEdition.add(mntmDelete);
 
 		JSeparator separator_3 = new JSeparator();
 		mnEdition.add(separator_3);
 
 		JMenuItem mntmMove = new JMenuItem("Move");
-		mntmMove.setIcon(new ImageIcon(Parameters.IMGPATH + "move2red.png"));
+		mntmMove.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "move2red.png"));
 		mnEdition.add(mntmMove);
 
 		JMenu mnSelection = new JMenu("Selection");
-		mnSelection.setIcon(new ImageIcon(Parameters.IMGPATH
+		mnSelection.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "shape_square_select.png"));
 		menuBar.add(mnSelection);
 
@@ -361,7 +377,7 @@ public class CupCarbon {
 				WorldMap.setSelectionOfAllMarkers(true, -1, true);
 			}
 		});
-		mntmSelectAll.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAll.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "shapes_many_select.png"));
 		mnSelection.add(mntmSelectAll);
 
@@ -372,7 +388,7 @@ public class CupCarbon {
 				WorldMap.setSelectionOfAllMarkers(false, -1, true);
 			}
 		});
-		mntmDeselectAll.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAll.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "selection.png"));
 		mnSelection.add(mntmDeselectAll);
 
@@ -382,7 +398,7 @@ public class CupCarbon {
 				WorldMap.invertSelection();
 			}
 		});
-		mntmInvertSelection.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmInvertSelection.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "stock_filters_invert.png"));
 		mnSelection.add(mntmInvertSelection);
 
@@ -390,7 +406,7 @@ public class CupCarbon {
 		mnSelection.add(separator_1);
 
 		chckbxmntmAddSelection = new JCheckBoxMenuItem("Add Selection");
-		chckbxmntmAddSelection.setIcon(new ImageIcon(Parameters.IMGPATH
+		chckbxmntmAddSelection.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "layer_select.png"));
 		mnSelection.add(chckbxmntmAddSelection);
 
@@ -408,7 +424,7 @@ public class CupCarbon {
 						chckbxmntmAddSelection.getState());
 			}
 		});
-		mntmSelectAllSensors.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAllSensors.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "select_node.png"));
 
 		JMenuItem mntmSelectAllGasses = new JMenuItem("Select All Gasses");
@@ -419,7 +435,7 @@ public class CupCarbon {
 						chckbxmntmAddSelection.getState());
 			}
 		});
-		mntmSelectAllGasses.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAllGasses.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "select_node.png"));
 
 		JMenuItem mntmSelectAllMobiles = new JMenuItem("Select All Mobiles");
@@ -430,7 +446,7 @@ public class CupCarbon {
 						chckbxmntmAddSelection.getState());
 			}
 		});
-		mntmSelectAllMobiles.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAllMobiles.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "select_node.png"));
 
 		JMenuItem mntmSelectAllMobiles_1 = new JMenuItem(
@@ -442,7 +458,7 @@ public class CupCarbon {
 						chckbxmntmAddSelection.getState());
 			}
 		});
-		mntmSelectAllMobiles_1.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAllMobiles_1.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "select_node.png"));
 
 		JMenuItem mntmSelectAllRouters = new JMenuItem("Select All Routers");
@@ -453,7 +469,7 @@ public class CupCarbon {
 						chckbxmntmAddSelection.getState());
 			}
 		});
-		mntmSelectAllRouters.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAllRouters.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "select_node.png"));
 
 		JMenuItem mntmSelectAllFlyingObjects = new JMenuItem(
@@ -465,7 +481,7 @@ public class CupCarbon {
 						chckbxmntmAddSelection.getState());
 			}
 		});
-		mntmSelectAllFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAllFlyingObjects.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "select_node.png"));
 
 		JMenuItem mntmSelectAllBase = new JMenuItem("Select All Base Stations");
@@ -476,7 +492,7 @@ public class CupCarbon {
 						chckbxmntmAddSelection.getState());
 			}
 		});
-		mntmSelectAllBase.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAllBase.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "select_node.png"));
 
 		JMenuItem mntmSelectAllMarkers = new JMenuItem("Select All Markers");
@@ -487,7 +503,7 @@ public class CupCarbon {
 						chckbxmntmAddSelection.getState());
 			}
 		});
-		mntmSelectAllMarkers.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSelectAllMarkers.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "select_node.png"));
 
 		JMenu mnDeselectAll = new JMenu("Deselect All ...");
@@ -500,7 +516,7 @@ public class CupCarbon {
 				WorldMap.setSelectionOfAllNodes(false, Device.SENSOR, true);
 			}
 		});
-		mntmDeselectAllSensors.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAllSensors.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "deselect_node.png"));
 
 		JMenuItem mntmDeselectAllGasses = new JMenuItem("Deselect All Gasses");
@@ -510,7 +526,7 @@ public class CupCarbon {
 				WorldMap.setSelectionOfAllNodes(false, Device.GAS, true);
 			}
 		});
-		mntmDeselectAllGasses.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAllGasses.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "deselect_node.png"));
 
 		JMenuItem mntmDeselectAllMobiles = new JMenuItem("Deselect All Mobiles");
@@ -520,7 +536,7 @@ public class CupCarbon {
 				WorldMap.setSelectionOfAllNodes(false, Device.MOBILE, true);
 			}
 		});
-		mntmDeselectAllMobiles.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAllMobiles.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "deselect_node.png"));
 
 		JMenuItem mntmDeselectAllMobiles_1 = new JMenuItem(
@@ -531,7 +547,7 @@ public class CupCarbon {
 				WorldMap.setSelectionOfAllNodes(false, Device.MOBILE_WR, true);
 			}
 		});
-		mntmDeselectAllMobiles_1.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAllMobiles_1.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "deselect_node.png"));
 
 		JMenuItem mntmDeselectAllRouters = new JMenuItem("Deselect All Routers");
@@ -541,7 +557,7 @@ public class CupCarbon {
 				WorldMap.setSelectionOfAllNodes(false, Device.BRIDGE, true);
 			}
 		});
-		mntmDeselectAllRouters.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAllRouters.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "deselect_node.png"));
 
 		JMenuItem mntmDeselectAllFlyingObjects = new JMenuItem(
@@ -553,7 +569,7 @@ public class CupCarbon {
 						true);
 			}
 		});
-		mntmDeselectAllFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAllFlyingObjects.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "deselect_node.png"));
 
 		JMenuItem mntmDeselectAllBase = new JMenuItem(
@@ -565,7 +581,7 @@ public class CupCarbon {
 						true);
 			}
 		});
-		mntmDeselectAllBase.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAllBase.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "deselect_node.png"));
 
 		JMenuItem mntmDeselectAllMarkers = new JMenuItem("Deselect All Markers");
@@ -575,14 +591,14 @@ public class CupCarbon {
 				WorldMap.setSelectionOfAllMarkers(false, Device.MARKER, true);
 			}
 		});
-		mntmDeselectAllMarkers.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmDeselectAllMarkers.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "deselect_node.png"));
 
 		JSeparator separator_9 = new JSeparator();
 		mnSelection.add(separator_9);
 
 		JMenu mnNodes = new JMenu("Nodes");
-		mnNodes.setIcon(new ImageIcon(Parameters.IMGPATH
+		mnNodes.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_green.png"));
 		menuBar.add(mnNodes);
 
@@ -603,7 +619,7 @@ public class CupCarbon {
 
 		JSeparator separator_5 = new JSeparator();
 		mnNodes.add(separator_5);
-		mntmAddSensor.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAddSensor.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_mauve.png"));
 		mnNodes.add(mntmAddSensor);
 
@@ -613,50 +629,50 @@ public class CupCarbon {
 				WorldMap.addNodeInMap('2');
 			}
 		});
-		mntmAddRouter.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAddRouter.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_blue_ciel.png"));
 		mnNodes.add(mntmAddRouter);
 
 		JMenuItem mntmAddMobile = new JMenuItem("Add Mobile");
-		mntmAddMobile.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAddMobile.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_noir.png"));
 		mnNodes.add(mntmAddMobile);
 
 		JMenuItem mntmAddMobileWr = new JMenuItem("Add Mobile WR");
-		mntmAddMobileWr.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAddMobileWr.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_noir_radio.png"));
 		mnNodes.add(mntmAddMobileWr);
 
 		JMenuItem mntmAddBaseStation = new JMenuItem("Add Base Station");
-		mntmAddBaseStation.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAddBaseStation.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_orange.png"));
 		mnNodes.add(mntmAddBaseStation);
 
 		JMenuItem mntmAddFlyingObjects = new JMenuItem("Add Flying Objects");
-		mntmAddFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAddFlyingObjects.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "insects.png"));
 		mnNodes.add(mntmAddFlyingObjects);
 
 		JMenuItem mntmAddGas = new JMenuItem("Add Gas");
-		mntmAddGas.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAddGas.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "circle_orange.png"));
 		mnNodes.add(mntmAddGas);
 
 		JMenuItem mntmAddMarkers = new JMenuItem("Add Markers");
-		mntmAddMarkers.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAddMarkers.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "marker_rounded_light_blue.png"));
 		mnNodes.add(mntmAddMarkers);
 
 		JSeparator separator_6 = new JSeparator();
 		mnNodes.add(separator_6);
 
-		JMenuItem mntmParameters = new JMenuItem("Device Parameters");
+		JMenuItem mntmParameters = new JMenuItem("Device parameters");
 		mntmParameters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openDeviceParemeterWindow();
 			}
 		});
-		mntmParameters.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmParameters.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "ui_menu_blue.png"));
 		mnNodes.add(mntmParameters);
 
@@ -674,12 +690,36 @@ public class CupCarbon {
 				openFlyingObjectParemeterWindow();
 			}
 		});
-		mntmFlyingObjectParameters.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmFlyingObjectParameters.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "ui_menu_blue.png"));
 		mnNodes.add(mntmFlyingObjectParameters);
-		mntmRouteFromMarkers.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmRouteFromMarkers.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "route.png"));
 		mnNodes.add(mntmRouteFromMarkers);
+		
+		JMenuItem mntmInsertMarker = new JMenuItem("Insert markers");
+		mntmInsertMarker.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				for(Marker marker : MarkerList.getMarkers()) {
+					marker.insertMarker();
+				}
+			}
+		});
+		mntmInsertMarker.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "route2.png"));
+		mnNodes.add(mntmInsertMarker);
+		
+		JMenuItem mntmTransformMarkerTo = new JMenuItem("Transform markers to sensors");
+		mntmTransformMarkerTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(Marker marker : MarkerList.getMarkers()) {
+					marker.transformMarkerToSensor();
+				}
+			}
+		});
+		mntmTransformMarkerTo.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "marktosens.png"));
+		mnNodes.add(mntmTransformMarkerTo);
 
 		JSeparator separator_8 = new JSeparator();
 		mnNodes.add(separator_8);
@@ -693,7 +733,7 @@ public class CupCarbon {
 
 		JMenuItem mntmToOmnet = new JMenuItem("To OMNeT");
 		mntmToOmnet
-				.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+				.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "loopnone-1.png"));
 		mntmToOmnet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				OmnetPp.omnetFileGeneration();
@@ -703,7 +743,7 @@ public class CupCarbon {
 
 		JSeparator separator_11 = new JSeparator();
 		mnNodes.add(separator_11);
-		mntmInitialize_1.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmInitialize_1.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "circle_grey.png"));
 		mnNodes.add(mntmInitialize_1);
 
@@ -713,17 +753,17 @@ public class CupCarbon {
 				DeviceList.initActivation();
 			}
 		});
-		mntmInitializeAll.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmInitializeAll.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "circle_grey.png"));
 		mnNodes.add(mntmInitializeAll);
 
 		JMenu mnGraph = new JMenu("Graph");
-		mnGraph.setIcon(new ImageIcon(Parameters.IMGPATH + "tree_diagramm.png"));
+		mnGraph.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "tree_diagramm.png"));
 		menuBar.add(mnGraph);
 
 		JMenuItem mntmSensorGraph = new JMenuItem("Sensor Graph");
 		mntmSensorGraph
-				.setIcon(new ImageIcon(Parameters.IMGPATH + "graph.png"));
+				.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "graph.png"));
 		mntmSensorGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!infoWindow.isVisible()) {
@@ -749,17 +789,17 @@ public class CupCarbon {
 						DeviceList.displaySensorTargetGraph().toString());
 			}
 		});
-		mntmSensortargetGraph.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSensortargetGraph.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "graph.png"));
 		mnGraph.add(mntmSensortargetGraph);
 
 		JMenu mnResolution = new JMenu("Solver");
-		mnResolution.setIcon(new ImageIcon(Parameters.IMGPATH
+		mnResolution.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "edu_mathematics-1.png"));
 		menuBar.add(mnResolution);
 
 		JMenuItem mntmMinSetCover = new JMenuItem("Sensor Coverage");
-		mntmMinSetCover.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmMinSetCover.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "edu_mathematics-1.png"));
 		mntmMinSetCover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -774,12 +814,12 @@ public class CupCarbon {
 				SensorSetCover.sensorTargetSetCover() ;				
 			}
 		});
-		mntmNewMenuItem.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmNewMenuItem.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "edu_mathematics-1.png"));
 		mnResolution.add(mntmNewMenuItem);
 		
 		JMenuItem mntmTargetCoverageth = new JMenuItem("Target Coverage (Th)");
-		mntmTargetCoverageth.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmTargetCoverageth.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "edu_mathematics-1.png"));
 		mntmTargetCoverageth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -789,7 +829,7 @@ public class CupCarbon {
 		mnResolution.add(mntmTargetCoverageth);
 		
 		JMenuItem mntmChannelColoring = new JMenuItem("Channel Coloring");
-		mntmChannelColoring.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmChannelColoring.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "edu_mathematics-1.png"));
 		mntmChannelColoring.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -798,6 +838,113 @@ public class CupCarbon {
 			}
 		});
 		mnResolution.add(mntmChannelColoring);
+		
+		JMenuItem mntmScheduling = new JMenuItem("Scheduling");
+		mntmScheduling.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Socket s;
+				try {
+					System.out.println("Connection ...");
+					s = new Socket("172.25.49.90", 5000);
+					System.out.println("Connected !");
+					InputStream is = s.getInputStream();
+					BufferedReader br = new BufferedReader(new InputStreamReader(is));
+					PrintStream ps = new PrintStream(s.getOutputStream());
+					String str = br.readLine();
+					if(str.equals("orsen"))
+						System.out.println("Communication OK !");
+					else 
+						throw new Exception("Communication ERROR !");
+					ps.println("ALG001");					
+					str = br.readLine();
+					if(str.equals("OK"))
+						System.out.println("ALGO OK !");
+					else 
+						throw new Exception("ALGO ERROR !");
+					System.out.println("Sending data ...");
+					for(Device d : DeviceList.getNodes()) {
+						if(d.getType() == Device.SENSOR) {
+							System.out.print("SENSOR ");
+							ps.print("SENSOR ");
+							System.out.print(d.getId() + " ");
+							ps.print(d.getId() + " ");
+							System.out.print(d.getX() + " ");
+							ps.print(d.getX() + " ");
+							System.out.print(d.getY() + " ");
+							ps.print(d.getY() + " ");
+							System.out.print(d.geteMax() + " ");
+							ps.print(d.geteMax() + " ");
+							System.out.print(d.geteS() + " ");
+							ps.print(d.geteS() + " ");
+							System.out.print(d.geteRx() + " ");
+							ps.print(d.geteRx() + " ");
+							System.out.print(d.geteTx() + " ");
+							ps.print(d.geteTx() + " ");
+							System.out.print(d.getCaptureUnitRadius() + " ");
+							ps.print(d.getCaptureUnitRadius() + " ");
+							System.out.print(d.getRadioRadius() + " ");
+							ps.print(d.getRadioRadius() + " ");
+							System.out.print(d.getBeta() + " ");
+							ps.print(d.getBeta() + " ");
+							System.out.println();
+							ps.println();
+						}
+					}
+					
+					for(Device d : DeviceList.getNodes()) {
+						if(d.getType() == Device.MOBILE_WR) {
+							System.out.print("TARGET ");
+							ps.print("TARGET ");
+							System.out.print(d.getId() + " ");
+							ps.print(d.getId() + " ");
+							d.loadRouteFromFile();
+							int n = ((DeviceWithWithoutRadio)d).getRouteX().size();
+							System.out.print(n + " ");
+							ps.print(n + " ");
+							for (int i=0; i<n; i++) {
+								System.out.print(
+									((DeviceWithWithoutRadio)d).getRouteTime().get(i) + " " +
+									((DeviceWithWithoutRadio)d).getRouteX().get(i) + " " +
+									((DeviceWithWithoutRadio)d).getRouteY().get(i) + " "
+								);
+								ps.print(
+									((DeviceWithWithoutRadio)d).getRouteTime().get(i) + " " +
+									((DeviceWithWithoutRadio)d).getRouteX().get(i) + " " +
+									((DeviceWithWithoutRadio)d).getRouteY().get(i) + " "
+								);
+							}
+							System.out.println();
+							ps.println();
+						}
+					}
+					
+					for(Device d : DeviceList.getNodes()) {
+						if(d.getType() == Device.BASE_STATION) {
+							System.out.print("BASE ");
+							ps.print("BASE ");
+							System.out.print(d.getId() + " ");
+							ps.print(d.getId() + " ");
+							System.out.print(d.getX() + " ");
+							ps.print(d.getX() + " ");
+							System.out.print(d.getY() + " ");
+							ps.print(d.getY() + " ");
+							System.out.println();
+							ps.println();
+						}
+					}	
+										
+				//} catch (UnknownHostException e) {
+				//	e.printStackTrace();
+				//} catch (IOException e) {
+				//	e.printStackTrace();
+					System.out.println("END");
+					ps.println("END");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}
+		});
+		mnResolution.add(mntmScheduling);
 
 		JSeparator separator_7 = new JSeparator();
 		mnResolution.add(separator_7);
@@ -808,12 +955,12 @@ public class CupCarbon {
 				DeviceList.initActivation();
 			}
 		});
-		mntmInitialize.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmInitialize.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "circle_grey.png"));
 		mnResolution.add(mntmInitialize);
 
 		JMenu mnSimulation = new JMenu("Simulation");
-		mnSimulation.setIcon(new ImageIcon(Parameters.IMGPATH + "run.png"));
+		mnSimulation.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "run.png"));
 		menuBar.add(mnSimulation);
 
 		JMenuItem mntmSimulate = new JMenuItem("Simulate Agent");
@@ -822,7 +969,7 @@ public class CupCarbon {
 				WorldMap.simulate();
 			}
 		});
-		mntmSimulate.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSimulate.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "flag_green.png"));
 		mnSimulation.add(mntmSimulate);
 
@@ -832,7 +979,7 @@ public class CupCarbon {
 				WorldMap.simulateAll();
 			}
 		});
-		mntmSimulateAll.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSimulateAll.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "flag_green2.png"));
 		mnSimulation.add(mntmSimulateAll);
 
@@ -842,13 +989,13 @@ public class CupCarbon {
 				DeviceList.stopSimulation();
 			}
 		});
-		mntmStopSimulation.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmStopSimulation.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "flag_red.png"));
 		mnSimulation.add(mntmStopSimulation);
 		mnSimulation.add(new JSeparator());
 
 		JMenuItem mntmCreateComScenario = new JMenuItem("Communication script");
-		mntmCreateComScenario.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmCreateComScenario.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "stylo.png"));
 		mnSimulation.add(mntmCreateComScenario);
 		mntmCreateComScenario.addActionListener(new ActionListener() {
@@ -876,7 +1023,7 @@ public class CupCarbon {
 		});
 
 		JMenuItem mntmSimulation = new JMenuItem("WSN Simulation");
-		mntmSimulation.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSimulation.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "settings_right_rest.png"));
 		mntmSimulation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -899,7 +1046,7 @@ public class CupCarbon {
 		JMenuItem mntmSimulationParameters = new JMenuItem(
 				"Simulation parameters");
 		mntmSimulationParameters.setEnabled(false);
-		mntmSimulationParameters.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSimulationParameters.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "ui_menu_blue.png"));
 		mnSimulation.add(mntmSimulationParameters);
 
@@ -921,55 +1068,55 @@ public class CupCarbon {
 		mnSimulation.add(mntmEnergyGraph);
 
 		JMenu mnWindow = new JMenu("Window");
-		mnWindow.setIcon(new ImageIcon(Parameters.IMGPATH + "frame_chart.png"));
+		mnWindow.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "frame_chart.png"));
 		menuBar.add(mnWindow);
 
 		JMenuItem mntmSensors = new JMenuItem("Sensors");
-		mntmSensors.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmSensors.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmSensors);
 
 		JMenuItem mntmGasses = new JMenuItem("Gasses");
-		mntmGasses.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmGasses.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmGasses);
 
 		JMenuItem mntmFlyingObjects = new JMenuItem("Flying Objects");
-		mntmFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmFlyingObjects.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmFlyingObjects);
 
 		JMenuItem mntmMobile = new JMenuItem("Mobile");
-		mntmMobile.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmMobile.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmMobile);
 
 		JMenuItem mntmMobileWr = new JMenuItem("Mobile WR");
-		mntmMobileWr.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmMobileWr.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmMobileWr);
 
 		JMenuItem mntmRouter = new JMenuItem("Router");
-		mntmRouter.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmRouter.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmRouter);
 
 		JMenuItem mntmBaseStation = new JMenuItem("Base station");
-		mntmBaseStation.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmBaseStation.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmBaseStation);
 
 		JMenuItem mntmMarkers = new JMenuItem("Markers");
-		mntmMarkers.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmMarkers.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmMarkers);
 
 		JMenu mnHelp = new JMenu("Help");
-		mnHelp.setIcon(new ImageIcon(Parameters.IMGPATH + "symbol_help.png"));
+		mnHelp.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "symbol_help.png"));
 		menuBar.add(mnHelp);
 
 		JMenuItem mntmAboutCupcarbon = new JMenuItem("About CupCarbon");
-		mntmAboutCupcarbon.setIcon(new ImageIcon(Parameters.IMGPATH
+		mntmAboutCupcarbon.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "symbol_information.png"));
 		mntmAboutCupcarbon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -980,13 +1127,27 @@ public class CupCarbon {
 				aboutBox.setVisible(true);
 			}
 		});
+		
+		JMenuItem mntmHelp = new JMenuItem("Commands");
+		mntmHelp.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "symbol_information.png"));
+		mntmHelp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (!helpWindow.isVisible()) {
+					desktopPane.add(helpWindow);
+					helpWindow.setVisible(true);
+				}
+				helpWindow.toFront();
+			}
+		});
+		mnHelp.add(mntmHelp);
 		mnHelp.add(mntmAboutCupcarbon);
 
 		JToolBar toolBar = new JToolBar();
 		mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
 
 		JButton btnSensor = new JButton("1 Sensor");
-		btnSensor.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnSensor.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_mauve.png"));
 		btnSensor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -996,7 +1157,7 @@ public class CupCarbon {
 		toolBar.add(btnSensor);
 
 		JButton btnRouter = new JButton("4 Router");
-		btnRouter.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnRouter.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_blue_ciel.png"));
 		btnRouter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1005,7 +1166,7 @@ public class CupCarbon {
 		});
 
 		JButton btnGas = new JButton("2 Gas");
-		btnGas.setIcon(new ImageIcon(Parameters.IMGPATH + "circle_orange.png"));
+		btnGas.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "circle_orange.png"));
 		btnGas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				WorldMap.addNodeInMap('2');
@@ -1014,7 +1175,7 @@ public class CupCarbon {
 		toolBar.add(btnGas);
 
 		JButton btnFlyingObjects = new JButton("3 Flying Objects");
-		btnFlyingObjects.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnFlyingObjects.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "insects.png"));
 		btnFlyingObjects.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1025,7 +1186,7 @@ public class CupCarbon {
 		toolBar.add(btnRouter);
 
 		JButton btnMobile = new JButton("6 Mobile");
-		btnMobile.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnMobile.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_noir.png"));
 		btnMobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1034,7 +1195,7 @@ public class CupCarbon {
 		});
 
 		JButton btnBaseStation = new JButton("5 Base Station");
-		btnBaseStation.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnBaseStation.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_orange.png"));
 		btnBaseStation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1045,7 +1206,7 @@ public class CupCarbon {
 		toolBar.add(btnMobile);
 
 		JButton btnMobileWr = new JButton("7 Mobile WR");
-		btnMobileWr.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnMobileWr.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_noir_radio.png"));
 		btnMobileWr.setToolTipText("Mobile With Radio");
 		btnMobileWr.addActionListener(new ActionListener() {
@@ -1056,7 +1217,7 @@ public class CupCarbon {
 		toolBar.add(btnMobileWr);
 
 		JButton btnMarker = new JButton("8 Marker");
-		btnMarker.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnMarker.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "marker_rounded_light_blue.png"));
 		btnMarker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1066,7 +1227,7 @@ public class CupCarbon {
 		toolBar.add(btnMarker);
 
 		JButton btnSensorParameters = new JButton("Device Parameters");
-		btnSensorParameters.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnSensorParameters.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "ui_menu_blue.png"));
 		btnSensorParameters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1084,7 +1245,7 @@ public class CupCarbon {
 				gpsWindow.toFront();
 			}
 		});
-		btnNewButton.setIcon(new ImageIcon(Parameters.IMGPATH
+		btnNewButton.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "ui_menu_blue.png"));
 		toolBar.add(btnNewButton);
 		toolBar.add(btnSensorParameters);

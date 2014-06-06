@@ -29,6 +29,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.util.regex.Pattern;
 
 import map.Layer;
 
@@ -42,7 +44,6 @@ import wisen_simulation2.DeviceSimulator;
 import wisen_simulation2.Simulation;
 import battery.Battery;
 import cupcarbon.DeviceParametersWindow;
-import cupcarbon.Parameters;
 
 /**
  * @author Ahcene Bounceur
@@ -70,7 +71,7 @@ public abstract class Device implements Runnable, MouseListener,
 
 	protected boolean altDown = false;
 	protected boolean shiftDown = false;
-	protected boolean cmdDown = false;
+	//protected boolean cmdDown = false;
 	protected boolean ctrlDown = false;
 	protected int lastKeyCode = 0;
 
@@ -114,6 +115,12 @@ public abstract class Device implements Runnable, MouseListener,
 	
 	public static int dataRate = 0;
 	
+	protected double eMax = 100000;
+
+	protected double eTx = 1;
+	protected double eRx = 1;
+	protected double eS = 1;
+	protected double beta = 1;
 
 	protected boolean state = ALIVE;
 
@@ -516,19 +523,29 @@ public abstract class Device implements Runnable, MouseListener,
 			DeviceParametersWindow.textField_6.setText("" + y);
 			DeviceParametersWindow.textField_7.setText("" + getRadius());
 			DeviceParametersWindow.textField_8.setText("" + getRadioRadius());
-			DeviceParametersWindow.textField_9.setText(""
-					+ getCaptureUnitRadius());
+			DeviceParametersWindow.textField_9.setText("" + getCaptureUnitRadius()); 
+			DeviceParametersWindow.eMaxTextField.setText("" + geteMax()) ;
+			DeviceParametersWindow.eTxTextField.setText("" + geteTx()) ;
+			DeviceParametersWindow.eRxTextField.setText("" + geteRx()) ;
+			DeviceParametersWindow.eSTextField.setText("" + geteS()) ;
+			DeviceParametersWindow.betaTextField.setText("" + getBeta()) ;
 
-			String[] gpsFile = getGPSFileName()
-					.split(Parameters.SEPARATOR + "");
-			String gpsFileName = gpsFile[gpsFile.length - 1];
-			//if (!gpsFileName.equals(""))
-			DeviceParametersWindow.gpsPathNameComboBox.setSelectedItem(gpsFileName);
-
-			String[] scriptFile = getScriptFileName().split(Parameters.SEPARATOR + "");
-			String scriptFileName = scriptFile[scriptFile.length - 1];
-			//if (!scriptFileName.equals(""))
-			DeviceParametersWindow.scriptComboBox.setSelectedItem(scriptFileName);
+			String[] gpsFile;
+			String gpsFileName;
+			String[] scriptFile;
+			String scriptFileName;
+			
+			if(!getGPSFileName().equals("")) {
+				//gpsFile = getGPSFileName().split(Parameters.SEPARATOR + "");
+				gpsFile = getGPSFileName().split(Pattern.quote(File.separator));
+				gpsFileName = gpsFile[gpsFile.length - 1];
+				//if (!gpsFileName.equals(""))
+				DeviceParametersWindow.gpsPathNameComboBox.setSelectedItem(gpsFileName);
+				scriptFile = getScriptFileName().split(Pattern.quote(File.separator));
+				scriptFileName = scriptFile[scriptFile.length - 1];
+				//if (!scriptFileName.equals(""))
+				DeviceParametersWindow.scriptComboBox.setSelectedItem(scriptFileName);
+			}
 		}
 	}
 
@@ -628,8 +645,16 @@ public abstract class Device implements Runnable, MouseListener,
 			altDown = true;
 		if (key.isControlDown())
 			ctrlDown = true;
-		if (key.isMetaDown())
-			cmdDown = true;
+		//if (key.isMetaDown())
+		//	cmdDown = true;
+		if (key.getKeyCode() == 65 && ctrlDown) {
+			selected = true;
+			move = false;
+		}
+		
+		if (key.getKeyCode() == 75 && ctrlDown) {
+			visible = true;
+		}
 	}
 
 	/*
@@ -642,7 +667,7 @@ public abstract class Device implements Runnable, MouseListener,
 		altDown = false;
 		shiftDown = false;
 		ctrlDown = false;
-		cmdDown = false;
+		//cmdDown = false;
 	}
 
 	/**
@@ -699,11 +724,7 @@ public abstract class Device implements Runnable, MouseListener,
 				if (radius > 0)
 					radius -= 5;
 			}
-		}
-
-		if (key == 'k' && cmdDown) {
-			visible = true;
-		}
+		}		
 
 		if (key == 'f') {
 			Device.displayDetails = false;
@@ -731,12 +752,7 @@ public abstract class Device implements Runnable, MouseListener,
 
 		if (key == 'l') {
 			move = false;
-		}
-
-		if (key == 'a' && cmdDown) {
-			selected = true;
-			move = false;
-		}
+		}		
 
 		if (key == 'z') {
 			selected = false;
@@ -1059,7 +1075,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public void drawRadius(int x, int y, int r, Graphics g) {
 		if (r > 0 && displayRadius) {
-			g.setColor(UColor.WHITED_TRANSPARENT);
+			g.setColor(UColor.WHITE_TRANSPARENT);
 			int lr1 = (int) (r * Math.cos(Math.PI / 4.));
 			g.drawLine(x, y, (int) (x + lr1), (int) (y - lr1));
 			g.drawString("" + radius, x + (lr1 / 2), (int) (y - (lr1 / 4.)));
@@ -1083,7 +1099,7 @@ public abstract class Device implements Runnable, MouseListener,
 			int ly1 = coord[1];
 			// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
 			// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
-			g.setColor(UColor.WHITED_TRANSPARENT);
+			g.setColor(UColor.WHITE_TRANSPARENT);
 			g.fillRect(lx1 + 20, ly1 - 25, 150, 80);
 			g.setColor(UColor.NOIR_TRANSPARENT);
 			g.drawRect(lx1 + 20, ly1 - 25, 150, 80);
@@ -1215,6 +1231,46 @@ public abstract class Device implements Runnable, MouseListener,
 	
 	public int getChannel() {
 		return channel;
+	}
+	
+	public double geteMax() {
+		return eMax;
+	}
+
+	public void seteMax(double eMax) {
+		this.eMax = eMax;
+	}
+
+	public double geteTx() {
+		return eTx;
+	}
+
+	public void seteTx(double eTx) {
+		this.eTx = eTx;
+	}
+
+	public double geteRx() {
+		return eRx;
+	}
+
+	public void seteRx(double eRx) {
+		this.eRx = eRx;
+	}
+
+	public double geteS() {
+		return eS;
+	}
+
+	public void seteS(double eS) {
+		this.eS = eS;
+	}
+
+	public double getBeta() {
+		return beta;
+	}
+
+	public void setBeta(double beta) {
+		this.beta = beta;
 	}
 	
 }

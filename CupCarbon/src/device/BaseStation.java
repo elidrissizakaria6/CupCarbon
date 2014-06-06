@@ -135,12 +135,28 @@ public class BaseStation extends DeviceWithRadio {
 				drawRadioRadius(x, y, rayon2, g);
 			}
 
+			int [] triangleX = new int [3];
+			int [] triangleY = new int [3];
+			triangleX[0] = x-6 ;
+			triangleX[1] = x ;
+			triangleX[2] = x+6 ;
+			triangleY[0] = y+6 ;
+			triangleY[1] = y-6 ;
+			triangleY[2] = y+6 ;
+			
 			if (underSimulation) {
 				g.setColor(UColor.VERT);
-				g.fillOval(x - 3, y - 3, 6, 6);
+				//g.fillOval(x - 3, y - 3, 6, 6);
+				g.fillPolygon(triangleX, triangleY, 3);
+				g.setColor(Color.black);
+				g.drawPolygon(triangleX, triangleY, 3);
+				
 			} else {
 				g.setColor(UColor.ROUGE);
-				g.fillOval(x - 3, y - 3, 6, 6);
+				//g.fillOval(x - 3, y - 3, 6, 6);
+				g.fillPolygon(triangleX, triangleY, 3);
+				g.setColor(Color.black);
+				g.drawPolygon(triangleX, triangleY, 3);
 			}
 			drawId(x, y, g);
 		}

@@ -426,5 +426,12 @@ public class MarkerList {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * @return the markers
+	 */
+	public static List<Marker> getMarkers() {
+		return markers;
+	}
 
 }

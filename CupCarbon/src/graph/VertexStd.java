@@ -24,9 +24,13 @@ import java.util.LinkedList;
 public class VertexStd {
 
 	private String name = "";
+	
 	private int number;
+	
 	private boolean marque = false;
+	
 	private LinkedList<VertexStd> voisins;
+	
 	private LinkedList<Double> distances;
 
 	public VertexStd(int number, String name) {

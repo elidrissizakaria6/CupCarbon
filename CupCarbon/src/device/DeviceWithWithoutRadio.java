@@ -20,11 +20,13 @@
 package device;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 
 import map.Layer;
+import project.Project;
 
 /**
  * @author Ahcene Bounceur
@@ -75,7 +77,7 @@ public abstract class DeviceWithWithoutRadio extends Device {
 		try {
 			if (!gpsFileName.equals("")) {
 				readyForSimulation = true;
-				fis = new FileInputStream(gpsFileName);
+				fis = new FileInputStream(Project.getProjectGpsPath() + File.separator + gpsFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
 				underSimulation = true;
 				b.readLine();
@@ -234,4 +236,30 @@ public abstract class DeviceWithWithoutRadio extends Device {
 			return false;
 		return true;
 	}
+
+	public LinkedList<Long> getRouteTime() {
+		return routeTime;
+	}
+
+	public void setRouteTime(LinkedList<Long> routeTime) {
+		this.routeTime = routeTime;
+	}
+
+	public LinkedList<Double> getRouteX() {
+		return routeX;
+	}
+
+	public void setRouteX(LinkedList<Double> routeX) {
+		this.routeX = routeX;
+	}
+
+	public LinkedList<Double> getRouteY() {
+		return routeY;
+	}
+
+	public void setRouteY(LinkedList<Double> routeY) {
+		this.routeY = routeY;
+	}
+	
+	
 }

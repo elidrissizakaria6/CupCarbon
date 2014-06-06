@@ -41,6 +41,7 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 	protected double x;
 	protected double y;
 	protected Device node;
+	protected boolean displayRadius = false;
 
 	/**
 	 * Constructor 1 : radius is equal to 10 meter
@@ -89,12 +90,20 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 		this.y = y;
 	}
 
+	public void drawDetectionRadius(int x, int y, int r1, Graphics g) {
+		if(r1>0 && displayRadius) {
+			g.setColor(UColor.WHITE_TRANSPARENT);
+			g.drawLine(x,y,(int)(x-r1),(int)(y));
+			g.drawString(""+radius,x-(r1/2),(int)(y-3));
+		}
+	}
+	
 	/**
 	 * Draw the capture unit
 	 */
 	public void draw(Graphics g, int mode, boolean detection) {
 		if (!detection)
-			g.setColor(UColor.WHITE_TRANSPARENT);
+			g.setColor(UColor.WHITE_LLTRANSPARENT);
 		if (detection)
 			g.setColor(UColor.JAUNE_SENSOR);
 		if (mode == 0)
@@ -102,6 +111,7 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 					- MapCalc.radiusInPixels(radius),
 					MapCalc.radiusInPixels(radius) * 2,
 					MapCalc.radiusInPixels(radius) * 2);
+		g.setColor(UColor.NOIRF_TTTRANSPARENT);
 		g.drawOval((int) x - MapCalc.radiusInPixels(radius),
 				(int) y - MapCalc.radiusInPixels(radius),
 				MapCalc.radiusInPixels(radius) * 2,
@@ -131,7 +141,14 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 			if (key.getKeyChar() == '(') {
 				radius -= 5;
 				Layer.getMapViewer().repaint();
-			}
+			}			
+		}
+		if (key.getKeyChar() == 'e') {
+			displayRadius = true;
+		}
+
+		if (key.getKeyChar() == 'r') {
+			displayRadius = false;
 		}
 	}
 

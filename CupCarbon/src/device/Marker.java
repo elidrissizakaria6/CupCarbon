@@ -112,18 +112,27 @@ public class Marker extends Device {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		super.keyTyped(e);
+		if(e.getKeyChar()=='u') {
+			insertMarker();
+		}
+		
+		if(e.getKeyChar()=='t') {
+			transformMarkerToSensor();
+		}
+	}
+	
+	public void insertMarker() {
 		if(selected) {
-			if(e.getKeyChar()=='u') {
-				//System.out.println(this.getNodeIdName());
-				int ix = MarkerList.getIndex(this)+1 ;
-				if(ix<MarkerList.size()) {
-					Layer.addMarker(ix,getCentre(this,MarkerList.get(ix),true));
-				}
-			
+			int ix = MarkerList.getIndex(this)+1 ;
+			if(ix<MarkerList.size()) {
+				Layer.addMarker(ix,getCentre(this,MarkerList.get(ix),true));
 			}
-			if(e.getKeyChar()=='t') {
-				DeviceList.add(new Sensor(x, y, 0, 100, 20));
-			}
+		}
+	}	
+	
+	public void transformMarkerToSensor() {
+		if(selected) {
+			DeviceList.add(new Sensor(x, y, 0, 100, 20));
 		}
 	}
 

@@ -61,18 +61,18 @@ public class CupCarbonMap extends JInternalFrame {
 
 		map.getMainMap().setLoadingImage(
 				Toolkit.getDefaultToolkit()
-						.getImage(Parameters.IMGPATH + "mer.png"));
+						.getImage(CupCarbonParameters.IMGPATH + "mer.png"));
 		map.getZoomSlider().setSnapToTicks(false);
 		map.getZoomSlider().setPaintTicks(false);
 		map.getZoomInButton().setBackground(Color.LIGHT_GRAY);
 		map.getMiniMap().setLoadingImage(
 				Toolkit.getDefaultToolkit()
-						.getImage(Parameters.IMGPATH + "mer.png"));
+						.getImage(CupCarbonParameters.IMGPATH + "mer.png"));
 		setContentPane(map);
 		setBounds(0, 0, 800, 500);
 		map.setBorder(BorderFactory.createLoweredBevelBorder());
 		setMaximizable(true);
-		setFrameIcon(new ImageIcon(Parameters.IMGPATH + "logo_cap_carbon.png"));
+		setFrameIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "logo_cap_carbon.png"));
 		setResizable(true);
 		setIconifiable(true);
 	}

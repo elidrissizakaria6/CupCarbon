@@ -27,11 +27,10 @@ import java.io.File;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class Parameters {
+public class CupCarbonParameters {
 
 	public static String CAPCARBONPATH = "" ;
 	
-	public static String SEPARATOR = File.separator ;
 	//public static String DirSEPARATOR = System.getProperty("path.separator") ;
-	public static String IMGPATH = /*CAPCARBONPATH + SEPARATOR + */ "images" + SEPARATOR ;
+	public static String IMGPATH = /*CAPCARBONPATH + SEPARATOR + */ "images" + File.separator ;
 }

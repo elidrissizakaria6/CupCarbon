@@ -128,12 +128,12 @@ public class GpsWindow extends JInternalFrame {
 						.getText()));
 			}
 		});
-		button_1.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+		button_1.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "loopnone-1.png"));
 		panel_8.add(button_1);
 
 		JButton button = new JButton("");
 		panel_8.add(button);
-		button.setIcon(new ImageIcon(Parameters.IMGPATH + "Ouvrir.png"));
+		button.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "Ouvrir.png"));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -184,7 +184,7 @@ public class GpsWindow extends JInternalFrame {
 				MarkerList.open(txtFileName.getText());
 			}
 		});
-		btnLoad.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+		btnLoad.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "loopnone-1.png"));
 		panel_9.add(btnLoad);
 
 		JButton gpxButton = new JButton("Generate a route");
@@ -194,13 +194,13 @@ public class GpsWindow extends JInternalFrame {
 				MarkerList.generateGpxFile();
 			}
 		});
-		gpxButton.setIcon(new ImageIcon(Parameters.IMGPATH + "loopnone-1.png"));
+		gpxButton.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "loopnone-1.png"));
 		panel_9.add(gpxButton);
 
 		JButton btnNewButton = new JButton("Save");
 		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_9.add(btnNewButton);
-		btnNewButton.setIcon(new ImageIcon(Parameters.IMGPATH + "stylo.png"));
+		btnNewButton.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "stylo.png"));
 
 		JPanel panel_6 = new JPanel();
 		panel.add(panel_6, BorderLayout.CENTER);

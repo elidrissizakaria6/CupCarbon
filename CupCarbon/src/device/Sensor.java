@@ -36,7 +36,7 @@ import captureunit.CaptureUnit;
 public class Sensor extends DeviceWithRadio {
 
 	protected CaptureUnit captureUnit;
-	protected boolean insectDetection = false;	
+	protected boolean flyingObjectDetection = false;
 
 	/**
 	 * Constructor 1 Instanciate the capture unit Instanciate the battery
@@ -192,6 +192,7 @@ public class Sensor extends DeviceWithRadio {
 			// int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
 			int rayon = MapCalc.radiusInPixels(getRadioRadius());
 			int rayon2 = MapCalc.radiusInPixels(this.radius);
+			int capRadius = MapCalc.radiusInPixels(captureUnit.getRadius());
 
 			if (inside || selected) {
 				g.setColor(UColor.NOIR_TRANSPARENT);
@@ -241,7 +242,7 @@ public class Sensor extends DeviceWithRadio {
 						(rayon + 4) * 2);
 			}
 
-			if (insectDetection) {
+			if (flyingObjectDetection) {
 				g.setColor(UColor.ROUGE_TRANSPARENT);
 				g.fillOval(x - rayon * 2, y - rayon * 2, rayon * 4, rayon * 4);
 			}
@@ -250,6 +251,7 @@ public class Sensor extends DeviceWithRadio {
 			dessinAugDimRadio(x, y, g);
 			drawRadius(x, y, rayon, g);
 			drawRadioRadius(x, y, rayon2, g);
+			captureUnit.drawDetectionRadius(x, y, capRadius, g);
 
 			if (underSimulation) {
 				g.setColor(UColor.VERT);

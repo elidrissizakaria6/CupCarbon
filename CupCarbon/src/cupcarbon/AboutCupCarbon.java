@@ -64,7 +64,7 @@ public class AboutCupCarbon extends JDialog {
 	 */
 	public AboutCupCarbon() {
 		setTitle("About CupCarbon");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Parameters.IMGPATH+"cupcarbon_logo2.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(CupCarbonParameters.IMGPATH+"cupcarbon_logo2.png"));
 		setBackground(Color.WHITE);
 		setBounds(100, 100, 288, 392);
 		getContentPane().setLayout(new BorderLayout());
@@ -76,7 +76,7 @@ public class AboutCupCarbon extends JDialog {
 			lblNewLabel.setBackground(Color.WHITE);
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			contentPanel.add(lblNewLabel);
-			lblNewLabel.setIcon(new ImageIcon(Parameters.IMGPATH+"cupcarbon_logo_small.png"));
+			lblNewLabel.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH+"cupcarbon_logo_small.png"));
 		}
 		{
 			JPanel panel = new JPanel();
