@@ -704,7 +704,7 @@ public abstract class Device implements Runnable, MouseListener,
 			}
 
 			if (key == 'h') {
-				if (hide++ == 3)
+				if (hide++ == 5)
 					hide = 0;
 			}
 			if (key == 'j') {

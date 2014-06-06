@@ -214,24 +214,27 @@ public class Sensor extends DeviceWithRadio {
 						+ rayon - 2);
 			}
 			g.setColor(Color.DARK_GRAY);
-			switch (hide) {
-			case 0: {
+			if(hide == 0 || hide==4) {	
+
 				if (inside) {
 					g.setColor(UColor.MAUVEF_TRANSPARENT);
 				} else {
-					if(channel ==0)
+					if(channel == 0)
 						g.setColor(UColor.MAUVE_TRANSPARENT);
 					else 
 						g.setColor(UColor.channelColor[channel]);
 				}
 				g.fillOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
-				g.fillOval(x - rayon2, y - rayon2, rayon2 * 2, rayon2 * 2);
+				g.fillOval(x - rayon2, y - rayon2, rayon2 * 2, rayon2 * 2);				
+			}
+			if(hide == 0 || hide == 1) {
 				captureUnit.setXY(x, y);
 				captureUnit.draw(g, 0, detection);
-
 			}
-			case 1:
+			if(hide == 0 || hide == 3) {
 				g.drawOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
+			}
+			if(hide == 2) {
 				captureUnit.setXY(x, y);
 				captureUnit.draw(g, 1, detection);
 			}
