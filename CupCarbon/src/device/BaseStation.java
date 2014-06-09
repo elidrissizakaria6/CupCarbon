@@ -145,14 +145,14 @@ public class BaseStation extends DeviceWithRadio {
 			triangleY[2] = y+6 ;
 			
 			if (underSimulation) {
-				g.setColor(UColor.VERT);
+				g.setColor(UColor.GREEN);
 				//g.fillOval(x - 3, y - 3, 6, 6);
 				g.fillPolygon(triangleX, triangleY, 3);
 				g.setColor(Color.black);
 				g.drawPolygon(triangleX, triangleY, 3);
 				
 			} else {
-				g.setColor(UColor.ROUGE);
+				g.setColor(UColor.RED);
 				//g.fillOval(x - 3, y - 3, 6, 6);
 				g.fillPolygon(triangleX, triangleY, 3);
 				g.setColor(Color.black);

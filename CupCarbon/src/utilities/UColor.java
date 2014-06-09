@@ -36,9 +36,9 @@ public final class UColor {
 	public static final Color ROUGE_TTRANSPARENT = new Color(255, 200, 103, 20);
 	public static final Color ROUGE_TRANSPARENT = new Color(255, 200, 103, 120);
 	public static final Color ROUGEF_TRANSPARENT = new Color(255, 200, 103, 150);
-	public static final Color ROUGE = new Color(216, 0, 0);
+	public static final Color RED = new Color(216, 0, 0);
 	public static final Color BLUE = new Color(81, 127, 174);
-	public static final Color VERT = new Color(180, 225, 22);
+	public static final Color GREEN = new Color(180, 225, 22);
 	public static final Color ORANGE = new Color(240, 113, 51);
 	public static final Color ORANGE_TRANSPARENT = new Color(240, 113, 51, 100);
 	public static final Color JAUNE_SENSOR = new Color(255, 198, 0, 180);

@@ -153,11 +153,11 @@ public class Gas extends DeviceWithoutRadio {
 			}
 			
 			if(underSimulation) {
-				g.setColor(UColor.VERT);
+				g.setColor(UColor.GREEN);
 				g.fillOval(x-3, y-3, 6, 6);
 			}
 			else {
-				g.setColor(UColor.ROUGE);
+				g.setColor(UColor.RED);
 				g.fillOval(x-3, y-3, 6, 6);
 			}
 			drawId(x,y,g);

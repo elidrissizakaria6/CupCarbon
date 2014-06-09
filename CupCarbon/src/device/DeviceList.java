@@ -421,6 +421,24 @@ public class DeviceList {
 		}
 	}
 	
+	public void simulateSensors() {
+		for (Device node : nodes) {
+			if(node.getType()==Device.SENSOR) {
+				node.setSelection(true);
+				node.start();
+			}
+		}
+	}
+	
+	public void simulateMobiles() {
+		for (Device node : nodes) {
+			if(node.getType()==Device.MOBILE || node.getType()==Device.MOBILE_WR) {
+				node.setSelection(true);
+				node.start();
+			}
+		}
+	}
+	
 	public static void stopSimulation() {
 		for (Device node : nodes) {
 			node.setSelection(false);
@@ -488,7 +506,7 @@ public class DeviceList {
 
 	public static void updateFromMap(String xS, String yS, String radiusS,
 			String radioRadiusS, String captureRadiusS, String gpsFileName,
-			String eMax, String eTx, String eRx, String eS, String beta
+			String eMax, String eTx, String eRx, String eS, String beta, String targetName
 			) {
 		Device node;
 		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
@@ -505,6 +523,7 @@ public class DeviceList {
 				node.seteRx(Double.valueOf(eRx));
 				node.seteS(Double.valueOf(eS));
 				node.setBeta(Double.valueOf(beta));
+				node.setTrgetName(targetName);
 				Layer.getMapViewer().repaint();
 			}
 		}

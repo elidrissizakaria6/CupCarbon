@@ -29,13 +29,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyVetoException;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.Socket;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -58,16 +53,18 @@ import javax.swing.filechooser.FileFilter;
 
 import map.WorldMap;
 import project.Project;
+import solver.CharlySchedul;
 import solver.OmnetPp;
 import solver.SensorColoring;
 import solver.SensorSetCover;
 import solver.SensorTargetCoverageRun;
+import solver.SolverProxyParams;
 import utilities.GraphViewer;
 import device.Device;
 import device.DeviceList;
-import device.DeviceWithWithoutRadio;
 import device.Marker;
 import device.MarkerList;
+import device.TrackingPointsList;
 
 /**
  * @author Ahcene Bounceur
@@ -87,6 +84,7 @@ public class CupCarbon {
 	private static JLabel sspeedLabel;
 	private JCheckBoxMenuItem chckbxmntmAddSelection;
 	private ComScriptWindow comScriptWindow = new ComScriptWindow();
+	private SolverProxyParamsWindow solverProxyParamsWindow = new SolverProxyParamsWindow();
 	private CupCarbonMap cupCarbonMap;
 	private GpsWindow gpsWindow = new GpsWindow();
 	private DeviceParametersWindow deviceParametersWindow = new DeviceParametersWindow();
@@ -98,10 +96,8 @@ public class CupCarbon {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {		
-				//System.getProperties().put("http.proxySet", "true"); 
-				//System.getProperties().put("http.proxyPort", "3128"); 
-				//System.getProperties().put("http.proxyHost", "193.52.48.67");
+			public void run() {			
+				setProxy();
 				// try
 				// {
 				// //UIManager.put("Panel.background", new Color(230,210,250));
@@ -141,6 +137,15 @@ public class CupCarbon {
 		// });
 	}
 
+	public static void setProxy() {
+		//System.getProperties().put("http.proxySet", "true"); 
+		//System.getProperties().put("http.proxyPort", "3128"); 
+		//System.getProperties().put("http.proxyHost", "193.52.48.67");
+		System.getProperties().put("http.proxySet", SolverProxyParams.proxy); 
+		System.getProperties().put("http.proxyPort", SolverProxyParams.port); 
+		System.getProperties().put("http.proxyHost", SolverProxyParams.host);
+	}
+	
 	/**
 	 * Create the application.
 	 */
@@ -840,111 +845,30 @@ public class CupCarbon {
 		mnResolution.add(mntmChannelColoring);
 		
 		JMenuItem mntmScheduling = new JMenuItem("Scheduling");
+		mntmScheduling.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "edu_mathematics-1.png"));
 		mntmScheduling.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Socket s;
-				try {
-					System.out.println("Connection ...");
-					s = new Socket("172.25.49.90", 5000);
-					System.out.println("Connected !");
-					InputStream is = s.getInputStream();
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
-					PrintStream ps = new PrintStream(s.getOutputStream());
-					String str = br.readLine();
-					if(str.equals("orsen"))
-						System.out.println("Communication OK !");
-					else 
-						throw new Exception("Communication ERROR !");
-					ps.println("ALG001");					
-					str = br.readLine();
-					if(str.equals("OK"))
-						System.out.println("ALGO OK !");
-					else 
-						throw new Exception("ALGO ERROR !");
-					System.out.println("Sending data ...");
-					for(Device d : DeviceList.getNodes()) {
-						if(d.getType() == Device.SENSOR) {
-							System.out.print("SENSOR ");
-							ps.print("SENSOR ");
-							System.out.print(d.getId() + " ");
-							ps.print(d.getId() + " ");
-							System.out.print(d.getX() + " ");
-							ps.print(d.getX() + " ");
-							System.out.print(d.getY() + " ");
-							ps.print(d.getY() + " ");
-							System.out.print(d.geteMax() + " ");
-							ps.print(d.geteMax() + " ");
-							System.out.print(d.geteS() + " ");
-							ps.print(d.geteS() + " ");
-							System.out.print(d.geteRx() + " ");
-							ps.print(d.geteRx() + " ");
-							System.out.print(d.geteTx() + " ");
-							ps.print(d.geteTx() + " ");
-							System.out.print(d.getCaptureUnitRadius() + " ");
-							ps.print(d.getCaptureUnitRadius() + " ");
-							System.out.print(d.getRadioRadius() + " ");
-							ps.print(d.getRadioRadius() + " ");
-							System.out.print(d.getBeta() + " ");
-							ps.print(d.getBeta() + " ");
-							System.out.println();
-							ps.println();
-						}
-					}
-					
-					for(Device d : DeviceList.getNodes()) {
-						if(d.getType() == Device.MOBILE_WR) {
-							System.out.print("TARGET ");
-							ps.print("TARGET ");
-							System.out.print(d.getId() + " ");
-							ps.print(d.getId() + " ");
-							d.loadRouteFromFile();
-							int n = ((DeviceWithWithoutRadio)d).getRouteX().size();
-							System.out.print(n + " ");
-							ps.print(n + " ");
-							for (int i=0; i<n; i++) {
-								System.out.print(
-									((DeviceWithWithoutRadio)d).getRouteTime().get(i) + " " +
-									((DeviceWithWithoutRadio)d).getRouteX().get(i) + " " +
-									((DeviceWithWithoutRadio)d).getRouteY().get(i) + " "
-								);
-								ps.print(
-									((DeviceWithWithoutRadio)d).getRouteTime().get(i) + " " +
-									((DeviceWithWithoutRadio)d).getRouteX().get(i) + " " +
-									((DeviceWithWithoutRadio)d).getRouteY().get(i) + " "
-								);
-							}
-							System.out.println();
-							ps.println();
-						}
-					}
-					
-					for(Device d : DeviceList.getNodes()) {
-						if(d.getType() == Device.BASE_STATION) {
-							System.out.print("BASE ");
-							ps.print("BASE ");
-							System.out.print(d.getId() + " ");
-							ps.print(d.getId() + " ");
-							System.out.print(d.getX() + " ");
-							ps.print(d.getX() + " ");
-							System.out.print(d.getY() + " ");
-							ps.print(d.getY() + " ");
-							System.out.println();
-							ps.println();
-						}
-					}	
-										
-				//} catch (UnknownHostException e) {
-				//	e.printStackTrace();
-				//} catch (IOException e) {
-				//	e.printStackTrace();
-					System.out.println("END");
-					ps.println("END");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}				
+				CharlySchedul.run();		
 			}
 		});
 		mnResolution.add(mntmScheduling);
+		
+		JSeparator separator_13 = new JSeparator();
+		mnResolution.add(separator_13);
+		
+		JMenuItem mntmProxyParameters = new JMenuItem("Proxy parameters");
+		mntmProxyParameters.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "activity_window.png"));
+		mnResolution.add(mntmProxyParameters);
+		mntmProxyParameters.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!solverProxyParamsWindow.isVisible()) {
+					desktopPane.add(solverProxyParamsWindow);
+					solverProxyParamsWindow.setVisible(true);
+				}
+				solverProxyParamsWindow.toFront();
+			}
+		});
 
 		JSeparator separator_7 = new JSeparator();
 		mnResolution.add(separator_7);
@@ -974,21 +898,57 @@ public class CupCarbon {
 		mnSimulation.add(mntmSimulate);
 
 		JMenuItem mntmSimulateAll = new JMenuItem("Simulate All Agents");
+		mntmSimulateAll.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "flag_green2.png"));
 		mntmSimulateAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				WorldMap.simulateAll();
 			}
-		});
-		mntmSimulateAll.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
-				+ "flag_green2.png"));
+		});		
 		mnSimulation.add(mntmSimulateAll);
+		
+		JMenuItem mntmSimulateSensors = new JMenuItem("Simulate Sensors");
+		mntmSimulateSensors.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "flag_green2.png"));
+		mntmSimulateSensors.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				WorldMap.simulateSensors();
+			}
+		});
+		mnSimulation.add(mntmSimulateSensors);
+		
+		JMenuItem mntmSimulateMobiles = new JMenuItem("Simulate Mobiles");
+		mntmSimulateMobiles.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WorldMap.simulateMobiles();
+			}
+		});
+		mntmSimulateMobiles.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "flag_green2.png"));
+		mnSimulation.add(mntmSimulateMobiles);
+		
 
 		JMenuItem mntmStopSimulation = new JMenuItem("Stop simulation");
 		mntmStopSimulation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DeviceList.stopSimulation();
+				TrackingPointsList.stopSimulation();
 			}
 		});
+		
+		JSeparator separator_14 = new JSeparator();
+		mnSimulation.add(separator_14);
+		
+		JMenuItem mntmSimulateTracking = new JMenuItem("Simulate Tracking");
+		mntmSimulateTracking.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TrackingPointsList.simulate();
+			}
+		});
+		mnSimulation.add(mntmSimulateTracking);
+		
+		JMenuItem mntmSimulateTrackingreal = new JMenuItem("Simulate Tracking (real)");
+		mnSimulation.add(mntmSimulateTrackingreal);
+		
+		JSeparator separator_15 = new JSeparator();
+		mnSimulation.add(separator_15);
 		mntmStopSimulation.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "flag_red.png"));
 		mnSimulation.add(mntmStopSimulation);
@@ -1010,7 +970,7 @@ public class CupCarbon {
 
 				if (!comScriptWindow.isVisible()) {
 					desktopPane.add(comScriptWindow);
-					comScriptWindow.show();
+					comScriptWindow.setVisible(true);
 				}
 				comScriptWindow.toFront();
 

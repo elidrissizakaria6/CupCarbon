@@ -87,7 +87,7 @@ public class Mobile extends MobileG {
 			}
 			
 			if(underSimulation) {
-				g.setColor(UColor.VERT);
+				g.setColor(UColor.GREEN);
 				g.fillOval(x-3, y-3, 6, 6);
 			}
 			else {

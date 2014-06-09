@@ -62,6 +62,7 @@ public class DeviceParametersWindow extends JInternalFrame {
 	public static JTextField eRxTextField;
 	public static JTextField eSTextField;
 	public static JTextField betaTextField;
+	public static JTextField targetNameTextField;
 
 	/**
 	 * Launch the application.
@@ -88,7 +89,7 @@ public class DeviceParametersWindow extends JInternalFrame {
 		setClosable(true);
 		setIconifiable(true);
 		setTitle("Node Parameters");
-		setBounds(100, 100, 525, 422);
+		setBounds(100, 100, 525, 447);
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.SOUTH);
@@ -107,7 +108,8 @@ public class DeviceParametersWindow extends JInternalFrame {
 								eTxTextField.getText(),
 								eRxTextField.getText(),
 								eSTextField.getText(),
-								betaTextField.getText()
+								betaTextField.getText(),
+								targetNameTextField.getText()
 					);
 			}
 		});
@@ -165,9 +167,13 @@ public class DeviceParametersWindow extends JInternalFrame {
 		lblBta.setFont(new Font("Arial", Font.PLAIN, 11));
 		panel_9.add(lblBta);
 		
-		JLabel label_5 = new JLabel("B\u00EAta");
-		label_5.setFont(new Font("Arial", Font.PLAIN, 11));
-		panel_9.add(label_5);
+		JLabel lblBeta = new JLabel("Beta");
+		lblBeta.setFont(new Font("Arial", Font.PLAIN, 11));
+		panel_9.add(lblBeta);
+		
+		JLabel lblTarget = new JLabel("Target Name");
+		lblTarget.setFont(new Font("Arial", Font.PLAIN, 11));
+		panel_9.add(lblTarget);
 
 		JPanel panel_10 = new JPanel();
 		panel_8.add(panel_10, BorderLayout.CENTER);
@@ -218,6 +224,10 @@ public class DeviceParametersWindow extends JInternalFrame {
 		betaTextField = new JTextField();
 		betaTextField.setColumns(10);
 		panel_10.add(betaTextField);
+		
+		targetNameTextField = new JTextField();
+		targetNameTextField.setColumns(10);
+		panel_10.add(targetNameTextField);
 
 		JPanel panel_11 = new JPanel();
 		panel_8.add(panel_11, BorderLayout.EAST);
@@ -259,6 +269,7 @@ public class DeviceParametersWindow extends JInternalFrame {
 		JButton button_1_ = new JButton("");
 		button_1_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(Project.getProjectScriptPath()+File.separator+ scriptComboBox.getSelectedItem());
 				DeviceList.setScriptFileName(Project.getProjectScriptPath()
 						+ File.separator
 						+ scriptComboBox.getSelectedItem());
@@ -455,6 +466,17 @@ public class DeviceParametersWindow extends JInternalFrame {
 		JButton button_21 = new JButton("");
 		button_21.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "bNext.png"));
 		panel_6.add(button_21);
+		
+		JPanel panel_7 = new JPanel();
+		panel_11.add(panel_7);
+		
+		JButton button_22 = new JButton("");
+		button_22.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "bPrev.png"));
+		panel_7.add(button_22);
+		
+		JButton button_23 = new JButton("");
+		button_23.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "bNext.png"));
+		panel_7.add(button_23);
 	}
 
 }

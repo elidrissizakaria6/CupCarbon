@@ -19,7 +19,6 @@
 
 package device;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,6 +40,7 @@ import javax.swing.JOptionPane;
 import map.Layer;
 import project.Project;
 import utilities.MapCalc;
+import utilities.UColor;
 
 public class MarkerList {
 
@@ -145,7 +145,7 @@ public class MarkerList {
 						ly1 = coord[1];								
 						//lx1 = MapCalc.geoToIntPixelMapX(x1, y1);
 						//ly1 = MapCalc.geoToIntPixelMapY(x1, y1);
-						g.setColor(Color.red);
+						g.setColor(UColor.RED);
 						g.drawOval((int) lx1 - 5, (int) ly1 - 5, (int) 10,
 								(int) 10);
 					} else {
@@ -157,22 +157,29 @@ public class MarkerList {
 						//lx2 = MapCalc.geoToIntPixelMapX(x2, y2);
 						//ly2 = MapCalc.geoToIntPixelMapY(x2, y2);
 
-						g.setColor(Color.red);
+						g.setColor(UColor.RED);
 
 						// Draw the link between markers
 						g.drawLine((int) lx1, (int) ly1, (int) lx2, (int) ly2);
 						// Draw arrows
-						if(drawArrows) {
+						if(drawArrows) {							
 							dx = lx2 - lx1;
 							dy = ly2 - ly1;
 							alpha = Math.atan(dy / dx);
 							alpha = 180 * alpha / Math.PI;
-							if ((dx >= 0 && dy >= 0) || (dx >= 0 && dy <= 0))
+							/*if ((dx >= 0 && dy >= 0) || (dx >= 0 && dy <= 0))
 								g.fillArc((int) lx2 - 15, (int) ly2 - 15, 30, 30,
 										180 - (int) alpha - 10, 20);
 							else
 								g.fillArc((int) lx2 - 15, (int) ly2 - 15, 30, 30,
-										-(int) alpha - 10, 20);							
+										-(int) alpha - 10, 20);*/
+							
+							if ((dx >= 0 && dy >= 0) || (dx >= 0 && dy <= 0))
+								g.fillArc((int) lx2 - 10, (int) ly2 - 10, 20, 20,
+										180 - (int) alpha - 10, 20);
+							else
+								g.fillArc((int) lx2 - 10, (int) ly2 - 10, 20, 20,
+										-(int) alpha - 10, 20);		
 						}
 						x1 = marker.getX();
 						y1 = marker.getY();

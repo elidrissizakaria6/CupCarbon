@@ -111,6 +111,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String scriptFileName = "";
 	protected String gpsFileName = "";
 	protected Script script = null;
+	protected String targetName = ""; 
 	protected int channel = 0;
 	
 	public static int dataRate = 0;
@@ -902,7 +903,7 @@ public abstract class Device implements Runnable, MouseListener,
 	public void drawMoveArrows(int x, int y, Graphics g) {
 		if (move && (inside || selected)) {
 			// 2 fleches rouges
-			g.setColor(UColor.ROUGE);
+			g.setColor(UColor.RED);
 			g.drawLine(x, y, x + 20, y);
 			g.drawLine(x + 20, y, x + 14, y + 3);
 			g.drawLine(x + 20, y, x + 14, y - 3);
@@ -925,7 +926,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public void drawIncRedDimNode(int x, int y, Graphics g) {
 		if (reduceNode || increaseNode) {
-			g.setColor(UColor.ROUGE);
+			g.setColor(UColor.RED);
 			g.drawLine(x - 10, y, x + 10, y);
 		}
 		if (increaseNode) {
@@ -1271,6 +1272,14 @@ public abstract class Device implements Runnable, MouseListener,
 
 	public void setBeta(double beta) {
 		this.beta = beta;
+	}
+	
+	public void setTrgetName(String targetName) {
+		this.targetName = targetName;
+	}
+	
+	public String getTargetName() {
+		return targetName ;
 	}
 	
 }

@@ -55,7 +55,7 @@ private static String idFL = "R" ; // ID First Letter
 			int rayon = MapCalc.radiusInPixels(getRadioRadius()) ;
 			int rayon2 = MapCalc.radiusInPixels(this.radius) ;
 			if(displayDetails) {
-				g.setColor(UColor.VERT);
+				g.setColor(UColor.GREEN);
 				g.fillRect(x+rayon+10, y-((int)battery.getCapacity())+rayon, 5, (int)battery.getCapacity());
 				g.setColor(Color.gray);
 				g.drawRect(x+rayon+10, y-((int)battery.getCapacity())+rayon, 5, (int)battery.getCapacity());
@@ -102,11 +102,11 @@ private static String idFL = "R" ; // ID First Letter
 			drawRadioRadius(x, y, rayon2, g);
 			
 			if(underSimulation) {
-				g.setColor(UColor.VERT);
+				g.setColor(UColor.GREEN);
 				g.fillOval(x-3, y-3, 6, 6);
 			}
 			else {
-				g.setColor(UColor.ROUGE);
+				g.setColor(UColor.RED);
 				g.fillOval(x-3, y-3, 6, 6);
 			}
 			drawId(x,y,g);

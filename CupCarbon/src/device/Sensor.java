@@ -22,6 +22,7 @@ package device;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import map.Layer;
 import utilities.MapCalc;
 import utilities.UColor;
 import battery.Battery;
@@ -36,7 +37,7 @@ import captureunit.CaptureUnit;
 public class Sensor extends DeviceWithRadio {
 
 	protected CaptureUnit captureUnit;
-	protected boolean flyingObjectDetection = false;
+	protected boolean flyingObjectDetection = false;	
 
 	/**
 	 * Constructor 1 Instanciate the capture unit Instanciate the battery
@@ -169,7 +170,7 @@ public class Sensor extends DeviceWithRadio {
 		setGPSFileName(gpsFileName);
 		setScriptFileName(scriptFileName);
 	}
-
+	
 	@Override
 	public String getGPSFileName() {
 		return gpsFileName;
@@ -257,10 +258,10 @@ public class Sensor extends DeviceWithRadio {
 			captureUnit.drawDetectionRadius(x, y, capRadius, g);
 
 			if (underSimulation) {
-				g.setColor(UColor.VERT);
+				g.setColor(UColor.GREEN);
 				g.fillOval(x - 3, y - 3, 6, 6);
 			} else {
-				g.setColor(UColor.ROUGE);
+				g.setColor(UColor.RED);
 				g.fillOval(x - 3, y - 3, 6, 6);
 			}
 
@@ -327,5 +328,54 @@ public class Sensor extends DeviceWithRadio {
 	public String getNodeIdName() {
 		return getIdFL() + id;
 	}
+
+	/**
+	 * KH
+	 */
+	@Override
+	public void runSensorSimulation() {
+		loadRouteFromFile();
+		fixori();
+		if (readyForSimulation) {
+			underSimulation = true;
+			routeIndex = 0;
+			selected = false;
+			long tmpTime = 0;
+			long cTime = 0;
+			long toWait = 0;
+			do {
+				cTime = routeTime.get(routeIndex);
+				toWait = cTime - tmpTime;
+				tmpTime = cTime;
+				if (toWait < 0) {
+					toWait = cTime;
+				}
+				x = routeX.get(routeIndex);
+				y = routeY.get(routeIndex);
+				// Le sensot enregistre sa position dans la base de données 
+			
+				
+				// Ecrire la coordonnŽe du trackeur
+				
+				//client.setLastPoint(1, new Point(x,y));
+				//TrackerWS.setCoords(this.getNodeIdName(), x, y);
+				//Layer.getMapViewer().repaint();
+				try {
+					Thread.sleep(toWait * Device.moveSpeed);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				goToNext();
+			} while (hasNext());
+			routeIndex = 0;
+			selected = false;
+			toori();
+			thread = null;
+			underSimulation = false;
+			Layer.getMapViewer().repaint();
+		}
+	}
+	
+	//TrackingServiceClient client = new TrackingServiceClient();	
 	
 }

@@ -128,6 +128,14 @@ public class WorldMap extends JXMapKit {
 	public static void simulateAll() {
 		layer.simulateAll();
 	}
+	
+	public static void simulateSensors() {
+		layer.simulateSensors();
+	}
+	
+	public static void simulateMobiles() {
+		layer.simulateMobiles();
+	}
 
 	public static void addNodeInMap(char c) {
 		layer.addNodeInMap(c);

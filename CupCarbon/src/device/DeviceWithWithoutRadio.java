@@ -36,13 +36,13 @@ import project.Project;
  */
 public abstract class DeviceWithWithoutRadio extends Device {
 
-	private LinkedList<Long> routeTime;
-	private LinkedList<Double> routeX;
-	private LinkedList<Double> routeY;
-	private boolean loop = false;
-	private int nLoop = 0;
-	private int routeIndex = 0;
-	private boolean readyForSimulation = false;
+	protected LinkedList<Long> routeTime;
+	protected LinkedList<Double> routeX;
+	protected LinkedList<Double> routeY;
+	protected boolean loop = false;
+	protected int nLoop = 0;
+	protected int routeIndex = 0;
+	protected boolean readyForSimulation = false;
 
 	/**
 	 * Empty constructor

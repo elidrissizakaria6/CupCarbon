@@ -59,6 +59,7 @@ import device.Router;
 import device.Sensor;
 import device.StreetGraph;
 import device.StreetVertex;
+import device.TrackingPointsList;
 import flying_object.FlyingGroup;
 
 public class Layer implements Painter<Object>, MouseListener,
@@ -67,6 +68,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	public static JXMapViewer mapViewer = null;
 	public static DeviceList nodeList = null;
 	public static MarkerList markerList = null;
+	public static TrackingPointsList trackingPointsList = null;
 	public static StreetGraph streetGraph = null;
 	public static boolean afficherIndicateur = false;
 	public static double x = 0;
@@ -96,6 +98,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		Layer.mapViewer = mapViewer;
 		nodeList = new DeviceList();
 		markerList = new MarkerList();
+		trackingPointsList = new TrackingPointsList();
 		streetGraph = new StreetGraph();
 		/*
 		 * noeuds.add(new Sensor(47.71403518643726,-3.4284210205078125, 0,
@@ -141,7 +144,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		g.translate(-rect.x, -rect.y);
 
 		if (afficherIndicateur) {
-			g.setColor(UColor.ROUGE);
+			g.setColor(UColor.RED);
 			if (lastKey == '1') {
 				g.drawString("   Sensor", (float) x, (float) y);
 			}
@@ -181,6 +184,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		}
 
 		markerList.draw(g);
+		trackingPointsList.draw(g);
 		streetGraph.dessiner(g);
 		nodeList.draw(g);
 
@@ -217,6 +221,19 @@ public class Layer implements Painter<Object>, MouseListener,
 
 	public void simulateAll() {
 		nodeList.simulateAll();
+		TrackingPointsList.simulate();
+	}
+	
+	public void simulateSensors() {
+		nodeList.simulateSensors();
+	}
+	
+	public void simulateMobiles() {
+		nodeList.simulateMobiles();
+	}
+	
+	public static void simulateTrancking() {
+		TrackingPointsList.simulate();
 	}
 
 	@Override

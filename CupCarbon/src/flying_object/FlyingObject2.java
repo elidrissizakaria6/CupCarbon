@@ -123,7 +123,7 @@ public class FlyingObject2 extends MobileG {
 		int rayon = MapCalc.radiusInPixels(this.radius) ;
 		
 		if(detected) {
-			g.setColor(UColor.ROUGE);
+			g.setColor(UColor.RED);
 			g.drawOval(x - rayon-4, y - rayon-4, (rayon+4) * 2, (rayon+4) * 2);
 		}
 		g.setColor(Color.BLACK);
