@@ -36,8 +36,8 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import map.Layer;
-import tracking.TargetWS;
-import tracking.TrackerWS;
+import tracking_ws.TargetWS;
+import tracking_ws.TrackerWS;
 import utilities.MapCalc;
 
 /**

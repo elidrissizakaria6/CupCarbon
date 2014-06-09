@@ -24,7 +24,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import map.Layer;
-import tracking.TargetWS;
+import tracking_ws.TargetWS;
 import utilities.MapCalc;
 import utilities.UColor;
 
