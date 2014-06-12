@@ -359,7 +359,7 @@ public class Sensor extends DeviceWithRadio {
 				
 				//client.setLastPoint(1, new Point(x,y));
 				//TrackerWS.setCoords(this.getNodeIdName(), x, y);
-				//Layer.getMapViewer().repaint();
+				Layer.getMapViewer().repaint();
 				try {
 					Thread.sleep(toWait * Device.moveSpeed);
 				} catch (InterruptedException e) {

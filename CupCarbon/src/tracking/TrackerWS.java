@@ -1,4 +1,4 @@
-package tracking_ws;
+package tracking;
 
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -8,11 +8,11 @@ import java.net.URL;
 
 public class TrackerWS {
 	
-private static BufferedReader br = null;
+	private static BufferedReader br = null;
 	
 	public static void clean() {	
 		try {
-			URL url = new URL("http://pagesperso.univ-brest.fr/~bounceur/cupcarbonws/clean.php");			
+			URL url = new URL(TrackUrl.urlb+"clean.php");			
 			url.openStream();
 		} catch (IOException e) {
 			e.printStackTrace();			
@@ -21,7 +21,7 @@ private static BufferedReader br = null;
 	
 	public static void create(String id, double la, double lo) {	
 		try {
-			URL url = new URL("http://pagesperso.univ-brest.fr/~bounceur/cupcarbonws/add_tracker.php?id="+id+"&la="+la+"&lo="+lo);			
+			URL url = new URL(TrackUrl.urlb+"add_tracker.php?id="+id+"&la="+la+"&lo="+lo);			
 			url.openStream();
 		} catch (IOException e) {
 			e.printStackTrace();			
@@ -30,7 +30,7 @@ private static BufferedReader br = null;
 	
 	public static String getInfo(String id) {	
 		try {
-			URL url = new URL("http://pagesperso.univ-brest.fr/~bounceur/cupcarbonws/get_tracker.php?id="+id);			
+			URL url = new URL(TrackUrl.urlb+"get_tracker.php?id="+id);			
 			br = new BufferedReader(new InputStreamReader(url.openStream()));
 			String s = br.readLine();
 			br.close();
@@ -59,7 +59,7 @@ private static BufferedReader br = null;
 	
 	public static void setCoords(String id, double la, double lo) {
 		try {
-			URL url = new URL("http://pagesperso.univ-brest.fr/~bounceur/cupcarbonws/update_tracker.php?id="+id+"&la="+la+"&lo="+lo);			
+			URL url = new URL(TrackUrl.urlb+"update_tracker.php?id="+id+"&la="+la+"&lo="+lo);			
 			url.openStream();
 		} catch (IOException e) {
 			e.printStackTrace();			

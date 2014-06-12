@@ -59,6 +59,7 @@ import solver.SensorColoring;
 import solver.SensorSetCover;
 import solver.SensorTargetCoverageRun;
 import solver.SolverProxyParams;
+import tracking.TrackerReader;
 import utilities.GraphViewer;
 import device.Device;
 import device.DeviceList;
@@ -70,7 +71,6 @@ import device.TrackingPointsList;
  * @author Ahcene Bounceur
  * @author Kamal Mehdi
  * @author Lounis Massinissa
- * @author Arezki Laga
  * @version 1.0
  */
 public class CupCarbon {
@@ -945,6 +945,12 @@ public class CupCarbon {
 		mnSimulation.add(mntmSimulateTracking);
 		
 		JMenuItem mntmSimulateTrackingreal = new JMenuItem("Simulate Tracking (real)");
+		mntmSimulateTrackingreal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TrackerReader tr = new TrackerReader() ;
+				tr.start();
+			}
+		});
 		mnSimulation.add(mntmSimulateTrackingreal);
 		
 		JSeparator separator_15 = new JSeparator();

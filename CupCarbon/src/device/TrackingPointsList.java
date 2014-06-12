@@ -36,8 +36,8 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import map.Layer;
-import tracking_ws.TargetWS;
-import tracking_ws.TrackerWS;
+import tracking.TargetWS;
+import tracking.TrackerWS;
 import utilities.MapCalc;
 
 /**
@@ -258,7 +258,13 @@ public class TrackingPointsList {
 	//private static TrackingServiceClient receiver = new TrackingServiceClient();
 	private static Thread thread;
 
-	public static void recalculateRoute() {
+	public static void recalculateRoute() {				
+		Device dev1 = DeviceList.getNodes().get(0);
+		Point point = TrackerWS.getCoords(dev1.getNodeIdName());
+		System.out.println(point);
+	}
+	
+	public static void recalculateRoute2() {
 //		for(Device device : DeviceList.getNodes() ){
 //			if(device.getType() == Device.SENSOR) {
 //				device.getTarget()

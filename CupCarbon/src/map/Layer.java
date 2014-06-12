@@ -42,6 +42,7 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.painter.Painter;
 
 import project.Project;
+import tracking.TrackerWS;
 import utilities.MapCalc;
 import utilities.UColor;
 import cupcarbon.CupCarbon;
@@ -221,6 +222,9 @@ public class Layer implements Painter<Object>, MouseListener,
 
 	public void simulateAll() {
 		nodeList.simulateAll();
+		Device dev1 = DeviceList.getNodes().get(0);
+		TrackerWS.clean();
+		TrackerWS.create(dev1.getNodeIdName(), dev1.getX(), dev1.getY());
 		TrackingPointsList.simulate();
 	}
 	
