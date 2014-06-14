@@ -51,6 +51,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileFilter;
 
+import map.Layer;
 import map.WorldMap;
 import project.Project;
 import solver.CharlySchedul;
@@ -58,7 +59,6 @@ import solver.OmnetPp;
 import solver.SensorColoring;
 import solver.SensorSetCover;
 import solver.SensorTargetCoverageRun;
-import solver.SolverProxyParams;
 import tracking.TrackerReader;
 import utilities.GraphViewer;
 import device.Device;
@@ -139,11 +139,12 @@ public class CupCarbon {
 
 	public static void setProxy() {
 		//System.getProperties().put("http.proxySet", "true"); 
-		//System.getProperties().put("http.proxyPort", "3128"); 
+		//System.getProperties().put("http.proxyPort", "3128");
+		//System.getProperties().put("http.proxyHost", "proxyubo.univ-brest.fr");
 		//System.getProperties().put("http.proxyHost", "193.52.48.67");
-		System.getProperties().put("http.proxySet", SolverProxyParams.proxy); 
-		System.getProperties().put("http.proxyPort", SolverProxyParams.port); 
-		System.getProperties().put("http.proxyHost", SolverProxyParams.host);
+		//System.getProperties().put("http.proxySet", SolverProxyParams.proxy); 
+		//System.getProperties().put("http.proxyPort", SolverProxyParams.port); 
+		//System.getProperties().put("http.proxyHost", SolverProxyParams.host);
 	}
 	
 	/**
@@ -621,6 +622,16 @@ public class CupCarbon {
 			}
 		});
 		mnNodes.add(mntmLoadSensors);
+		
+		JMenuItem mntmLoadBuildings = new JMenuItem("Load Buildings");
+		mntmLoadBuildings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Layer.drawBuildings();
+			}
+		});
+		mntmLoadBuildings.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "building.png"));
+		mnNodes.add(mntmLoadBuildings);
 
 		JSeparator separator_5 = new JSeparator();
 		mnNodes.add(separator_5);

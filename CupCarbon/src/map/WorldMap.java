@@ -42,12 +42,13 @@ public class WorldMap extends JXMapKit {
 			// true,"http://www.openseamap.org/map","x","y","z") {
 			// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
 			// true,"file:/myLocalMapServer/tiles","x","y","z") {
+			
 			public String getTileUrl(int x, int y, int zoom) {
 				zoom = max - zoom;
 				 //return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
 				 //return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom + "/" + x + "/" + y + ".jpg";
 				 return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".jpg";
-				 //return "http://a.tile.openstreetmap.org/"+zoom+"/"+x+"/"+y+".png";
+				// return "http://a.tile.openstreetmap.org/"+zoom+"/"+x+"/"+y+".png";
 				//return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/"
 				//		+ x + "/" + y + ".png";
 				// return
@@ -64,6 +65,8 @@ public class WorldMap extends JXMapKit {
 			}
 		};
 
+		
+		
 		info.setDefaultZoomLevel(19);
 
 		// WMSService wms = new WMSService();
@@ -77,18 +80,21 @@ public class WorldMap extends JXMapKit {
 
 		setTileFactory(tf);
 
+		
+		
 		// setDefaultProvider(JXMapKit.DefaultProviders.OpenStreetMaps);
 
 		// setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
 		setDataProviderCreditShown(true);
-		setName("CapCarbonMapStreet");
+		setName("CupCarbon Map");
 		// setCenterPosition(new
 		// GeoPosition(43.461142978339005,-3.830108642578125));//Santander
 		//setCenterPosition(new GeoPosition(36.75140145092604, 5.055642127990723));// Bejaia
 		// setCenterPosition(new GeoPosition(25.14, 55.2)); //Dubai
 		// setCenterPosition(new GeoPosition(47.720520033704954,
 		// -3.3709144592285156));//Lorient
-		setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
+		//setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
+		setCenterPosition(new GeoPosition(48.40467657851382,-4.501540660858154)); // Brest 2
 		// setCenterPosition(new
 		// GeoPosition(48.58273977037357,-3.8297653198242188));//Morlaix
 		setZoom(2);

@@ -380,8 +380,7 @@ public class MarkerList {
 		}
 
 		host += "output=gpx";
-		;
-
+		System.out.println();
 		try {
 			File f = new File("gpx");
 			try {
@@ -390,8 +389,9 @@ public class MarkerList {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			URL racine = new URL(host);
-			URLConnection uc = racine.openConnection();
+			URL url = new URL(host);
+			URLConnection uc = url.openConnection();
+			uc.setRequestProperty("User-Agent", "CupCarbon");
 			InputStream in = uc.getInputStream();
 			FileOutputStream file = new FileOutputStream("gpx/tmp.gpx");
 			int l = 0;
@@ -412,6 +412,7 @@ public class MarkerList {
 		deleteAll();
 		try {
 			BufferedReader br = new BufferedReader(
+					//new FileReader("gpx2/route.gpx"));
 					new FileReader("gpx/tmp.gpx"));
 			for (int i = 0; i < markers.size(); i++) {
 

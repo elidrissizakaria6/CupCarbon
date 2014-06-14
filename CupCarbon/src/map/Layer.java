@@ -62,6 +62,8 @@ import device.StreetGraph;
 import device.StreetVertex;
 import device.TrackingPointsList;
 import flying_object.FlyingGroup;
+import geometry.Building;
+import geometry.BuildingList;
 
 public class Layer implements Painter<Object>, MouseListener,
 		MouseMotionListener, KeyListener {
@@ -69,6 +71,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	public static JXMapViewer mapViewer = null;
 	public static DeviceList nodeList = null;
 	public static MarkerList markerList = null;
+	public static BuildingList bList = null;
 	public static TrackingPointsList trackingPointsList = null;
 	public static StreetGraph streetGraph = null;
 	public static boolean afficherIndicateur = false;
@@ -101,6 +104,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		markerList = new MarkerList();
 		trackingPointsList = new TrackingPointsList();
 		streetGraph = new StreetGraph();
+		bList = new BuildingList();
 		/*
 		 * noeuds.add(new Sensor(47.71403518643726,-3.4284210205078125, 0,
 		 * 1000)); noeuds.add(new
@@ -188,6 +192,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		trackingPointsList.draw(g);
 		streetGraph.dessiner(g);
 		nodeList.draw(g);
+		bList.draw(g);
 
 		if (dessinerCadre) {
 			Point2D p1 = MapCalc.pixelPanelToPixelMap(cadreX1, cadreY1);
@@ -294,6 +299,30 @@ public class Layer implements Painter<Object>, MouseListener,
 		CupCarbon.updateInfos();
 	}
 
+	public static void drawBuildings() {
+		try {
+			FileInputStream fis = new FileInputStream("bmo_buildings_1000.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+			String s = "";
+			Building building = null ;
+			//while((s = br.readLine()) != null) {
+			for(int i=0; i<1000; i++) {
+				s = br.readLine();				
+				String [] st = s.split(",");
+				building = new Building(st.length/2-1);
+				for(int j=1; j<st.length-3; j+=2) {
+					building.set(st[j+1], st[j], (j-1)/2);
+				}
+				bList.add(building);
+			}
+			br.close();
+			fis.close();
+			mapViewer.repaint();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// public static void addNode(Device node) {
 	// DeviceList.add(node);
 	// mapViewer.repaint();
