@@ -37,6 +37,9 @@ public class Battery implements Cloneable {
 	private RadioModule radioModule = new RadioModule(0);
 	private CaptureUnit captureUnit;
 	private long capacity = eMax;
+	
+	
+	//private ***** les paramètres de la batterie
 
 	/**
 	 * Battery initialization

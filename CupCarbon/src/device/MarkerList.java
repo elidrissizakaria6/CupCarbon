@@ -391,7 +391,9 @@ public class MarkerList {
 			}
 			URL url = new URL(host);
 			URLConnection uc = url.openConnection();
+			
 			uc.setRequestProperty("User-Agent", "CupCarbon");
+			
 			InputStream in = uc.getInputStream();
 			FileOutputStream file = new FileOutputStream("gpx/tmp.gpx");
 			int l = 0;

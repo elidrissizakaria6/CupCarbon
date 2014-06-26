@@ -227,10 +227,10 @@ public class Layer implements Painter<Object>, MouseListener,
 
 	public void simulateAll() {
 		nodeList.simulateAll();
-		Device dev1 = DeviceList.getNodes().get(0);
-		TrackerWS.clean();
-		TrackerWS.create(dev1.getNodeIdName(), dev1.getX(), dev1.getY());
-		TrackingPointsList.simulate();
+		//Device dev1 = DeviceList.getNodes().get(0);
+		//TrackerWS.clean();
+		//TrackerWS.create(dev1.getNodeIdName(), dev1.getX(), dev1.getY());
+		//TrackingPointsList.simulate();
 	}
 	
 	public void simulateSensors() {

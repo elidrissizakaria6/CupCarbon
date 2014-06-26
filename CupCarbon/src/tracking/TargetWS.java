@@ -12,7 +12,7 @@ public class TargetWS {
 	
 	public static void clean() {	
 		try {
-			URL url = new URL(TrackUrl.urlb+"clean.php");			
+			URL url = new URL(Service.url+"clean.php");			
 			url.openStream();
 		} catch (IOException e) {
 			e.printStackTrace();			
@@ -21,7 +21,7 @@ public class TargetWS {
 	
 	public static void create(String id, double la, double lo) {	
 		try {
-			URL url = new URL(TrackUrl.urlb+"add_target.php?id="+id+"&la="+la+"&lo="+lo);			
+			URL url = new URL(Service.url+"add_target.php?id="+id+"&la="+la+"&lo="+lo);			
 			url.openStream();
 		} catch (IOException e) {
 			e.printStackTrace();			
@@ -30,7 +30,7 @@ public class TargetWS {
 	
 	public static String getInfo(String id) {	
 		try {
-			URL url = new URL(TrackUrl.urlb+"get_target.php?id="+id);			
+			URL url = new URL(Service.url+"get_target.php?id="+id);			
 			br = new BufferedReader(new InputStreamReader(url.openStream()));
 			String s = br.readLine();
 			br.close();
@@ -59,7 +59,7 @@ public class TargetWS {
 	
 	public static void setCoords(String id, double la, double lo) {
 		try {
-			URL url = new URL(TrackUrl.urlb+"update_target.php?id="+id+"&la="+la+"&lo="+lo);			
+			URL url = new URL(Service.url+"update_target.php?id="+id+"&la="+la+"&lo="+lo);			
 			url.openStream();
 		} catch (IOException e) {
 			e.printStackTrace();			

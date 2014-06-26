@@ -51,9 +51,10 @@ public class CpuSimulation extends Thread {
 	private byte[] iscript;
 	private int[] event;
 	private int[] event2;
-	private int[] deadSensor;
+	private byte[] deadSensor;
 	private int[] energy;
 	private byte eRTx = 1;
+	//private double [] eRTx = new eRTx[5];
 	private byte[][] links;
 
 	private boolean visual;
@@ -85,7 +86,7 @@ public class CpuSimulation extends Thread {
 		iscript = new byte[nbSensors];
 		event = new int[nbSensors];
 		event2 = new int[nbSensors];
-		deadSensor = new int[nbSensors];
+		deadSensor = new byte[nbSensors];
 		energy = new int[nbSensors];
 
 	}
@@ -127,8 +128,7 @@ public class CpuSimulation extends Thread {
 			if (mobility)
 				as = "_mob";
 			PrintStream ps = new PrintStream(new FileOutputStream(
-					Project.getProjectResultsPath() + "/cpu_simulation" + as
-							+ ".csv"));
+					Project.getProjectResultsPath() + "/cpu_simulation" + as + ".csv"));
 			int conso;
 			for (iter = 0; (iter < iterNumber) && (!stopSimulation()); iter++) {
 				ps.print(time + ";");
@@ -203,10 +203,14 @@ public class CpuSimulation extends Thread {
 						conso += links[i][j] * script[j][iscript[j]][0]
 								* (1 - deadSensor[j]);
 					}
+					
 					energy[i] -= min * conso * eRTx;
+					
 					if (energy[i] < 0)
 						energy[i] = 0;
+					
 					event[i] -= min;
+					
 					if (mobility)
 						event2[i] -= min;
 				}

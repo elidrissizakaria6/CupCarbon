@@ -55,6 +55,7 @@ import map.Layer;
 import map.WorldMap;
 import project.Project;
 import solver.CharlySchedul;
+import solver.NetworkParetoBorder;
 import solver.OmnetPp;
 import solver.SensorColoring;
 import solver.SensorSetCover;
@@ -91,6 +92,7 @@ public class CupCarbon {
 	private FlyingObjParametersWindow flyingObjParametersWindow = new FlyingObjParametersWindow();
 	private InformationWindow infoWindow = new InformationWindow();
 	private WsnSimulationWindow wsnSimWindow = new WsnSimulationWindow();
+	private RealTrackingDialog realTrackingDialog;
 
 	public static int simulationNumber = 0;
 
@@ -171,6 +173,10 @@ public class CupCarbon {
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Arial", Font.PLAIN, 12));
 		mainFrame.setJMenuBar(menuBar);
+		
+		// Khaoula
+		realTrackingDialog = new RealTrackingDialog(mainFrame);
+		realTrackingDialog.pack();
 
 		JMenu mnProject = new JMenu("Project");
 		mnProject.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
@@ -845,12 +851,11 @@ public class CupCarbon {
 		mnResolution.add(mntmTargetCoverageth);
 		
 		JMenuItem mntmChannelColoring = new JMenuItem("Channel Coloring");
-		mntmChannelColoring.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
-				+ "edu_mathematics-1.png"));
+		mntmChannelColoring.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "edu_mathematics-1.png"));
 		mntmChannelColoring.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				SensorColoring sc = new SensorColoring() ;
-				sc.executeColoring();
+				sc.execute();
 			}
 		});
 		mnResolution.add(mntmChannelColoring);
@@ -864,6 +869,16 @@ public class CupCarbon {
 			}
 		});
 		mnResolution.add(mntmScheduling);
+		
+		JMenuItem mntmBorder = new JMenuItem("Border");		
+		mntmBorder.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "edu_mathematics-1.png"));
+		mntmBorder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NetworkParetoBorder npb = new NetworkParetoBorder() ;
+				npb.execute();			
+			}
+		});
+		mnResolution.add(mntmBorder);
 		
 		JSeparator separator_13 = new JSeparator();
 		mnResolution.add(separator_13);
@@ -963,6 +978,22 @@ public class CupCarbon {
 			}
 		});
 		mnSimulation.add(mntmSimulateTrackingreal);
+		
+		JMenuItem mntmSimulateTrackingKhaoula = new JMenuItem("Simulate Tracking Khaoula");
+		mntmSimulateTrackingKhaoula.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				realTrackingDialog.setLocationRelativeTo(mainFrame);
+				realTrackingDialog.setVisible(true);
+				
+				String targetId = realTrackingDialog.getTargetId();
+				String trackerId = realTrackingDialog.getTrackerId();
+                if (trackerId != null && !trackerId.isEmpty() && targetId != null
+        				&& !targetId.isEmpty()) {
+                	DeviceList.startRealTrackingSimulation(trackerId,targetId);
+                }
+			}
+		});
+		mnSimulation.add(mntmSimulateTrackingKhaoula);
 		
 		JSeparator separator_15 = new JSeparator();
 		mnSimulation.add(separator_15);

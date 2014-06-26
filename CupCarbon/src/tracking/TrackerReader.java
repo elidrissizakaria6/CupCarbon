@@ -27,11 +27,11 @@ public class TrackerReader extends Thread {
 			lo = sensor.getY();
 			FileInputStream fis = new FileInputStream("tracking_sw.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-			TrackUrl.urlb = br.readLine() ;
+			Service.url = br.readLine() ;
 			br.close();
 			fis.close();
 			URL url = null;
-			url = new URL(TrackUrl.urlb+"add_tracker.php?id="+id+"&la="+la+"&lo="+lo);
+			url = new URL(Service.url+"add_tracker.php?id="+id+"&la="+la+"&lo="+lo);
 			url.openStream();
 			
 		} catch (Exception e) {
@@ -44,7 +44,7 @@ public class TrackerReader extends Thread {
 		lo = sensor.getY();
 		while(true) {
 			try {
-				url = new URL(TrackUrl.urlb+"get_tracker.php?id="+id+"&la="+la+"&lo="+lo);				
+				url = new URL(Service.url+"get_tracker.php?id="+id+"&la="+la+"&lo="+lo);				
 				br = new BufferedReader(new InputStreamReader(url.openStream()));
 				strT = br.readLine().split("\"");
 				sensor.setX(Double.valueOf(strT[7]));

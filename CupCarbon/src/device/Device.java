@@ -124,6 +124,8 @@ public abstract class Device implements Runnable, MouseListener,
 	protected double beta = 1;
 
 	protected boolean state = ALIVE;
+	
+	protected int rank = 0;
 
 	protected Thread thread;
 
@@ -1281,5 +1283,15 @@ public abstract class Device implements Runnable, MouseListener,
 	public String getTargetName() {
 		return targetName ;
 	}
+
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+	
+	
 	
 }

@@ -36,6 +36,7 @@ import java.util.ListIterator;
 
 import map.Layer;
 import solver.SensorGraph;
+import tracking.TrackingTasksManager;
 import utilities.MapCalc;
 import flying_object.FlyingGroup;
 
@@ -53,6 +54,7 @@ public class DeviceList {
 	private boolean displayConnectionDistance = false;
 	private static int size = 0;
 	private LinkedList<Point[]> linksCoord = new LinkedList<Point[]>();
+	private static TrackingTasksManager trackingManager;
 
 	/**
 	 * 
@@ -264,6 +266,11 @@ public class DeviceList {
 					((Sensor) n).drawSelectedByAlgo(g);
 				}
 			}
+			
+			if(trackingManager != null){
+				trackingManager.draw(g);
+			}
+			
 			if (drawLinks || linksDetection) {
 				iterator = nodes.listIterator();
 				while (iterator.hasNext() && iterator.nextIndex() < size - 1) {
@@ -401,34 +408,34 @@ public class DeviceList {
 		node = null;
 	}
 
-	public void simulate() {
-		Device node;
-		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
-			node = iterator.next();
-			if (node.isSelected())
-				node.start();
-
-		}
-	}
-
-	public void simulateAll() {
-		//Device node;
-		for (Device node : nodes) {//Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
-			//node = iterator.next();
-			node.setSelection(true);
-			node.start();
-
-		}
-	}
-	
-	public void simulateSensors() {
-		for (Device node : nodes) {
-			if(node.getType()==Device.SENSOR) {
-				node.setSelection(true);
-				node.start();
-			}
-		}
-	}
+//	public void simulate() {
+//		Device node;
+//		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
+//			node = iterator.next();
+//			if (node.isSelected())
+//				node.start();
+//
+//		}
+//	}
+//
+//	public void simulateAll() {
+//		//Device node;
+//		for (Device node : nodes) {//Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
+//			//node = iterator.next();
+//			node.setSelection(true);
+//			node.start();
+//
+//		}
+//	}
+//	
+//	public void simulateSensors() {
+//		for (Device node : nodes) {
+//			if(node.getType()==Device.SENSOR) {
+//				node.setSelection(true);
+//				node.start();
+//			}
+//		}
+//	}
 	
 	public void simulateMobiles() {
 		for (Device node : nodes) {
@@ -439,12 +446,12 @@ public class DeviceList {
 		}
 	}
 	
-	public static void stopSimulation() {
-		for (Device node : nodes) {
-			node.setSelection(false);
-			node.stopSimulation();;
-		}
-	}
+//	public static void stopSimulation() {
+//		for (Device node : nodes) {
+//			node.setSelection(false);
+//			node.stopSimulation();;
+//		}
+//	}
 
 	public static StringBuilder displaySensorGraph() {
 		return SensorGraph.toSensorGraph(nodes, size).displayNames();
@@ -654,4 +661,112 @@ public class DeviceList {
 			d.loadRouteFromFile();
 		}
 	}
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * permet de trouver le device dont l'idName est egal a l'argument idName
+	 * @param idName
+	 * @return
+	 */
+	private static Device getDeviceByIdName(String idName){
+		if(idName == null || idName.isEmpty()){
+			return null;
+		}
+		for (Device node : nodes) {
+			if(idName.equals(node.getNodeIdName())) {
+				return node;
+			}
+		}
+		return null;
+	}
+	
+	private static void startTracking() {
+		List<Sensor> trackers = getTrackersList();
+		if(!trackers.isEmpty()){
+			trackingManager = new TrackingTasksManager();
+			for(Sensor tracker : trackers){
+				Device target = getDeviceByIdName(tracker.getTargetName());
+				if(target != null){
+					trackingManager.addTask(tracker, target);
+				}
+			}
+			trackingManager.startTraking();
+		}
+	}
+
+	/**
+	 * prepare les donnees du tracking
+	 * bien que la boucle soit dupliquee, le code est ainsi plus propre
+	 * @return
+	 */
+	private static List<Sensor> getTrackersList() {
+		List<Sensor> trackers = new ArrayList<Sensor>();
+		for (Device node : nodes) {
+			if(node.getType()==Device.SENSOR) {
+				if(node.getTargetName()!=null && !node.getTargetName().isEmpty()){
+					trackers.add((Sensor) node);
+				}
+			}
+		}
+		return trackers;
+		
+	}
+
+	public void simulate() {
+		Device node;
+		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
+			node = iterator.next();
+			if (node.isSelected())
+				node.start();
+		}
+		startTracking();
+	}
+	
+	public void simulateAll() {
+		
+		for (Device node : nodes) {
+			node.setSelection(true);
+			node.start();
+		}
+		startTracking();
+	}
+	
+	public void simulateSensors() {
+		for (Device node : nodes) {
+			if(node.getType()==Device.SENSOR) {
+				node.setSelection(true);
+				node.start();
+			}
+		}
+		startTracking();
+	}
+	
+	public static void stopSimulation() {
+		for (Device node : nodes) {
+			node.setSelection(false);
+			node.stopSimulation();
+		}
+		if(trackingManager!=null){
+			trackingManager.stopTracking();
+		}
+	}
+	
+	public static void startRealTrackingSimulation(String trackerId, String targetId) {
+		trackingManager = new TrackingTasksManager(true);
+		trackingManager.addTask(trackerId, targetId);
+		trackingManager.startTraking();
+		
+	}
+	
 }

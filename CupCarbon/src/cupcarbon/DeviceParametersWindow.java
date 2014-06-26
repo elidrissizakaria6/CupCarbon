@@ -86,10 +86,12 @@ public class DeviceParametersWindow extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public DeviceParametersWindow() {
+		setResizable(true);
+		setMaximizable(true);
 		setClosable(true);
 		setIconifiable(true);
 		setTitle("Node Parameters");
-		setBounds(100, 100, 525, 447);
+		setBounds(100, 100, 525, 494);
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.SOUTH);
@@ -102,8 +104,12 @@ public class DeviceParametersWindow extends JInternalFrame {
 				DeviceList.updateFromMap(textField_5.getText(),
 						textField_6.getText(), textField_7.getText(),
 						textField_8.getText(), textField_9.getText(),
-						Project.getProjectGpsPath() + File.separator
-								+ gpsPathNameComboBox.getSelectedItem(),
+						
+						gpsPathNameComboBox.getSelectedItem()+"",
+						//Project.getProjectGpsPath() + File.separator
+						//		+ gpsPathNameComboBox.getSelectedItem(),
+								
+								
 								eMaxTextField.getText(),
 								eTxTextField.getText(),
 								eRxTextField.getText(),

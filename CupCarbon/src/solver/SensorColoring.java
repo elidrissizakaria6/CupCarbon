@@ -35,7 +35,7 @@ import device.DeviceList;
  */
 public class SensorColoring {
 
-	public void executeColoring() {
+	public void execute() {
 		
 		// From sensors to Graph
 		GraphStd graphe = null;		
