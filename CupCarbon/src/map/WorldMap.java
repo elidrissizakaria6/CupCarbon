@@ -30,25 +30,31 @@ import wisen_simulation2.Simulation;
 public class WorldMap extends JXMapKit {
 
 	private static final long serialVersionUID = 1L;
-	public static Layer layer;
-	final int max = 19;
+	private static Layer layer;
+	private final int max = 19;
+	public static String tileType = ".png";
+	public static String tileUrl = "http://otile1.mqcdn.com/tiles/1.0.0/osm/";
 
+	
+	//http://bcdcspatial.blogspot.fr/2012/01/onlineoffline-mapping-map-tiles-and.html
+	
 	public WorldMap() {
 		// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
 		// true,"file:/myLocalMapServer/tiles","x","y","z") {
-		TileFactoryInfo info = new TileFactoryInfo(0, max, max, 256, true,
-				true, "http://tile.openseamap.org", "x", "y", "z") {
+		TileFactoryInfo info = new TileFactoryInfo(0, max, max, 256, true, true, "http://tile.openseamap.org", "x", "y", "z") {
 			// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
 			// true,"http://www.openseamap.org/map","x","y","z") {
 			// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
 			// true,"file:/myLocalMapServer/tiles","x","y","z") {
-			
+
 			public String getTileUrl(int x, int y, int zoom) {
 				zoom = max - zoom;
 				 //return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
 				 //return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom + "/" + x + "/" + y + ".jpg";
-				return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".jpg";
-				// return "http://a.tile.openstreetmap.org/"+zoom+"/"+x+"/"+y+".png";
+				//return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".jpg";
+				
+				return tileUrl+zoom+"/"+x+"/"+y+tileType ;
+				
 				// return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/" + x + "/" + y + ".png";
 				// return
 				// "http://tile.stamen.com/terrain-background/"+zoom+"/"+x+"/"+y+".png";
@@ -64,8 +70,6 @@ public class WorldMap extends JXMapKit {
 			}
 		};
 
-		
-		
 		info.setDefaultZoomLevel(19);
 
 		// WMSService wms = new WMSService();
@@ -168,4 +172,5 @@ public class WorldMap extends JXMapKit {
 			boolean addSelection) {
 		layer.setSelectionOfAllMarkers(selection, type, addSelection);
 	}
+	
 }

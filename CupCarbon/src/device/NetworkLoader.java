@@ -24,6 +24,9 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 import org.jdesktop.swingx.JXMapViewer;
+import org.jdesktop.swingx.mapviewer.GeoPosition;
+
+import cupcarbon.CupCarbonMap;
 
 public class NetworkLoader extends Thread {
 	
@@ -36,6 +39,10 @@ public class NetworkLoader extends Thread {
 	@Override
 	public void run() {
 		try {
+			
+			CupCarbonMap.map.setCenterPosition(new GeoPosition(43.46276274196949,-3.8399791717529297));
+			CupCarbonMap.map.setZoom(5);
+			
 			double x = 0;
 			double y = 0;
 			FileInputStream fis = new FileInputStream("sensors.txt");
@@ -45,7 +52,7 @@ public class NetworkLoader extends Thread {
 			String s;
 			String[] ps;
 			String[] ics;			
-			for (int i = 0; i < 7; i++) {
+			for (int i = 0; i < 1000; i++) {
 				s = br.readLine();
 			//int k=0;
 			//while (((s = br.readLine()) != null) && (k++<40)) {

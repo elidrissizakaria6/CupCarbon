@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -45,7 +46,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -53,6 +56,10 @@ import javax.swing.filechooser.FileFilter;
 
 import map.Layer;
 import map.WorldMap;
+
+import org.jdesktop.swingx.mapviewer.GeoPosition;
+
+import osm.City;
 import project.Project;
 import solver.CharlySchedul;
 import solver.NetworkParetoBorder;
@@ -95,6 +102,8 @@ public class CupCarbon {
 	private RealTrackingDialog realTrackingDialog;
 
 	public static int simulationNumber = 0;
+	private JTextField cityTextEdit;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -112,8 +121,7 @@ public class CupCarbon {
 				// }
 
 				try {
-					FileInputStream licenceFile = new FileInputStream(
-							"cupcarbon_licence.txt");
+					FileInputStream licenceFile = new FileInputStream("cupcarbon_licence.txt");
 					int c;
 					while ((c = licenceFile.read()) != -1) {
 						System.out.print((char) c);
@@ -1118,6 +1126,105 @@ public class CupCarbon {
 		mntmMarkers.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
 		mnWindow.add(mntmMarkers);
+		
+		JMenu mnMap = new JMenu("Map");
+		mnMap.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "logo_cap_carbon.png"));
+		menuBar.add(mnMap);
+		
+		JRadioButtonMenuItem rdbtnmntmClassic = new JRadioButtonMenuItem("Standard");
+		buttonGroup.add(rdbtnmntmClassic);
+		rdbtnmntmClassic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				changeTiles("http://a.tile.openstreetmap.org/");
+			}
+		});
+		mnMap.add(rdbtnmntmClassic);
+		
+		JRadioButtonMenuItem rdbtnmntmOsm = new JRadioButtonMenuItem("OSM");
+		buttonGroup.add(rdbtnmntmOsm);
+		rdbtnmntmOsm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeTiles("http://otile1.mqcdn.com/tiles/1.0.0/osm/");
+			}
+		});
+		rdbtnmntmOsm.setSelected(true);
+		mnMap.add(rdbtnmntmOsm);
+		
+		JRadioButtonMenuItem rdbtnmntmSatellit = new JRadioButtonMenuItem("Satellite");
+		buttonGroup.add(rdbtnmntmSatellit);
+		rdbtnmntmSatellit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeTiles("http://otile1.mqcdn.com/tiles/1.0.0/sat/");
+			}
+		});
+		mnMap.add(rdbtnmntmSatellit);
+		
+		JRadioButtonMenuItem rdbtnmntmCyclic = new JRadioButtonMenuItem("Cycle");
+		buttonGroup.add(rdbtnmntmCyclic);
+		rdbtnmntmCyclic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeTiles("http://a.tile.opencyclemap.org/cycle/");
+			}
+		});
+		mnMap.add(rdbtnmntmCyclic);
+		
+		JRadioButtonMenuItem mntmTransport = new JRadioButtonMenuItem("Transport");
+		buttonGroup.add(mntmTransport);
+		mntmTransport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeTiles("http://a.tile2.opencyclemap.org/transport/");
+			}
+		});
+		mnMap.add(mntmTransport);
+		
+		JRadioButtonMenuItem mntmTerrain = new JRadioButtonMenuItem("Terrain");
+		buttonGroup.add(mntmTerrain);
+		mntmTerrain.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeTiles("http://tile.stamen.com/terrain-background/");
+			}
+		});
+		mnMap.add(mntmTerrain);
+		
+		JRadioButtonMenuItem mntmLocal = new JRadioButtonMenuItem("Local");
+		buttonGroup.add(mntmLocal);
+		mntmLocal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeTiles("http://localhost:8888/cupcarbon/tiles/");
+			}
+		});
+		
+		JRadioButtonMenuItem mntmMapbox = new JRadioButtonMenuItem("MapBox");
+		buttonGroup.add(mntmMapbox);
+		mntmMapbox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				changeTiles("http://a.tiles.mapbox.com/v3/examples.map-zr0njcqy/");
+			}
+		});
+		mnMap.add(mntmMapbox);		
+		mnMap.add(mntmLocal);
+		
+		JSeparator separator_16 = new JSeparator();
+		mnMap.add(separator_16);
+		
+		JMenu mnCenter = new JMenu("City");
+		mnMap.add(mnCenter);
+		
+		cityTextEdit = new JTextField();
+		cityTextEdit.setText("Brest");
+		mnCenter.add(cityTextEdit);
+		cityTextEdit.setColumns(10);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String s = cityTextEdit.getText();
+				double d1 = City.getCityCenter(s)[0];
+				double d2 = City.getCityCenter(s)[1];				
+				CupCarbonMap.getMap().setCenterPosition(new GeoPosition(d1, d2));
+			}
+		});
+		mnCenter.add(btnOk);
 
 		JMenu mnHelp = new JMenu("Help");
 		mnHelp.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "symbol_help.png"));
@@ -1158,7 +1265,7 @@ public class CupCarbon {
 		btnSensor.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "blank_badge_mauve.png"));
 		btnSensor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {				
 				WorldMap.addNodeInMap('1');
 			}
 		});
@@ -1350,5 +1457,10 @@ public class CupCarbon {
 	public static void updateInfos() {
 		label.setText("" + DeviceList.size() + "  ");
 		sspeedLabel.setText("" + Device.moveSpeed + "  ");
+	}
+	
+	public void changeTiles(String s) {
+		WorldMap.tileUrl = s;				
+		Layer.getMapViewer().repaint();
 	}
 }

@@ -38,7 +38,8 @@ import map.WorldMap;
 public class CupCarbonMap extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
-
+	public static WorldMap map = null ;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -57,7 +58,7 @@ public class CupCarbonMap extends JInternalFrame {
 	 */
 	public CupCarbonMap() {
 		super("CupCarbon Map");
-		WorldMap map = new WorldMap();
+		map = new WorldMap();
 
 		map.getMainMap().setLoadingImage(
 				Toolkit.getDefaultToolkit()
@@ -75,6 +76,14 @@ public class CupCarbonMap extends JInternalFrame {
 		setFrameIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "logo_cap_carbon.png"));
 		setResizable(true);
 		setIconifiable(true);
+	}
+	
+	public static WorldMap getMap() {
+		return map ;
+	}
+	
+	public void infos() {
+		System.out.println("->"+this.getSize());
 	}
 
 }

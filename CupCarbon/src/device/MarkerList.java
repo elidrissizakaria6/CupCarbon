@@ -46,7 +46,7 @@ public class MarkerList {
 
 	private static List<Marker> markers;
 	private boolean drawLinks = true;
-	private boolean drawArrows = true;
+	private boolean drawArrows = false;
 
 	public MarkerList() {
 		markers = new ArrayList<Marker>();
@@ -404,7 +404,7 @@ public class MarkerList {
 			file.close();
 			gpxToMarkers();
 		} catch (MalformedURLException e) {
-			System.err.println(host + " : URL non comprise.");
+			System.err.println(host + " : URL problem.");
 		} catch (IOException e) {
 			System.err.println("------ Connexion problem ! ------");
 		}
@@ -416,9 +416,9 @@ public class MarkerList {
 			BufferedReader br = new BufferedReader(
 					//new FileReader("gpx2/route.gpx"));
 					new FileReader("gpx/tmp.gpx"));
-			for (int i = 0; i < markers.size(); i++) {
+			//for (int i = 0; i < markers.size(); i++) {
 
-			}
+			//}
 			String[] s1 = br.readLine().split("lat=\"");
 			String[] s2;
 			for (int i = 1; i < s1.length; i++) {

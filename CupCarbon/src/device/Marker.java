@@ -84,7 +84,7 @@ public class Marker extends Device {
 		double y2 = marker2.getY();
 		double x = x1+((x2-x1)/2.0);
 		double y = y1+((y2-y1)/2.0);
-		Marker marker = new Marker(x, y, 25) ; 
+		Marker marker = new Marker(x, y, 10) ; 
 		if(b) marker.setSelection(true);
 		return marker;
 	}

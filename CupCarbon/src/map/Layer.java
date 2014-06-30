@@ -19,6 +19,10 @@
 
 package map;
 
+import flying_object.FlyingGroup;
+import geometry.Building;
+import geometry.BuildingList;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -42,10 +46,10 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.painter.Painter;
 
 import project.Project;
-import tracking.TrackerWS;
 import utilities.MapCalc;
 import utilities.UColor;
 import cupcarbon.CupCarbon;
+import cupcarbon.CupCarbonMap;
 import cupcarbon.DeviceParametersWindow;
 import device.BaseStation;
 import device.Device;
@@ -61,9 +65,6 @@ import device.Sensor;
 import device.StreetGraph;
 import device.StreetVertex;
 import device.TrackingPointsList;
-import flying_object.FlyingGroup;
-import geometry.Building;
-import geometry.BuildingList;
 
 public class Layer implements Painter<Object>, MouseListener,
 		MouseMotionListener, KeyListener {
@@ -78,7 +79,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	public static double x = 0;
 	public static double y = 0;
 	public static char lastKey = 0;
-	public static int lastKeyCode = 0;	
+	public static int lastKeyCode = 0;
 	public static boolean dessinerCadre = false;
 	public static int cadreX1 = 0;
 	public static int cadreY1 = 0;
@@ -92,7 +93,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	public static boolean mousePressed = false;
 	public static String projectPath = "";
 	public static String projectName = "";
-	
+
 	private boolean debutSelection = false;
 
 	public Layer() {
@@ -128,7 +129,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		mapViewer.addKeyListener(this);
 		// insectinit();
 
-	}	
+	}
 
 	public boolean isDebutSelection() {
 		return debutSelection;
@@ -206,16 +207,16 @@ public class Layer implements Painter<Object>, MouseListener,
 					(int) (p2.getX() - p1.getX()),
 					(int) (p2.getY() - p1.getY()));
 		}
-		
+
 		// OSM Test BEGIN
 		// This part is used just to understand how to add shapes on the OSM map
 		// The class OsmTest is required
-		//OsmTest osm = new OsmTest() ;
-		//osm.drawFromGPS(g);
+		// OsmTest osm = new OsmTest() ;
+		// osm.drawFromGPS(g);
 		// OSM Test END
-		
+
 		g.dispose();
-	}	
+	}
 
 	public static DeviceList getDeviceList() {
 		return nodeList;
@@ -227,27 +228,31 @@ public class Layer implements Painter<Object>, MouseListener,
 
 	public void simulateAll() {
 		nodeList.simulateAll();
-		//Device dev1 = DeviceList.getNodes().get(0);
-		//TrackerWS.clean();
-		//TrackerWS.create(dev1.getNodeIdName(), dev1.getX(), dev1.getY());
-		//TrackingPointsList.simulate();
+		// Device dev1 = DeviceList.getNodes().get(0);
+		// TrackerWS.clean();
+		// TrackerWS.create(dev1.getNodeIdName(), dev1.getX(), dev1.getY());
+		// TrackingPointsList.simulate();
 	}
-	
+
 	public void simulateSensors() {
 		nodeList.simulateSensors();
 	}
-	
+
 	public void simulateMobiles() {
 		nodeList.simulateMobiles();
 	}
-	
+
 	public static void simulateTrancking() {
 		TrackingPointsList.simulate();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg) {
-		if (afficherIndicateur) {
+		if (arg.getClickCount() == 2) {						
+			Point p = new Point(arg.getX(), arg.getY());
+			GeoPosition gp = mapViewer.convertPointToGeoPosition(p);
+			CupCarbonMap.getMap().setCenterPosition(new GeoPosition(gp.getLatitude(), gp.getLongitude()));
+		} else if (afficherIndicateur) {
 			Point p = new Point(arg.getX(), arg.getY());
 			GeoPosition gp = mapViewer.convertPointToGeoPosition(p);
 			if (lastKey == '1') {
@@ -261,8 +266,8 @@ public class Layer implements Painter<Object>, MouseListener,
 				mapViewer.repaint();
 			}
 			if (lastKey == '3') {
-				DeviceList.add(new FlyingGroup(gp.getLatitude(), gp.getLongitude(),
-					10, 100));
+				DeviceList.add(new FlyingGroup(gp.getLatitude(), gp
+						.getLongitude(), 10, 100));
 				mapViewer.repaint();
 			}
 			if (lastKey == '4') {
@@ -287,7 +292,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			}
 			if (lastKey == '8') {
 				MarkerList.add(new Marker(gp.getLatitude(), gp.getLongitude(),
-						20));
+						10));
 				mapViewer.repaint();
 			}
 			if (lastKey == '9') {
@@ -304,15 +309,16 @@ public class Layer implements Painter<Object>, MouseListener,
 			FileInputStream fis = new FileInputStream("bmo_buildings_1000.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 			String s = "";
-			Building building = null ;
-			//while((s = br.readLine()) != null) {
-			for(int i=0; i<1000; i++) {
-				s = br.readLine();				
-				String [] st = s.split(",");
-				building = new Building(st.length/2-1);
-				for(int j=1; j<st.length-3; j+=2) {
-					building.set(st[j+1], st[j], (j-1)/2);
+			Building building = null;
+			// while((s = br.readLine()) != null) {
+			for (int i = 0; i < 1000; i++) {
+				s = br.readLine();
+				String[] st = s.split(",");
+				building = new Building(st.length / 2 - 1);
+				for (int j = 1; j < st.length - 3; j += 2) {
+					building.set(st[j + 1], st[j], (j - 1) / 2);
 				}
+				building.generateShape();
 				bList.add(building);
 			}
 			br.close();
@@ -322,7 +328,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			e.printStackTrace();
 		}
 	}
-	
+
 	// public static void addNode(Device node) {
 	// DeviceList.add(node);
 	// mapViewer.repaint();
@@ -359,7 +365,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	@Override
 	public void mousePressed(MouseEvent arg) {
 		mousePressed = true;
-		if (lastKeyCode == 16) {
+		if (shiftDown) {
 			mapViewer.setPanEnabled(false);
 			debutSelection = true;
 			cadreX1 = arg.getX();
@@ -377,11 +383,13 @@ public class Layer implements Painter<Object>, MouseListener,
 			dessinerCadre = false;
 
 			nodeList.selectInNodeSelection(cadreX1, cadreX2, cadreY1, cadreY2);
-			markerList
-					.selectInNodeSelection(cadreX1, cadreX2, cadreY1, cadreY2);
-			streetGraph.selectInNodeSelection(cadreX1, cadreX2, cadreY1,
-					cadreY2);
+			markerList.selectInNodeSelection(cadreX1, cadreX2, cadreY1, cadreY2);
+			streetGraph.selectInNodeSelection(cadreX1, cadreX2, cadreY1, cadreY2);
 
+			if(ctrlDown) {
+				System.out.println("yes");
+			}
+			
 			mapViewer.repaint();
 		}
 	}
@@ -398,8 +406,9 @@ public class Layer implements Painter<Object>, MouseListener,
 
 	@Override
 	public void keyPressed(KeyEvent key) {
-		if (key.isShiftDown())
+		if (key.isShiftDown()) {
 			shiftDown = true;
+		}
 		if (key.isAltDown())
 			altDown = true;
 		lastKeyCode = key.getKeyCode();
@@ -409,10 +418,17 @@ public class Layer implements Painter<Object>, MouseListener,
 			streetGraph.init();
 			mapViewer.repaint();
 		}
-		if (key.isControlDown())
+		if (key.isControlDown()) {
 			ctrlDown = true;
+		}
+		
 		if (key.isMetaDown())
 			cmdDown = true;
+		
+		if (key.isShiftDown() && key.isControlDown()) {
+			shiftDown = true;
+			ctrlDown = true;
+		}
 	}
 
 	@Override
@@ -438,7 +454,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			nodeList.setLiens(!nodeList.getLiens());
 			markerList.setLinks(!markerList.getLinks());
 		}
-		
+
 		if (lastKey == 'A') {
 			markerList.setArrows(!markerList.getArrows());
 		}
@@ -481,7 +497,7 @@ public class Layer implements Painter<Object>, MouseListener,
 				}
 			}
 		}
-		
+
 		if (lastKey == 'y' || lastKey == 'o') {
 			int k = 0;
 			StreetVertex sv1 = null;
@@ -503,15 +519,15 @@ public class Layer implements Painter<Object>, MouseListener,
 				}
 			}
 		}
-		
+
 		if (lastKey == '>') {
 			Device.moveSpeed += 5;
 			CupCarbon.updateInfos();
 		}
-		
+
 		if (lastKey == '<') {
 			Device.moveSpeed -= 5;
-			if(Device.moveSpeed<0)
+			if (Device.moveSpeed < 0)
 				Device.moveSpeed = 0;
 			CupCarbon.updateInfos();
 		}
@@ -527,7 +543,8 @@ public class Layer implements Painter<Object>, MouseListener,
 
 	@Override
 	public void mouseDragged(MouseEvent arg) {
-		if (lastKeyCode == 16) {
+		//if (lastKeyCode == 16) {
+		if (shiftDown) {
 			cadreX2 = arg.getX();
 			cadreY2 = arg.getY();
 			dessinerCadre = true;
@@ -756,17 +773,18 @@ public class Layer implements Painter<Object>, MouseListener,
 		streetGraph.setSelectionOfAllVertices(selection, type, addSelection);
 	}
 
-	public static void drawDistance(double x, double y, double x2, double y2, int d, Graphics g) {
+	public static void drawDistance(double x, double y, double x2, double y2,
+			int d, Graphics g) {
 		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
 		int lx1 = coord[0];
 		int ly1 = coord[1];
 		coord = MapCalc.geoToIntPixelMapXY(x2, y2);
 		int lx2 = coord[0];
 		int ly2 = coord[1];
-//		int lx1 = MapCalc.geoToIntPixelMapX(x, y);
-//		int ly1 = MapCalc.geoToIntPixelMapY(x, y);
-//		int lx2 = MapCalc.geoToIntPixelMapX(x2, y2);
-//		int ly2 = MapCalc.geoToIntPixelMapY(x2, y2);
+		// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
+		// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
+		// int lx2 = MapCalc.geoToIntPixelMapX(x2, y2);
+		// int ly2 = MapCalc.geoToIntPixelMapY(x2, y2);
 		g.setColor(Color.DARK_GRAY);
 		g.drawString("" + d, ((lx1 + lx2) / 2), ((ly1 + ly2) / 2));
 		// g.drawLine(lx1,ly1,lx2,ly2);
