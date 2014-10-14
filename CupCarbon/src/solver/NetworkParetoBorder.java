@@ -36,9 +36,9 @@ import device.DeviceList;
 public class NetworkParetoBorder {
 
 	public void execute() {
-		System.out.println("---------------------------");
-		System.out.println("---------------------------");
-		System.out.println("---------------------------");
+//		System.out.println("---------------------------");
+//		System.out.println("---------------------------");
+//		System.out.println("---------------------------");
 		// From sensors to Graph
 		GraphStd graphe = null;		
 		List<Device> nodes = DeviceList.getNodes();		
@@ -62,7 +62,7 @@ public class NetworkParetoBorder {
 				}
 			}
 			n1.setRank(rank);
-			System.out.println(n1.getNodeIdName()+" : "+rank);
+			//System.out.println(n1.getNodeIdName()+" : "+rank);
 		}
 		
 		int min = 10000000;
@@ -77,8 +77,8 @@ public class NetworkParetoBorder {
 			if(nodes.get(i).getRank()<=min)
 				nodes.get(i).setAlgoSelect(true);
 		}
-		System.out.println(min);
-		System.out.println("---------------------------");
+		//System.out.println(min);
+		//System.out.println("---------------------------");
 		//------------------------------------------------------------
 		//------------------------------------------------------------		
 		
@@ -92,7 +92,7 @@ public class NetworkParetoBorder {
 				}
 			}
 			n1.setRank(rank);
-			System.out.println(n1.getNodeIdName()+" : "+rank);
+			//System.out.println(n1.getNodeIdName()+" : "+rank);
 		}
 		
 		min = 10000000;
@@ -107,8 +107,8 @@ public class NetworkParetoBorder {
 			if(nodes.get(i).getRank()<=min)
 				nodes.get(i).setAlgoSelect(true);
 		}
-		System.out.println(min);
-		System.out.println("---------------------------");
+		//System.out.println(min);
+		//System.out.println("---------------------------");
 		//------------------------------------------------------------
 		//------------------------------------------------------------				
 		for (int i = 0; i < graphe.size(); i++) {
@@ -136,8 +136,8 @@ public class NetworkParetoBorder {
 			if(nodes.get(i).getRank()<=min)
 				nodes.get(i).setAlgoSelect(true);
 		}
-		System.out.println(min);
-		System.out.println("---------------------------");
+		//System.out.println(min);
+		//System.out.println("---------------------------");
 		//------------------------------------------------------------
 		//------------------------------------------------------------		
 		for (int i = 0; i < graphe.size(); i++) {
@@ -150,7 +150,7 @@ public class NetworkParetoBorder {
 				}
 			}
 			n1.setRank(rank);
-			System.out.println(n1.getNodeIdName()+" : "+rank);
+			//System.out.println(n1.getNodeIdName()+" : "+rank);
 		}
 		
 		min = 10000000;
@@ -165,8 +165,8 @@ public class NetworkParetoBorder {
 			if(nodes.get(i).getRank()<=min)
 				nodes.get(i).setAlgoSelect(true);
 		}
-		System.out.println(min);
-		System.out.println("---------------------------");
+		//System.out.println(min);
+		//System.out.println("---------------------------");
 		//------------------------------------------------------------
 		//------------------------------------------------------------
 		//------------------------------------------------------------

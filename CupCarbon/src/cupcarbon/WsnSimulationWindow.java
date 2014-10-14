@@ -105,7 +105,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 		iterNumberTextField = new JTextField();
 		panel_8.add(iterNumberTextField);
 		iterNumberTextField.setFont(new Font("Arial", Font.PLAIN, 12));
-		iterNumberTextField.setText("1000");
+		iterNumberTextField.setText("10000");
 		iterNumberTextField.setColumns(10);
 
 		JPanel panel_9 = new JPanel();
@@ -119,7 +119,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 
 		energyMaxTextField = new JTextField();
 		energyMaxTextField.setFont(new Font("Arial", Font.PLAIN, 12));
-		energyMaxTextField.setText("1000000");
+		energyMaxTextField.setText("100000000");
 		panel_9.add(energyMaxTextField);
 		energyMaxTextField.setColumns(10);
 

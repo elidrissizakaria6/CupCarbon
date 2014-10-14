@@ -40,7 +40,7 @@ public class Gas extends DeviceWithoutRadio {
 	private int [] polyY = new int[62];
 	private double [] power = new double[62];
 	
-	private int duration = 1000 ;
+	private int duration = 300 ;
 	
 	{
 		for(int i=0; i<62; i++) {
@@ -171,36 +171,36 @@ public class Gas extends DeviceWithoutRadio {
 		fixori();
 		while(duration>0) {
 			radius++ ;
-			power[10]+=.0024;
-			power[11]+=.0026;
-			power[12]+=.0028;
-			power[13]+=.0024;
-			power[14]+=.0022;
-			power[15]+=.002;
-			
-			power[20]+=.0001;
-			power[21]+=.0003;
-			power[22]+=.0004;
-			power[23]+=.0005;
-			power[24]+=.0002;
-			power[25]+=.0001;
-			
-			
-			power[30]+=.0001;
-			power[31]+=.0003;
-			power[32]+=.0002;
-			power[33]+=.0004;
-			power[34]+=.0003;
-			power[35]+=.0001;
-			
-			
-			power[50]+=.0012;
-			power[51]+=.0013;
-			power[52]+=.0014;
-			power[53]+=.0012;
-			power[54]+=.0011;
-			power[55]+=.001;
-			power[56]+=.0011;
+//			power[10]+=.0024;
+//			power[11]+=.0026;
+//			power[12]+=.0028;
+//			power[13]+=.0024;
+//			power[14]+=.0022;
+//			power[15]+=.002;
+//			
+//			power[20]+=.0001;
+//			power[21]+=.0003;
+//			power[22]+=.0004;
+//			power[23]+=.0005;
+//			power[24]+=.0002;
+//			power[25]+=.0001;
+//			
+//			
+//			power[30]+=.0001;
+//			power[31]+=.0003;
+//			power[32]+=.0002;
+//			power[33]+=.0004;
+//			power[34]+=.0003;
+//			power[35]+=.0001;
+//			
+//			
+//			power[50]+=.0012;
+//			power[51]+=.0013;
+//			power[52]+=.0014;
+//			power[53]+=.0012;
+//			power[54]+=.0011;
+//			power[55]+=.001;
+//			power[56]+=.0011;
 			
 			duration-- ;
 			Layer.getMapViewer().repaint();

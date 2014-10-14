@@ -55,7 +55,7 @@ public class WorldMap extends JXMapKit {
 				
 				return tileUrl+zoom+"/"+x+"/"+y+tileType ;
 				
-				// return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/" + x + "/" + y + ".png";
+				//return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/" + x + "/" + y + ".png";
 				// return
 				// "http://tile.stamen.com/terrain-background/"+zoom+"/"+x+"/"+y+".png";
 				// return
@@ -70,7 +70,7 @@ public class WorldMap extends JXMapKit {
 			}
 		};
 
-		info.setDefaultZoomLevel(19);
+		info.setDefaultZoomLevel(3);
 
 		// WMSService wms = new WMSService();
 		// wms.setLayer("BMNG");
@@ -96,8 +96,8 @@ public class WorldMap extends JXMapKit {
 		// setCenterPosition(new GeoPosition(25.14, 55.2)); //Dubai
 		// setCenterPosition(new GeoPosition(47.720520033704954,
 		// -3.3709144592285156));//Lorient
-		//setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
-		setCenterPosition(new GeoPosition(48.40467657851382,-4.501540660858154)); // Brest 2
+		setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
+		//setCenterPosition(new GeoPosition(48.40467657851382,-4.501540660858154)); // Brest 2
 		// setCenterPosition(new
 		// GeoPosition(48.58273977037357,-3.8297653198242188));//Morlaix
 		setZoom(2);
@@ -171,6 +171,10 @@ public class WorldMap extends JXMapKit {
 	public static void setSelectionOfAllMarkers(boolean selection, int type,
 			boolean addSelection) {
 		layer.setSelectionOfAllMarkers(selection, type, addSelection);
+	}
+	
+	public void setLoc(GeoPosition gp) {
+		setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707));
 	}
 	
 }

@@ -84,8 +84,8 @@ public class MarkerList {
 			line = br.readLine();
 			line = br.readLine();
 			line = br.readLine();
-			line = br.readLine();
-			line = br.readLine();
+			//line = br.readLine();
+			//line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				str = line.split(" ");
 				addNodeByType(str[1], str[2], str[3]);
@@ -443,5 +443,13 @@ public class MarkerList {
 	public static List<Marker> getMarkers() {
 		return markers;
 	}
-
+	
+	public static void insertMarkers() {
+		int n = markers.size()-1;
+		for (int ix = 0; ix < n; ix++) {
+			//if(markers.get(ix*2).isSelected())
+			Layer.addMarker(ix*2+1,Marker.getCentre(markers.get(ix*2),MarkerList.get(ix*2+1),true));
+		}
+	}
+	
 }

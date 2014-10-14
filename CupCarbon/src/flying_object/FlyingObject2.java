@@ -307,4 +307,5 @@ public class FlyingObject2 extends MobileG {
 	
 	@Override
 	public boolean canMove() {return false;}
+	
 }

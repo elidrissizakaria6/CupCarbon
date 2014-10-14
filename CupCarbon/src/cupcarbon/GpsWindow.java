@@ -111,6 +111,7 @@ public class GpsWindow extends JInternalFrame {
 		panel_7.setLayout(new BorderLayout(0, 0));
 
 		txtFileName = new JTextField();
+		txtFileName.setText("route1");
 		txtFileName.setFont(new Font("Arial", Font.PLAIN, 12));
 		txtFileName.setColumns(15);
 		panel_7.add(txtFileName);
@@ -215,6 +216,7 @@ public class GpsWindow extends JInternalFrame {
 		panel_10.add(lblNewLabel);
 
 		txtTitle = new JTextField();
+		txtTitle.setText("Route name");
 		txtTitle.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_10.add(txtTitle);
 		txtTitle.setColumns(20);
@@ -228,6 +230,7 @@ public class GpsWindow extends JInternalFrame {
 		panel_11.add(lblNewLabel_1);
 
 		txtFrom = new JTextField();
+		txtFrom.setText("City one");
 		txtFrom.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_11.add(txtFrom);
 		txtFrom.setColumns(20);
@@ -241,6 +244,7 @@ public class GpsWindow extends JInternalFrame {
 		panel_12.add(lblNewLabel_2);
 
 		txtTo = new JTextField();
+		txtTo.setText("City two");
 		txtTo.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_12.add(txtTo);
 		txtTo.setColumns(20);
@@ -262,7 +266,7 @@ public class GpsWindow extends JInternalFrame {
 		delayTextField = new JTextField();
 		panel_1.add(delayTextField);
 		delayTextField.setFont(new Font("Arial", Font.PLAIN, 12));
-		delayTextField.setText("600");
+		delayTextField.setText("60");
 		delayTextField.setColumns(10);
 
 		JLabel lblSeconds = new JLabel("Seconds");
@@ -283,7 +287,7 @@ public class GpsWindow extends JInternalFrame {
 		
 		nLoopTextField = new JTextField();
 		nLoopTextField.setFont(new Font("Arial", Font.PLAIN, 12));
-		nLoopTextField.setText("1");
+		nLoopTextField.setText("10");
 		panel_14.add(nLoopTextField);
 		nLoopTextField.setColumns(10);
 		btnNewButton.addActionListener(new ActionListener() {

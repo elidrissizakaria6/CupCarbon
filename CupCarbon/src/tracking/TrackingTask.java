@@ -17,46 +17,42 @@ import route.ws.RouteServiceFactory;
 import route.ws.exception.RouteServiceException;
 import tracking.ws.TargetWS;
 import tracking.ws.TrackerWS;
-import util.CollectionsUtils;
 import utilities.MapCalc;
 import device.Device;
 import device.Marker;
 import device.MobileWithRadio;
 import device.Sensor;
 
-public class TrackingTask implements Runnable{
-	
+public class TrackingTask implements Runnable {
+
 	private List<TrackingMarker> trackingMarkers;
 	private boolean drawLinks = true;
 	private boolean drawArrows = false;
 	private boolean drawMarkers = false;
-	
-	private final String trackerIdName ;
-	private final String targetIdName;
 
-	
+	private String trackerIdName = "";
+	private String targetIdName = "";
+
 	private Thread thread;
-	
-	//real mode parameters
-	private boolean realTrackingMode;
-	private Point realTrackerLocation;
-	private Point realTargetLocation;
-	private Sensor realTracker;
-	private MobileWithRadio realTarget;
 
+	// real mode parameters
+	private boolean realTrackingMode = false;
+	private Point realTrackerLocation = null;
+	private Point realTargetLocation = null;
+	private Sensor realTracker = null;
+	private MobileWithRadio realTarget;
 
 	private static boolean underSimulation = false;
 
-	public TrackingTask(String trackerId , String targetId, boolean realTrackingMode) {
+	public TrackingTask(String trackerId, String targetId, boolean realTrackingMode) {
 		trackingMarkers = new ArrayList<TrackingMarker>();
-		this.targetIdName = targetId.concat("");
-		this.trackerIdName = trackerId.concat("");
+		this.targetIdName = targetId;
+		this.trackerIdName = trackerId;
 		this.realTrackingMode = realTrackingMode;
-		if(realTrackingMode){
+		if (realTrackingMode) {
 			initRealTrackingMode();
 		}
 	}
-
 
 	private void initRealTrackingMode() {
 		realTracker = new Sensor(0, 0, 10, 10);
@@ -65,7 +61,8 @@ public class TrackingTask implements Runnable{
 	}
 
 	public void draw(Graphics g) {
-		if (CollectionsUtils.isNotEmpty(trackingMarkers) && underSimulation) {
+		//if (CollectionsUtils.isNotEmpty(trackingMarkers) && underSimulation) {
+		if (!trackingMarkers.isEmpty() && underSimulation) {	
 			try {
 				double x1 = 0;
 				double y1 = 0;
@@ -79,11 +76,11 @@ public class TrackingTask implements Runnable{
 				int lx2 = 0;
 				int ly2 = 0;
 				int[] coord;
-				if(realTrackingMode){
+				if (realTrackingMode) {
 					drawTargetAndTracker(g);
 				}
-				if(drawMarkers ){
-					for (TrackingMarker marker : trackingMarkers){
+				if (drawMarkers) {
+					for (TrackingMarker marker : trackingMarkers) {
 						marker.draw(g);
 					}
 				}
@@ -146,34 +143,27 @@ public class TrackingTask implements Runnable{
 		}
 	}
 
-	
-	
-
 	private void drawTargetAndTracker(Graphics g) {
 		realTracker.setX(realTrackerLocation.getX());
 		realTracker.setY(realTrackerLocation.getY());
 		realTracker.draw(g);
-		
+
 		realTarget.setX(realTargetLocation.getX());
 		realTarget.setY(realTargetLocation.getY());
 		realTarget.draw(g);
-		
 	}
 
-
 	public void start() {
-		
 		underSimulation = true;
 		thread = new Thread(this);
 		thread.start();
 	}
-	
+
 	@Override
 	public void run() {
-		while(underSimulation){
-			
+		while (underSimulation) {
 			try {
-				Thread.sleep(Device.moveSpeed/2);
+				Thread.sleep(Device.moveSpeed / 2);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -184,12 +174,11 @@ public class TrackingTask implements Runnable{
 	@SuppressWarnings("deprecation")
 	public void stop() {
 		underSimulation = false;
-		if(thread!=null){
+		if (thread != null) {
 			thread.stop();
 		}
-		
-	}
 
+	}
 
 	public void deleteAll() {
 		TrackingMarker point;
@@ -203,34 +192,28 @@ public class TrackingTask implements Runnable{
 		}
 	}
 
-
 	private void prepareRouteForDraw(Route route) {
 		deleteAll();
 		for (Point node : route.getNodes()) {
-			trackingMarkers.add(new TrackingMarker(node.getX(), node.getY(), 25));
+			trackingMarkers.add(new TrackingMarker(node.getX(), node.getY(), 5));
 			Layer.getMapViewer().repaint();
 		}
 	}
-	
 
 	public void recalculateRoute() {
-		
 		final Point point1 = TrackerWS.getCoords(trackerIdName);
 		final Point point2 = TargetWS.getCoords(targetIdName);
 		if (point1 != null && point2 != null) {
 			IRouteService routeService = RouteServiceFactory.getNewServiceInstance();
-			
 			try {
 				final Route route = routeService.getRoute(point1, point2);
-			
 				SwingUtilities.invokeLater(new Runnable() {
-					
 					@Override
 					public void run() {
-						if(route != null && route.isNotEmpty()){
+						if (route != null && route.isNotEmpty()) {
 							prepareRouteForDraw(route);
 						}
-						if(realTrackingMode){
+						if (realTrackingMode) {
 							realTrackerLocation = point1;
 							realTargetLocation = point2;
 						}
@@ -241,8 +224,5 @@ public class TrackingTask implements Runnable{
 			}
 		}
 	}
-
-
-
-
+	
 }

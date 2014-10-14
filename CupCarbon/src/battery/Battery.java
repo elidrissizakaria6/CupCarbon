@@ -20,7 +20,7 @@
 package battery;
 
 import radiomodule.RadioModule;
-import captureunit.CaptureUnit;
+import sensorunit.SensorUnit;
 import controlunit.UControl;
 
 /**
@@ -35,7 +35,7 @@ public class Battery implements Cloneable {
 	
 	private UControl uProc = new UControl();
 	private RadioModule radioModule = new RadioModule(0);
-	private CaptureUnit captureUnit;
+	private SensorUnit sensorUnit;
 	private long capacity = eMax;
 	
 	
@@ -44,10 +44,10 @@ public class Battery implements Cloneable {
 	/**
 	 * Battery initialization
 	 * 
-	 * @param captureUnit
+	 * @param sensorUnit
 	 */
-	public Battery(CaptureUnit captureUnit) {
-		this.captureUnit = captureUnit;
+	public Battery(SensorUnit sensorUnit) {
+		this.sensorUnit = sensorUnit;
 	}
 
 	/**
@@ -110,8 +110,8 @@ public class Battery implements Cloneable {
 			vUp = uProc.getConsumedUnit();
 		if (radioModule != null)
 			vA = radioModule.getConsumedUnit();
-		if (captureUnit != null)
-			vUc = captureUnit.getConsumedUnit();
+		if (sensorUnit != null)
+			vUc = sensorUnit.getConsumedUnit();
 
 		double v = vUp + vA + vUc;
 		if (capacity >= v)
@@ -150,8 +150,8 @@ public class Battery implements Cloneable {
 			vUp = uProc.getConsumedUnit(unit1);
 		if (radioModule != null)
 			vA = radioModule.getConsumedUnit(unit2);
-		if (captureUnit != null)
-			vUc = captureUnit.getConsumedUnit(unit3);
+		if (sensorUnit != null)
+			vUc = sensorUnit.getConsumedUnit(unit3);
 
 		double v = vUp + vA + vUc;
 		if (capacity >= v)
@@ -172,8 +172,8 @@ public class Battery implements Cloneable {
 	 * 
 	 * @param unitCapture
 	 */
-	public void setCaptureUnit(CaptureUnit unitCapture) {
-		this.captureUnit = unitCapture;
+	public void setCaptureUnit(SensorUnit unitCapture) {
+		this.sensorUnit = unitCapture;
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class Battery implements Cloneable {
 	@Override
 	public Battery clone() throws CloneNotSupportedException {
 		Battery newBattery = (Battery) super.clone();
-		newBattery.setCaptureUnit(captureUnit.clone());
+		newBattery.setCaptureUnit(sensorUnit.clone());
 		newBattery.setUControl((UControl) uProc.clone());
 		newBattery.setAntenna((RadioModule) radioModule.clone());
 		return newBattery;

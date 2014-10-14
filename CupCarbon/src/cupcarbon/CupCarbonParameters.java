@@ -33,4 +33,6 @@ public class CupCarbonParameters {
 	
 	//public static String DirSEPARATOR = System.getProperty("path.separator") ;
 	public static String IMGPATH = /*CAPCARBONPATH + SEPARATOR + */ "images" + File.separator ;
+	
+	public static String IMGPATHDEMO = /*CAPCARBONPATH + SEPARATOR + */ "images_demo" + File.separator ;
 }

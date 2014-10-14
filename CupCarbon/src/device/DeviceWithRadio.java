@@ -91,7 +91,8 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	 */
 	@Override
 	public double getRadioRadius() {
-		return radioRangeRadius ;
+		//return radioRangeRadius * (battery.getCapacity()/battery.getInitialCapacity()) ;
+		return (radioRangeRadius * ((getBatteryLevel() / Battery.eMax)*100.))/100.;
 	}
 	
 	/* (non-Javadoc)
@@ -232,6 +233,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 			g.setColor(UColor.WHITE_TRANSPARENT);
 			int lr1 = (int) (r1*Math.cos(Math.PI/4.));
 			g.drawLine(x,y,(int)(x+lr1),(int)(y-lr1));
+			//g.drawString(""+getRadioRadius(),x+(lr1/2),(int)(y-(lr1/4.)));
 			g.drawString(""+getRadioRadius(),x+(lr1/2),(int)(y-(lr1/4.)));
 		}
 	}	

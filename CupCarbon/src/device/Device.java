@@ -806,6 +806,8 @@ public abstract class Device implements Runnable, MouseListener,
 		}		
 		thread = null;
 		underSimulation = false;
+		radius=radiusOri;
+		this.getBattery().init();
 	}
 
 	/**
@@ -996,7 +998,7 @@ public abstract class Device implements Runnable, MouseListener,
 			double dMax = getCaptureUnitRadius()
 					+ device.getCaptureUnitRadius();
 			if (dMax > distance(device)) {
-				// setDetection(true);
+				setDetection(true);
 				return true;
 			} else {
 				return false;

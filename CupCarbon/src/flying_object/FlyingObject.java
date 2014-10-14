@@ -31,6 +31,7 @@ import map.Layer;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
+import project.Project;
 import utilities.MapCalc;
 import utilities.UColor;
 import device.Device;
@@ -171,15 +172,16 @@ public class FlyingObject extends MobileG {
 		String[] ts;
 		try {
 			if (!gpsFileName.equals("")) {
-				fis = new FileInputStream(gpsFileName);
+				fis = new FileInputStream(Project.getProjectGpsPath()+"/"+gpsFileName);
 				b = new BufferedReader(new InputStreamReader(fis));
-				underSimulation = true;
+				underSimulation = true; 
 				b.readLine();
 				b.readLine();
 				b.readLine();
-				b.readLine();
-				b.readLine();
+				//b.readLine();
+				//b.readLine();
 				loop = Boolean.parseBoolean(b.readLine());
+				b.readLine();
 				while ((s = b.readLine()) != null) {
 					ts = s.split(" ");
 					routeTime.add(Long.parseLong(ts[0]));
@@ -188,6 +190,7 @@ public class FlyingObject extends MobileG {
 				}
 				b.close();
 				fis.close();
+				//System.out.println(routeX);
 			}				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -343,4 +346,9 @@ public class FlyingObject extends MobileG {
 	public boolean canMove() {
 		return false;
 	}
+	
+	
+	
+		
+	
 }

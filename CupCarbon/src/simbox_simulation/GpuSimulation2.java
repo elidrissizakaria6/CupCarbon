@@ -70,6 +70,7 @@ import device.DeviceList;
 
 /**
  * @author Ahcene Bounceur
+ * @author Massinissa Lounis
  * @author Arezki Laga
  * @version 1.0
  */

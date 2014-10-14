@@ -301,6 +301,7 @@ public class Layer implements Painter<Object>, MouseListener,
 				mapViewer.repaint();
 			}
 		}
+		
 		CupCarbon.updateInfos();
 	}
 
@@ -409,15 +410,18 @@ public class Layer implements Painter<Object>, MouseListener,
 		if (key.isShiftDown()) {
 			shiftDown = true;
 		}
+		
 		if (key.isAltDown())
 			altDown = true;
 		lastKeyCode = key.getKeyCode();
+		
 		if (lastKeyCode == 27) {
 			lastKey = 0;
 			afficherIndicateur = false;
 			streetGraph.init();
 			mapViewer.repaint();
 		}
+		
 		if (key.isControlDown()) {
 			ctrlDown = true;
 		}
@@ -788,6 +792,15 @@ public class Layer implements Painter<Object>, MouseListener,
 		g.setColor(Color.DARK_GRAY);
 		g.drawString("" + d, ((lx1 + lx2) / 2), ((ly1 + ly2) / 2));
 		// g.drawLine(lx1,ly1,lx2,ly2);
+	}
+	
+	public static void initClick() {
+		//*****BEGIN DEMO****
+		lastKey = 0;
+		afficherIndicateur = false;
+		streetGraph.init();
+		mapViewer.repaint();
+		//*****END DEMO****
 	}
 
 }

@@ -91,7 +91,7 @@ public class DeviceParametersWindow extends JInternalFrame {
 		setClosable(true);
 		setIconifiable(true);
 		setTitle("Node Parameters");
-		setBounds(100, 100, 525, 494);
+		setBounds(100, 100, 525, 456);
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.SOUTH);

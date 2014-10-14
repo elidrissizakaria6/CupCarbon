@@ -719,8 +719,7 @@ public class DeviceList {
 				}
 			}
 		}
-		return trackers;
-		
+		return trackers;	
 	}
 
 	public void simulate() {
@@ -733,8 +732,7 @@ public class DeviceList {
 		startTracking();
 	}
 	
-	public void simulateAll() {
-		
+	public void simulateAll() {	
 		for (Device node : nodes) {
 			node.setSelection(true);
 			node.start();

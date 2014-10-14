@@ -55,6 +55,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileFilter;
 
 import map.Layer;
+import map.RandomDevices;
 import map.WorldMap;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
@@ -100,6 +101,7 @@ public class CupCarbon {
 	private InformationWindow infoWindow = new InformationWindow();
 	private WsnSimulationWindow wsnSimWindow = new WsnSimulationWindow();
 	private RealTrackingDialog realTrackingDialog;
+	private MenuDemoWindow menuDemoWindow = new MenuDemoWindow();
 
 	public static int simulationNumber = 0;
 	private JTextField cityTextEdit;
@@ -329,6 +331,61 @@ public class CupCarbon {
 			}
 		});
 		mnProject.add(mntmQuit);
+		
+		JMenu mnDemo = new JMenu("DEMO");
+		mnDemo.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "stylo.png"));
+		menuBar.add(mnDemo);
+		
+		JMenuItem mntmLorient = new JMenuItem("Lorient");
+		mntmLorient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CupCarbonMap.getMap().setCenterPosition(new GeoPosition(47.720520033704954, -3.3709144592285156));//Lorient
+			}
+		});
+		mnDemo.add(mntmLorient);
+		
+		JMenuItem mntmBrest = new JMenuItem("Brest");
+		mntmBrest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CupCarbonMap.getMap().setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
+			}
+		});
+		mnDemo.add(mntmBrest);
+		
+		JMenuItem mntmSansFrancisco = new JMenuItem("Sans Francisco");
+		mntmSansFrancisco.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CupCarbonMap.getMap().setCenterPosition(new GeoPosition(37.88786040514413, -122.30392456054688));//Lorient
+			}
+		});
+		mnDemo.add(mntmSansFrancisco);
+		
+		JMenuItem mntmSantander = new JMenuItem("Santander");
+		mntmSantander.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CupCarbonMap.getMap().setCenterPosition(new GeoPosition(43.461142978339005,-3.830108642578125));//Santander
+			}
+		});
+		mnDemo.add(mntmSantander);
+		
+		JMenuItem mntmMenuDemo = new JMenuItem("Menu Demo");
+		mntmMenuDemo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Layer.initClick();
+				if (!menuDemoWindow.isVisible()) {
+					menuDemoWindow.setVisible(true);
+					desktopPane.add(menuDemoWindow);
+				}
+				menuDemoWindow.toFront();
+			}
+		});
+		
+		JSeparator separator_17 = new JSeparator();
+		mnDemo.add(separator_17);
+		mnDemo.add(mntmMenuDemo);
+		
+		JSeparator separator_18 = new JSeparator();
+		mnDemo.add(separator_18);
 
 		JMenu mnEdition = new JMenu("Edition");
 		mnEdition
@@ -692,6 +749,41 @@ public class CupCarbon {
 		mntmAddMarkers.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "marker_rounded_light_blue.png"));
 		mnNodes.add(mntmAddMarkers);
+		
+		JMenu mnRandom = new JMenu("Random");
+		mnNodes.add(mnRandom);
+		
+		JMenuItem mntmAddSensors = new JMenuItem("Add 10 sensors");
+		mntmAddSensors.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				RandomDevices.addRandomSensors(10);
+			}
+		});
+		mnRandom.add(mntmAddSensors);
+		
+		JMenuItem mntmAddSensors_1 = new JMenuItem("Add 50 sensors");
+		mntmAddSensors_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				RandomDevices.addRandomSensors(50);
+			}
+		});
+		mnRandom.add(mntmAddSensors_1);
+		
+		JMenuItem mntmAddSensors_3 = new JMenuItem("Add 100 sensors");
+		mntmAddSensors_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RandomDevices.addRandomSensors(100);
+			}
+		});
+		mnRandom.add(mntmAddSensors_3);
+		
+		JMenuItem mntmAddSensors_2 = new JMenuItem("Add 500 sensors");
+		mntmAddSensors_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RandomDevices.addRandomSensors(500);
+			}
+		});
+		mnRandom.add(mntmAddSensors_2);
 
 		JSeparator separator_6 = new JSeparator();
 		mnNodes.add(separator_6);
@@ -730,9 +822,9 @@ public class CupCarbon {
 		JMenuItem mntmInsertMarker = new JMenuItem("Insert markers");
 		mntmInsertMarker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				for(Marker marker : MarkerList.getMarkers()) {
-					marker.insertMarker();
-				}
+				//for(Marker marker : MarkerList.getMarkers()) {
+				//	marker.insertMarker();
+				//}
 			}
 		});
 		mntmInsertMarker.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
@@ -1364,6 +1456,21 @@ public class CupCarbon {
 				+ "ui_menu_blue.png"));
 		toolBar.add(btnNewButton);
 		toolBar.add(btnSensorParameters);
+		
+		JButton btnMenuDemo = new JButton("MENU DEMO");
+		btnMenuDemo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Layer.initClick();
+				if (!menuDemoWindow.isVisible()) {
+					menuDemoWindow.setVisible(true);
+					desktopPane.add(menuDemoWindow);
+				}
+				menuDemoWindow.toFront();
+			}
+		});
+		btnMenuDemo.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "ui_menu_blue.png"));
+		toolBar.add(btnMenuDemo);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EmptyBorder(2, 2, 2, 2));

@@ -125,8 +125,16 @@ public class FlyingGroup extends MobileG {
 		for (FlyingObject flyingObject : insects) {
 			flyingObject.start();
 		}
-		underSimulation = false;
-		thread = null;
+		while(true) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//underSimulation = false;
+		//thread = null;
 	}
 
 	public void draw(Graphics g) {
@@ -266,4 +274,14 @@ public class FlyingGroup extends MobileG {
 	
 	@Override
 	public boolean canMove() {return false;}
+	
+	@Override
+	public void stopSimulation() {
+		underSimulation = false;
+		for (FlyingObject flyingObject : insects) {
+			flyingObject.stopSimulation();
+		}
+		underSimulation = false;
+		thread = null;
+	}
 }

@@ -33,7 +33,6 @@ import device.DeviceList;
 
 /**
  * @author Ahcene Bounceur
- * @author Arezki Laga
  * @version 1.0
  * 
  *          Generate links (connections between sensors) and scripts (of the

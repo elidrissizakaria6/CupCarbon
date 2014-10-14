@@ -21,6 +21,7 @@ package simbox_simulation;
 
 /**
  * @author Ahcene Bounceur
+ * @author Massinissa Lounis
  * @author Arezki Laga
  * @version 1.0
  * 

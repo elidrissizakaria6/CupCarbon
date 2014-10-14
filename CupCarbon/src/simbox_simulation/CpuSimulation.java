@@ -33,7 +33,6 @@ import device.DeviceList;
 
 /**
  * @author Ahcene Bounceur
- * @author Arezki Laga
  * @version 1.0
  * 
  * 
@@ -131,6 +130,11 @@ public class CpuSimulation extends Thread {
 					Project.getProjectResultsPath() + "/cpu_simulation" + as + ".csv"));
 			int conso;
 			for (iter = 0; (iter < iterNumber) && (!stopSimulation()); iter++) {
+				int ib = 0;
+				for (Device d : devices) {
+					d.getBattery().setCapacity(energy[ib++]);
+				}
+				
 				ps.print(time + ";");
 
 				for (int i = 0; i < nbSensors; i++) {

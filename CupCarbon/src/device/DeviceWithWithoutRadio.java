@@ -77,7 +77,7 @@ public abstract class DeviceWithWithoutRadio extends Device {
 		try {
 			if (!gpsFileName.equals("")) {
 				readyForSimulation = true;
-				fis = new FileInputStream(Project.getProjectGpsPath() + File.separator + gpsFileName);
+				fis = new FileInputStream(Project.getProjectGpsPath() + File.separator + gpsFileName);				
 				b = new BufferedReader(new InputStreamReader(fis));
 				underSimulation = true;
 				b.readLine();
@@ -114,14 +114,18 @@ public abstract class DeviceWithWithoutRadio extends Device {
 	public void runSensorSimulation() {
 		loadRouteFromFile();
 		fixori();
+		underSimulation = true;
+		Consumer c = new Consumer(this, 1000);
+		c.start();
+		underSimulation = false;
 		if (readyForSimulation) {
 			underSimulation = true;
 			routeIndex = 0;
 			selected = false;
 			long tmpTime = 0;
 			long cTime = 0;
-			long toWait = 0;
-			do {
+			long toWait = 0;			
+			do {		
 				cTime = routeTime.get(routeIndex);
 				toWait = cTime - tmpTime;
 				tmpTime = cTime;
@@ -137,7 +141,12 @@ public abstract class DeviceWithWithoutRadio extends Device {
 					e.printStackTrace();
 				}
 				goToNext();
-			} while (hasNext());
+			} while (hasNext());			
+			try {
+				Thread.sleep(toWait * Device.moveSpeed);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			routeIndex = 0;
 			selected = false;
 			toori();

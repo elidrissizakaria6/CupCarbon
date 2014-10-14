@@ -32,7 +32,6 @@ import device.DeviceList;
 
 /**
  * @author Ahcene Bounceur
- * @author Arezki Laga
  * @version 1.0
  * 
  * 

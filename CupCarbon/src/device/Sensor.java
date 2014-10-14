@@ -23,10 +23,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import map.Layer;
+import sensorunit.SensorUnit;
 import utilities.MapCalc;
 import utilities.UColor;
 import battery.Battery;
-import captureunit.CaptureUnit;
 
 /**
  * @author Ahcene Bounceur
@@ -36,7 +36,7 @@ import captureunit.CaptureUnit;
  */
 public class Sensor extends DeviceWithRadio {
 
-	protected CaptureUnit captureUnit;
+	protected SensorUnit sensorUnit;
 	protected boolean flyingObjectDetection = false;	
 
 	/**
@@ -44,8 +44,8 @@ public class Sensor extends DeviceWithRadio {
 	 */
 	public Sensor() {
 		super();
-		captureUnit = new CaptureUnit(this.x, this.y, this);
-		battery = new Battery(captureUnit);
+		sensorUnit = new SensorUnit(this.x, this.y, this);
+		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
 	}
@@ -64,8 +64,8 @@ public class Sensor extends DeviceWithRadio {
 	 */
 	public Sensor(double x, double y, double radius, double radioRadius) {
 		super(x, y, radius, radioRadius);
-		captureUnit = new CaptureUnit(this.x, this.y, this);
-		battery = new Battery(captureUnit);
+		sensorUnit = new SensorUnit(this.x, this.y, this);
+		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
 	}
@@ -87,8 +87,8 @@ public class Sensor extends DeviceWithRadio {
 	public Sensor(double x, double y, double radius, double radioRadius,
 			double cuRadius) {
 		super(x, y, radius, radioRadius);
-		captureUnit = new CaptureUnit(this.x, this.y, cuRadius, this);
-		battery = new Battery(captureUnit);
+		sensorUnit = new SensorUnit(this.x, this.y, cuRadius, this);
+		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
 	}
@@ -137,9 +137,9 @@ public class Sensor extends DeviceWithRadio {
 			String cuRadius) {
 		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius),
 				Double.valueOf(radioRadius));
-		captureUnit = new CaptureUnit(this.x, this.y, Double.valueOf(cuRadius),
+		sensorUnit = new SensorUnit(this.x, this.y, Double.valueOf(cuRadius),
 				this);
-		battery = new Battery(captureUnit);
+		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
 	}
@@ -178,7 +178,7 @@ public class Sensor extends DeviceWithRadio {
 
 	@Override
 	public void setCaptureRadius(double captureRadio) {
-		captureUnit.setRadius(captureRadio);
+		sensorUnit.setRadius(captureRadio);
 	}
 
 	@Override
@@ -191,9 +191,10 @@ public class Sensor extends DeviceWithRadio {
 			int y = coord[1];
 			// int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
 			// int y = MapCalc.geoToIntPixelMapY(this.x, this.y);
-			int rayon = MapCalc.radiusInPixels(getRadioRadius());
+			int rayon = MapCalc.radiusInPixels(getRadioRadius()) ; 
+			//rayon = (int)((rayon * ((getBatteryLevel() / 100000000.)*100.))/100.) ;
 			int rayon2 = MapCalc.radiusInPixels(this.radius);
-			int capRadius = MapCalc.radiusInPixels(captureUnit.getRadius());
+			int capRadius = MapCalc.radiusInPixels(sensorUnit.getRadius());
 
 			if (inside || selected) {
 				g.setColor(UColor.NOIR_TRANSPARENT);
@@ -229,15 +230,15 @@ public class Sensor extends DeviceWithRadio {
 				g.fillOval(x - rayon2, y - rayon2, rayon2 * 2, rayon2 * 2);				
 			}
 			if(hide == 0 || hide == 1) {
-				captureUnit.setXY(x, y);
-				captureUnit.draw(g, 0, detection);
+				sensorUnit.setXY(x, y);
+				sensorUnit.draw(g, 0, detection);
 			}
 			if(hide == 0 || hide == 3) {
 				g.drawOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
 			}
 			if(hide == 2) {
-				captureUnit.setXY(x, y);
-				captureUnit.draw(g, 1, detection);
+				sensorUnit.setXY(x, y);
+				sensorUnit.draw(g, 1, detection);
 			}
 
 			if (selected) {
@@ -255,7 +256,7 @@ public class Sensor extends DeviceWithRadio {
 			dessinAugDimRadio(x, y, g);
 			drawRadius(x, y, rayon, g);
 			drawRadioRadius(x, y, rayon2, g);
-			captureUnit.drawDetectionRadius(x, y, capRadius, g);
+			sensorUnit.drawDetectionRadius(x, y, capRadius, g);
 
 			if (underSimulation) {
 				g.setColor(UColor.GREEN);
@@ -279,7 +280,7 @@ public class Sensor extends DeviceWithRadio {
 
 	@Override
 	public double getCaptureUnitRadius() {
-		return captureUnit.getRadius();
+		return sensorUnit.getRadius();
 	}	
 
 	// ------------------------------------------------------------------------
@@ -298,10 +299,10 @@ public class Sensor extends DeviceWithRadio {
 	/**
 	 * Set the capture unit
 	 * 
-	 * @param captureUnit
+	 * @param sensorUnit
 	 */
-	public void setCaptureUnit(CaptureUnit captureUnit) {
-		this.captureUnit = captureUnit;
+	public void setCaptureUnit(SensorUnit sensorUnit) {
+		this.sensorUnit = sensorUnit;
 	}
 
 	/**
@@ -316,7 +317,7 @@ public class Sensor extends DeviceWithRadio {
 	@Override
 	public Sensor clone() throws CloneNotSupportedException {
 		Sensor newSensor = (Sensor) super.clone();
-		CaptureUnit newCaptureUnit = (CaptureUnit) captureUnit.clone();
+		SensorUnit newCaptureUnit = (SensorUnit) sensorUnit.clone();
 		Battery newBattery = (Battery) battery.clone();
 		newSensor.setCaptureUnit(newCaptureUnit);
 		newCaptureUnit.setNode(newSensor);
@@ -332,8 +333,8 @@ public class Sensor extends DeviceWithRadio {
 	/**
 	 * KH
 	 */
-	@Override
-	public void runSensorSimulation() {
+	//@Override
+	public void runSensorSimulation_kh() {
 		loadRouteFromFile();
 		fixori();
 		if (readyForSimulation) {

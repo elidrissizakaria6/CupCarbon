@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package captureunit;
+package sensorunit;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -35,7 +35,7 @@ import device.Device;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class CaptureUnit extends AConsumption implements KeyListener, Cloneable {
+public class SensorUnit extends AConsumption implements KeyListener, Cloneable {
 
 	protected double radius = 10;
 	protected double x;
@@ -49,7 +49,7 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 	 * @param y Position of the capture unit on the map
 	 * @param node which is associated to this capture unit
 	 */
-	public CaptureUnit(double x, double y, Device node) {
+	public SensorUnit(double x, double y, Device node) {
 		this.x = x;
 		this.y = y;
 		this.node = node;
@@ -63,7 +63,7 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 	 * @param cuRadius the value of the radius 
 	 * @param node which is associated to this capture unit
 	 */
-	public CaptureUnit(double x, double y, double cuRadius, Device node) {
+	public SensorUnit(double x, double y, double cuRadius, Device node) {
 		this(x, y, node);
 		radius = cuRadius;
 	}
@@ -177,8 +177,8 @@ public class CaptureUnit extends AConsumption implements KeyListener, Cloneable 
 	 * Clone the capture unit
 	 */
 	@Override
-	public CaptureUnit clone() throws CloneNotSupportedException {
-		CaptureUnit newCU = (CaptureUnit) super.clone();
+	public SensorUnit clone() throws CloneNotSupportedException {
+		SensorUnit newCU = (SensorUnit) super.clone();
 		Layer.getMapViewer().addKeyListener(newCU);
 		return newCU;
 	}
