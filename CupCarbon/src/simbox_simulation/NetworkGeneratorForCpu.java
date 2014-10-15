@@ -20,12 +20,15 @@
 package simbox_simulation;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
 
+import project.Project;
 import map.Layer;
 import cupcarbon.WsnSimulationWindow;
 import device.Device;
@@ -75,7 +78,8 @@ public class NetworkGeneratorForCpu extends Thread {
 			String s = "";
 			try {
 				System.out.println("---> " + d1.getScriptFileName());
-				BufferedReader br = new BufferedReader(new FileReader(d1.getScriptFileName()));
+				String projectScriptPath = Project.getProjectScriptPath() + File.separator + d1.getScriptFileName();
+				BufferedReader br = new BufferedReader(new FileReader(projectScriptPath));
 				for (int j2 = 0; j2 < scriptSize; j2++) {
 					s = br.readLine();
 					System.out.println(s);

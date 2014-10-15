@@ -115,8 +115,8 @@ public abstract class DeviceWithWithoutRadio extends Device {
 		loadRouteFromFile();
 		fixori();
 		underSimulation = true;
-		Consumer c = new Consumer(this, 1000);
-		c.start();
+		//Consumer c = new Consumer(this, 1000);
+		//c.start();
 		underSimulation = false;
 		if (readyForSimulation) {
 			underSimulation = true;

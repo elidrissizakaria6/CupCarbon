@@ -275,10 +275,10 @@ public class DeviceParametersWindow extends JInternalFrame {
 		JButton button_1_ = new JButton("");
 		button_1_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(Project.getProjectScriptPath()+File.separator+ scriptComboBox.getSelectedItem());
-				DeviceList.setScriptFileName(Project.getProjectScriptPath()
-						+ File.separator
-						+ scriptComboBox.getSelectedItem());
+				//System.out.println(Project.getProjectScriptPath()+File.separator+ scriptComboBox.getSelectedItem());
+				DeviceList.setScriptFileName(//Project.getProjectScriptPath()
+						//+ File.separator + 
+						scriptComboBox.getSelectedItem()+"");
 			}
 		});
 		button_1_.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "loopnone-1.png"));

@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------------------------------------------
- * CupCarbon: OSM based Wireless Sensor Network design and simulation tool
+@ * CupCarbon: OSM based Wireless Sensor Network design and simulation tool
  * www.cupcarbon.com
  * ----------------------------------------------------------------------------------------------------------------
  * Copyright (C) 2013 Ahcene Bounceur
@@ -90,7 +90,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected char key = 0;
 	protected boolean move = false;
 	protected boolean inside = false;
-	protected static boolean displayDetails = false;
+	protected static boolean displayDetails = true;
 	protected boolean underSimulation = false;
 	protected int hide = 0;
 	protected boolean increaseNode = false;
@@ -99,12 +99,12 @@ public abstract class Device implements Runnable, MouseListener,
 	protected boolean withSensor = false;
 	protected boolean mobile = false;
 	protected boolean detection = false;
-	protected boolean displayRadius = false;
+	protected boolean displayRadius = true;
 	protected boolean displayDistance = false;
 	protected boolean selectedByAlgo = false;
 	protected boolean visible = true;
 	protected String[][] infos;
-	protected static boolean displayInfos = false;
+	protected static boolean displayInfos = true;
 
 	protected DeviceSimulator deviceSimulator = null;
 	protected Simulation simulation = null;
@@ -1150,8 +1150,7 @@ public abstract class Device implements Runnable, MouseListener,
 			thread = new Thread(this);
 			thread.start();
 		} else {
-			System.out.println("Simulation is running for node "
-					+ getNodeIdName());
+			System.out.println("Simulation is running for node " + getNodeIdName());
 		}
 	}
 

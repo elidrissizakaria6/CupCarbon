@@ -96,6 +96,7 @@ public final class Project {
 			DeviceList.save(getProjectNodePathName());
 			MarkerList.save(getProjectMarkerPathName());
 			StreetGraph.save(getProjectStreetVertexPathName());
+			
 			JOptionPane.showMessageDialog(null, "Project saved !");
 		}
 	}

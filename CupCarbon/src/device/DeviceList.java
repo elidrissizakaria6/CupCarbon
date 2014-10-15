@@ -111,10 +111,10 @@ public class DeviceList {
 									.getGPSFileName()));
 				}
 
-				if (node.getType() == Device.SENSOR)
-					fos.print(" "
-							+ ((node.getScriptFileName() == "") ? "#" : node
-									.getScriptFileName()));
+				if (node.getType() == Device.SENSOR) {
+					System.out.println(node.getScriptFileName());
+					fos.print(" "+ ((node.getScriptFileName() == "") ? "#" : node.getScriptFileName()));
+				}
 
 				fos.println();
 
