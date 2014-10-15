@@ -21,15 +21,14 @@ package simbox_simulation;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
 
-import project.Project;
 import map.Layer;
+import project.Project;
 import cupcarbon.WsnSimulationWindow;
 import device.Device;
 import device.DeviceList;

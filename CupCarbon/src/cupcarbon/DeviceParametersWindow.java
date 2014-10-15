@@ -38,7 +38,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
-import project.Project;
 import device.DeviceList;
 
 /**
