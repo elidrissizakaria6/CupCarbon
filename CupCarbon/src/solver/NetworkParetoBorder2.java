@@ -35,7 +35,7 @@ import device.DeviceList;
  * @author Massinissa Saoudi
  * @version 1.0
  */
-public class NetworkParetoBorder {
+public class NetworkParetoBorder2 {
 
 	public void execute() {
 		// From sensors to Graph

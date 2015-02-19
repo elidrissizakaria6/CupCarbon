@@ -63,6 +63,7 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 import osm.City;
 import project.Project;
 import solver.CharlySchedul;
+import solver.GpsrB;
 import solver.NetworkParetoBorder;
 import solver.OmnetPp;
 import solver.SensorColoring;
@@ -970,7 +971,7 @@ public class CupCarbon {
 		});
 		mnResolution.add(mntmScheduling);
 		
-		JMenuItem mntmBorder = new JMenuItem("Border");		
+		JMenuItem mntmBorder = new JMenuItem("Pareto-E");		
 		mntmBorder.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "edu_mathematics-1.png"));
 		mntmBorder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -979,6 +980,15 @@ public class CupCarbon {
 			}
 		});
 		mnResolution.add(mntmBorder);
+		
+		JMenuItem mntmGpsrb = new JMenuItem("GPSR-B");
+		mntmGpsrb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				GpsrB gpsrb = new GpsrB() ;
+				gpsrb.start();	
+			}
+		});
+		mnResolution.add(mntmGpsrb);
 		
 		JSeparator separator_13 = new JSeparator();
 		mnResolution.add(separator_13);
