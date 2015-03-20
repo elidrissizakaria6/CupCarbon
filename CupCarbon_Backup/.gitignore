@@ -1,0 +1,12 @@
+*.class
+
+# Package Files #
+*.war
+*.ear
+*.txt
+*.DS_Store
+=======
+/bin
+/doc
+/gpx
+/gpx2
