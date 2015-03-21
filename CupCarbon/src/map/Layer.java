@@ -61,7 +61,7 @@ import device.Mobile;
 import device.MobileWithRadio;
 import device.NetworkLoader;
 import device.Router;
-import device.Sensor;
+import device.SensorNode;
 import device.StreetGraph;
 import device.StreetVertex;
 import device.TrackingPointsList;
@@ -195,7 +195,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		trackingPointsList.draw(g);
 		streetGraph.dessiner(g);
 		nodeList.draw(g);
-		nodeList.drawEnvelope(g);
+		nodeList.drawEnvelopeList(g);
 		bList.draw(g);
 
 		if (dessinerCadre) {
@@ -259,7 +259,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			Point p = new Point(arg.getX(), arg.getY());
 			GeoPosition gp = mapViewer.convertPointToGeoPosition(p);
 			if (lastKey == '1') {
-				DeviceList.add(new Sensor(gp.getLatitude(), gp.getLongitude(),
+				DeviceList.add(new SensorNode(gp.getLatitude(), gp.getLongitude(),
 						0, 100, 20));
 				mapViewer.repaint();
 			}
@@ -663,7 +663,7 @@ public class Layer implements Painter<Object>, MouseListener,
 					if (ics[0].equals("Time"))
 						info[6][1] = ics[1];
 				}
-				DeviceList.add(new Sensor(x, y, 0, 30, 10, info));
+				DeviceList.add(new SensorNode(x, y, 0, 30, 10, info));
 				// MarkerList.add(new Marker(x,y,10));
 				mapViewer.repaint();
 			}
@@ -713,7 +713,7 @@ public class Layer implements Painter<Object>, MouseListener,
 						.getLatitude();
 				y = Layer.getMapViewer().convertPointToGeoPosition(p)
 						.getLongitude();
-				DeviceList.add(new Sensor(x, y, 0, radioRadius, captuRadius));
+				DeviceList.add(new SensorNode(x, y, 0, radioRadius, captuRadius));
 
 			}
 			// System.out.println("-------------");

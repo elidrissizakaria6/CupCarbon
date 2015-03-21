@@ -19,8 +19,6 @@
 
 package solver;
 
-import java.util.LinkedList;
-
 import map.Layer;
 import device.Device;
 import device.DeviceList;
@@ -42,7 +40,8 @@ public class NetworkEnvelopeC3 extends Thread {
 	@Override
 	public void run() {
 		
-		DeviceList.envelope = new LinkedList<Integer>();
+		DeviceList.initAll();
+		DeviceList.addEnvelope();				
 		
 		int p0=0;
 		double px0 = 0;
@@ -75,7 +74,7 @@ public class NetworkEnvelopeC3 extends Thread {
 		}
 		DeviceList.getNodes().get(imin).setMarked(true);
 		DeviceList.getNodes().get(imin).setVisited(true);
-		DeviceList.envelope.add(imin);
+		DeviceList.addToLastEnvelope(imin);
 		Layer.getMapViewer().repaint();		
 		
 		try {
@@ -116,7 +115,7 @@ public class NetworkEnvelopeC3 extends Thread {
 			System.out.println("  > "+cur);
 			DeviceList.getNodes().get(cur).setMarked(true);
 			DeviceList.getNodes().get(cur).setVisited(true);
-			DeviceList.envelope.add(imin);
+			DeviceList.addToLastEnvelope(imin);
 			Layer.getMapViewer().repaint();
 			x2 = DeviceList.getNodes().get(cur).getY();
 			y2 = DeviceList.getNodes().get(cur).getX();
@@ -151,7 +150,7 @@ public class NetworkEnvelopeC3 extends Thread {
 			System.out.println("  > "+cur);
 			DeviceList.getNodes().get(cur).setMarked(true);
 			DeviceList.getNodes().get(cur).setVisited(true);
-			DeviceList.envelope.add(imin);
+			DeviceList.addToLastEnvelope(imin);
 			Layer.getMapViewer().repaint();
 			x2 = DeviceList.getNodes().get(cur).getY();
 			y2 = DeviceList.getNodes().get(cur).getX();
@@ -204,9 +203,9 @@ public class NetworkEnvelopeC3 extends Thread {
 		
 		int v ;
 		for(int i=0; i<DeviceList.getNodes().size(); i++) {
-			v = DeviceList.envelope.get(i);					
+			v = DeviceList.getLastEnvelope().get(i);					
 			if(DeviceList.getNodes().get(v).isSelected())
-				DeviceList.addEnvelope1(v);
+				DeviceList.addToLastEnvelope(v);
 		}
 		Layer.getMapViewer().repaint();
 		System.out.println("---------------------------");

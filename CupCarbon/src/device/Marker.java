@@ -132,7 +132,7 @@ public class Marker extends Device {
 	
 	public void transformMarkerToSensor() {
 		if(selected) {
-			DeviceList.add(new Sensor(x, y, 0, 100, 20));
+			DeviceList.add(new SensorNode(x, y, 0, 100, 20));
 		}
 	}
 

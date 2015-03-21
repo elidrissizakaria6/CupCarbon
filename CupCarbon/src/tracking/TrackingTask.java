@@ -21,7 +21,7 @@ import utilities.MapCalc;
 import device.Device;
 import device.Marker;
 import device.MobileWithRadio;
-import device.Sensor;
+import device.SensorNode;
 
 public class TrackingTask implements Runnable {
 
@@ -39,7 +39,7 @@ public class TrackingTask implements Runnable {
 	private boolean realTrackingMode = false;
 	private Point realTrackerLocation = null;
 	private Point realTargetLocation = null;
-	private Sensor realTracker = null;
+	private SensorNode realTracker = null;
 	private MobileWithRadio realTarget;
 
 	private static boolean underSimulation = false;
@@ -55,7 +55,7 @@ public class TrackingTask implements Runnable {
 	}
 
 	private void initRealTrackingMode() {
-		realTracker = new Sensor(0, 0, 10, 10);
+		realTracker = new SensorNode(0, 0, 10, 10);
 		realTarget = new MobileWithRadio(0, 0, 10, 10);
 		// TODO realTracker.setNodeIdName() ou equivalent
 	}

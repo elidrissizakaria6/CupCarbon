@@ -59,7 +59,8 @@ public class EnvelopeJarvis extends Thread {
 		boolean stop = false;
 
 		
-			DeviceList.envelope.clear();
+		DeviceList.initAll();
+		DeviceList.addEnvelope();
 			min = 10000000;
 			imin = 0;
 			for (int i = 0; i < nodes.size(); i++) {
@@ -74,7 +75,7 @@ public class EnvelopeJarvis extends Thread {
 			current = imin;
 			nodes.get(imin).setMarked(true);
 			Layer.getMapViewer().repaint();
-			DeviceList.envelope.add(imin);
+			DeviceList.addToLastEnvelope(imin);
 	
 			delay();
 	
@@ -115,7 +116,7 @@ public class EnvelopeJarvis extends Thread {
 				
 				nodes.get(imin).setMarked(true);
 				Layer.getMapViewer().repaint();
-				DeviceList.envelope.add(imin);
+				DeviceList.addToLastEnvelope(imin);
 	
 				previous = current;
 				n1 = nodes.get(imin);

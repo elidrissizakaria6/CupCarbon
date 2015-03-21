@@ -7,13 +7,13 @@ import java.net.URL;
 
 import map.Layer;
 import device.DeviceList;
-import device.Sensor;
+import device.SensorNode;
 
 public class TrackerReader extends Thread {
 	
 	private double la ;
 	private double lo ;
-	private Sensor sensor ;
+	private SensorNode sensor ;
 	private String id ;
 	private URL url = null ;		
 	private BufferedReader br = null ;
@@ -21,7 +21,7 @@ public class TrackerReader extends Thread {
 	
 	public TrackerReader() {
 		try {
-			sensor = (Sensor) DeviceList.getNodes().get(0);
+			sensor = (SensorNode) DeviceList.getNodes().get(0);
 			id = sensor.getNodeIdName();
 			la = sensor.getX();
 			lo = sensor.getY();

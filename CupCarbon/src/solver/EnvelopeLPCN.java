@@ -37,7 +37,7 @@ import device.DeviceList;
 public class EnvelopeLPCN extends Thread {
 
 	protected boolean loop = true ; 
-	protected int delayTime = 100;
+	protected int delayTime = 200;
 	@Override	
 	public void run() {
 
@@ -62,11 +62,13 @@ public class EnvelopeLPCN extends Thread {
 		int previous = 0;
 		double min = 0;
 		int imin = 0;
-		boolean stop = false;
-
-		while(loop) {			
-			DeviceList.envelope.clear();
-			min = 10000000;
+		boolean stop = false;		
+		
+		DeviceList.initAll();
+		DeviceList.addEnvelope();
+		while(loop) {
+			DeviceList.initLastEnvelope();
+			min = 1000;
 			imin = 0;
 			for (int i = 0; i < nodes.size(); i++) {
 				nodes.get(i).setMarked(false);
@@ -85,7 +87,7 @@ public class EnvelopeLPCN extends Thread {
 			current = imin;
 			nodes.get(imin).setMarked(true);
 			Layer.getMapViewer().repaint();
-			DeviceList.envelope.add(imin);
+			DeviceList.addToLastEnvelope(imin);
 	
 			delay();
 	
@@ -110,12 +112,12 @@ public class EnvelopeLPCN extends Thread {
 								y2 = n2.getX();
 								angle = getAngle(x1 - xc, y1 - yc, x2 - xc, y2 - yc);
 								intersection = false;
-								int k = DeviceList.envelope.size()-1;
+								int k = DeviceList.getLastEnvelopeSize()-1;
 								while(k>0 && !intersection) {
-									xp1 = nodes.get(DeviceList.envelope.get(k-1)).getY();
-									yp1 = nodes.get(DeviceList.envelope.get(k-1)).getX();
-									xp2 = nodes.get(DeviceList.envelope.get(k)).getY();
-									yp2 = nodes.get(DeviceList.envelope.get(k)).getX();
+									xp1 = nodes.get(DeviceList.getLastEnvelope().get(k-1)).getY();
+									yp1 = nodes.get(DeviceList.getLastEnvelope().get(k-1)).getX();
+									xp2 = nodes.get(DeviceList.getLastEnvelope().get(k)).getY();
+									yp2 = nodes.get(DeviceList.getLastEnvelope().get(k)).getX();
 									intersection = intersect(xp1, yp1, xp2, yp2, xc, yc, x2, y2);
 									k--;
 								}
@@ -135,7 +137,7 @@ public class EnvelopeLPCN extends Thread {
 				
 				nodes.get(imin).setMarked(true);
 				Layer.getMapViewer().repaint();
-				DeviceList.envelope.add(imin);
+				DeviceList.addToLastEnvelope(imin);
 	
 				previous = current;
 				n1 = nodes.get(imin);
@@ -148,7 +150,7 @@ public class EnvelopeLPCN extends Thread {
 			}
 			
 			try {
-				sleep(3000);
+				sleep(2000);
 			} catch (InterruptedException e) {}
 		}
 		System.out.println("FINISH !");

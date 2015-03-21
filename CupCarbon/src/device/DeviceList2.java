@@ -56,6 +56,8 @@ public class DeviceList2 {
 	private LinkedList<Point[]> linksCoord = new LinkedList<Point[]>();
 	private static TrackingTasksManager trackingManager;
 	public static LinkedList<Integer> envelope = new LinkedList<Integer>();
+	public static LinkedList<LinkedList<Integer>> envelopeList = new LinkedList<LinkedList<Integer>>();
+	//public static LinkedList<Device> envelope2 = new LinkedList<Device>();
 
 	/**
 	 * 
@@ -183,7 +185,7 @@ public class DeviceList2 {
 	public static void addNodeByType(String... type) {
 		switch (Integer.valueOf(type[0])) {
 		case 1:
-			add(new Sensor(type[3], type[4], type[5], type[6], type[7],
+			add(new SensorNode(type[3], type[4], type[5], type[6], type[7],
 					type[8], type[9]));
 			break;
 		case 2:
@@ -262,7 +264,7 @@ public class DeviceList2 {
 				n.draw(g);
 				n.setDetection(false);
 				if (n.getType() == Device.SENSOR) {
-					((Sensor) n).drawMarked(g);
+					((SensorNode) n).drawMarked(g);
 				}
 			}
 			
@@ -301,7 +303,7 @@ public class DeviceList2 {
 		
 		for (Device n : nodes) {
 			if (n.getType() == Device.SENSOR) {
-				((Sensor) n).drawMarked(g);
+				((SensorNode) n).drawMarked(g);
 			}
 		}
 	}
@@ -329,7 +331,7 @@ public class DeviceList2 {
 			n.draw(g);
 			n.setDetection(false);
 			if (n.getType() == Device.SENSOR) {
-				((Sensor) n).drawMarked(g);
+				((SensorNode) n).drawMarked(g);
 			}
 		}
 
@@ -548,8 +550,9 @@ public class DeviceList2 {
 	// return toSensorGraph() ;
 	// }
 
-	public static void initAllEnvAlgoSelectedNodes() {
+	public static void initSelectedNodes() {
 		envelope = new LinkedList<Integer>();
+		//envelope2 = new LinkedList<Device>();
 		for (Device device : nodes) {
 			device.setMarked(false);
 			device.setVisited(false);
@@ -708,10 +711,10 @@ public class DeviceList2 {
 	}
 	
 	private static void startTracking() {
-		List<Sensor> trackers = getTrackersList();
+		List<SensorNode> trackers = getTrackersList();
 		if(!trackers.isEmpty()){
 			trackingManager = new TrackingTasksManager();
-			for(Sensor tracker : trackers){
+			for(SensorNode tracker : trackers){
 				Device target = getDeviceByIdName(tracker.getTargetName());
 				if(target != null){
 					trackingManager.addTask(tracker, target);
@@ -726,12 +729,12 @@ public class DeviceList2 {
 	 * bien que la boucle soit dupliquee, le code est ainsi plus propre
 	 * @return
 	 */
-	private static List<Sensor> getTrackersList() {
-		List<Sensor> trackers = new ArrayList<Sensor>();
+	private static List<SensorNode> getTrackersList() {
+		List<SensorNode> trackers = new ArrayList<SensorNode>();
 		for (Device node : nodes) {
 			if(node.getType()==Device.SENSOR) {
 				if(node.getTargetName()!=null && !node.getTargetName().isEmpty()){
-					trackers.add((Sensor) node);
+					trackers.add((SensorNode) node);
 				}
 			}
 		}
@@ -782,9 +785,9 @@ public class DeviceList2 {
 		trackingManager.startTraking();
 	}	
 	
-	public static void addEnvelope1(Integer d) {
+	public static void addEnvelope(Integer d) {
 		envelope.add(d);
-	}	
+	}
 	
 	public void drawEnvelope(Graphics2D g) {
 		if(envelope.size()>0) {
@@ -813,4 +816,5 @@ public class DeviceList2 {
 			g.drawLine(lx2, ly2, lx1, ly1);
 		}
 	}
+	
 }

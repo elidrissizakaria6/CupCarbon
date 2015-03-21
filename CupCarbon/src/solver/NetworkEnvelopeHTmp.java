@@ -22,7 +22,7 @@ package solver;
 import map.Layer;
 import device.Device;
 import device.DeviceList;
-import device.Sensor;
+import device.SensorNode;
 
 /**
  * @author Ahcene Bounceur
@@ -56,8 +56,11 @@ public class NetworkEnvelopeHTmp extends Thread {
 		boolean fini = false; 		
 		//int sm = 0;
 				
+		
+		DeviceList.initAll();
+		DeviceList.addEnvelope();
 		//while(true) {
-			DeviceList.envelope.clear();
+			DeviceList.initLastEnvelope();
 			min = 10000000;
 			imin = 0;
 			for (int i = 0; i < DeviceList.getNodes().size(); i++) {
@@ -76,7 +79,7 @@ public class NetworkEnvelopeHTmp extends Thread {
 			DeviceList.getNodes().get(imin).setMarked(true);
 			//DeviceList.getNodes().get(imin).setVisited(true);
 			Layer.getMapViewer().repaint();
-			DeviceList.envelope.add(imin);
+			DeviceList.addToLastEnvelope(imin);
 			
 			delay();
 			
@@ -85,11 +88,11 @@ public class NetworkEnvelopeHTmp extends Thread {
 			yc = n1.getX();
 			x0 = xc-0.2;
 			y0 = yc-0.2;
-			n3 = new Sensor(y0, x0, 10, 10);
+			n3 = new SensorNode(y0, x0, 10, 10);
 			
 			x1 = xc-0.1;
 			y1 = yc;	
-			n4 = new Sensor(y1, x1, 10, 10);
+			n4 = new SensorNode(y1, x1, 10, 10);
 			
 			
 			//trouve = false;
@@ -131,7 +134,7 @@ public class NetworkEnvelopeHTmp extends Thread {
 						DeviceList.getNodes().get(imin).setMarked(true);
 						//DeviceList.getNodes().get(imin).setVisited(true);
 						Layer.getMapViewer().repaint();
-						DeviceList.envelope.add(imin);
+						DeviceList.addToLastEnvelope(imin);
 						
 						n3 = n4;
 						n4 = n1;			

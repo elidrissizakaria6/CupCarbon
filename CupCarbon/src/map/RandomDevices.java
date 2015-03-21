@@ -3,7 +3,7 @@ package map;
 import device.DeviceList;
 import device.Marker;
 import device.MarkerList;
-import device.Sensor;
+import device.SensorNode;
 
 public class RandomDevices {
 
@@ -25,7 +25,7 @@ public class RandomDevices {
 			r2 = Math.random();
 			x = ((m2x-m1x)*r1)+m1x;
 			y = ((m2y-m1y)*r2)+m1y;				
-			DeviceList.add(new Sensor(x, y,0, 100, 20));
+			DeviceList.add(new SensorNode(x, y,0, 100, 20));
 			Layer.getMapViewer().repaint();
 		}
 	}

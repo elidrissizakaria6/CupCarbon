@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import device.Device;
-import device.Sensor;
+import device.SensorNode;
 
 /**
  * 
@@ -56,7 +56,7 @@ public class TrackingTasksManager {
 		}
 	}
 	
-	public void addTask(Sensor tracker , Device target){
+	public void addTask(SensorNode tracker , Device target){
 		String targetId = target.getNodeIdName().concat("");
 		String trackerId = tracker.getNodeIdName().concat("");
 		addTask(trackerId, targetId);

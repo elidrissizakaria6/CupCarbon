@@ -64,8 +64,10 @@ protected boolean loop = true ;
 		int imin = 0;
 		boolean stop = false;
 		
+		DeviceList.initAll();
+		DeviceList.addEnvelope();
 		while(loop) {			
-			DeviceList.envelope.clear();
+			DeviceList.initLastEnvelope();
 			min = 10000000;
 			imin = 0;
 			for (int i = 0; i < nodes.size(); i++) {
@@ -85,7 +87,7 @@ protected boolean loop = true ;
 			current = imin;
 			nodes.get(imin).setMarked(true);
 			Layer.getMapViewer().repaint();
-			DeviceList.envelope.add(imin);
+			DeviceList.addToLastEnvelope(imin);
 	
 			delay();
 	
@@ -112,16 +114,14 @@ protected boolean loop = true ;
 								y2 = n2.getX();
 								angle = getAngle(x1 - xc, y1 - yc, x2 - xc, y2 - yc);
 								intersection = false;
-								int k = 1;
-								while(k<DeviceList.envelope.size() && !intersection) {
-									xp1 = nodes.get(DeviceList.envelope.get(k-1)).getY();
-									yp1 = nodes.get(DeviceList.envelope.get(k-1)).getX();
-									xp2 = nodes.get(DeviceList.envelope.get(k)).getY();
-									yp2 = nodes.get(DeviceList.envelope.get(k)).getX();
-									if(intersect(xp1, yp1, xp2, yp2, xc, yc, x2, y2)) {
-										intersection = true;
-									}
-									k++;
+								int k = DeviceList.getLastEnvelopeSize()-1;
+								while(k>0 && !intersection) {
+									xp1 = nodes.get(DeviceList.getLastEnvelope().get(k-1)).getY();
+									yp1 = nodes.get(DeviceList.getLastEnvelope().get(k-1)).getX();
+									xp2 = nodes.get(DeviceList.getLastEnvelope().get(k)).getY();
+									yp2 = nodes.get(DeviceList.getLastEnvelope().get(k)).getX();
+									intersection = intersect(xp1, yp1, xp2, yp2, xc, yc, x2, y2);
+									k--;
 								}
 								if ((angle < min) && (!intersection)) {
 									imin = j;
@@ -139,7 +139,7 @@ protected boolean loop = true ;
 				
 				nodes.get(imin).setMarked(true);
 				Layer.getMapViewer().repaint();
-				DeviceList.envelope.add(imin);
+				DeviceList.addToLastEnvelope(imin);
 	
 				previous = current;
 				n1 = nodes.get(imin);

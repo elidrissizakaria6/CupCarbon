@@ -55,8 +55,8 @@ public class DeviceList {
 	private boolean displayConnectionDistance = false;
 	private LinkedList<Point[]> linksCoord = new LinkedList<Point[]>();
 	private static TrackingTasksManager trackingManager;
-	public static LinkedList<Integer> envelope = new LinkedList<Integer>();
-	public static LinkedList<Device> envelope2 = new LinkedList<Device>();
+	//public static LinkedList<Integer> envelope = new LinkedList<Integer>();
+	public static LinkedList<LinkedList<Integer>> envelopeList = new LinkedList<LinkedList<Integer>>();
 
 	/**
 	 * 
@@ -184,7 +184,7 @@ public class DeviceList {
 	public static void addNodeByType(String... type) {
 		switch (Integer.valueOf(type[0])) {
 		case 1:
-			add(new Sensor(type[3], type[4], type[5], type[6], type[7],
+			add(new SensorNode(type[3], type[4], type[5], type[6], type[7],
 					type[8], type[9]));
 			break;
 		case 2:
@@ -263,7 +263,7 @@ public class DeviceList {
 				n.draw(g);
 				n.setDetection(false);
 				if (n.getType() == Device.SENSOR) {
-					((Sensor) n).drawMarked(g);
+					((SensorNode) n).drawMarked(g);
 				}
 			}
 			
@@ -302,7 +302,7 @@ public class DeviceList {
 		
 		for (Device n : nodes) {
 			if (n.getType() == Device.SENSOR) {
-				((Sensor) n).drawMarked(g);
+				((SensorNode) n).drawMarked(g);
 			}
 		}
 	}
@@ -330,7 +330,7 @@ public class DeviceList {
 			n.draw(g);
 			n.setDetection(false);
 			if (n.getType() == Device.SENSOR) {
-				((Sensor) n).drawMarked(g);
+				((SensorNode) n).drawMarked(g);
 			}
 		}
 
@@ -549,9 +549,9 @@ public class DeviceList {
 	// return toSensorGraph() ;
 	// }
 
-	public static void initAllEnvAlgoSelectedNodes() {
-		envelope = new LinkedList<Integer>();
-		envelope2 = new LinkedList<Device>();
+	public static void initAll() {
+		//envelope = new LinkedList<Integer>();
+		envelopeList = new LinkedList<LinkedList<Integer>>();
 		for (Device device : nodes) {
 			device.setMarked(false);
 			device.setVisited(false);
@@ -710,10 +710,10 @@ public class DeviceList {
 	}
 	
 	private static void startTracking() {
-		List<Sensor> trackers = getTrackersList();
+		List<SensorNode> trackers = getTrackersList();
 		if(!trackers.isEmpty()){
 			trackingManager = new TrackingTasksManager();
-			for(Sensor tracker : trackers){
+			for(SensorNode tracker : trackers){
 				Device target = getDeviceByIdName(tracker.getTargetName());
 				if(target != null){
 					trackingManager.addTask(tracker, target);
@@ -728,12 +728,12 @@ public class DeviceList {
 	 * bien que la boucle soit dupliquee, le code est ainsi plus propre
 	 * @return
 	 */
-	private static List<Sensor> getTrackersList() {
-		List<Sensor> trackers = new ArrayList<Sensor>();
+	private static List<SensorNode> getTrackersList() {
+		List<SensorNode> trackers = new ArrayList<SensorNode>();
 		for (Device node : nodes) {
 			if(node.getType()==Device.SENSOR) {
 				if(node.getTargetName()!=null && !node.getTargetName().isEmpty()){
-					trackers.add((Sensor) node);
+					trackers.add((SensorNode) node);
 				}
 			}
 		}
@@ -784,15 +784,28 @@ public class DeviceList {
 		trackingManager.startTraking();
 	}	
 	
-	public static void addEnvelope1(Integer d) {
-		envelope.add(d);
+	//------
+	public static int getLastEnvelopeSize() {
+		return envelopeList.getLast().size();
 	}
 	
-	public static void addEnvelope2(Device d) {
-		envelope2.add(d);
+	public static void initLastEnvelope() {
+		envelopeList.getLast().clear();
 	}
 	
-	public void drawEnvelope2(Graphics2D g) {
+	public static void addEnvelope() {
+		envelopeList.add(new LinkedList<Integer>());
+	}
+	
+	public static void addToLastEnvelope(Integer d) {
+		envelopeList.getLast().add(d);
+	}
+	
+	public static LinkedList<Integer> getLastEnvelope() {
+		return envelopeList.getLast();
+	}
+	
+	public void drawEnvelope(LinkedList<Integer> envelope, Graphics2D g) {
 		if(envelope.size()>0) {
 			double x = nodes.get(envelope.get(0)).getX();
 			double y = nodes.get(envelope.get(0)).getY();
@@ -820,31 +833,10 @@ public class DeviceList {
 		}
 	}
 	
-	public void drawEnvelope(Graphics2D g) {
-		if(envelope2.size()>0) {
-			double x = envelope2.get(0).getX();
-			double y = envelope2.get(0).getY();
-			int lx1=0;
-			int ly1=0;
-			int lx2=0;
-			int ly2=0;
-			int[] coord ;
-			for(Device e : envelope2) {
-				coord = MapCalc.geoToIntPixelMapXY(x, y);
-				lx1 = coord[0];
-				ly1 = coord[1];
-				coord = MapCalc.geoToIntPixelMapXY(e.getX(), e.getY());
-				lx2 = coord[0];
-				ly2 = coord[1];
-				g.setColor(Color.BLUE);
-				g.drawLine(lx1, ly1, lx2, ly2);
-				x = e.getX();
-				y = e.getY();		
-			}
-			coord = MapCalc.geoToIntPixelMapXY(envelope2.get(0).getX(), envelope2.get(0).getY());
-			lx1 = coord[0];
-			ly1 = coord[1];
-			g.drawLine(lx2, ly2, lx1, ly1);
+	public void drawEnvelopeList(Graphics2D g) {
+		for(LinkedList<Integer> envelope : envelopeList) {
+			drawEnvelope(envelope, g);
 		}
 	}
+	
 }

@@ -1126,7 +1126,7 @@ public class CupCarbon {
 		JMenuItem mntmInitialize = new JMenuItem("Initialize All & Envelope");
 		mntmInitialize.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DeviceList.initAllEnvAlgoSelectedNodes();
+				DeviceList.initAll();
 			}
 		});
 		mntmInitialize.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH

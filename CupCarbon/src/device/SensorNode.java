@@ -33,7 +33,7 @@ import battery.Battery;
  * @author Lounis Massinissa
  * @version 1.0
  */
-public class Sensor extends DeviceWithRadio {
+public class SensorNode extends DeviceWithRadio {
 
 	protected SensorUnit sensorUnit;
 	protected boolean flyingObjectDetection = false;	
@@ -41,7 +41,7 @@ public class Sensor extends DeviceWithRadio {
 	/**
 	 * Constructor 1 Instanciate the capture unit Instanciate the battery
 	 */
-	public Sensor() {
+	public SensorNode() {
 		super();
 		sensorUnit = new SensorUnit(this.x, this.y, this);
 		battery = new Battery(sensorUnit);
@@ -61,7 +61,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @param radioRadius
 	 *            Radius (range) of the radio (in meter)
 	 */
-	public Sensor(double x, double y, double radius, double radioRadius) {
+	public SensorNode(double x, double y, double radius, double radioRadius) {
 		super(x, y, radius, radioRadius);
 		sensorUnit = new SensorUnit(this.x, this.y, this);
 		battery = new Battery(sensorUnit);
@@ -83,7 +83,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @param cuRadius
 	 *            Radius of the capture unit (default value = 10 meters)
 	 */
-	public Sensor(double x, double y, double radius, double radioRadius,
+	public SensorNode(double x, double y, double radius, double radioRadius,
 			double cuRadius) {
 		super(x, y, radius, radioRadius);
 		sensorUnit = new SensorUnit(this.x, this.y, cuRadius, this);
@@ -111,7 +111,7 @@ public class Sensor extends DeviceWithRadio {
 	 *            contains the name of the parameter The second column contains
 	 *            the value of the corresponding parameter
 	 */
-	public Sensor(double x, double y, double radius, double radioRadius,
+	public SensorNode(double x, double y, double radius, double radioRadius,
 			double cuRadius, String[][] sb) {
 		this(x, y, radius, radioRadius, cuRadius);
 		this.setInfos(sb);
@@ -132,7 +132,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @param cuRadius
 	 *            Radius of the capture unit (default value = 10 meters)
 	 */
-	public Sensor(String x, String y, String radius, String radioRadius,
+	public SensorNode(String x, String y, String radius, String radioRadius,
 			String cuRadius) {
 		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius),
 				Double.valueOf(radioRadius));
@@ -161,7 +161,7 @@ public class Sensor extends DeviceWithRadio {
 	 * @param scriptFileName
 	 *            The path of the script file
 	 */
-	public Sensor(String x, String y, String radius, String radioRadius,
+	public SensorNode(String x, String y, String radius, String radioRadius,
 			String cuRadius, String gpsFileName, String scriptFileName) {
 		this(x, y, radius, radioRadius, cuRadius);
 		gpsFileName = (gpsFileName.equals("#") ? "" : gpsFileName);
@@ -318,8 +318,8 @@ public class Sensor extends DeviceWithRadio {
 	}
 
 	@Override
-	public Sensor clone() throws CloneNotSupportedException {
-		Sensor newSensor = (Sensor) super.clone();
+	public SensorNode clone() throws CloneNotSupportedException {
+		SensorNode newSensor = (SensorNode) super.clone();
 		SensorUnit newCaptureUnit = (SensorUnit) sensorUnit.clone();
 		Battery newBattery = (Battery) battery.clone();
 		newSensor.setCaptureUnit(newCaptureUnit);

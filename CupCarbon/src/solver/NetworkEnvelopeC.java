@@ -41,9 +41,9 @@ public class NetworkEnvelopeC extends Thread {
 	
 	@Override
 	public void run() {
-		
-		DeviceList.envelope = new LinkedList<Integer>();		
-		envelope = DeviceList.envelope;
+		DeviceList.initAll();
+		DeviceList.addEnvelope();				
+		envelope = DeviceList.getLastEnvelope();
 		
 		double angle ;
 		double min = 10000000;		

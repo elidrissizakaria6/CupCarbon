@@ -4,7 +4,7 @@ import java.util.List;
 
 import device.Device;
 import device.DeviceList;
-import device.Sensor;
+import device.SensorNode;
 
 public class ExampleClass extends Thread {
 		
@@ -15,7 +15,7 @@ public class ExampleClass extends Thread {
 		// Get the node list
 		nodes = DeviceList.getNodes();
 
-		Sensor s1 = (Sensor) nodes.get(0);
+		SensorNode s1 = (SensorNode) nodes.get(0);
 		s1.loadRouteFromFile();
 		s1.fixori();
 		int i=0;

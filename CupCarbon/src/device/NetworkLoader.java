@@ -129,7 +129,7 @@ public class NetworkLoader extends Thread {
 					if (ics[0].equals("Time"))
 						info[6][1] = ics[1];
 				}
-				DeviceList.add(new Sensor(x, y, 0, 30, 10, info));
+				DeviceList.add(new SensorNode(x, y, 0, 30, 10, info));
 				//MarkerList.add(new Marker(x,y,10));
 				//Layer.getMapViewer().repaint();
 				mapViewer.repaint();
