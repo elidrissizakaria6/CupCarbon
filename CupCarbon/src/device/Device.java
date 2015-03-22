@@ -56,6 +56,7 @@ import cupcarbon.DeviceParametersWindow;
 public abstract class Device implements Runnable, MouseListener,
 		MouseMotionListener, KeyListener, _Constantes, Cloneable {
 
+	public static final int TARGET = 0;
 	public static final int SENSOR = 1;
 	public static final int GAS = 2;
 	public static final int FLYING_OBJECT = 3;
@@ -854,6 +855,13 @@ public abstract class Device implements Runnable, MouseListener,
 		underSimulation = false;
 		radius=radiusOri;
 		this.getBattery().init();
+		Layer.getMapViewer().repaint();
+	}
+	
+	public void stopSimByAlgo() {
+		thread = null;
+		underSimulation = false;
+		Layer.getMapViewer().repaint();
 	}
 
 	/**

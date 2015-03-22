@@ -111,7 +111,7 @@ public abstract class DeviceWithWithoutRadio extends Device {
 	// ------------------------------------------------------------------------
 	// Simulate
 	// ------------------------------------------------------------------------
-	public void runSensorSimulation() {
+	public void runSimulation() {		
 		loadRouteFromFile();
 		fixori();
 		underSimulation = true;
@@ -161,7 +161,7 @@ public abstract class DeviceWithWithoutRadio extends Device {
 	// ------------------------------------------------------------------------
 	@Override
 	public void run() {
-		runSensorSimulation();
+		runSimulation();
 	}
 
 	// ------------------------------------------------------------------------

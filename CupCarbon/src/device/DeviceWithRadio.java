@@ -136,7 +136,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	 */
 	@Override
 	public String getGPSFileName() {
-		return "" ;
+		return gpsFileName ;
 	}
 	
 	/**

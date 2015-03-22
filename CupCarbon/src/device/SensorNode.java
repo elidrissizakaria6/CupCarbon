@@ -33,10 +33,28 @@ import battery.Battery;
  * @author Lounis Massinissa
  * @version 1.0
  */
+/**
+ * @author bounceur
+ *
+ */
+/**
+ * @author bounceur
+ *
+ */
+/**
+ * @author bounceur
+ *
+ */
+/**
+ * @author bounceur
+ *
+ */
 public class SensorNode extends DeviceWithRadio {
 
 	protected SensorUnit sensorUnit;
-	protected boolean flyingObjectDetection = false;	
+	protected boolean flyingObjectDetection = false;
+	protected int type = Device.SENSOR;
+	protected boolean detecting = false ;
 
 	/**
 	 * Constructor 1 Instanciate the capture unit Instanciate the battery
@@ -170,10 +188,10 @@ public class SensorNode extends DeviceWithRadio {
 		setScriptFileName(scriptFileName);
 	}
 	
-	@Override
-	public String getGPSFileName() {
-		return gpsFileName;
-	}
+//	@Override
+//	public String getGPSFileName() {
+//		return gpsFileName;
+//	}
 
 	@Override
 	public void setCaptureRadius(double captureRadio) {
@@ -270,7 +288,11 @@ public class SensorNode extends DeviceWithRadio {
 			}
 
 			if (displayDetails && hide<4) {
+				g.setColor(UColor.GREEN);
+				g.fillRect(x+rayon+10, y+rayon-(int)(battery.getCapacity()/1000000.), 5, (int)(battery.getCapacity()/1000000.));
 				g.setColor(Color.gray);
+				g.drawRect(x+rayon+10, y+rayon-(int)(battery.getCapacity()/1000000.), 5, (int)(battery.getCapacity()/1000000.));
+				g.drawLine(x+rayon, y+rayon, x+rayon+25, y+rayon);
 				g.drawString("" + battery.getCapacity(), x + 2 + rayon / 2, y
 						+ 2 + rayon / 2);
 			}
@@ -287,12 +309,25 @@ public class SensorNode extends DeviceWithRadio {
 	}	
 
 	// ------------------------------------------------------------------------
-	// 
+	// Return the type which is a SENSOR
+	// In particular for this object (SensorNode) the type can be also 
+	// a target
 	// ------------------------------------------------------------------------
 	@Override
 	public int getType() {
-		return Device.SENSOR;
+		return type;
 	}
+	
+	// Set type to SENSOR
+	public void setAsSensor() {
+		type = Device.SENSOR;
+	}
+
+	// Set type to SENSOR
+	public void setAsTarget() {
+		type = Device.TARGET;
+	}
+
 
 	@Override
 	public String getIdFL() {
@@ -331,6 +366,14 @@ public class SensorNode extends DeviceWithRadio {
 	@Override
 	public String getNodeIdName() {
 		return getIdFL() + id;
+	}
+	
+	public void setDetecting(boolean detecting) {
+		this.detecting = detecting ;
+	}
+	
+	public boolean isDetecting() {
+		return detecting ;
 	}
 	
 }

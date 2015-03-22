@@ -72,6 +72,30 @@ public class DeviceList {
 	public static List<Device> getNodes() {
 		return nodes;
 	}
+	
+	/**
+	 * @return the sensor nodes
+	 */
+	public static List<Device> getSensorNodes() {
+		List<Device> snodes = new ArrayList<Device>();
+		for(Device n : nodes) {
+			if(n.getType() == Device.SENSOR)
+				snodes.add(n);
+		}
+		return snodes;
+	}
+	
+	/**
+	 * @return the mobile nodes
+	 */
+	public static List<Device> getMobileNodes() {
+		List<Device> snodes = new ArrayList<Device>();
+		for(Device n : nodes) {
+			if(n.getType() == Device.MOBILE)
+				snodes.add(n);
+		}
+		return snodes;
+	}
 
 	/**
 	 * @param fileName
@@ -288,11 +312,17 @@ public class DeviceList {
 						}
 						if (linksDetection) {
 							if (n1.detection(n2)) {
+								n1.setDetection(true);
 								n1.drawDetectionLink(n2, g);
 							}
+							else
+								n1.setDetection(false);
 							if (n2.detection(n1)) {
+								n2.setDetection(true);
 								n2.drawDetectionLink(n1, g);
 							}
+							else
+								n2.setDetection(false);
 						}
 					}
 				}

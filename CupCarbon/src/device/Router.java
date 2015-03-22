@@ -56,9 +56,9 @@ private static String idFL = "R" ; // ID First Letter
 			int rayon2 = MapCalc.radiusInPixels(this.radius) ;
 			if(displayDetails) {
 				g.setColor(UColor.GREEN);
-				g.fillRect(x+rayon+10, y-((int)battery.getCapacity())+rayon, 5, (int)battery.getCapacity());
+				g.fillRect(x+rayon+10, y+rayon-(int)(battery.getCapacity()/1000000.), 5, (int)(battery.getCapacity()/1000000.));
 				g.setColor(Color.gray);
-				g.drawRect(x+rayon+10, y-((int)battery.getCapacity())+rayon, 5, (int)battery.getCapacity());
+				g.drawRect(x+rayon+10, y+rayon-(int)(battery.getCapacity()/1000000.), 5, (int)(battery.getCapacity()/1000000.));
 				g.drawLine(x+rayon, y+rayon, x+rayon+25, y+rayon);
 				g.drawString(""+battery.getCapacity()+" %", x+15+rayon, y+20+rayon);
 			}

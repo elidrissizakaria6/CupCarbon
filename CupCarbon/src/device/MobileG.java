@@ -60,8 +60,8 @@ public abstract class MobileG extends DeviceWithoutRadio {
 	
 	public abstract void draw(Graphics g) ;
 	
-	@Override
-	public void run() {
+	//@Override
+	public void run1() {
 		state = this.getState();
 		selected = false;
 		underSimulation = true;
@@ -175,6 +175,16 @@ public abstract class MobileG extends DeviceWithoutRadio {
 	@Override
 	public double getRadioRadius() {
 		return 0 ;
+	}
+	
+	@Override
+	public void setRadioRadius(double radiuRadius) {
+		
+	}
+
+	@Override
+	public void setCaptureRadius(double captureRadius) {
+		
 	}
 	
 }

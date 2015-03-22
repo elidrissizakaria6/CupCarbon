@@ -24,7 +24,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import map.Layer;
-import tracking.TargetWS;
 import utilities.MapCalc;
 import utilities.UColor;
 
@@ -139,54 +138,5 @@ public class MobileWithRadio extends MobileGWR {
 	public boolean canMove() {
 		return false;
 	}
-	
-	/**
-	 * KH
-	 */
-	@Override
-	public void runSensorSimulation() {
-		loadRouteFromFile();
-		fixori();
-		if (readyForSimulation) {
-			underSimulation = true;
-			routeIndex = 0;
-			selected = false;
-			long tmpTime = 0;
-			long cTime = 0;
-			long toWait = 0;
-			do {
-				cTime = routeTime.get(routeIndex);
-				toWait = cTime - tmpTime;
-				tmpTime = cTime;
-				if (toWait < 0) {
-					toWait = cTime;
-				}
-				x = routeX.get(routeIndex);
-				y = routeY.get(routeIndex);
-				// Le sensot enregistre sa position dans la base de données 
-			
-				
-				// Ecrire la coordonnŽe de la cible
-				//client.setLastPoint(2, new Point(x,y));
-				TargetWS.setCoords(this.getNodeIdName(), x, y);
-				Layer.getMapViewer().repaint();
-				try {
-					Thread.sleep(toWait * Device.moveSpeed);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				goToNext();
-			} while (hasNext());
-			routeIndex = 0;
-			selected = false;
-			toori();
-			thread = null;
-			underSimulation = false;
-			Layer.getMapViewer().repaint();
-		}
-	}
-	
-	//TrackingServiceClient client = new TrackingServiceClient();
-	
-	
+
 }

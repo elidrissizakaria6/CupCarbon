@@ -112,34 +112,6 @@ public class Mobile extends MobileG {
 	@Override
 	public String getNodeIdName() {
 		return getIdFL()+id;
-	}
+	}	
 
-	@Override
-	public void setRadioRadius(double radiuRadius) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setCaptureRadius(double captureRadius) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setScriptFileName(String comFileName) {
-		
-	}
-	
-	@Override
-	public int getNextTime() { return 0 ;}
-	
-	@Override
-	public void loadRouteFromFile() {}
-	
-	@Override
-	public void moveToNext(boolean visual, int visualDelay) {}
-	
-	@Override
-	public boolean canMove() {return false;}
 }

@@ -36,12 +36,13 @@ public class EnvelopeLPCNMobile extends Thread {
 
 protected boolean loop = true ; 
 	
-	private int delayTime = 100; 
+	private int delayTime = 10; 
 
 	@Override	
 	public void run() {
 
-		List<Device> nodes = DeviceList.getNodes();
+		List<Device> nodes = DeviceList.getSensorNodes();
+		List<Device> mobiles = DeviceList.getMobileNodes();
 
 		Device n1, n2;
 
@@ -64,11 +65,16 @@ protected boolean loop = true ;
 		int imin = 0;
 		boolean stop = false;
 		
+		for(Device mob : mobiles) {
+			mob.loadRouteFromFile();
+			mob.fixori();
+		}
+		
 		DeviceList.initAll();
 		DeviceList.addEnvelope();
-		while(loop) {			
+		while(loop) {		
 			DeviceList.initLastEnvelope();
-			min = 10000000;
+			min = 1000;
 			imin = 0;
 			for (int i = 0; i < nodes.size(); i++) {
 				nodes.get(i).loadRouteFromFile();
@@ -78,10 +84,7 @@ protected boolean loop = true ;
 					min = nodes.get(i).getY();
 					imin = i; 
 				}
-				//if(nodes.get(i).isSelected())
-				//	imin = i;
 			}
-			//imin = 0;
 			first = imin;
 			previous = imin;
 			current = imin;
@@ -100,13 +103,17 @@ protected boolean loop = true ;
 	
 			stop = false;
 			boolean intersection = false ;
-			while (!stop) {			
+			while (!stop) {		
+				for(Device mob : mobiles) {
+					if(mob.hasNext())
+						mob.moveToNext(true, delayTime);
+				}
 				min = 1000;
 				imin = -1;
 				for (int j = 0; j < nodes.size(); j++) {						
 					n2 = nodes.get(j);
 					if(n2.hasNext())
-						n2.moveToNext(true, 100);
+						n2.moveToNext(true, delayTime);
 					if (!nodes.get(j).isFaulty()) 
 						if ((current != j) && (n1.radioDetect(n2) || n2.radioDetect(n1))) {
 							if (j != previous) {							
@@ -138,7 +145,7 @@ protected boolean loop = true ;
 					imin = current;	
 				
 				nodes.get(imin).setMarked(true);
-				Layer.getMapViewer().repaint();
+				Layer.getMapViewer().repaint();				
 				DeviceList.addToLastEnvelope(imin);
 	
 				previous = current;
@@ -152,13 +159,13 @@ protected boolean loop = true ;
 			}
 			
 			for(int d=0; d<20; d++) {
-				for(int i=0; i<20; i++) {
-					nodes.get(i).moveToNext(true, delayTime);
-				}
+				nodes.get(100).moveToNext(true, delayTime);
+				mobiles.get(0).moveToNext(true, delayTime);
 			}
-//			try {
-//				sleep(5000);
-//			} catch (InterruptedException e) {}
+		}
+		for(Device mob : mobiles) {
+			mob.toori();
+			mob.stopSimByAlgo();
 		}
 		System.out.println("FINISH !");
 	}

@@ -116,6 +116,7 @@ public class CupCarbon {
 
 	protected FaultInjector faultInjector = null;
 	protected EnvelopeLPCN lpcn = null;
+	protected EnvelopeLPCNMobile lpcnm = null;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -1055,11 +1056,21 @@ public class CupCarbon {
 		mntmRunLpcnMobile.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "edu_mathematics-1.png"));
 		mntmRunLpcnMobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				EnvelopeLPCNMobile lpcnm = new EnvelopeLPCNMobile() ;
+				lpcnm = new EnvelopeLPCNMobile() ;
 				lpcnm.start();			
 			}
 		});
 		mnEnvelope.add(mntmRunLpcnMobile);
+		
+		JMenuItem mntmStopLpcnMobile= new JMenuItem("Stop LPCN Mobile");		
+		mntmStopLpcnMobile.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "edu_mathematics-1.png"));
+		mntmStopLpcnMobile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(lpcnm!=null) 
+					lpcnm.stopAlgorithm();	
+			}
+		});
+		mnEnvelope.add(mntmStopLpcnMobile);
 		
 		mnEnvelope.addSeparator();
 		
