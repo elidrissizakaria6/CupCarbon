@@ -44,15 +44,15 @@ public class EnvelopeLPCN extends Thread {
 		List<Device> nodes = DeviceList.getNodes();
 		
 		// Max of neighbors
-		int max = 0;
-		for (int i = 0; i < nodes.size(); i++) {
-			int a = nodes.get(i).getNeghbors().size();
-			if(a>max) {
-				max = a;
-			}
-			//System.out.println(i+" "+a);
-		}		
-		System.out.println(max);
+//		int max = 0;
+//		for (int i = 0; i < nodes.size(); i++) {
+//			int a = nodes.get(i).getNeghbors().size();
+//			if(a>max) {
+//				max = a;
+//			}
+//			//System.out.println(i+" "+a);
+//		}		
+//		System.out.println(max);
 		
 		Device n1, n2;
 
@@ -207,6 +207,13 @@ public class EnvelopeLPCN extends Thread {
 	}
 
 	public void delay() {
+		try {
+			sleep(delayTime);
+		} catch (InterruptedException e) {
+		}
+	}
+	
+	public void delay(int delayTime) {
 		try {
 			sleep(delayTime);
 		} catch (InterruptedException e) {

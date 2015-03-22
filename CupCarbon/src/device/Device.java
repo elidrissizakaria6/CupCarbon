@@ -31,6 +31,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -133,6 +134,7 @@ public abstract class Device implements Runnable, MouseListener,
 	//----------------------------------
 	protected boolean marked = false;
 	protected double value = 0;
+	protected LinkedList<Double> valueList;
 	//----------------------------------
 
 	protected Thread thread;
@@ -1373,6 +1375,28 @@ public abstract class Device implements Runnable, MouseListener,
 	@Override
 	public String toString() {
 		return ""+id;
+	}
+	
+	//------
+	public void creatValueList() {
+		valueList = new LinkedList<Double>();
+	}
+	
+	public Double getIthValue(int i) {
+		return valueList.get(i);
+	}
+	
+	public void addValue(Double value) {
+		valueList.add(value);
+	}
+	
+	// Remove the first occurence
+	public void removeValue(Double value) {
+		valueList.remove(value);
+	}
+	
+	public void removeIthValue(int i) {
+		valueList.remove(i);
 	}
 		
 }
