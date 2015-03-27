@@ -41,7 +41,7 @@ public class SensorUnit extends AConsumption implements KeyListener, Cloneable {
 	protected double x;
 	protected double y;
 	protected Device node;
-	protected boolean displayRadius = true;
+	protected boolean displayRadius = false;
 
 	/**
 	 * Constructor 1 : radius is equal to 10 meter

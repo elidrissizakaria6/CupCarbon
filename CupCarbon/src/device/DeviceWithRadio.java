@@ -144,7 +144,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	 * @param y
 	 * @param g
 	 */
-	public void dessinAugDimRadio(int x, int y, Graphics g) {
+	public void drawAugDimRadio(int x, int y, Graphics g) {
 		if(reduireRadio || augmenterRadio) {
 			g.setColor(UColor.BLUE);
 			g.drawLine(x-10, y-2, x+10, y-2);

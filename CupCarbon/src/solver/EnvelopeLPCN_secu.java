@@ -34,13 +34,25 @@ import device.DeviceList;
  * @author Massinissa Saoudi
  * @version 1.0
  */
-public class EnvelopeLPCN extends Thread {
- 
-	protected int delayTime = 100;
+public class EnvelopeLPCN_secu extends Thread {
+
+	protected boolean loop = true ; 
+	protected int delayTime = 1000;
 	@Override	
 	public void run() {
 
 		List<Device> nodes = DeviceList.getNodes();
+		
+		// Max of neighbors
+//		int max = 0;
+//		for (int i = 0; i < nodes.size(); i++) {
+//			int a = nodes.get(i).getNeghbors().size();
+//			if(a>max) {
+//				max = a;
+//			}
+//			//System.out.println(i+" "+a);
+//		}		
+//		System.out.println(max);
 		
 		Device n1, n2;
 
@@ -58,12 +70,14 @@ public class EnvelopeLPCN extends Thread {
 		double angle = 0;
 		int current = 0;
 		int first = 0;
+		//int previous = 0;
 		double min = 0;
 		int imin = 0;
 		boolean stop = false;		
 		
 		DeviceList.initAll();
 		DeviceList.addEnvelope();
+		//while(loop) {
 			DeviceList.initLastEnvelope();
 			min = 1000;
 			imin = 0;
@@ -80,6 +94,7 @@ public class EnvelopeLPCN extends Thread {
 			}
 
 			first = imin;
+			//previous = imin;
 			current = imin;
 			nodes.get(imin).setMarked(true);
 			Layer.getMapViewer().repaint();
@@ -96,13 +111,16 @@ public class EnvelopeLPCN extends Thread {
 	
 			stop = false;
 			boolean intersection = false ;
+			//int complexity = 0;
 			while (!stop) {
+				//System.out.print(current+" -> ");
 				min = 1000;
 				imin = -1;
 				for (int j = 0; j < nodes.size(); j++) {
 					n2 = nodes.get(j);
 					if (!nodes.get(j).isFaulty()) {
 						if ((current != j) && (n1.radioDetect(n2) || n2.radioDetect(n1))) {
+							//if (j != previous) {
 								x2 = n2.getY();
 								y2 = n2.getX();
 								angle = getAngle(x1 - xc, y1 - yc, x2 - xc, y2 - yc);
@@ -116,22 +134,30 @@ public class EnvelopeLPCN extends Thread {
 									yp2 = nodes.get(DeviceList.getLastEnvelope().get(k)).getX();
 									intersection = intersect(xp1, yp1, xp2, yp2, xc, yc, x2, y2);
 									k--;
-								}								
+								}
+								
+								//System.out.println();
 								if ((angle < min) && (!intersection)) {
 									imin = j;
 									min = angle;
 								}
+							//}
 						}
 					}
 				}
+				//System.out.println();
 	
 				if (imin == first)
-					stop = true;	
+					stop = true;
+				
+				//if (imin == -1)
+				//	imin = current;	
 				
 				nodes.get(imin).setMarked(true);
 				Layer.getMapViewer().repaint();
 				DeviceList.addToLastEnvelope(imin);
 	
+				//previous = current;
 				n1 = nodes.get(imin);
 				current = imin;
 				x1 = xc;
@@ -139,10 +165,13 @@ public class EnvelopeLPCN extends Thread {
 				xc = nodes.get(imin).getY();
 				yc = nodes.get(imin).getX();
 				delay();
+				nodes.get(imin).setMarked(false);
 			}
+			//System.out.println(complexity);
 			try {
 				sleep(5000);
 			} catch (InterruptedException e) {}
+		//}		
 		System.out.println("FINISH !");
 	}
 
@@ -196,6 +225,6 @@ public class EnvelopeLPCN extends Thread {
 	}
 	
 	public void stopAlgorithm() {
+		loop = false;
 	}
-	
 }

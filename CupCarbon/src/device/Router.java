@@ -97,7 +97,7 @@ private static String idFL = "R" ; // ID First Letter
 			
 			drawMoveArrows(x,y,g) ;
 			drawIncRedDimNode(x,y,g);
-			dessinAugDimRadio(x,y,g);
+			drawAugDimRadio(x,y,g);
 			drawRadius(x, y, rayon, g);
 			drawRadioRadius(x, y, rayon2, g);
 			

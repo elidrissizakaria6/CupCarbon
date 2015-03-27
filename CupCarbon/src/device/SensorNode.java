@@ -29,26 +29,10 @@ import battery.Battery;
 
 /**
  * @author Ahcene Bounceur
- * @author Kamal Mehdi
  * @author Lounis Massinissa
  * @version 1.0
  */
-/**
- * @author bounceur
- *
- */
-/**
- * @author bounceur
- *
- */
-/**
- * @author bounceur
- *
- */
-/**
- * @author bounceur
- *
- */
+
 public class SensorNode extends DeviceWithRadio {
 
 	protected SensorUnit sensorUnit;
@@ -57,7 +41,8 @@ public class SensorNode extends DeviceWithRadio {
 	protected boolean detecting = false ;
 
 	/**
-	 * Constructor 1 Instanciate the capture unit Instanciate the battery
+	 * Constructor 1 Instanciate the capture unit 
+	 * Instanciate the battery
 	 */
 	public SensorNode() {
 		super();
@@ -273,7 +258,7 @@ public class SensorNode extends DeviceWithRadio {
 			}
 
 			drawIncRedDimNode(x, y, g);
-			dessinAugDimRadio(x, y, g);
+			drawAugDimRadio(x, y, g);
 			drawRadius(x, y, rayon, g);
 			drawRadioRadius(x, y, rayon2, g);
 			sensorUnit.drawDetectionRadius(x, y, capRadius, g);
@@ -287,7 +272,7 @@ public class SensorNode extends DeviceWithRadio {
 				g.fillOval(x - 3, y - 3, 6, 6);
 			}
 
-			if (displayDetails && hide<4) {
+			if (displayDetails && hide<4 && hide>0) {
 				g.setColor(UColor.GREEN);
 				g.fillRect(x+rayon+10, y+rayon-(int)(battery.getCapacity()/1000000.), 5, (int)(battery.getCapacity()/1000000.));
 				g.setColor(Color.gray);

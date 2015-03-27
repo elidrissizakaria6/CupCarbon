@@ -86,7 +86,7 @@ public class MobileWithRadio extends MobileGWR {
 			
 			drawMoveArrows(x,y,g) ;
 			drawIncRedDimNode(x,y,g);
-			dessinAugDimRadio(x,y,g);
+			drawAugDimRadio(x,y,g);
 			if(displayRadius) {
 				drawRadius(x, y, rayon, g);
 				drawRadioRadius(x, y, rayon2, g);

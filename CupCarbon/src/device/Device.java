@@ -102,7 +102,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected boolean withSensor = false;
 	protected boolean mobile = false;
 	protected boolean detection = false;
-	protected boolean displayRadius = true;
+	protected boolean displayRadius = false;
 	protected boolean displayDistance = false;	
 	protected boolean visited = false;
 	protected boolean visible = true;
