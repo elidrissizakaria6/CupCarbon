@@ -3,7 +3,7 @@ package simulation;
 import map.Layer;
 import device.DeviceList;
 
-public class FaultInjector extends Thread {
+public class EnergyConsumption extends Thread {
 
 	private boolean loop = true; 
 	
@@ -20,7 +20,7 @@ public class FaultInjector extends Thread {
 				}
 			}
 			try {
-				sleep(50);
+				sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

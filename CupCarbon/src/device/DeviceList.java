@@ -299,30 +299,34 @@ public class DeviceList {
 				iterator = nodes.listIterator();
 				while (iterator.hasNext() && iterator.nextIndex() < nodes.size() - 1) {
 					n1 = iterator.next();
-					iterator2 = nodes.listIterator(iterator.nextIndex());
-					while (iterator2.hasNext()) {
-						n2 = iterator2.next();
-						if (n1.radioDetect(n2) && drawLinks) {
-							n1.drawRadioLink(n2, g);
-							if (displayConnectionDistance) {
-								Layer.drawDistance(n1.getX(), n1.getY(),
-										n2.getX(), n2.getY(),
-										(int) n1.distance(n2), g);
+					if(!n1.isDead()) {
+						iterator2 = nodes.listIterator(iterator.nextIndex());
+						while (iterator2.hasNext()) {
+							n2 = iterator2.next();
+							if(!n2.isDead()) {
+								if (n1.radioDetect(n2) && drawLinks) {
+									n1.drawRadioLink(n2, g);
+									if (displayConnectionDistance) {
+										Layer.drawDistance(n1.getX(), n1.getY(),
+												n2.getX(), n2.getY(),
+												(int) n1.distance(n2), g);
+									}
+								}
+								if (linksDetection) {
+									if (n1.detection(n2)) {
+										n1.setDetection(true);
+										n1.drawDetectionLink(n2, g);
+									}
+									else
+										n1.setDetection(false);
+									if (n2.detection(n1)) {
+										n2.setDetection(true);
+										n2.drawDetectionLink(n1, g);
+									}
+									else
+										n2.setDetection(false);
+								}
 							}
-						}
-						if (linksDetection) {
-							if (n1.detection(n2)) {
-								n1.setDetection(true);
-								n1.drawDetectionLink(n2, g);
-							}
-							else
-								n1.setDetection(false);
-							if (n2.detection(n1)) {
-								n2.setDetection(true);
-								n2.drawDetectionLink(n1, g);
-							}
-							else
-								n2.setDetection(false);
 						}
 					}
 				}
@@ -585,7 +589,7 @@ public class DeviceList {
 		for (Device device : nodes) {
 			device.setMarked(false);
 			device.setVisited(false);
-			device.setFaulty(false);
+			device.setDead(false);
 		}
 		Layer.getMapViewer().repaint();
 	}

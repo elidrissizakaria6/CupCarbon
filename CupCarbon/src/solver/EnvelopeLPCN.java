@@ -36,7 +36,9 @@ import device.DeviceList;
  */
 public class EnvelopeLPCN extends Thread {
  
-	protected int delayTime = 100;
+	protected int delayTime = 10;
+	protected boolean loop = true;
+	
 	@Override	
 	public void run() {
 
@@ -62,8 +64,10 @@ public class EnvelopeLPCN extends Thread {
 		int imin = 0;
 		boolean stop = false;		
 		
+		
 		DeviceList.initAll();
 		DeviceList.addEnvelope();
+		while(loop) {
 			DeviceList.initLastEnvelope();
 			min = 1000;
 			imin = 0;
@@ -101,7 +105,7 @@ public class EnvelopeLPCN extends Thread {
 				imin = -1;
 				for (int j = 0; j < nodes.size(); j++) {
 					n2 = nodes.get(j);
-					if (!nodes.get(j).isFaulty()) {
+					if (!nodes.get(j).isDead()) {
 						if ((current != j) && (n1.radioDetect(n2) || n2.radioDetect(n1))) {
 								x2 = n2.getY();
 								y2 = n2.getX();
@@ -141,8 +145,9 @@ public class EnvelopeLPCN extends Thread {
 				delay();
 			}
 			try {
-				sleep(5000);
+				sleep(500);
 			} catch (InterruptedException e) {}
+		}
 		System.out.println("FINISH !");
 	}
 
@@ -196,6 +201,17 @@ public class EnvelopeLPCN extends Thread {
 	}
 	
 	public void stopAlgorithm() {
+		loop = false;
+	}
+
+	public double matan(double x) {
+		double a = 1.0/Math.sqrt(1.0+(x*x));
+		double b = 1.0;
+		for(int i=1; i<=1; i++) {
+			a = (a+b)/2.0;
+			b = Math.sqrt(a*b);
+		}
+		return (x/Math.sqrt(1.0+(x*x)*a));
 	}
 	
 }

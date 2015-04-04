@@ -22,13 +22,13 @@ package script;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Script {
+public class Script2 {
 
 	private Command curr;
-	private Iterator<Command> iterator;
-	private ArrayList<Command> commands = new ArrayList<Command>();
+	private static Iterator<Command> iterator;
+	private static ArrayList<Command> commands = new ArrayList<Command>();
 
-	public Script() {
+	public Script2() {
 		iterator = null;
 	}
 
@@ -56,14 +56,6 @@ public class Script {
 		}
 		return curr;
 	}
-	
-	public void init() {
-		iterator = null;
-	}
-	
-	public Command getCurrent() {
-		return curr;
-	}
 
 	@Override
 	public String toString() {
@@ -74,7 +66,5 @@ public class Script {
 		}
 		return s ;
 	}
-	
-	
 
 }

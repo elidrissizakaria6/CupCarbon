@@ -29,7 +29,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +41,8 @@ import map.Layer;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
+import project.Project;
+import script.CommandType;
 import script.Script;
 import utilities.MapCalc;
 import utilities.UColor;
@@ -106,7 +110,8 @@ public abstract class Device implements Runnable, MouseListener,
 	protected boolean displayDistance = false;	
 	protected boolean visited = false;
 	protected boolean visible = true;
-	protected boolean faulty = false;
+	//protected boolean faulty = false;
+	protected boolean dead = false;
 	protected String [][] infos;
 	protected static boolean displayInfos = true;
 	
@@ -118,7 +123,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String targetName = ""; 
 	protected int channel = 0;
 	
-	public static int dataRate = 0;
+	public static int dataRate = 250000;
 	
 	protected double eMax = 100000;
 
@@ -136,6 +141,9 @@ public abstract class Device implements Runnable, MouseListener,
 	protected double value = 0;
 	protected LinkedList<Double> valueList;
 	//----------------------------------
+	
+	protected int event = -1;
+	protected int event2 = -1;
 
 	protected Thread thread;
 
@@ -348,23 +356,20 @@ public abstract class Device implements Runnable, MouseListener,
 	public boolean isVisited() {
 		return visited;
 	}
-	
-	
-	public boolean isFaulty() {
-		return faulty;
-	}	
-	
+		
 	/**
-	 * Set if the device is faulty or not
+	 * Set if the device is dead or not
 	 * 
 	 * @param b
 	 */
-	public void setFaulty(boolean b) {
-		if(b) this.marked = false;
-		this.faulty = b;
+	public void setDead(boolean dead) {
+		if(dead) this.marked = false;
+		this.dead = dead ;
 	}
 	
-	
+	public boolean isDead() {
+		return dead;
+	}
 	
 	/**
 	 * @return the capture unit radius
@@ -1397,6 +1402,52 @@ public abstract class Device implements Runnable, MouseListener,
 	
 	public void removeIthValue(int i) {
 		valueList.remove(i);
+	}
+	
+	public Script getScript() {
+		return script;
+	}
+	
+	public void setEvent(int event) {
+		this.event = event ;
+	}
+	
+	public int getEvent() {
+		return event;
+	}
+	
+	public void setEvent2(int event) {
+		this.event2 = event ;
+	}
+	
+	public int getEvent2() {
+		return event2;
+	}
+
+	public void loadScript() {
+		script = new Script();
+		//System.out.println("---> " + getScriptFileName());
+		String projectScriptPath = Project.getProjectScriptPath() + File.separator + scriptFileName;		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(projectScriptPath));
+	//		script.add(CommandType.PSEND, 1000);
+	//		script.add(CommandType.DELAY, 500);
+	//		script.add(CommandType.PSEND, 2000);
+	//		script.add(CommandType.DELAY, 800);
+		
+			String s = "";
+			while ((s = br.readLine()) != null) {
+				//System.out.println(s);
+				String[] inst = s.split(" ");
+				if (inst[0].toLowerCase().equals("psend")) {
+					script.add(CommandType.PSEND, Integer.parseInt(inst[1]) * 8);
+				}
+				if (inst[0].toLowerCase().equals("delay")) {
+					script.add(CommandType.DELAY, (int) (Integer.parseInt(inst[1]) * Device.dataRate / 1000.));
+				}
+			}
+			br.close();
+		} catch (Exception e) {e.printStackTrace();}
 	}
 		
 }

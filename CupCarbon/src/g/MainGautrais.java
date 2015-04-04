@@ -1,12 +1,11 @@
 package g;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Main {
+public class MainGautrais {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
 		Socket s = new Socket("localhost", 2004);

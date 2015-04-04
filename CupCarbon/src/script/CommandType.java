@@ -25,12 +25,17 @@ public final class CommandType {
 	public static final int PSEND = 1 ;
 	public static final int SEND = 2 ;
 	public static final int BREAK = 3 ;
+	public static final int WAIT = 4 ;
+	public static final int VAR = 5 ;
+	
 	
 	public static String getCommandName(int i) {
-		if(i==0) return "DELAY";
-		if(i==1) return "PSEND";
-		if(i==2) return "SEND";
-		if(i==3) return "BREAK";
+		if(i==DELAY) return "DELAY";
+		if(i==PSEND) return "PSEND";
+		if(i==SEND) return "SEND";
+		if(i==BREAK) return "BREAK";
+		if(i==WAIT) return "WAIT";
+		if(i==VAR) return "VAR";
 		return "";
 	}
 	

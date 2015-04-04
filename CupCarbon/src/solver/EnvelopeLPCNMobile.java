@@ -114,7 +114,7 @@ protected boolean loop = true ;
 					n2 = nodes.get(j);
 					if(n2.hasNext())
 						n2.moveToNext(true, delayTime);
-					if (!nodes.get(j).isFaulty()) 
+					if (!nodes.get(j).isDead()) 
 						if ((current != j) && (n1.radioDetect(n2) || n2.radioDetect(n1))) {
 							if (j != previous) {							
 								x2 = n2.getY();

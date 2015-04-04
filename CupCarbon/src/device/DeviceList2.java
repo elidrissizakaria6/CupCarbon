@@ -556,7 +556,7 @@ public class DeviceList2 {
 		for (Device device : nodes) {
 			device.setMarked(false);
 			device.setVisited(false);
-			device.setFaulty(false);
+			device.setDead(false);
 		}
 		Layer.getMapViewer().repaint();
 	}

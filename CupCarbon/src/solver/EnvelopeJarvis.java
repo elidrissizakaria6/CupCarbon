@@ -93,7 +93,7 @@ public class EnvelopeJarvis extends Thread {
 				imin = -1;
 				for (int j = 0; j < nodes.size(); j++) {				
 					n2 = nodes.get(j);
-					if (!nodes.get(j).isFaulty()) 
+					if (!nodes.get(j).isDead()) 
 						if (current != j) {
 							if (j != previous) {							
 								x2 = n2.getY();

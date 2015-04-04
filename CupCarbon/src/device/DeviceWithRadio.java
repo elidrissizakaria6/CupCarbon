@@ -259,6 +259,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	@Override 
 	public void consume(double v) {
 		battery.consume(v);
+		if(battery.empty()) setDead(true);
 	}
 	
 	@Override

@@ -229,7 +229,7 @@ public class SensorNode extends DeviceWithRadio {
 					else 
 						g.setColor(UColor.channelColor[channel]);
 				}
-				if(!faulty) {
+				if(!dead) {
 					g.fillOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
 					g.fillOval(x - rayon2, y - rayon2, rayon2 * 2, rayon2 * 2);
 				}
@@ -268,7 +268,7 @@ public class SensorNode extends DeviceWithRadio {
 				g.fillOval(x - 3, y - 3, 6, 6);
 			} else {
 				g.setColor(UColor.RED);
-				if(faulty) g.setColor(Color.BLACK);
+				if(dead) g.setColor(Color.BLACK);
 				g.fillOval(x - 3, y - 3, 6, 6);
 			}
 

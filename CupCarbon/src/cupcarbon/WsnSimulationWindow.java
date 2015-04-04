@@ -30,7 +30,7 @@ import simbox_simulation.CpuSimulation;
 import simbox_simulation.GpuSimulation;
 import simbox_simulation.NetworkGenerator;
 import simbox_simulation.SimulationInputs;
-import wisen_simulation.WisenSimulation;
+import wisen_simulation.WSNSimulation;
 import device.Device;
 
 public class WsnSimulationWindow extends JInternalFrame {
@@ -39,7 +39,8 @@ public class WsnSimulationWindow extends JInternalFrame {
 
 	private CpuSimulation cpuSimulation;
 	private GpuSimulation gpuSimulation;
-	private WisenSimulation wisenSimulation;
+	//private WisenSimulation wisenSimulation;
+	private WSNSimulation wisenSimulation;
 
 	private JTextField iterNumberTextField;
 	private JComboBox freqComboBox;
@@ -470,7 +471,8 @@ public class WsnSimulationWindow extends JInternalFrame {
 				gpuSimulation.start();
 			}			
 			if (cpugpu == 3) {
-				wisenSimulation = new WisenSimulation();
+				//wisenSimulation = new WisenSimulation();
+				wisenSimulation = new WSNSimulation();
 				wisenSimulation.init();
 				wisenSimulation.start();
 			}

@@ -1,9 +1,10 @@
 package script;
 
 
-public class Testtest {
+public class ScriptTest {
 	
 	public static void main(String [] args) throws InterruptedException {
+		
 		Script s = new Script() ;
 
 		s.add(CommandType.PSEND, 1000);
@@ -14,9 +15,17 @@ public class Testtest {
 	
 		System.out.println(s);
 		
+		System.out.println();
+		
+		//System.out.println(s.next());
+		//System.out.println(s.getCurrent());
+		
 		System.out.println(s.next());
+		System.out.println(s.next());		
 		System.out.println(s.next());
+		s.init();
 		System.out.println(s.next());
+		System.out.println(s.getCurrent().getArg());
 		System.out.println(s.next());
 		System.out.println(s.next());
 		System.out.println(s.next());

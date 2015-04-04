@@ -62,7 +62,7 @@ public class NetworkEnvelopeByAngle extends Thread {
 				DeviceList.getNodes().get(i).setValue(0);
 				DeviceList.getNodes().get(i).setMarked(false);
 				DeviceList.getNodes().get(i).setVisited(false);
-				if(!DeviceList.getNodes().get(i).isFaulty())
+				if(!DeviceList.getNodes().get(i).isDead())
 					if(min>DeviceList.getNodes().get(i).getY()) {
 						min = DeviceList.getNodes().get(i).getY();
 						imin = i;
@@ -90,7 +90,7 @@ public class NetworkEnvelopeByAngle extends Thread {
 					trouve = false;
 					for (int j = 0; j < DeviceList.getNodes().size(); j++) {
 						n2 = DeviceList.getNodes().get(j);
-						if(!DeviceList.getNodes().get(j).isFaulty())							
+						if(!DeviceList.getNodes().get(j).isDead())							
 							if ((cur!=j) && n1.radioDetect(n2)) {
 								if(!n2.isVisited()) {
 									trouve = true ;
