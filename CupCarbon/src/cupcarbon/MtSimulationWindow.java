@@ -21,8 +21,6 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
-import map.WorldMap;
-
 public class MtSimulationWindow extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -167,11 +165,11 @@ public class MtSimulationWindow extends JInternalFrame {
 		button.setFont(new Font("Arial", Font.PLAIN, 12));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				long defaulSimulationDelay = Integer.parseInt(delayTextField.getText()) * 3600000;
-				long defaulSimulationLogicDelay = Integer.parseInt(ldelayTextField.getText()) * 60000;
-				long step = Integer.parseInt(stepTextField.getText()) * 3600000;
-				WorldMap.comSimulate("Standard", "log", defaulSimulationDelay, defaulSimulationLogicDelay, step);
-				// WorldMap.comSimulate("Standard", "log");
+				//long defaulSimulationDelay = Integer.parseInt(delayTextField.getText()) * 3600000;
+				//long defaulSimulationLogicDelay = Integer.parseInt(ldelayTextField.getText()) * 60000;
+				//long step = Integer.parseInt(stepTextField.getText()) * 3600000;
+				//WorldMap.comSimulate("Standard", "log", defaulSimulationDelay, defaulSimulationLogicDelay, step);
+				//// WorldMap.comSimulate("Standard", "log");
 			}
 		});
 

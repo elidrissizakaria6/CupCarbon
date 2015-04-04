@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wisen_simulation2;
+package wisen_simulation_mehdi;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -29,23 +29,23 @@ import java.util.List;
 import java.util.Vector;
 
 import project.Project;
-import synchronization.Lock;
+import synchronization.MehdiLock;
 import device.Device;
 
-public class DeviceSimulator implements Runnable {
+public class MehdiDeviceSimulator implements Runnable {
 
 	// private static int index = 0;
 	// private int id;
 	
 	private String scriptFile = "";
 	private String resultFile = "RS";
-	public Lock lock;
+	public MehdiLock lock;
 	private Thread thread = null;
-	private Event currentEvent;
+	private MehdiEvent currentEvent;
 	private long clock = 0;
-	private List<Event> events = null;
+	private List<MehdiEvent> events = null;
 	private int eventsNumber = 0;
-	private Simulation simulation = null;
+	private MehdiSimulation simulation = null;
 	private Device device;
 	private int eps = 0;
 	private PrintStream rbr = null;
@@ -74,22 +74,22 @@ public class DeviceSimulator implements Runnable {
 		resultFile.replaceAll(" ", "_");
 	}
 
-	public Simulation getSimulator() {
+	public MehdiSimulation getSimulator() {
 		return simulation;
 	}
 
-	public void setSimulator(Simulation simulator) {
+	public void setSimulator(MehdiSimulation simulator) {
 		this.simulation = simulator;
 	}
 
-	public DeviceSimulator() {
+	public MehdiDeviceSimulator() {
 		this(null);
 	}
 
-	public DeviceSimulator(Device device) {
+	public MehdiDeviceSimulator(Device device) {
 		// id = ++index;
 		this.setDevice(device);
-		lock = new Lock();
+		lock = new MehdiLock();
 	}
 
 	public boolean scriptAssigned() {
@@ -99,11 +99,11 @@ public class DeviceSimulator implements Runnable {
 	public void loadScript() {
 
 		try {
-			events = new Vector<Event>();
+			events = new Vector<MehdiEvent>();
 			BufferedReader br = new BufferedReader(new FileReader(scriptFile));
 			String line;
 			String[] str;
-			Event e = null;
+			MehdiEvent e = null;
 			int epsilon = 1; // a modifier (en float)
 			// int i=0;
 			while ((line = br.readLine()) != null) {
@@ -121,16 +121,16 @@ public class DeviceSimulator implements Runnable {
 
 				// JRE 1.6
 				if (str[0].toLowerCase().equals("send")) {
-					e = new Event(Integer.parseInt(str[1]), 0, epsilon++,
-							Commands.COM_SEND, Integer.parseInt(str[2]));
+					e = new MehdiEvent(Integer.parseInt(str[1]), 0, epsilon++,
+							MehdiCommands.COM_SEND, Integer.parseInt(str[2]));
 				} else if (str[0].toLowerCase().equals("delay")) {
 					epsilon = 0;
-					e = new Event(0, Integer.parseInt(str[1]), 0,
-							Commands.COM_DELAY);
+					e = new MehdiEvent(0, Integer.parseInt(str[1]), 0,
+							MehdiCommands.COM_DELAY);
 				} else if (str[0].toLowerCase().equals("break"))
-					e = new Event(0, 0, 0, Commands.COM_BREAK);
+					e = new MehdiEvent(0, 0, 0, MehdiCommands.COM_BREAK);
 				else
-					e = new Event(0, 0, 0, Commands.COM_UNKNOWN);
+					e = new MehdiEvent(0, 0, 0, MehdiCommands.COM_UNKNOWN);
 
 				e.setDevice(getDevice());
 				e.setDevicesimulator(this);
@@ -147,7 +147,7 @@ public class DeviceSimulator implements Runnable {
 
 	}
 
-	public void init(Simulation simulator) {
+	public void init(MehdiSimulation simulator) {
 
 		try {
 			rbr = new PrintStream(new FileOutputStream(
@@ -164,10 +164,10 @@ public class DeviceSimulator implements Runnable {
 			clock = 0;
 			currentEvent = null;
 			if (eventsNumber > 0) {
-				Event First = getNextEvent2();
-				if (First.getEventType() != Commands.COM_BREAK) {
+				MehdiEvent First = getNextEvent2();
+				if (First.getEventType() != MehdiCommands.COM_BREAK) {
 					clock = First.getEventDate();
-					currentEvent = new Event(First.getMessage(), clock,
+					currentEvent = new MehdiEvent(First.getMessage(), clock,
 							First.getEpsilon(), First.getEventType());
 					currentEvent.setDevice(getDevice());
 					currentEvent.setDevicesimulator(this);
@@ -191,8 +191,8 @@ public class DeviceSimulator implements Runnable {
 
 	@Override
 	public void run() {
-		Event Next = getNextEvent2();
-		while (Next.getEventType() != Commands.COM_BREAK) {
+		MehdiEvent Next = getNextEvent2();
+		while (Next.getEventType() != MehdiCommands.COM_BREAK) {
 			lock.P();
 			// if(((System.nanoTime() - simulator.startTime) / (simulator.pas *
 			// 1000000)) >= pas){
@@ -213,15 +213,15 @@ public class DeviceSimulator implements Runnable {
 		System.out.println(" -> " + getDevice().getUserId());
 	}
 
-	public Event getNextEvent() {
+	public MehdiEvent getNextEvent() {
 		return events.get(0);
 	}
 
-	public Event getNextEvent2() {
+	public MehdiEvent getNextEvent2() {
 		int accumulated_delay = 0;
 
-		Event Next = getNextEvent();
-		while (Next.getEventType() == Commands.COM_DELAY) {
+		MehdiEvent Next = getNextEvent();
+		while (Next.getEventType() == MehdiCommands.COM_DELAY) {
 			accumulated_delay += Next.getEventDate();
 			events.remove(0);
 			events.add(eventsNumber - 1, Next);

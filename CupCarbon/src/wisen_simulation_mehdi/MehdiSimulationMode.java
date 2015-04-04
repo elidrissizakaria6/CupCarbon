@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wisen_simulation2;
+package wisen_simulation_mehdi;
 
-public enum TimeMode {
-	REALTIME, 
-	LOGICALTIME
+public enum MehdiSimulationMode {
+	PARALLELMODE,
+	SEQUENTIALMODE
 }

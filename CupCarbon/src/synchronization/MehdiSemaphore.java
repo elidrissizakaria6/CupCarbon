@@ -17,9 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wisen_simulation2;
+package synchronization;
 
-public enum SimulationMode {
-	PARALLELMODE,
-	SEQUENTIALMODE
+public class MehdiSemaphore {
+
+	private int resourcesNumber;
+
+	// =============================================================
+	public MehdiSemaphore(int resourcesnumber) {
+		resourcesNumber = resourcesnumber;
+	}
+
+	// =============================================================
+	synchronized public void P() {
+		boolean Retour;
+		resourcesNumber--;
+		if (resourcesNumber < 0) {
+			do {
+				Retour = false;
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					System.out.println("Oups : error");
+					Retour = true;
+				}
+			} while (Retour);
+		}
+	}
+
+	// =============================================================
+	synchronized public void V() {
+		resourcesNumber++;
+		if (resourcesNumber <= 0) {
+			notify();
+		}
+	}
+	// =============================================================
 }

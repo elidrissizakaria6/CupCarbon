@@ -24,25 +24,34 @@ package wisen_simulation;
  * @author Kamal Mehdi
  * @version 1.0
  */
-public class WisenPing extends Thread {
-	
-	private WisenSemaphore wisenSemaphorePing = null;
-	private WisenSemaphore wisenSemaphorePong = null;
-	private WisenSimulation wisenSimulation = null;
+public class WisenPPSemaphore {
 
-	public WisenPing(WisenSemaphore wisenSemaphorePing,
-			WisenSemaphore wisenSemaphorePong, WisenSimulation wisenSimulation) {
-		this.wisenSemaphorePing = wisenSemaphorePing;
-		this.wisenSemaphorePong = wisenSemaphorePong;
-		this.wisenSimulation = wisenSimulation;
+	private boolean b = false;
+
+	public WisenPPSemaphore(boolean b) {
+		this.b = b;
 	}
 
-	@Override
-	public void run() {
-		while (true) {			
-			wisenSemaphorePing.P();
-			wisenSimulation.eventGenerator();			
-			wisenSemaphorePong.V();
+	public synchronized void P() {
+		boolean waitNonExe;
+		b = !b;
+		if (b) {
+			do {
+				waitNonExe = false;
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					System.out.println("Oups : error");
+					waitNonExe = true;
+				}
+			} while (waitNonExe);
+		}
+	}
+
+	public synchronized void V() {
+		b = !b;
+		if (!b) {
+			notify();
 		}
 	}
 }

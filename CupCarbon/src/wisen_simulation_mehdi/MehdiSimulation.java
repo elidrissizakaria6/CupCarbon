@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wisen_simulation2;
+package wisen_simulation_mehdi;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,13 +26,13 @@ import java.io.PrintStream;
 import javax.swing.JOptionPane;
 
 import project.Project;
-import synchronization.Scheduler;
-import synchronization.Semaphore;
+import synchronization.MehdiScheduler;
+import synchronization.MehdiSemaphore;
 import cupcarbon.MtSimulationWindow;
 import device.Device;
 import device.DeviceList;
 
-public class Simulation implements Simulator_Interface, Runnable {
+public class MehdiSimulation implements MehdiSimulator_Interface, Runnable {
 
 	// In the following, the values are in milli-seconds
 	private static long defaulSimulationDelay = 360000000; // 100 hours
@@ -41,8 +41,8 @@ public class Simulation implements Simulator_Interface, Runnable {
 	private long simulationLogicDelay = 0;
 	private long step = 3600000; // a step of one hour
 	private long iStep = 0;
-	private Semaphore semaphore = null;
-	private Scheduler scheduler = null;
+	private MehdiSemaphore semaphore = null;
+	private MehdiScheduler scheduler = null;
 	private Thread thread = null;
 	private boolean more;
 	private String logFileName = "log";
@@ -51,11 +51,11 @@ public class Simulation implements Simulator_Interface, Runnable {
 	private long startTime;
 	private long endTime;
 
-	public Simulation(String name, String log) {
+	public MehdiSimulation(String name, String log) {
 		setSimulationName(name);
 		setLogFileName(log);
-		setSimulationMode(SimulationMode.PARALLELMODE);
-		setSimulationDelay(Simulation.defaulSimulationDelay);
+		setSimulationMode(MehdiSimulationMode.PARALLELMODE);
+		setSimulationDelay(MehdiSimulation.defaulSimulationDelay);
 		setSimulationLogicDelay(defaulSimulationLogicDelay);
 	}
 
@@ -63,11 +63,11 @@ public class Simulation implements Simulator_Interface, Runnable {
 		return startTime ;
 	}
 	
-	public Scheduler getScheduler() {
+	public MehdiScheduler getScheduler() {
 		return scheduler ;
 	}
 	
-	public Semaphore getSemaphore() {
+	public MehdiSemaphore getSemaphore() {
 		return semaphore ;
 	}
 	
@@ -81,8 +81,8 @@ public class Simulation implements Simulator_Interface, Runnable {
 
 	@Override
 	public void initSimulation() {
-		scheduler = new Scheduler();
-		semaphore = new Semaphore(1);
+		scheduler = new MehdiScheduler();
+		semaphore = new MehdiSemaphore(1);
 		more = true;
 		for (Device device : DeviceList.getNodes()) {
 			device.initSimulator(this);
@@ -102,12 +102,12 @@ public class Simulation implements Simulator_Interface, Runnable {
 
 	}
 
-	public void addEvent(Event event) {
+	public void addEvent(MehdiEvent event) {
 		event.setSimulation(this);
 		scheduler.addEvent(event);
 	}
 
-	public void removeEvent(Event event) {
+	public void removeEvent(MehdiEvent event) {
 		scheduler.removeEvent(event);
 	}
 
@@ -121,7 +121,7 @@ public class Simulation implements Simulator_Interface, Runnable {
 	}
 
 	public void action() {
-		Event nextEvent = scheduler.getNextEvent();
+		MehdiEvent nextEvent = scheduler.getNextEvent();
 
 		if ((nextEvent == null)
 				|| (nextEvent.getEventDate() > getSimulationDelay())
@@ -217,7 +217,7 @@ public class Simulation implements Simulator_Interface, Runnable {
 	}
 
 	@Override
-	public void consumptionEnergy(Event event) {
+	public void consumptionEnergy(MehdiEvent event) {
 
 	}
 
@@ -268,7 +268,7 @@ public class Simulation implements Simulator_Interface, Runnable {
 	}
 
 	@Override
-	public int getNumberSentMessages(long delai1, long delai2, TimeMode tmode) {
+	public int getNumberSentMessages(long delai1, long delai2, MehdiTimeMode tmode) {
 		return 0;
 	}
 
@@ -279,7 +279,7 @@ public class Simulation implements Simulator_Interface, Runnable {
 
 	@Override
 	public int getNumberSentMessages(Device device, long delai1, long delai2,
-			TimeMode tmode) {
+			MehdiTimeMode tmode) {
 		return 0;
 	}
 
@@ -289,11 +289,11 @@ public class Simulation implements Simulator_Interface, Runnable {
 	}
 
 	@Override
-	public void setSimulationMode(SimulationMode sMode) {
+	public void setSimulationMode(MehdiSimulationMode sMode) {
 	}
 
 	@Override
-	public SimulationMode getSimulationMode() {
+	public MehdiSimulationMode getSimulationMode() {
 		return null;
 	}
 

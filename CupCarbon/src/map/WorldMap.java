@@ -25,8 +25,6 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
 
-import wisen_simulation2.Simulation;
-
 public class WorldMap extends JXMapKit {
 
 	private static final long serialVersionUID = 1L;
@@ -120,19 +118,19 @@ public class WorldMap extends JXMapKit {
 		layer.simulate();
 	}
 
-	public static void comSimulate(String name, String log, long v1, long v2,
-			long v3) {
-		Simulation simulation = new Simulation(name, log);
-		simulation.setSimulationDelay(v1);
-		simulation.setSimulationLogicDelay(v2);
-		simulation.setStep(v3);
-		simulation.startSimulation();
-	}	
-	
-	public static void comSimulate(String name, String log) {
-		Simulation simulation = new Simulation(name, log);
-		simulation.startSimulation();
-	}
+//	public static void comSimulate(String name, String log, long v1, long v2,
+//			long v3) {
+//		MehdiSimulation simulation = new MehdiSimulation(name, log);
+//		simulation.setSimulationDelay(v1);
+//		simulation.setSimulationLogicDelay(v2);
+//		simulation.setStep(v3);
+//		simulation.startSimulation();
+//	}	
+//	
+//	public static void comSimulate(String name, String log) {
+//		MehdiSimulation simulation = new MehdiSimulation(name, log);
+//		simulation.startSimulation();
+//	}
 
 	public static void simulateAll() {
 		layer.simulateAll();

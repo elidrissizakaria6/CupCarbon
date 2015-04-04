@@ -21,12 +21,12 @@ package synchronization;
 
 import java.util.Comparator;
 
-import wisen_simulation2.Event;
+import wisen_simulation_mehdi.MehdiEvent;
 
-public class SchedulerComparator implements Comparator<Event> {
+public class MehdiSchedulerComparator implements Comparator<MehdiEvent> {
 
 	@Override
-	public int compare(Event e1, Event e2) {
+	public int compare(MehdiEvent e1, MehdiEvent e2) {
 		return e1.compareTo(e2);
 	}
 }

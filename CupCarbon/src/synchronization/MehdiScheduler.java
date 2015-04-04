@@ -19,10 +19,39 @@
 
 package synchronization;
 
-public class Lock extends Semaphore {
+import java.util.Collections;
+import java.util.Vector;
 
-	public Lock() {
-		super(0);
+import wisen_simulation_mehdi.MehdiEvent;
+
+public class MehdiScheduler {
+
+	public Vector<MehdiEvent> listEvents;
+	MehdiSchedulerComparator comparator = null;
+
+	public MehdiScheduler() {
+		comparator = new MehdiSchedulerComparator();
+		listEvents = new Vector<MehdiEvent>();
 	}
 
+	public MehdiEvent getNextEvent() {
+		if (listEvents.size() <= 0)
+			return null;
+
+		return listEvents.get(0);
+	}
+
+	public void addEvent(MehdiEvent event) {
+		listEvents.add(event);
+		sort();
+	}
+
+	public void removeEvent(MehdiEvent event) {
+		listEvents.remove(event);
+	}
+
+	// a optimiser ...
+	public void sort() {
+		Collections.sort(listEvents, comparator);
+	}
 }

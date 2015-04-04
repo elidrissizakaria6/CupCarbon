@@ -47,8 +47,8 @@ import script.Script;
 import utilities.MapCalc;
 import utilities.UColor;
 import utilities._Constantes;
-import wisen_simulation2.DeviceSimulator;
-import wisen_simulation2.Simulation;
+import wisen_simulation_mehdi.MehdiDeviceSimulator;
+import wisen_simulation_mehdi.MehdiSimulation;
 import battery.Battery;
 import cupcarbon.DeviceParametersWindow;
 
@@ -115,8 +115,8 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String [][] infos;
 	protected static boolean displayInfos = true;
 	
-	protected DeviceSimulator deviceSimulator = null;
-	protected Simulation simulation = null;
+	protected MehdiDeviceSimulator deviceSimulator = null;
+	protected MehdiSimulation simulation = null;
 	protected String scriptFileName = "";
 	protected String gpsFileName = "";
 	protected Script script = null;
@@ -304,7 +304,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 * 
 	 * @param simulation
 	 */
-	public void initSimulator(Simulation simulation) {
+	public void initSimulator(MehdiSimulation simulation) {
 		this.simulation = simulation;
 		deviceSimulator.init(simulation);
 	}
@@ -1255,7 +1255,7 @@ public abstract class Device implements Runnable, MouseListener,
 	/**
 	 * @return the simulation instance
 	 */
-	public DeviceSimulator getSimulator() {
+	public MehdiDeviceSimulator getSimulator() {
 		return deviceSimulator;
 	}
 

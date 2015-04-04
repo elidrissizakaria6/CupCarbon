@@ -17,41 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package synchronization;
+package wisen_simulation_mehdi;
 
-import java.util.Collections;
-import java.util.Vector;
-
-import wisen_simulation2.Event;
-
-public class Scheduler {
-
-	public Vector<Event> listEvents;
-	SchedulerComparator comparator = null;
-
-	public Scheduler() {
-		comparator = new SchedulerComparator();
-		listEvents = new Vector<Event>();
-	}
-
-	public Event getNextEvent() {
-		if (listEvents.size() <= 0)
-			return null;
-
-		return listEvents.get(0);
-	}
-
-	public void addEvent(Event event) {
-		listEvents.add(event);
-		sort();
-	}
-
-	public void removeEvent(Event event) {
-		listEvents.remove(event);
-	}
-
-	// a optimiser ...
-	public void sort() {
-		Collections.sort(listEvents, comparator);
-	}
+public enum MehdiTimeMode {
+	REALTIME, 
+	LOGICALTIME
 }

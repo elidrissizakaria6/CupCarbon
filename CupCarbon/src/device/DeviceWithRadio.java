@@ -28,7 +28,7 @@ import java.util.Random;
 import map.Layer;
 import utilities.MapCalc;
 import utilities.UColor;
-import wisen_simulation2.DeviceSimulator;
+import wisen_simulation_mehdi.MehdiDeviceSimulator;
 import battery.Battery;
 
 /**
@@ -64,7 +64,7 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	 */
 	public DeviceWithRadio(double x, double y, double radius, double radioRangeRadius) {
 		super(x, y, radius);
-		deviceSimulator = new DeviceSimulator(this);
+		deviceSimulator = new MehdiDeviceSimulator(this);
 		this.radioRangeRadius = radioRangeRadius ;
 		radioRangeRadiusOri = radioRangeRadius ;
 	}

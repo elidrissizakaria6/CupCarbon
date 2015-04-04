@@ -17,20 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *----------------------------------------------------------------------------------------------------------------*/
 
-package wisen_simulation2;
+package wisen_simulation_mehdi;
 
 import device.Device;
 
-public class Event implements Comparable<Event> {
+public class MehdiEvent implements Comparable<MehdiEvent> {
 
 	private int message;
 	private long eventDate;
 	private int epsilon;
 	private int powerRatio = 100;
-	private Commands eventType;
-	private DeviceSimulator deviceSimulator = null;
+	private MehdiCommands eventType;
+	private MehdiDeviceSimulator deviceSimulator = null;
 	private Device device = null;
-	private Simulation simulation = null;
+	private MehdiSimulation simulation = null;
 	
 	public Device getDevice() {
 		return device;
@@ -40,15 +40,15 @@ public class Event implements Comparable<Event> {
 		this.device = device;
 	}	
 
-	public Event() {
-		this(0, 0, 0, Commands.COM_UNKNOWN, 100);
+	public MehdiEvent() {
+		this(0, 0, 0, MehdiCommands.COM_UNKNOWN, 100);
 	}
 
-	public Event(int message, long eventdate, Commands eventtype, int powratio) {
+	public MehdiEvent(int message, long eventdate, MehdiCommands eventtype, int powratio) {
 		this(message, eventdate, 0, eventtype, powratio);
 	}
 
-	public Event(int message, long eventdate, int epsilon, Commands eventtype,
+	public MehdiEvent(int message, long eventdate, int epsilon, MehdiCommands eventtype,
 			int powratio) {
 		setMessage(message);
 		setEventDate(eventdate);
@@ -59,11 +59,11 @@ public class Event implements Comparable<Event> {
 		setSimulation(null);
 	}
 
-	public Event(int message, long eventdate, int epsilon, Commands eventtype) {
+	public MehdiEvent(int message, long eventdate, int epsilon, MehdiCommands eventtype) {
 		this(message, eventdate, epsilon, eventtype, 100);
 	}
 
-	public void update(int message, long date, int epsilon, Commands eventtype,
+	public void update(int message, long date, int epsilon, MehdiCommands eventtype,
 			int powratio) {
 		setMessage(message);
 		setEventDate(date);
@@ -76,7 +76,7 @@ public class Event implements Comparable<Event> {
 	}
 
 	@Override
-	public int compareTo(Event e) {
+	public int compareTo(MehdiEvent e) {
 		return ((this.eventDate == e.eventDate) ? (this.epsilon - e.epsilon)
 				: ((this.eventDate > e.eventDate) ? 1 : -1));
 	}
@@ -97,11 +97,11 @@ public class Event implements Comparable<Event> {
 		this.eventDate = eventDate;
 	}
 
-	public Commands getEventType() {
+	public MehdiCommands getEventType() {
 		return eventType;
 	}
 
-	public void setEventType(Commands eventType) {
+	public void setEventType(MehdiCommands eventType) {
 		this.eventType = eventType;
 	}
 
@@ -113,19 +113,19 @@ public class Event implements Comparable<Event> {
 		this.powerRatio = powratio;
 	}
 
-	public Simulation getSimulation() {
+	public MehdiSimulation getSimulation() {
 		return simulation;
 	}
 
-	public void setSimulation(Simulation simulation) {
+	public void setSimulation(MehdiSimulation simulation) {
 		this.simulation = simulation;
 	}
 
-	public DeviceSimulator getDevicesimulator() {
+	public MehdiDeviceSimulator getDevicesimulator() {
 		return deviceSimulator;
 	}
 
-	public void setDevicesimulator(DeviceSimulator devicesimulator) {
+	public void setDevicesimulator(MehdiDeviceSimulator devicesimulator) {
 		this.deviceSimulator = devicesimulator;
 	}
 

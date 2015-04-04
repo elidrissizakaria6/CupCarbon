@@ -19,38 +19,10 @@
 
 package synchronization;
 
-public class Semaphore {
+public class MehdiLock extends MehdiSemaphore {
 
-	private int resourcesNumber;
-
-	// =============================================================
-	public Semaphore(int resourcesnumber) {
-		resourcesNumber = resourcesnumber;
+	public MehdiLock() {
+		super(0);
 	}
 
-	// =============================================================
-	synchronized public void P() {
-		boolean Retour;
-		resourcesNumber--;
-		if (resourcesNumber < 0) {
-			do {
-				Retour = false;
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					System.out.println("Oups : error");
-					Retour = true;
-				}
-			} while (Retour);
-		}
-	}
-
-	// =============================================================
-	synchronized public void V() {
-		resourcesNumber++;
-		if (resourcesNumber <= 0) {
-			notify();
-		}
-	}
-	// =============================================================
 }

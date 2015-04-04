@@ -24,14 +24,14 @@ package wisen_simulation;
  * @author Kamal Mehdi
  * @version 1.0
  */
-public class WisenPong extends Thread {
+public class WisenPPPing extends Thread {
 	
-	private WisenSemaphore wisenSemaphorePing = null;
-	private WisenSemaphore wisenSemaphorePong = null;
-	private WisenSimulation wisenSimulation = null;
+	private WisenPPSemaphore wisenSemaphorePing = null;
+	private WisenPPSemaphore wisenSemaphorePong = null;
+	private WisenPPSimulation wisenSimulation = null;
 
-	public WisenPong(WisenSemaphore wisenSemaphorePing,
-			WisenSemaphore wisenSemaphorePong, WisenSimulation wisenSimulation) {
+	public WisenPPPing(WisenPPSemaphore wisenSemaphorePing,
+			WisenPPSemaphore wisenSemaphorePong, WisenPPSimulation wisenSimulation) {
 		this.wisenSemaphorePing = wisenSemaphorePing;
 		this.wisenSemaphorePong = wisenSemaphorePong;
 		this.wisenSimulation = wisenSimulation;
@@ -39,13 +39,10 @@ public class WisenPong extends Thread {
 
 	@Override
 	public void run() {
-		boolean b=true;
-		while (b) {
-			wisenSemaphorePong.P();			
-			b = wisenSimulation.eventExecutor();
-			wisenSemaphorePing.V();			
+		while (true) {			
+			wisenSemaphorePing.P();
+			wisenSimulation.eventGenerator();			
+			wisenSemaphorePong.V();
 		}
-		wisenSemaphorePing.V();
-		wisenSemaphorePong.V();
 	}
 }
