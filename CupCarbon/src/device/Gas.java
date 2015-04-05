@@ -59,7 +59,7 @@ public class Gas extends DeviceWithoutRadio {
 	public void draw(Graphics g) {
 		if(visible) {
 			initDraw(g) ;
-			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 			int x = coord[0];
 			int y = coord[1];
 			//int x = MapCalc.geoToIntPixelMapX(x, y) ;

@@ -46,7 +46,7 @@ public class SensorNode extends DeviceWithRadio {
 	 */
 	public SensorNode() {
 		super();
-		sensorUnit = new SensorUnit(this.x, this.y, this);
+		sensorUnit = new SensorUnit(this.longitude, this.latitude, this);
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
@@ -66,7 +66,7 @@ public class SensorNode extends DeviceWithRadio {
 	 */
 	public SensorNode(double x, double y, double radius, double radioRadius) {
 		super(x, y, radius, radioRadius);
-		sensorUnit = new SensorUnit(this.x, this.y, this);
+		sensorUnit = new SensorUnit(this.longitude, this.latitude, this);
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
@@ -89,7 +89,7 @@ public class SensorNode extends DeviceWithRadio {
 	public SensorNode(double x, double y, double radius, double radioRadius,
 			double cuRadius) {
 		super(x, y, radius, radioRadius);
-		sensorUnit = new SensorUnit(this.x, this.y, cuRadius, this);
+		sensorUnit = new SensorUnit(this.longitude, this.latitude, cuRadius, this);
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
@@ -139,7 +139,7 @@ public class SensorNode extends DeviceWithRadio {
 			String cuRadius) {
 		super(Double.valueOf(x), Double.valueOf(y), Double.valueOf(radius),
 				Double.valueOf(radioRadius));
-		sensorUnit = new SensorUnit(this.x, this.y, Double.valueOf(cuRadius),
+		sensorUnit = new SensorUnit(this.longitude, this.latitude, Double.valueOf(cuRadius),
 				this);
 		battery = new Battery(sensorUnit);
 		withRadio = true;
@@ -188,7 +188,7 @@ public class SensorNode extends DeviceWithRadio {
 		if (visible) {
 			initDraw(g);
 			// Layer.getMapViewer().setAlpha(100);
-			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 			int x = coord[0];
 			int y = coord[1];
 			// int x = MapCalc.geoToIntPixelMapX(this.x, this.y);

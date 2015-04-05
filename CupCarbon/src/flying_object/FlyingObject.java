@@ -61,8 +61,8 @@ public class FlyingObject extends MobileG {
 	// ------------------------------------
 
 	public FlyingObject(double x, double y, int theta, double xc, double yc) {
-		this.x = x;
-		this.y = y;
+		this.longitude = x;
+		this.latitude = y;
 		this.direction = theta;
 		this.xc = xc;
 		this.yc = yc;
@@ -78,8 +78,8 @@ public class FlyingObject extends MobileG {
 			xc = Math.random() / this.dispersion;
 			yc = Math.random() / this.dispersion;
 		}
-		this.x = x + xc;
-		this.y = y + yc;
+		this.longitude = x + xc;
+		this.latitude = y + yc;
 		direction = (int) (Math.random() * 360);
 		radius = 30;
 	}
@@ -102,8 +102,8 @@ public class FlyingObject extends MobileG {
 			thetaChange = -Math.min(rotationAngle, right);
 		}
 		direction = (direction + thetaChange + 360) % 360;
-		x += (speedOnX * Math.cos(direction * Math.PI / 180));
-		y -= (speedOnY * Math.sin(direction * Math.PI / 180));
+		longitude += (speedOnX * Math.cos(direction * Math.PI / 180));
+		latitude -= (speedOnY * Math.sin(direction * Math.PI / 180));
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class FlyingObject extends MobileG {
 		// Graphics2D g = (Graphics2D) gg;
 		// g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 		// RenderingHints.VALUE_ANTIALIAS_ON);
-		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+		int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 		int x = coord[0];
 		int y = coord[1];
 		// int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
@@ -147,11 +147,11 @@ public class FlyingObject extends MobileG {
 	}
 
 	public double getX() {
-		return x;
+		return longitude;
 	}
 
 	public double getY() {
-		return y;
+		return latitude;
 	}
 
 	public double getDirection() {
@@ -233,13 +233,13 @@ public class FlyingObject extends MobileG {
 		double distance;
 		
 		do {
-			x2 = x;
-			y2 = y;
+			x2 = longitude;
+			y2 = latitude;
 			x1 = routeX.get(routeIndex) + Math.random() / dispersion;
 			y1 = routeY.get(routeIndex) + Math.random() / dispersion;
 			if (firstTime) {
-				x = x1;
-				y = y1;
+				longitude = x1;
+				latitude = y1;
 				firstTime = false;
 			} else {
 				distance = 1.35 * MapCalc.distance(x1, y1, x2, y2);
@@ -291,8 +291,8 @@ public class FlyingObject extends MobileG {
 	public void setXYFromMouse(int xm, int ym) {
 		Point p = new Point(xm, ym);
 		GeoPosition gp = Layer.getMapViewer().convertPointToGeoPosition(p);
-		x = gp.getLatitude();
-		y = gp.getLongitude();
+		longitude = gp.getLatitude();
+		latitude = gp.getLongitude();
 	}
 
 	@Override
@@ -320,8 +320,8 @@ public class FlyingObject extends MobileG {
 
 	public void relativeMove(double x, double y) {
 		if (thread == null) {
-			this.x = x + xc;
-			this.y = y + yc;
+			this.longitude = x + xc;
+			this.latitude = y + yc;
 		}
 	}
 

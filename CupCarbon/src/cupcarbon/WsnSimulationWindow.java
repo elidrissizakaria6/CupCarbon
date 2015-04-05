@@ -440,21 +440,16 @@ public class WsnSimulationWindow extends JInternalFrame {
 		// cpugpu = 2 : gpu
 		// cpugpu = 3 : ping pong
 		if (v == 1 || v == 3) {
-			Device.dataRate = Integer.parseInt((String) freqComboBox
-					.getSelectedItem());
-			SimulationInputs.iterNumber = Integer.parseInt(iterNumberTextField
-					.getText());
-			SimulationInputs.energyMax = Integer.parseInt(energyMaxTextField
-					.getText());
-			SimulationInputs.scriptSize = Integer.parseInt(scriptSizeTextField
-					.getText());
+			Device.dataRate = Integer.parseInt((String) freqComboBox.getSelectedItem());
+			SimulationInputs.iterNumber = Integer.parseInt(iterNumberTextField.getText());
+			SimulationInputs.energyMax = Integer.parseInt(energyMaxTextField.getText());
+			SimulationInputs.scriptSize = Integer.parseInt(scriptSizeTextField.getText());
 			SimulationInputs.discreteEvent = cboxDEvent.isSelected();
 			SimulationInputs.mobility = cboxMobility.isSelected();
 			SimulationInputs.step = Integer.parseInt(stepTextField.getText());
 			SimulationInputs.visual = cbVisual.isSelected();
-			SimulationInputs.visualDelay = Integer.parseInt(vdTextField
-					.getText());
-			if (cpugpu == 1 || cpugpu == 3)
+			SimulationInputs.visualDelay = Integer.parseInt(vdTextField.getText());
+			if (cpugpu == 1)
 				NetworkGenerator.generateForCpu();
 			if (cpugpu == 2)
 				NetworkGenerator.generateForGpu();
@@ -471,9 +466,15 @@ public class WsnSimulationWindow extends JInternalFrame {
 				gpuSimulation.start();
 			}			
 			if (cpugpu == 3) {
-				//wisenSimulation = new WisenSimulation();
+				Device.dataRate = Integer.parseInt((String) freqComboBox.getSelectedItem());
+				SimulationInputs.iterNumber = Integer.parseInt(iterNumberTextField.getText());
+				SimulationInputs.energyMax = Integer.parseInt(energyMaxTextField.getText());
+				SimulationInputs.discreteEvent = cboxDEvent.isSelected();
+				SimulationInputs.mobility = cboxMobility.isSelected();
+				SimulationInputs.step = Integer.parseInt(stepTextField.getText());
+				SimulationInputs.visual = cbVisual.isSelected();
+				SimulationInputs.visualDelay = Integer.parseInt(vdTextField.getText());
 				wisenSimulation = new WisenSimulation();
-				wisenSimulation.init();
 				wisenSimulation.start();
 			}
 		}

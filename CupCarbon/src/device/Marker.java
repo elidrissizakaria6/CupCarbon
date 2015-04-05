@@ -43,7 +43,7 @@ public class Marker extends Device {
 	public void draw(Graphics g) {
 		if(visible) {
 			initDraw(g) ;
-			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 			int x = coord[0];
 			int y = coord[1];
 			//int x = MapCalc.geoToIntPixelMapX(this.x,this.y) ;
@@ -132,7 +132,7 @@ public class Marker extends Device {
 	
 	public void transformMarkerToSensor() {
 		if(selected) {
-			DeviceList.add(new SensorNode(x, y, 0, 100, 20));
+			DeviceList.add(new SensorNode(longitude, latitude, 0, 100, 20));
 		}
 	}
 

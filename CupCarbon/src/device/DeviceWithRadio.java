@@ -86,13 +86,11 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 //
 //	}
 
-	/* (non-Javadoc)
-	 * @see device.Device#getRadioRadius()
-	 */
 	@Override
 	public double getRadioRadius() {
 		//return radioRangeRadius * (battery.getCapacity()/battery.getInitialCapacity()) ;
-		return (radioRangeRadius * ((getBatteryLevel() / Battery.eMax)*100.))/100.;
+		//return (radioRangeRadius * ((getBatteryLevel() / Battery.eMax)*100.))/100.;
+		return radioRangeRadius;
 	}
 	
 	/* (non-Javadoc)
@@ -259,13 +257,16 @@ public abstract class DeviceWithRadio extends DeviceWithWithoutRadio {
 	@Override 
 	public void consume(double v) {
 		battery.consume(v);
-		if(battery.empty()) setDead(true);
+		//if(battery.empty()) {
+		//	this.setEvent(99999999);
+		//	setDead(true);
+		//}
 	}
 	
 	@Override
 	public void drawMarked(Graphics g) {		
 		if(marked) {	
-			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 			int x = coord[0];
 			int y = coord[1];
 			//int x = MapCalc.geoToIntPixelMapX(x, y) ;

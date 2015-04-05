@@ -24,30 +24,26 @@ public class WisenSimulation extends Thread {
 	private int visualDelay;
 
 	public WisenSimulation() {
-		init();
-	}
 
-	// ------------------------------------------------------------
-	// Initialization 
-	// ------------------------------------------------------------
-	public void init() {
-		discreteEvent = SimulationInputs.discreteEvent;
-		mobility = SimulationInputs.mobility;
-		step = SimulationInputs.step;
-		iterNumber = SimulationInputs.iterNumber;
-		//nbSensors = DeviceList.getSensorNodes().size();		
-		visual = SimulationInputs.visual;
-		visualDelay = SimulationInputs.visualDelay;
-	}	
+	}
 
 	// ------------------------------------------------------------
 	// Run simulation 
 	// ------------------------------------------------------------
 	public void simulate() {
+		discreteEvent = SimulationInputs.discreteEvent;
+		mobility = SimulationInputs.mobility;
+		step = SimulationInputs.step;
+		iterNumber = SimulationInputs.iterNumber;		
+		visual = SimulationInputs.visual;
+		visualDelay = SimulationInputs.visualDelay;
+
 		WsnSimulationWindow.setState("Simulation : initialization ...");
 		System.out.println("Initialization ... ");
 		List<Device> devices = DeviceList.getNodes();
 		for (Device device : devices) {
+			device.setDead(false);
+			device.getBattery().init(SimulationInputs.energyMax);
 			device.loadScript();
 			device.getScript().init();						
 			device.setEvent(device.getScript().next().getArg());
@@ -88,7 +84,6 @@ public class WisenSimulation extends Thread {
 				for (Device device : devices) {
 					ps.print(device.getEvent() + ";");
 				}
-				//ps.println();
 
 				if (mobility) {					
 					if (discreteEvent) {
@@ -110,16 +105,13 @@ public class WisenSimulation extends Thread {
 				int i = 0;
 				for (Device device1 : devices) {
 					conso = 0;
-					for (Device device2 : devices) {
-						ps.print((device1.radioDetect(device2)?1:0) + ";");
+					for (Device device2 : devices) {						
 						conso += (device1.radioDetect(device2)?1:0) 								
 								 * device2.getScript().getCurrent().getCommandType()
 								* (1 - (device2.isDead()?1:0));
 					}
-					
 					device1.consume(min * conso);					
 					device1.setEvent(device1.getEvent()-min);
-
 					
 					if (mobility)
 						device1.setEvent2(device1.getEvent2()-min);
@@ -129,7 +121,6 @@ public class WisenSimulation extends Thread {
 				i=0;
 				for (Device device1 : devices) {
 					if (device1.getEvent() == 0) {
-						device1.getScript().getCurrent();
 						device1.setEvent(device1.getScript().next().getArg());
 					}
 					if (mobility)
@@ -139,9 +130,12 @@ public class WisenSimulation extends Thread {
 								device1.setEvent2(device1.getNextTime());
 							}
 						}
+					if (device1.getBattery().empty()) {
+						device1.setEvent(99999999);
+						device1.setDead(true);
+					}
 				}
-				WsnSimulationWindow
-						.setProgress((int) (1000 * iter / iterNumber));
+				WsnSimulationWindow.setProgress((int) (1000 * iter / iterNumber));
 			}
 			ps.close();
 		} catch (FileNotFoundException e) {

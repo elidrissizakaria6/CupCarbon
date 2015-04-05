@@ -140,7 +140,7 @@ public class FlyingGroup extends MobileG {
 	public void draw(Graphics g) {
 		if (visible) {
 			initDraw(g);
-			int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+			int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 			int x = coord[0];
 			int y = coord[1];
 			//int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
@@ -235,7 +235,7 @@ public class FlyingGroup extends MobileG {
 	public void mouseMoved(MouseEvent e) {
 		super.mouseMoved(e);
 		for (FlyingObject flyingObject : insects) {
-			flyingObject.relativeMove(x, y);
+			flyingObject.relativeMove(longitude, latitude);
 		}
 	}
 
@@ -249,7 +249,7 @@ public class FlyingGroup extends MobileG {
 
 	public void reproduire(int v) {
 		for (int i = 0; i < v; i++) {
-			FlyingObject si = new FlyingObject(x, y, true);
+			FlyingObject si = new FlyingObject(longitude, latitude, true);
 			si.setGPSFileName("gps/a1.gps");
 			insects.add(si);
 		}

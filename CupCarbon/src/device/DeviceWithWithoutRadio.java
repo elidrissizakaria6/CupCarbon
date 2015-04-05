@@ -132,8 +132,8 @@ public abstract class DeviceWithWithoutRadio extends Device {
 				if (toWait < 0) {
 					toWait = cTime;
 				}
-				x = routeX.get(routeIndex);
-				y = routeY.get(routeIndex);
+				longitude = routeX.get(routeIndex);
+				latitude = routeY.get(routeIndex);
 				Layer.getMapViewer().repaint();
 				try {
 					Thread.sleep(toWait * Device.moveSpeed);
@@ -197,8 +197,8 @@ public abstract class DeviceWithWithoutRadio extends Device {
 				}
 
 			}
-			x = routeX.get(routeIndex);
-			y = routeY.get(routeIndex);
+			longitude = routeX.get(routeIndex);
+			latitude = routeY.get(routeIndex);
 		}
 		if (visual) {
 			try {

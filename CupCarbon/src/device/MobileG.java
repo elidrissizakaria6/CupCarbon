@@ -94,20 +94,20 @@ public abstract class MobileG extends DeviceWithoutRadio {
 
 		try {
 			while (((s = b.readLine()) != null)) {
-				x2 = x;
-				y2 = y;
+				x2 = longitude;
+				y2 = latitude;
 				ts = s.split(" ");
 				cTime = simpleDateFormat.parse(ts[0]).getTime();
 				toWait = cTime - tmpTime;
 				tmpTime = cTime;
-				x = Double.parseDouble(ts[1]);
-				y = Double.parseDouble(ts[2]);
+				longitude = Double.parseDouble(ts[1]);
+				latitude = Double.parseDouble(ts[2]);
 				if (firstTime)
 					firstTime = false;
 				else {
 					// System.out.println((int) MapCalc.distance(x, y, x2,
 					// y2));
-					totalDistance += MapCalc.distance(x, y, x2, y2);
+					totalDistance += MapCalc.distance(longitude, latitude, x2, y2);
 				}
 				try {
 					Thread.sleep(toWait / 10);
@@ -148,8 +148,8 @@ public abstract class MobileG extends DeviceWithoutRadio {
 			//int k = 0;
 			//while((k++)<3000) {
 				ts = s.split(" ");
-				x = Double.parseDouble(ts[0]);
-				y = Double.parseDouble(ts[1]);
+				longitude = Double.parseDouble(ts[0]);
+				latitude = Double.parseDouble(ts[1]);
 				//x+=.0001;
 				//y-=.0001;
 				//SensorSetCover.sensorTargetSetCover() ;

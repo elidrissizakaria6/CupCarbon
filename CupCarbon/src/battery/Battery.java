@@ -164,7 +164,8 @@ public class Battery implements Cloneable {
 	 * @return if the battery is empty
 	 */
 	public boolean empty() {
-		return (capacity <= (30. * eMax / 100.));
+		//return (capacity <= (30. * eMax / 100.));
+		return (capacity <= 0);
 	}
 
 	/**

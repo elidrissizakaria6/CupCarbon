@@ -87,10 +87,10 @@ public abstract class Device implements Runnable, MouseListener,
 	protected int id = 0;
 	protected String userId = "";
 
-	protected double x, y;
-	protected double xori;
-	protected double yori;
-	protected double dx, dy;
+	protected double longitude, latitude;
+	protected double longitude_ori;
+	protected double latitude_ori;
+	protected double dlongitude, dlatitude;
 	protected double radius = 0;
 	protected double radiusOri = 0;
 	protected boolean selected = false;
@@ -110,7 +110,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected boolean displayDistance = false;	
 	protected boolean visited = false;
 	protected boolean visible = true;
-	//protected boolean faulty = false;
+
 	protected boolean dead = false;
 	protected String [][] infos;
 	protected static boolean displayInfos = true;
@@ -166,8 +166,8 @@ public abstract class Device implements Runnable, MouseListener,
 	public Device(double x, double y, double radius) {
 		id = number++;
 		userId = "S" + id;
-		this.x = x;
-		this.y = y;
+		this.longitude = x;
+		this.latitude = y;
 		this.radius = radius;
 		radiusOri = radius;
 		Layer.getMapViewer().addMouseListener(this);
@@ -440,7 +440,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 * @return the longitude
 	 */
 	public double getX() {
-		return x;
+		return longitude;
 	}
 
 	/**
@@ -450,14 +450,14 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Longitude
 	 */
 	public void setX(double x) {
-		this.x = x;
+		this.longitude = x;
 	}
 
 	/**
 	 * @return the latitude
 	 */
 	public double getY() {
-		return y;
+		return latitude;
 	}
 
 	/**
@@ -467,7 +467,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Latitude
 	 */
 	public void setY(double y) {
-		this.y = y;
+		this.latitude = y;
 	}
 
 	/**
@@ -484,7 +484,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 * @return the value of the radio in meter from a value given in pixels
 	 */
 	public double convertRadius() {
-		return 40075017.0 * Math.cos(y)
+		return 40075017.0 * Math.cos(latitude)
 				/ Math.pow(2, (Layer.getMapViewer().getZoom() + 8));
 	}
 
@@ -502,7 +502,7 @@ public abstract class Device implements Runnable, MouseListener,
 		GeoPosition gp = Layer.getMapViewer().convertPointToGeoPosition(p);
 		Point2D p1 = Layer.getMapViewer().getTileFactory()
 				.geoToPixel(gp, Layer.getMapViewer().getZoom());
-		GeoPosition gp2 = new GeoPosition(x, y);
+		GeoPosition gp2 = new GeoPosition(longitude, latitude);
 		Point2D p2 = Layer.getMapViewer().getTileFactory()
 				.geoToPixel(gp2, Layer.getMapViewer().getZoom());
 		double d1 = p1.getX() - p2.getX();
@@ -530,7 +530,7 @@ public abstract class Device implements Runnable, MouseListener,
 	public double distanceInPixel(Device device) {
 		double x2 = device.getX();
 		double y2 = device.getY();
-		return MapCalc.distanceEnPixels(x, y, x2, y2);
+		return MapCalc.distanceEnPixels(longitude, latitude, x2, y2);
 	}
 
 	/**
@@ -541,7 +541,7 @@ public abstract class Device implements Runnable, MouseListener,
 	public double distance(Device device) {
 		double x2 = device.getX();
 		double y2 = device.getY();
-		return MapCalc.distance(x, y, x2, y2);
+		return MapCalc.distance(longitude, latitude, x2, y2);
 	}
 
 	/**
@@ -551,7 +551,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public double distanceX(Device device) {
 		double x2 = device.getX();
-		return MapCalc.distance(x, y, x2, y);
+		return MapCalc.distance(longitude, latitude, x2, latitude);
 	}
 
 	/**
@@ -561,7 +561,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public double distanceY(Device device) {
 		double y2 = device.getY();
-		return MapCalc.distance(x, y, x, y2);
+		return MapCalc.distance(longitude, latitude, longitude, y2);
 	}
 
 	/**
@@ -576,8 +576,8 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public void sensorParametersUpdate() {
 		if (selected) {
-			DeviceParametersWindow.textField_5.setText("" + x);
-			DeviceParametersWindow.textField_6.setText("" + y);
+			DeviceParametersWindow.textField_5.setText("" + longitude);
+			DeviceParametersWindow.textField_6.setText("" + latitude);
 			DeviceParametersWindow.textField_7.setText("" + getRadius());
 			DeviceParametersWindow.textField_8.setText("" + getRadioRadius());
 			DeviceParametersWindow.textField_9.setText("" + getCaptureUnitRadius()); 
@@ -620,8 +620,8 @@ public abstract class Device implements Runnable, MouseListener,
 		GeoPosition gp = Layer.getMapViewer().convertPointToGeoPosition(p);
 		double ex = gp.getLatitude();
 		double ey = gp.getLongitude();
-		dx = ex - x;
-		dy = ey - y;
+		dlongitude = ex - longitude;
+		dlatitude = ey - latitude;
 	}
 
 	/*
@@ -855,8 +855,8 @@ public abstract class Device implements Runnable, MouseListener,
 		preprocessing();
 		if (thread != null) {
 			thread.stop();
-			x = xori;
-			y = yori;
+			longitude = longitude_ori;
+			latitude = latitude_ori;
 		}		
 		thread = null;
 		underSimulation = false;
@@ -937,8 +937,8 @@ public abstract class Device implements Runnable, MouseListener,
 		}
 
 		if ((move && selected) && hide == 0) {
-			x = ex - dx;
-			y = ey - dy;
+			longitude = ex - dlongitude;
+			latitude = ey - dlatitude;
 			Layer.getMapViewer().repaint();
 		}
 
@@ -1088,7 +1088,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	public void drawRadioLink(Device device, Graphics g) {
 
-		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+		int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 		int lx1 = coord[0];
 		int ly1 = coord[1];
 		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
@@ -1112,7 +1112,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Graphics
 	 */
 	public void drawDetectionLink(Device device, Graphics g) {
-		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);
+		int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 		int lx1 = coord[0];
 		int ly1 = coord[1];
 		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
@@ -1160,7 +1160,7 @@ public abstract class Device implements Runnable, MouseListener,
 		int[] coord;
 		if (displayInfos && selected && infos != null) {
 			g.setFont(new Font("arial", 1, 10));
-			coord = MapCalc.geoToIntPixelMapXY(x, y);
+			coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 			int lx1 = coord[0];
 			int ly1 = coord[1];
 			// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
@@ -1272,13 +1272,13 @@ public abstract class Device implements Runnable, MouseListener,
 	}
 	
 	public void fixori() {
-		xori = x;
-		yori = y;
+		longitude_ori = longitude;
+		latitude_ori = latitude;
 	}
 
 	public void toori() {
-		x = xori;
-		y = yori;
+		longitude = longitude_ori;
+		latitude = latitude_ori;
 	}
 	
 	public int getHide() {

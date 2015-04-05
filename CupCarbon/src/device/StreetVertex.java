@@ -55,7 +55,7 @@ public class StreetVertex extends Device {
 		int[] coord;
 		if (visible) {
 			initDraw(g);
-			coord = MapCalc.geoToIntPixelMapXY(x, y);
+			coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 			int x = coord[0];
 			int y = coord[1];
 			//int x = MapCalc.geoToIntPixelMapX(this.x, this.y);
@@ -71,7 +71,7 @@ public class StreetVertex extends Device {
 				//y2 = MapCalc.geoToIntPixelMapY(cNeighbor.getX(), cNeighbor.getY());
 				g.setColor(UColor.ORANGE);
 				g.drawLine(x, y, x2, y2);
-				Layer.drawDistance(this.x, this.y, cNeighbor.getX(),
+				Layer.drawDistance(this.longitude, this.latitude, cNeighbor.getX(),
 						cNeighbor.getY(), (int) this.distance(cNeighbor), g);
 			}
 
@@ -136,7 +136,7 @@ public class StreetVertex extends Device {
 					g.fillArc((int) x2 - 15, (int) y2 - 15, 30, 30,
 							-(int) alpha - 10, 20);
 
-				Layer.drawDistance(this.x, this.y, sv.getX(), sv.getY(),
+				Layer.drawDistance(this.longitude, this.latitude, sv.getX(), sv.getY(),
 						(int) this.distance(sv), g);
 			}
 			
