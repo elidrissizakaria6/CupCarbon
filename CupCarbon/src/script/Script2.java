@@ -40,7 +40,7 @@ public class Script2 {
 	public void add(Command command) {
 		Command c = new Command();
 		c.setCommandType(command.getCommandType());
-		c.setArg(command.getArg());
+		c.setArg1(command.getArg1());
 		commands.add(c);
 	}
 

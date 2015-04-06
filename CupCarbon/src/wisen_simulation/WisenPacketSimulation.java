@@ -12,7 +12,7 @@ import cupcarbon.WsnSimulationWindow;
 import device.Device;
 import device.DeviceList;
 
-public class WisenSimulation extends Thread {
+public class WisenPacketSimulation extends Thread {
 
 	private boolean discreteEvent = true;
 	private boolean mobility = false;
@@ -23,7 +23,7 @@ public class WisenSimulation extends Thread {
 	private boolean visual;
 	private int visualDelay;
 
-	public WisenSimulation() {
+	public WisenPacketSimulation() {
 
 	}
 
@@ -33,7 +33,6 @@ public class WisenSimulation extends Thread {
 	public void simulate() {
 		discreteEvent = SimulationInputs.discreteEvent;
 		mobility = SimulationInputs.mobility;
-		System.out.println("mobility "+mobility);
 		step = SimulationInputs.step;
 		iterNumber = SimulationInputs.iterNumber;		
 		visual = SimulationInputs.visual;

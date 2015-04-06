@@ -1425,7 +1425,7 @@ public abstract class Device implements Runnable, MouseListener,
 	}
 
 	public void loadScript() {
-		script = new Script();
+		script = new Script(this);
 		//System.out.println("---> " + getScriptFileName());
 		String projectScriptPath = Project.getProjectScriptPath() + File.separator + scriptFileName;		
 		try {

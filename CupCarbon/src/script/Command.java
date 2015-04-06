@@ -23,6 +23,7 @@ public class Command {
 	
 	private int commandType ;
 	private int arg ;
+	private int destination ;
 	
 	public Command() {
 		this(CommandType.SEND,0);
@@ -41,12 +42,27 @@ public class Command {
 		this.commandType = commandType;
 	}
 	
-	public int getArg() {
+	public int getArg1() {
 		return arg;
 	}
 	
-	public void setArg(int arg) {
+	public void setArg1(int arg) {
 		this.arg = arg;
+	}
+	
+	public int getEvent() {
+		if (commandType == CommandType.PSEND) return arg;
+		if (commandType == CommandType.DELAY) return arg;
+		if (commandType == CommandType.WAIT) return 99999999;
+		return 0;
+	}
+	
+	public int getDestination() {
+		return destination;
+	}
+	
+	public void setDestination(int destination) {
+		this.destination = destination;
 	}
 	
 	@Override

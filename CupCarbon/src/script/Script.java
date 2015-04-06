@@ -22,14 +22,18 @@ package script;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import device.Device;
+
 public class Script {
 
 	private Command curr;
 	private Iterator<Command> iterator;
 	private ArrayList<Command> commands = new ArrayList<Command>();
+	protected Device device = null;
 
-	public Script() {
+	public Script(Device device) {
 		iterator = null;
+		this.device = device ;
 	}
 
 	public void add(int commandType, int arg) {
@@ -40,7 +44,7 @@ public class Script {
 	public void add(Command command) {
 		Command c = new Command();
 		c.setCommandType(command.getCommandType());
-		c.setArg(command.getArg());
+		c.setArg1(command.getArg1());
 		commands.add(c);
 	}
 
