@@ -21,7 +21,14 @@ package device;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
 
+import project.Project;
+import script.CommandType;
+import script.Script;
 import sensorunit.SensorUnit;
 import utilities.MapCalc;
 import utilities.UColor;
@@ -39,6 +46,10 @@ public class SensorNode extends DeviceWithRadio {
 	protected boolean flyingObjectDetection = false;
 	protected int type = Device.SENSOR;
 	protected boolean detecting = false ;
+	
+	//
+	protected byte [] buffer = new byte [127];
+	protected HashMap<String, String> variables ; 
 
 	/**
 	 * Constructor 1 Instanciate the capture unit 
@@ -359,6 +370,41 @@ public class SensorNode extends DeviceWithRadio {
 	
 	public boolean isDetecting() {
 		return detecting ;
+	}
+	
+	public void loadScript() {
+		script = new Script(this);
+		variables = new HashMap<String, String>();
+		//System.out.println("---> " + getScriptFileName());
+		String projectScriptPath = Project.getProjectScriptPath() + File.separator + scriptFileName;		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(projectScriptPath));
+	//		script.add(CommandType.PSEND, 1000);
+	//		script.add(CommandType.DELAY, 500);
+	//		script.add(CommandType.PSEND, 2000);
+	//		script.add(CommandType.DELAY, 800);
+		
+			String s = "";
+			while ((s = br.readLine()) != null) {
+				//System.out.println(s);
+				String[] inst = s.split(" ");
+				if (inst[0].toLowerCase().equals("psend")) {
+					script.add(CommandType.PSEND, Integer.parseInt(inst[1]) * 8);
+				}
+				if (inst[0].toLowerCase().equals("delay")) {
+					script.add(CommandType.DELAY, (int) (Integer.parseInt(inst[1]) * Device.dataRate / 1000.));
+				}
+			}
+			br.close();
+		} catch (Exception e) {e.printStackTrace();}
+	}
+
+	public void addVariable(String s1, String s2) {
+		variables.put(s1, s2);
+	}
+	
+	public void displayVariables() {
+		System.out.println(variables);
 	}
 	
 }

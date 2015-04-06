@@ -22,7 +22,8 @@ package script;
 public class Command {
 	
 	private int commandType ;
-	private int arg ;
+	private int arg1 ;
+	private int arg2 ;
 	private int destination ;
 	
 	public Command() {
@@ -31,7 +32,13 @@ public class Command {
 	
 	public Command(int commandType, int arg) {
 		this.commandType = commandType ;
-		this.arg = arg ;
+		this.arg1 = arg ;
+	}
+	
+	public Command(int commandType, int arg1, int arg2) {
+		this.commandType = commandType ;
+		this.arg1 = arg1 ;
+		this.arg2 = arg2 ;
 	}
 	
 	public int getCommandType() {
@@ -43,17 +50,20 @@ public class Command {
 	}
 	
 	public int getArg1() {
-		return arg;
+		return arg1;
 	}
 	
 	public void setArg1(int arg) {
-		this.arg = arg;
+		this.arg1 = arg;
 	}
 	
 	public int getEvent() {
-		if (commandType == CommandType.PSEND) return arg;
-		if (commandType == CommandType.DELAY) return arg;
+		if (commandType == CommandType.PSEND) return arg1;
+		if (commandType == CommandType.DELAY) return arg1;
 		if (commandType == CommandType.WAIT) return 99999999;
+		
+		if(commandType == CommandType.VAR) return 0 ;
+		
 		return 0;
 	}
 	
@@ -67,6 +77,10 @@ public class Command {
 	
 	@Override
 	public String toString() {
-		return CommandType.getCommandName(commandType)+"\t"+arg;
+		return CommandType.getCommandName(commandType)+"\t"+arg1;
+	}
+
+	public int getArg2() {
+		return arg2;
 	}
 }

@@ -22,18 +22,18 @@ package script;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import device.Device;
+import device.SensorNode;
 
 public class Script {
 
 	private Command curr;
 	private Iterator<Command> iterator;
 	private ArrayList<Command> commands = new ArrayList<Command>();
-	protected Device device = null;
+	protected SensorNode sensor = null;
 
-	public Script(Device device) {
+	public Script(SensorNode sensor) {
 		iterator = null;
-		this.device = device ;
+		this.sensor = sensor ;
 	}
 
 	public void add(int commandType, int arg) {
@@ -79,6 +79,13 @@ public class Script {
 		return s ;
 	}
 	
+	public int execute() {
+		Command com = next();
+		if(com.getCommandType() == CommandType.VAR) {
+			sensor.addVariable(""+com.getArg1(),""+com.getArg2());
+		}
+		return com.getEvent();
+	}
 	
 
 }

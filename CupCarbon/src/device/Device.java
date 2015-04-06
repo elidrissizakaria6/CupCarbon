@@ -29,9 +29,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,8 +39,6 @@ import map.Layer;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
-import project.Project;
-import script.CommandType;
 import script.Script;
 import utilities.MapCalc;
 import utilities.UColor;
@@ -1424,30 +1420,6 @@ public abstract class Device implements Runnable, MouseListener,
 		return event2;
 	}
 
-	public void loadScript() {
-		script = new Script(this);
-		//System.out.println("---> " + getScriptFileName());
-		String projectScriptPath = Project.getProjectScriptPath() + File.separator + scriptFileName;		
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(projectScriptPath));
-	//		script.add(CommandType.PSEND, 1000);
-	//		script.add(CommandType.DELAY, 500);
-	//		script.add(CommandType.PSEND, 2000);
-	//		script.add(CommandType.DELAY, 800);
-		
-			String s = "";
-			while ((s = br.readLine()) != null) {
-				//System.out.println(s);
-				String[] inst = s.split(" ");
-				if (inst[0].toLowerCase().equals("psend")) {
-					script.add(CommandType.PSEND, Integer.parseInt(inst[1]) * 8);
-				}
-				if (inst[0].toLowerCase().equals("delay")) {
-					script.add(CommandType.DELAY, (int) (Integer.parseInt(inst[1]) * Device.dataRate / 1000.));
-				}
-			}
-			br.close();
-		} catch (Exception e) {e.printStackTrace();}
-	}
+	public void loadScript() {}
 		
 }

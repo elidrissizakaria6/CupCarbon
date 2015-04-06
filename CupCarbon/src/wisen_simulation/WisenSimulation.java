@@ -11,6 +11,7 @@ import simbox_simulation.SimulationInputs;
 import cupcarbon.WsnSimulationWindow;
 import device.Device;
 import device.DeviceList;
+import device.SensorNode;
 
 public class WisenSimulation extends Thread {
 
@@ -122,7 +123,8 @@ public class WisenSimulation extends Thread {
 				i=0;
 				for (Device device1 : devices) {
 					if (device1.getEvent() == 0) {
-						device1.setEvent(device1.getScript().next().getEvent());
+						device1.setEvent(device1.getScript().execute());
+						//device1.setEvent(device1.getScript().next().getEvent());
 					}
 					if (mobility)
 						if (device1.getEvent2() == 0) {
@@ -156,6 +158,10 @@ public class WisenSimulation extends Thread {
 				device.stopSimulation();
 			}
 			Layer.getMapViewer().repaint();
+		}
+		for (Device device : devices) {
+			((SensorNode) device).displayVariables();
+			System.out.println();
 		}
 	}
 
