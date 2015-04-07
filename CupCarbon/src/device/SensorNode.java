@@ -451,6 +451,7 @@ public class SensorNode extends DeviceWithRadio {
 		String s ="";
 		while(buffer[i]!='\r') {
 			s += (char) buffer[i];
+			i++;
 		}
 		variables.put(var, s);
 		int k = 0;

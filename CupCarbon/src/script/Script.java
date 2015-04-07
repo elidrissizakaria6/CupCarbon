@@ -132,15 +132,15 @@ public class Script {
 		
 		if(com.getCommandType() == CommandType.READ) {
 			sensor.readMessage(com.getArg1());
-			//execute();
 		}
 		
 		if(com.getCommandType() == CommandType.WAIT) {
-			waiting = true;
-			if(sensor.dataAvailable()) {
-				waiting = false ;				
-			}
-			//execute();
+			loopIndex = index+1 ;
+			execute();
+//			waiting = true;
+//			if(sensor.dataAvailable()) {
+//				waiting = false ;				
+//			}
 		}
 	}
 	
@@ -149,7 +149,7 @@ public class Script {
 	}
 	
 
-	public static void main(String [] arts) {
+	/*public static void main(String [] arts) {
 		Script script = new Script(null);		
 		script.add(CommandType.VAR, "x", "1");
 		script.add(CommandType.VAR, "y", "5");
@@ -174,6 +174,6 @@ public class Script {
 		System.out.println(script.getCurrent());
 		script.execute();
 		System.out.println(script.getCurrent());
-	}
+	}*/
 	
 }
