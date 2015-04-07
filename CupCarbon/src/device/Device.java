@@ -119,7 +119,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String targetName = ""; 
 	protected int channel = 0;
 	
-	public static int dataRate = 250000;
+	public static int dataRate = 31250; // 250000/8 byte/second 
 	
 	protected double eMax = 100000;
 
@@ -1406,6 +1406,10 @@ public abstract class Device implements Runnable, MouseListener,
 	
 	public void setEvent(int event) {
 		this.event = event ;
+	}
+	
+	public void setEvent(String event) {
+		this.event = Integer.parseInt(event) ;
 	}
 	
 	public int getEvent() {

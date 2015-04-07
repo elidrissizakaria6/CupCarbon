@@ -176,9 +176,8 @@ public class WsnSimulationWindow extends JInternalFrame {
 		freqComboBox.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_4.add(freqComboBox);
 		freqComboBox.setToolTipText("Data Rate");
-		freqComboBox.setModel(new DefaultComboBoxModel(new String[] { "20000",
-				"40000", "256000" }));
-		freqComboBox.setSelectedIndex(2);
+		freqComboBox.setModel(new DefaultComboBoxModel(new String[] {"31250", "256000" }));
+		freqComboBox.setSelectedIndex(1);
 
 		JLabel lblBaudRate = new JLabel("bps");
 		lblBaudRate.setFont(new Font("Arial", Font.PLAIN, 12));

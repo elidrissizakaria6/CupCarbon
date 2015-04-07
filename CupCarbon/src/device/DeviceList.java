@@ -74,13 +74,33 @@ public class DeviceList {
 	}
 	
 	/**
+	 * @return a node by its id
+	 */
+	public static Device getNodeById(int id) {
+		for(Device device : nodes) {
+			if(device.getId() == id) return device;
+		}
+		return null;
+	}
+	
+	/**
+	 * @return a sensor node by its id
+	 */
+	public static SensorNode getSensorNodeById(int id) {		
+		for(SensorNode snode : DeviceList.getSensorNodes()) {
+			if(snode.getId() == id) return snode;
+		}
+		return null;
+	}
+	
+	/**
 	 * @return the sensor nodes
 	 */
-	public static List<Device> getSensorNodes() {
-		List<Device> snodes = new ArrayList<Device>();
+	public static List<SensorNode> getSensorNodes() {
+		List<SensorNode> snodes = new ArrayList<SensorNode>();
 		for(Device n : nodes) {
 			if(n.getType() == Device.SENSOR)
-				snodes.add(n);
+				snodes.add((SensorNode) n);
 		}
 		return snodes;
 	}

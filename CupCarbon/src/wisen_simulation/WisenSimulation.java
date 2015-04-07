@@ -7,6 +7,7 @@ import java.util.List;
 
 import map.Layer;
 import project.Project;
+import script.CommandType;
 import simbox_simulation.SimulationInputs;
 import cupcarbon.WsnSimulationWindow;
 import device.Device;
@@ -47,8 +48,9 @@ public class WisenSimulation extends Thread {
 			device.setDead(false);
 			device.getBattery().init(SimulationInputs.energyMax);
 			device.loadScript();
-			device.getScript().init();						
-			device.setEvent(device.getScript().next().getEvent());
+			device.getScript().init();
+			device.getScript().execute();
+			device.setEvent(device.getScript().getEvent());
 			if (mobility) {
 				device.fixori();
 				device.loadRouteFromFile();
@@ -70,6 +72,8 @@ public class WisenSimulation extends Thread {
 		WsnSimulationWindow.setState("Simulate (CPU) ...");
 
 		try {
+			PrintStream mps = new PrintStream("abc.txt");
+			
 			String as = "";
 			if (mobility)
 				as = "_mob";
@@ -101,8 +105,8 @@ public class WisenSimulation extends Thread {
 						min = min2;
 				} else
 					min = getMin();
-				// ============================================================
-
+				// ============================================================				
+				
 				time += min;
 				int i = 0;
 				for (Device device1 : devices) {
@@ -122,8 +126,9 @@ public class WisenSimulation extends Thread {
 				ps.println();
 				i=0;
 				for (Device device1 : devices) {
-					if (device1.getEvent() == 0) {
-						device1.setEvent(device1.getScript().execute());
+					if ((device1.getEvent() == 0) || (device1.getScript().getCurrent().getCommandType() == CommandType.WAIT)) {
+						device1.getScript().execute();
+						device1.setEvent(device1.getScript().getEvent());
 						//device1.setEvent(device1.getScript().next().getEvent());
 					}
 					if (mobility)
@@ -139,7 +144,13 @@ public class WisenSimulation extends Thread {
 					}
 				}
 				WsnSimulationWindow.setProgress((int) (1000 * iter / iterNumber));
+				mps.println(iter + ": ---------------------");
+				for (Device device : devices) {
+					((SensorNode) device).displayState(mps);
+					mps.println("--------------------------");
+				}
 			}
+			mps.close();
 			ps.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -158,11 +169,7 @@ public class WisenSimulation extends Thread {
 				device.stopSimulation();
 			}
 			Layer.getMapViewer().repaint();
-		}
-		for (Device device : devices) {
-			((SensorNode) device).displayVariables();
-			System.out.println();
-		}
+		}		
 	}
 
 	// ------------------------------------------------------------

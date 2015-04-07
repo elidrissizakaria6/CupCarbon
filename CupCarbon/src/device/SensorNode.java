@@ -24,6 +24,8 @@ import java.awt.Graphics;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import project.Project;
@@ -48,7 +50,9 @@ public class SensorNode extends DeviceWithRadio {
 	protected boolean detecting = false ;
 	
 	//
-	protected byte [] buffer = new byte [127];
+	protected int bufferSize = 127;
+	protected int bufferIndex = 0 ;
+	protected byte [] buffer = new byte [bufferSize];
 	protected HashMap<String, String> variables ; 
 
 	/**
@@ -61,6 +65,7 @@ public class SensorNode extends DeviceWithRadio {
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
+		initBuffer();
 	}
 
 	/**
@@ -81,6 +86,7 @@ public class SensorNode extends DeviceWithRadio {
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
+		initBuffer();
 	}
 
 	/**
@@ -104,6 +110,7 @@ public class SensorNode extends DeviceWithRadio {
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
+		initBuffer();
 	}
 
 	/**
@@ -129,6 +136,7 @@ public class SensorNode extends DeviceWithRadio {
 			double cuRadius, String[][] sb) {
 		this(x, y, radius, radioRadius, cuRadius);
 		this.setInfos(sb);
+		initBuffer();
 	}
 
 	/**
@@ -155,6 +163,7 @@ public class SensorNode extends DeviceWithRadio {
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
+		initBuffer();
 	}
 
 	/**
@@ -182,6 +191,7 @@ public class SensorNode extends DeviceWithRadio {
 		scriptFileName = (scriptFileName.equals("#") ? "" : scriptFileName);
 		setGPSFileName(gpsFileName);
 		setScriptFileName(scriptFileName);
+		initBuffer();
 	}
 	
 //	@Override
@@ -389,10 +399,28 @@ public class SensorNode extends DeviceWithRadio {
 				//System.out.println(s);
 				String[] inst = s.split(" ");
 				if (inst[0].toLowerCase().equals("psend")) {
-					script.add(CommandType.PSEND, Integer.parseInt(inst[1]) * 8);
+					script.add(CommandType.PSEND, Integer.parseInt(inst[1]));
 				}
 				if (inst[0].toLowerCase().equals("delay")) {
 					script.add(CommandType.DELAY, (int) (Integer.parseInt(inst[1]) * Device.dataRate / 1000.));
+				}				
+				if (inst[0].toLowerCase().equals("var")) {
+					script.add(CommandType.VAR, inst[1], inst[2]);
+				}				
+				if (inst[0].toLowerCase().equals("read")) {
+					script.add(CommandType.READ, inst[1]);
+				}
+				if (inst[0].toLowerCase().equals("send")) {
+					script.add(CommandType.SEND, inst[1], inst[2]);
+				}
+				if (inst[0].toLowerCase().equals("loop")) {
+					script.add(CommandType.LOOP);
+				}
+				if (inst[0].toLowerCase().equals("wait")) {
+					script.add(CommandType.WAIT);
+				}
+				if (inst[0].toLowerCase().equals("break")) {
+					script.add(CommandType.BREAK);
 				}
 			}
 			br.close();
@@ -403,8 +431,44 @@ public class SensorNode extends DeviceWithRadio {
 		variables.put(s1, s2);
 	}
 	
-	public void displayVariables() {
-		System.out.println(variables);
+	public void displayState(PrintStream mps) {
+		mps.println(id);
+		mps.println(variables);		
+		mps.println(Arrays.toString(buffer));
+	}
+
+	public void setMessage(String message) {
+		for(int i=0; i<message.length(); i++) {
+			buffer[bufferIndex] = (byte) message.charAt(i);
+			bufferIndex++;
+			if(bufferIndex >= bufferSize) bufferIndex = 0;
+		}
+		buffer[message.length()] = '\r';
+	}	
+	
+	public void readMessage(String var) {
+		int i=0;
+		String s ="";
+		while(buffer[i]!='\r') {
+			s += (char) buffer[i];
+		}
+		variables.put(var, s);
+		int k = 0;
+		for(int j=i+1;j<bufferSize; j++) {
+			buffer[k++] = buffer[j];
+		}
+		bufferIndex=0;
+	}
+	
+	public void initBuffer() {
+		for(int i=0; i<bufferSize; i++) {
+			buffer[i] = '\r';
+		}
+	}
+
+	public boolean dataAvailable() {
+		if(buffer[0]!='\r') return true;
+		return false;
 	}
 	
 }

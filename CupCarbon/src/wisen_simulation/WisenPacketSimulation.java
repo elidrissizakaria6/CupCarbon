@@ -46,7 +46,8 @@ public class WisenPacketSimulation extends Thread {
 			device.getBattery().init(SimulationInputs.energyMax);
 			device.loadScript();
 			device.getScript().init();						
-			device.setEvent(device.getScript().next().getEvent());
+			device.getScript().next();
+			device.setEvent(device.getScript().getCurrent().getArg1());
 			if (mobility) {
 				device.fixori();
 				device.loadRouteFromFile();
@@ -121,7 +122,8 @@ public class WisenPacketSimulation extends Thread {
 				i=0;
 				for (Device device1 : devices) {
 					if (device1.getEvent() == 0) {
-						device1.setEvent(device1.getScript().next().getEvent());
+						device1.getScript().next();
+						device1.setEvent(device1.getScript().getCurrent().getArg1());
 					}
 					if (mobility)
 						if (device1.getEvent2() == 0) {

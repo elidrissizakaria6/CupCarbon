@@ -19,25 +19,50 @@
 
 package script;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
+import device.DeviceList;
 import device.SensorNode;
 
 public class Script {
 
-	private Command curr;
-	private Iterator<Command> iterator;
-	private ArrayList<Command> commands = new ArrayList<Command>();
+	//protected Command curr;
+	//protected Iterator<Command> iterator;
+	protected LinkedList<Command> commands = new LinkedList<Command>();
 	protected SensorNode sensor = null;
+	protected int index = 0;
+	protected int loopIndex = 0;
+	protected boolean waiting = false;
 
 	public Script(SensorNode sensor) {
-		iterator = null;
+		//iterator = null;
+		index = 0;
 		this.sensor = sensor ;
 	}
 
+	public void add(int commandType) {
+		Command c = new Command(commandType);
+		commands.add(c);
+	}
+	
 	public void add(int commandType, int arg) {
 		Command c = new Command(commandType, arg);
+		commands.add(c);
+	}
+	
+	public void add(int commandType, String arg) {
+		Command c = new Command(commandType, arg);
+		commands.add(c);
+	}
+	
+	public void add(int commandType, int s1, int s2) {
+		Command c = new Command(commandType, s1, s2);
+		commands.add(c);
+	}
+	
+	public void add(int commandType, String s1, String s2) {
+		Command c = new Command(commandType, s1, s2);
 		commands.add(c);
 	}
 
@@ -48,25 +73,27 @@ public class Script {
 		commands.add(c);
 	}
 
-	public Command next() {
-		if (iterator == null) {
-			iterator = commands.iterator();
-			curr = iterator.next();
-		} else {
-			if (!iterator.hasNext())
-				iterator = commands.iterator();
-			if (curr.getCommandType() != CommandType.BREAK)
-				curr = iterator.next();
-		}
-		return curr;
+	public void next() {
+		//if (!iterator.hasNext())
+		//	iterator = commands.iterator();
+		//if (curr.getCommandType() != CommandType.BREAK)
+		//	curr = iterator.next();
+		
+		index++;
+		if(index >= commands.size())
+			index = loopIndex;
+		//return curr;
+		//return commands.get(index);
 	}
 	
 	public void init() {
-		iterator = null;
+		index = -1 ;
+		//iterator = commands.iterator();
+		//curr = iterator.next();
 	}
 	
 	public Command getCurrent() {
-		return curr;
+		return commands.get(index);
 	}
 
 	@Override
@@ -79,13 +106,74 @@ public class Script {
 		return s ;
 	}
 	
-	public int execute() {
-		Command com = next();
+	public void execute() {
+		if(!waiting) {
+			next();			
+		}
+		waiting = false ;
+		Command com = getCurrent();
 		if(com.getCommandType() == CommandType.VAR) {
 			sensor.addVariable(""+com.getArg1(),""+com.getArg2());
+			execute();
 		}
-		return com.getEvent();
+		
+		if(com.getCommandType() == CommandType.LOOP) {
+			loopIndex = index+1 ;
+			execute();
+		}
+		
+		if(com.getCommandType() == CommandType.SEND) {
+			String message = com.getArg1();
+			int destNodeId = com.getIntOfArg2();
+			SensorNode snode = DeviceList.getSensorNodeById(destNodeId);
+			if(sensor.radioDetect(snode))
+				snode.setMessage(message);
+		}
+		
+		if(com.getCommandType() == CommandType.READ) {
+			sensor.readMessage(com.getArg1());
+			//execute();
+		}
+		
+		if(com.getCommandType() == CommandType.WAIT) {
+			waiting = true;
+			if(sensor.dataAvailable()) {
+				waiting = false ;				
+			}
+			//execute();
+		}
+	}
+	
+	public int getEvent() {
+		return getCurrent().getEvent();
 	}
 	
 
+	public static void main(String [] arts) {
+		Script script = new Script(null);		
+		script.add(CommandType.VAR, "x", "1");
+		script.add(CommandType.VAR, "y", "5");
+		script.add(CommandType.PSEND, 1000);
+		script.add(CommandType.DELAY, 500);
+		script.add(CommandType.LOOP);
+		script.add(CommandType.PSEND, 2000);
+		script.add(CommandType.DELAY, 800);		
+		script.execute();
+		System.out.println(script.getCurrent());
+		script.execute();
+		System.out.println(script.getCurrent());
+		script.execute();
+		System.out.println(script.getCurrent());
+		script.execute();
+		System.out.println(script.getCurrent());
+		script.execute();
+		System.out.println(script.getCurrent());
+		script.execute();
+		System.out.println(script.getCurrent());
+		script.execute();
+		System.out.println(script.getCurrent());
+		script.execute();
+		System.out.println(script.getCurrent());
+	}
+	
 }

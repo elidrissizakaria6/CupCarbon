@@ -24,6 +24,7 @@ import java.util.List;
 import map.Layer;
 import device.Device;
 import device.DeviceList;
+import device.SensorNode;
 
 /**
  * @author Ahcene Bounceur
@@ -41,7 +42,7 @@ protected boolean loop = true ;
 	@Override	
 	public void run() {
 
-		List<Device> nodes = DeviceList.getSensorNodes();
+		List<SensorNode> nodes = DeviceList.getSensorNodes();
 		List<Device> mobiles = DeviceList.getMobileNodes();
 
 		Device n1, n2;

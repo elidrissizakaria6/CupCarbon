@@ -4,7 +4,7 @@ package script;
 public class ScriptTest {
 	
 	public static void main(String [] args) throws InterruptedException {
-		
+/*		
 		Script s = new Script(null) ;
 
 		s.add(CommandType.PSEND, 1000);
@@ -33,5 +33,6 @@ public class ScriptTest {
 		System.out.println(s.next());
 		System.out.println(s.next());
 		System.out.println(s.next());
+		*/
 	}
 }

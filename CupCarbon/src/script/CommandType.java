@@ -29,6 +29,7 @@ public final class CommandType {
 	public static final int WAIT = 5 ;
 	public static final int VAR = 6 ;
 	public static final int AT = 7 ;
+	public static final int LOOP = 8 ;
 	
 	//-- AT
 	public static final int CH = 10 ;
@@ -48,6 +49,7 @@ public final class CommandType {
 		if(i==BREAK) return "BREAK";
 		if(i==WAIT) return "WAIT";
 		if(i==VAR) return "VAR";
+		if(i==LOOP) return "LOOP";
 		return "";
 	}
 	

@@ -19,11 +19,9 @@
 
 package script;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Script2 {
-
+/*
 	private Command curr;
 	private static Iterator<Command> iterator;
 	private static ArrayList<Command> commands = new ArrayList<Command>();
@@ -66,5 +64,5 @@ public class Script2 {
 		}
 		return s ;
 	}
-
+*/
 }

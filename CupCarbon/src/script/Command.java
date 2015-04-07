@@ -22,20 +22,39 @@ package script;
 public class Command {
 	
 	private int commandType ;
-	private int arg1 ;
-	private int arg2 ;
+	private String arg1 = "" ;
+	private String arg2 = "" ;
 	private int destination ;
 	
 	public Command() {
-		this(CommandType.SEND,0);
+		this(CommandType.SEND, "0");
+	}
+	
+	public Command(int commandType) {
+		this.commandType = commandType ;
+		this.arg1 = "" ;
+		this.arg2 = "" ;
 	}
 	
 	public Command(int commandType, int arg) {
 		this.commandType = commandType ;
-		this.arg1 = arg ;
+		this.arg1 = ""+arg ;
+		this.arg2 = "" ;
 	}
 	
 	public Command(int commandType, int arg1, int arg2) {
+		this.commandType = commandType ;
+		this.arg1 = ""+arg1 ;
+		this.arg2 = ""+arg2 ;
+	}
+	
+	public Command(int commandType, String arg) {
+		this.commandType = commandType ;
+		this.arg1 = arg ;
+		this.arg2 = "" ;
+	}
+	
+	public Command(int commandType, String arg1, String arg2) {
 		this.commandType = commandType ;
 		this.arg1 = arg1 ;
 		this.arg2 = arg2 ;
@@ -49,20 +68,44 @@ public class Command {
 		this.commandType = commandType;
 	}
 	
-	public int getArg1() {
+	public String getArg1() {
 		return arg1;
 	}
 	
+	public void setArg1(String arg1) {
+		this.arg1 = arg1 ;
+	}
+	
+	public int getIntOfArg1() {
+		return Integer.parseInt(arg1);
+	}
+	
 	public void setArg1(int arg) {
-		this.arg1 = arg;
+		this.arg1 = String.valueOf(arg);
+	}
+	
+	public String getArg2() {
+		return arg2;
+	}
+	
+	public int getIntOfArg2() {
+		return Integer.parseInt(arg2);
+	}
+	
+	public void setArg2(String arg2) {
+		this.arg2 = arg2 ;
+	}
+	
+	public void set2(int arg) {
+		this.arg2 = String.valueOf(arg);
 	}
 	
 	public int getEvent() {
-		if (commandType == CommandType.PSEND) return arg1;
-		if (commandType == CommandType.DELAY) return arg1;
-		if (commandType == CommandType.WAIT) return 99999999;
-		
-		if(commandType == CommandType.VAR) return 0 ;
+		if (commandType == CommandType.PSEND) return Integer.parseInt(arg1);
+		if (commandType == CommandType.DELAY) return Integer.parseInt(arg1);
+		if (commandType == CommandType.SEND) return arg1.length();
+		if (commandType == CommandType.WAIT) return 99999999;		
+		if (commandType == CommandType.VAR) return 0 ;
 		
 		return 0;
 	}
@@ -80,7 +123,4 @@ public class Command {
 		return CommandType.getCommandName(commandType)+"\t"+arg1;
 	}
 
-	public int getArg2() {
-		return arg2;
-	}
 }
