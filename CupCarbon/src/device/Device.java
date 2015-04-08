@@ -119,7 +119,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected String targetName = ""; 
 	protected int channel = 0;
 	
-	public static int dataRate = 31250; // 250000/8 byte/second 
+	public static int dataRate = 250000; //250k byte/s 
 	
 	protected double eMax = 100000;
 

@@ -7,12 +7,10 @@ import java.util.List;
 
 import map.Layer;
 import project.Project;
-import script.CommandType;
 import simbox_simulation.SimulationInputs;
 import cupcarbon.WsnSimulationWindow;
 import device.Device;
 import device.DeviceList;
-import device.SensorNode;
 
 public class WisenSimulation extends Thread {
 
@@ -33,6 +31,7 @@ public class WisenSimulation extends Thread {
 	// Run simulation 
 	// ------------------------------------------------------------
 	public void simulate() {
+		SimLog.init();
 		discreteEvent = SimulationInputs.discreteEvent;
 		mobility = SimulationInputs.mobility;
 		System.out.println("mobility "+mobility);
@@ -72,8 +71,6 @@ public class WisenSimulation extends Thread {
 		WsnSimulationWindow.setState("Simulate (CPU) ...");
 
 		try {
-			PrintStream mps = new PrintStream("abc.txt");
-			
 			String as = "";
 			if (mobility)
 				as = "_mob";
@@ -126,7 +123,9 @@ public class WisenSimulation extends Thread {
 				ps.println();
 				i=0;
 				for (Device device1 : devices) {
-					if ((device1.getEvent() == 0) || (device1.getScript().getCurrent().getCommandType() == CommandType.WAIT)) {
+					device1.getScript().waitVerification();
+					//if ((device1.getEvent() == 0) || (device1.getScript().getCurrent().getCommandType() == CommandType.WAIT)) {
+					if ((device1.getEvent() == 0)) {	
 						device1.getScript().execute();
 						device1.setEvent(device1.getScript().getEvent());
 						//device1.setEvent(device1.getScript().next().getEvent());
@@ -144,13 +143,8 @@ public class WisenSimulation extends Thread {
 					}
 				}
 				WsnSimulationWindow.setProgress((int) (1000 * iter / iterNumber));
-				mps.println(iter + ": ---------------------");
-				for (Device device : devices) {
-					((SensorNode) device).displayState(mps);
-					mps.println("--------------------------");
-				}
 			}
-			mps.close();
+			SimLog.close();
 			ps.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

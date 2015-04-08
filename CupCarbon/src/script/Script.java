@@ -22,6 +22,7 @@ package script;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import wisen_simulation.SimLog;
 import device.DeviceList;
 import device.SensorNode;
 
@@ -33,7 +34,7 @@ public class Script {
 	protected SensorNode sensor = null;
 	protected int index = 0;
 	protected int loopIndex = 0;
-	protected boolean waiting = false;
+	//protected boolean waiting = false;
 
 	public Script(SensorNode sensor) {
 		//iterator = null;
@@ -107,40 +108,57 @@ public class Script {
 	}
 	
 	public void execute() {
-		if(!waiting) {
-			next();			
-		}
-		waiting = false ;
-		Command com = getCurrent();
-		if(com.getCommandType() == CommandType.VAR) {
-			sensor.addVariable(""+com.getArg1(),""+com.getArg2());
+		//if(!waiting) {
+		next();			
+		//}
+		//waiting = false ;
+
+		if(getCurrent().getCommandType() == CommandType.VAR) {
+			sensor.addVariable(""+getCurrent().getArg1(),""+getCurrent().getArg2());
+			SimLog.add("S"+sensor.getId()+" : set "+getCurrent().getArg1()+"="+getCurrent().getArg2());
 			execute();
 		}
 		
-		if(com.getCommandType() == CommandType.LOOP) {
+		if(getCurrent().getCommandType() == CommandType.DELAY) {
+			SimLog.add("S"+sensor.getId()+" : delay of "+(getCurrent().getIntOfArg1()/250)+" mili seconds");
+		}
+		
+		if(getCurrent().getCommandType() == CommandType.LOOP) {
+			SimLog.add("S"+sensor.getId()+" starts the loop section.");
 			loopIndex = index+1 ;
 			execute();
 		}
 		
-		if(com.getCommandType() == CommandType.SEND) {
-			String message = com.getArg1();
-			int destNodeId = com.getIntOfArg2();
+		if(getCurrent().getCommandType() == CommandType.SEND) {
+			String message = getCurrent().getArg1();
+			int destNodeId = getCurrent().getIntOfArg2();
 			SensorNode snode = DeviceList.getSensorNodeById(destNodeId);
-			if(sensor.radioDetect(snode))
+			if(sensor.radioDetect(snode)) {
 				snode.setMessage(message);
+				SimLog.add("S"+sensor.getId()+" send the message : \""+message+"\" to S"+snode.getId());
+			}
 		}
 		
-		if(com.getCommandType() == CommandType.READ) {
-			sensor.readMessage(com.getArg1());
-		}
-		
-		if(com.getCommandType() == CommandType.WAIT) {
-			loopIndex = index+1 ;
+		if(getCurrent().getCommandType() == CommandType.READ) {
+			sensor.readMessage(getCurrent().getArg1());	
 			execute();
+		}
+		
+		if(getCurrent().getCommandType() == CommandType.WAIT) {
+			SimLog.add("S"+sensor.getId()+" is waiting ...");
+			
 //			waiting = true;
 //			if(sensor.dataAvailable()) {
+//				SimLog.add("S"+sensor.getId()+" exit waiting.");
 //				waiting = false ;				
 //			}
+		}
+		
+	}
+	
+	public void waitVerification() {
+		if(getCurrent().getCommandType() == CommandType.WAIT) {
+			if(sensor.dataAvailable()) sensor.setEvent(0);
 		}
 	}
 	

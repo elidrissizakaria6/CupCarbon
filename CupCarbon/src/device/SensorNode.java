@@ -34,6 +34,7 @@ import script.Script;
 import sensorunit.SensorUnit;
 import utilities.MapCalc;
 import utilities.UColor;
+import wisen_simulation.SimLog;
 import battery.Battery;
 
 /**
@@ -438,12 +439,18 @@ public class SensorNode extends DeviceWithRadio {
 	}
 
 	public void setMessage(String message) {
+		buffer[bufferIndex+message.length()] = '\r';
 		for(int i=0; i<message.length(); i++) {
 			buffer[bufferIndex] = (byte) message.charAt(i);
 			bufferIndex++;
-			if(bufferIndex >= bufferSize) bufferIndex = 0;
+			if(bufferIndex >= bufferSize) bufferIndex = 0;			
+		}		
+		String s = "";
+		for(int i=0; i<bufferSize; i++) {
+			if(buffer[i]!=13) 
+				s += (char)buffer[i];
 		}
-		buffer[message.length()] = '\r';
+		SimLog.add("S"+id+" : Buffer : "+s);
 	}	
 	
 	public void readMessage(String var) {
@@ -453,6 +460,7 @@ public class SensorNode extends DeviceWithRadio {
 			s += (char) buffer[i];
 			i++;
 		}
+		SimLog.add("S"+getId()+" read from its buffer "+s+" and put it in "+var);
 		variables.put(var, s);
 		int k = 0;
 		for(int j=i+1;j<bufferSize; j++) {
