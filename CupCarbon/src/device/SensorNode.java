@@ -480,4 +480,8 @@ public class SensorNode extends DeviceWithRadio {
 		return false;
 	}
 	
+	public String getVariableValue(String var) {
+		return variables.get(var);
+	}
+	
 }

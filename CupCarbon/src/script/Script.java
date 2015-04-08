@@ -131,6 +131,8 @@ public class Script {
 		
 		if(getCurrent().getCommandType() == CommandType.SEND) {
 			String message = getCurrent().getArg1();
+			if(message.charAt(0)=='$')
+				message =  sensor.getVariableValue(message.substring(1));
 			int destNodeId = getCurrent().getIntOfArg2();
 			SensorNode snode = DeviceList.getSensorNodeById(destNodeId);
 			if(sensor.radioDetect(snode)) {
@@ -141,7 +143,7 @@ public class Script {
 		
 		if(getCurrent().getCommandType() == CommandType.READ) {
 			sensor.readMessage(getCurrent().getArg1());	
-			execute();
+			//execute();
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.WAIT) {
