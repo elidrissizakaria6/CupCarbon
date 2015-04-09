@@ -100,16 +100,16 @@ public class Command {
 		this.arg2 = String.valueOf(arg);
 	}
 	
-	public int getEvent() {
-		if (commandType == CommandType.PSEND) return Integer.parseInt(arg1);
-		if (commandType == CommandType.DELAY) return Integer.parseInt(arg1);
-		if (commandType == CommandType.SEND) return arg1.length();
-		//if (commandType == CommandType.READ) return 127;
-		if (commandType == CommandType.WAIT) return 99999999;		
-		if (commandType == CommandType.VAR) return 0 ;
-		
-		return 0;
-	}
+//	public int getEvent() {
+//		if (commandType == CommandType.PSEND) return Integer.parseInt(arg1);
+//		if (commandType == CommandType.DELAY) return Integer.parseInt(arg1);
+//		if (commandType == CommandType.SEND) return arg1.length();
+//		if (commandType == CommandType.READ) return 127;
+//		if (commandType == CommandType.WAIT) return Integer.MAX_VALUE;		
+//		if (commandType == CommandType.VAR) return 0 ;
+//		
+//		return Integer.MAX_VALUE;
+//	}
 	
 	public int getDestination() {
 		return destination;

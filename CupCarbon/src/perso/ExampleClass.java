@@ -32,8 +32,9 @@ public class ExampleClass extends Thread {
 	}
 	
 	public void displaySensorList() {
-		for(int i=0; i<DeviceList.size(); i++) {
-			System.out.println(nodes.get(i).getId());
+		for(Device node : nodes) {
+			System.out.print(node.getId()+" : " );
+			System.out.println(node.getX()+" "+node.getY());
 		}
 	}
 	

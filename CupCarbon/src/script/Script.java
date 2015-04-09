@@ -34,7 +34,7 @@ public class Script {
 	protected SensorNode sensor = null;
 	protected int index = 0;
 	protected int loopIndex = 0;
-	//protected boolean waiting = false;
+	protected boolean waiting = false;
 
 	public Script(SensorNode sensor) {
 		//iterator = null;
@@ -108,64 +108,70 @@ public class Script {
 	}
 	
 	public void execute() {
-		//if(!waiting) {
-		next();			
-		//}
-		//waiting = false ;
+		if(!waiting) {
+			next();			
+		}
+		waiting = false ;
 
 		if(getCurrent().getCommandType() == CommandType.VAR) {
-			sensor.addVariable(""+getCurrent().getArg1(),""+getCurrent().getArg2());
-			SimLog.add("S"+sensor.getId()+" : set "+getCurrent().getArg1()+"="+getCurrent().getArg2());
+			SimLog.add("S"+sensor.getId()+" Set "+getCurrent().getArg1()+"="+getCurrent().getArg2());
+			sensor.addVariable(""+getCurrent().getArg1(),""+getCurrent().getArg2());			
+			event = 0;
 			execute();
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.DELAY) {
-			SimLog.add("S"+sensor.getId()+" : delay of "+(getCurrent().getIntOfArg1()/250)+" mili seconds");
+			SimLog.add("S"+sensor.getId()+" Delay of "+(getCurrent().getIntOfArg1()/250)+" mili seconds");
+			event = Integer.parseInt(getCurrent().getArg1());						
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.LOOP) {
-			SimLog.add("S"+sensor.getId()+" starts the loop section.");
+			SimLog.add("S"+sensor.getId()+" Starts the loop section.");
 			loopIndex = index+1 ;
 			execute();
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.SEND) {
+			event = getCurrent().getArg1().length();
 			String message = getCurrent().getArg1();
 			if(message.charAt(0)=='$')
 				message =  sensor.getVariableValue(message.substring(1));
 			int destNodeId = getCurrent().getIntOfArg2();
 			SensorNode snode = DeviceList.getSensorNodeById(destNodeId);
-			if(sensor.radioDetect(snode)) {
-				snode.setMessage(message);
-				SimLog.add("S"+sensor.getId()+" send the message : \""+message+"\" to S"+snode.getId());
+			if(sensor.radioDetect(snode) && !snode.isDead()) {
+				SimLog.add("S"+sensor.getId()+" Sends the message : \""+message+"\" to S"+snode.getId());
+				snode.setMessage(message);				
 			}
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.READ) {
-			sensor.readMessage(getCurrent().getArg1());	
+			event = sensor.readMessage(getCurrent().getArg1());	
 			//execute();
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.WAIT) {
 			SimLog.add("S"+sensor.getId()+" is waiting ...");
-			
-//			waiting = true;
-//			if(sensor.dataAvailable()) {
-//				SimLog.add("S"+sensor.getId()+" exit waiting.");
-//				waiting = false ;				
-//			}
+			event = Integer.MAX_VALUE;
+			waiting = true;
+			if(sensor.dataAvailable()) {
+				SimLog.add("S"+sensor.getId()+" exit waiting.");
+				waiting = false ;				
+			}
 		}
 		
 	}
 	
-	public void waitVerification() {
-		if(getCurrent().getCommandType() == CommandType.WAIT) {
-			if(sensor.dataAvailable()) sensor.setEvent(0);
-		}
-	}
+//	public void waitVerification() {
+//		if(getCurrent().getCommandType() == CommandType.WAIT) {
+//			if(sensor.dataAvailable()) sensor.setEvent(0);
+//		}
+//	}
+	
+	protected int event = Integer.MAX_VALUE;
 	
 	public int getEvent() {
-		return getCurrent().getEvent();
+		//return getCurrent().getEvent();
+		return event;
 	}
 	
 

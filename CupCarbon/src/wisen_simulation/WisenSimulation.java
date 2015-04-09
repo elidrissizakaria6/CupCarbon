@@ -7,6 +7,7 @@ import java.util.List;
 
 import map.Layer;
 import project.Project;
+import script.CommandType;
 import simbox_simulation.SimulationInputs;
 import cupcarbon.WsnSimulationWindow;
 import device.Device;
@@ -43,6 +44,7 @@ public class WisenSimulation extends Thread {
 		WsnSimulationWindow.setState("Simulation : initialization ...");
 		System.out.println("Initialization ... ");
 		List<Device> devices = DeviceList.getNodes();
+		SimLog.add("=========");
 		for (Device device : devices) {
 			device.setDead(false);
 			device.getBattery().init(SimulationInputs.energyMax);
@@ -59,6 +61,7 @@ public class WisenSimulation extends Thread {
 					device.setEvent2(999999999);
 			}
 		}
+		SimLog.add("=========");
 		System.out.println("End of Initialization.");
 		int min = 0;
 		int min1;
@@ -78,6 +81,8 @@ public class WisenSimulation extends Thread {
 					Project.getProjectResultsPath() + "/cpu_simulation_cc" + as + ".csv"));
 			int conso;
 			for (iter = 0; (iter < iterNumber) && (!stopSimulation()); iter++) {
+				
+				SimLog.add("-------------------");
 				
 				ps.print(time + ";");
 
@@ -105,42 +110,47 @@ public class WisenSimulation extends Thread {
 				// ============================================================				
 				
 				time += min;
-				int i = 0;
+				SimLog.add("->"+min);
+				SimLog.add("-------------------");
 				for (Device device1 : devices) {
-					conso = 0;
-					for (Device device2 : devices) {						
-						conso += (device1.radioDetect(device2)?1:0) 								
-								 * device2.getScript().getCurrent().getCommandType()
-								* (1 - (device2.isDead()?1:0));
-					}
-					device1.consume(min * conso);					
-					device1.setEvent(device1.getEvent()-min);
-					
-					if (mobility)
-						device1.setEvent2(device1.getEvent2()-min);
-					i++;
-				}
-				ps.println();
-				i=0;
-				for (Device device1 : devices) {
-					device1.getScript().waitVerification();
-					//if ((device1.getEvent() == 0) || (device1.getScript().getCurrent().getCommandType() == CommandType.WAIT)) {
-					if ((device1.getEvent() == 0)) {	
-						device1.getScript().execute();
-						device1.setEvent(device1.getScript().getEvent());
-						//device1.setEvent(device1.getScript().next().getEvent());
-					}
-					if (mobility)
-						if (device1.getEvent2() == 0) {
-							if (devices.get(i).canMove()) {
-								devices.get(i).moveToNext(visual, visualDelay);
-								device1.setEvent2(device1.getNextTime());
-							}
+					//if(!device1.isDead()) {
+						conso = 0;
+						for (Device device2 : devices) {						
+							conso += (device1.radioDetect(device2)?1:0) 								
+									 * device2.getScript().getCurrent().getCommandType()
+									* (1 - (device2.isDead()?1:0));
 						}
-					if (device1.getBattery().empty()) {
-						device1.setEvent(99999999);
-						device1.setDead(true);
-					}
+						device1.consume(min * conso);					
+						device1.setEvent(device1.getEvent()-min);
+						
+						if (mobility)
+							device1.setEvent2(device1.getEvent2()-min);
+					//}
+				}
+
+				ps.println();
+				for (Device device1 : devices) {
+					//if(!device1.isDead()) {
+						//device1.getScript().waitVerification();						
+						if ((device1.getEvent() == 0) || (device1.getScript().getCurrent().getCommandType() == CommandType.WAIT)) {						
+						//if ((device1.getEvent() == 0)) {	
+							
+							device1.getScript().execute();
+							device1.setEvent(device1.getScript().getEvent());
+							//device1.setEvent(device1.getScript().next().getEvent());
+						}
+						if (mobility)
+							if (device1.getEvent2() == 0) {
+								if (device1.canMove()) {
+									device1.moveToNext(visual, visualDelay);
+									device1.setEvent2(device1.getNextTime());
+								}
+							}
+						if (device1.getBattery().empty()) {
+							//device1.setEvent(99999999);
+							device1.setDead(true);
+						}
+					//}
 				}
 				WsnSimulationWindow.setProgress((int) (1000 * iter / iterNumber));
 			}

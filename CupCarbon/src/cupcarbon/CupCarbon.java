@@ -62,6 +62,7 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import osm.City;
 import perso.ExampleClass;
+import perso.MonAlgoClass;
 import perso.MyClass;
 import project.Project;
 import simulation.FaultInjector;
@@ -1519,6 +1520,15 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(mntmExample);
+		
+		JMenuItem monMenuAlgo = new JMenuItem("Mon Algo");
+		monMenuAlgo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MonAlgoClass monAlgo = new MonAlgoClass();
+				monAlgo.start();
+			}
+		});
+		mnPerso.add(monMenuAlgo);
 
 		//------------------------------------------------------------
 		//------------------------------------------------------------

@@ -450,10 +450,10 @@ public class SensorNode extends DeviceWithRadio {
 			if(buffer[i]!=13) 
 				s += (char)buffer[i];
 		}
-		SimLog.add("S"+id+" : Buffer : "+s);
+		SimLog.add("S"+id+" Buffer : "+s);
 	}	
 	
-	public void readMessage(String var) {
+	public int readMessage(String var) {
 		int i=0;
 		String s ="";
 		while(buffer[i]!='\r') {
@@ -467,6 +467,7 @@ public class SensorNode extends DeviceWithRadio {
 			buffer[k++] = buffer[j];
 		}
 		bufferIndex=0;
+		return i--;
 	}
 	
 	public void initBuffer() {

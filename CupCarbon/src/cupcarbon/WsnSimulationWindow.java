@@ -106,7 +106,7 @@ public class WsnSimulationWindow extends JInternalFrame {
 		iterNumberTextField = new JTextField();
 		panel_8.add(iterNumberTextField);
 		iterNumberTextField.setFont(new Font("Arial", Font.PLAIN, 12));
-		iterNumberTextField.setText("10000");
+		iterNumberTextField.setText("1000");
 		iterNumberTextField.setColumns(10);
 
 		JPanel panel_9 = new JPanel();
@@ -228,14 +228,14 @@ public class WsnSimulationWindow extends JInternalFrame {
 		panel_14.add(rdbtnCpuSimulation);
 		rdbtnCpuSimulation.setFont(new Font("Arial", Font.PLAIN, 12));
 		buttonGroup.add(rdbtnCpuSimulation);
-		rdbtnCpuSimulation.setSelected(true);
 
 		rdbtnGpuSimulation = new JRadioButton("GPU Based Simulation");
 		panel_14.add(rdbtnGpuSimulation);
 		rdbtnGpuSimulation.setFont(new Font("Arial", Font.PLAIN, 12));
 		buttonGroup.add(rdbtnGpuSimulation);
 		
-		rdbtnPingPongSimulation = new JRadioButton("PingPong Based Simulation");
+		rdbtnPingPongSimulation = new JRadioButton("Wisen Simulation");
+		rdbtnPingPongSimulation.setSelected(true);
 		buttonGroup.add(rdbtnPingPongSimulation);
 		rdbtnPingPongSimulation.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_14.add(rdbtnPingPongSimulation);
