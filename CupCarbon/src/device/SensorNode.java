@@ -54,6 +54,7 @@ public class SensorNode extends DeviceWithRadio {
 	protected int bufferSize = 127;
 	protected int bufferIndex = 0 ;
 	protected byte [] buffer = new byte [bufferSize];
+	protected boolean bufferReady = false;
 	protected HashMap<String, String> variables ; 
 
 	/**
@@ -450,7 +451,7 @@ public class SensorNode extends DeviceWithRadio {
 			if(buffer[i]!=13) 
 				s += (char)buffer[i];
 		}
-		SimLog.add("S"+id+" Buffer : "+s);
+		//SimLog.add("S"+id+" Buffer : "+s);
 	}	
 	
 	public int readMessage(String var) {
@@ -460,14 +461,15 @@ public class SensorNode extends DeviceWithRadio {
 			s += (char) buffer[i];
 			i++;
 		}
-		SimLog.add("S"+getId()+" read from its buffer "+s+" and put it in "+var);
+		SimLog.add("S"+getId()+" read from its buffer \""+s+"\" and put it in "+var);
 		variables.put(var, s);
 		int k = 0;
 		for(int j=i+1;j<bufferSize; j++) {
 			buffer[k++] = buffer[j];
 		}
 		bufferIndex=0;
-		return i--;
+		bufferReady = false ;
+		return i;
 	}
 	
 	public void initBuffer() {
@@ -477,12 +479,32 @@ public class SensorNode extends DeviceWithRadio {
 	}
 
 	public boolean dataAvailable() {
-		if(buffer[0]!='\r') return true;
-		return false;
+		return bufferReady;
+		//if(buffer[0]!='\r') return true;
+		//return false;
+	}
+	
+	public boolean verifyData() {
+		if(buffer[0]!='\r') {
+			bufferReady = true;
+			return true;
+		} 
+		else {
+			bufferReady = false ;
+			return false;
+		}
 	}
 	
 	public String getVariableValue(String var) {
 		return variables.get(var);
+	}
+
+	public int getDataSize() {
+		int i=0;
+		while(buffer[i]!='\r') {
+			i++;
+		}
+		return i;
 	}
 	
 }

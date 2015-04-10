@@ -60,8 +60,7 @@ public class WisenSimulation extends Thread {
 				else
 					device.setEvent2(999999999);
 			}
-		}
-		SimLog.add("=========");
+		}		
 		System.out.println("End of Initialization.");
 		int min = 0;
 		int min1;
@@ -80,10 +79,27 @@ public class WisenSimulation extends Thread {
 			PrintStream ps = new PrintStream(new FileOutputStream(
 					Project.getProjectResultsPath() + "/cpu_simulation_cc" + as + ".csv"));
 			int conso;
+			
+			SimLog.add("=========");
+			if (mobility) {					
+				if (discreteEvent) {
+					min1 = getMin();
+					min2 = getMin2();
+				} else {
+					min1 = step;
+					min2 = step;
+				}
+				if (min1 <= min2)
+					min = min1;
+				if (min2 < min1)
+					min = min2;
+			} else
+				min = getMin();
 			for (iter = 0; (iter < iterNumber) && (!stopSimulation()); iter++) {
 				
 				SimLog.add("-------------------");
-				
+				SimLog.add("-> "+min);
+				SimLog.add("-------------------");
 				ps.print(time + ";");
 
 				for (Device device : devices) {
@@ -92,26 +108,10 @@ public class WisenSimulation extends Thread {
 				for (Device device : devices) {
 					ps.print(device.getEvent() + ";");
 				}
-
-				if (mobility) {					
-					if (discreteEvent) {
-						min1 = getMin();
-						min2 = getMin2();
-					} else {
-						min1 = step;
-						min2 = step;
-					}
-					if (min1 <= min2)
-						min = min1;
-					if (min2 < min1)
-						min = min2;
-				} else
-					min = getMin();
+				
 				// ============================================================				
 				
-				time += min;
-				SimLog.add("->"+min);
-				SimLog.add("-------------------");
+				time += min;				
 				for (Device device1 : devices) {
 					//if(!device1.isDead()) {
 						conso = 0;
@@ -152,6 +152,20 @@ public class WisenSimulation extends Thread {
 						}
 					//}
 				}
+				if (mobility) {					
+					if (discreteEvent) {
+						min1 = getMin();
+						min2 = getMin2();
+					} else {
+						min1 = step;
+						min2 = step;
+					}
+					if (min1 <= min2)
+						min = min1;
+					if (min2 < min1)
+						min = min2;
+				} else
+					min = getMin();
 				WsnSimulationWindow.setProgress((int) (1000 * iter / iterNumber));
 			}
 			SimLog.close();
@@ -188,10 +202,13 @@ public class WisenSimulation extends Thread {
 	// Min : currEvent1
 	// ------------------------------------------------------------
 	public int getMin() {
-		int min = (int) 10e8;
-		for (Device device : DeviceList.getNodes())
+		//int min = (int) 10e8;
+		int min = Integer.MAX_VALUE;
+		for (Device device : DeviceList.getNodes()) {
+			//SimLog.add("::: "+device.getEvent());
 			if ((min > device.getEvent()))
 				min = device.getEvent();
+		}
 		return min;
 	}
 
