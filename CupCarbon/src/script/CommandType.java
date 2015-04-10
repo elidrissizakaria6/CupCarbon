@@ -30,26 +30,29 @@ public final class CommandType {
 	public static final int VAR = 6 ;
 	public static final int AT = 7 ;
 	public static final int LOOP = 8 ;
+	public static final int ADD = 9 ;
 	
 	//-- AT
-	public static final int CH = 10 ;
-	public static final int ID = 11 ;	
-	public static final int NI = 12 ;
-	public static final int SH = 13 ;
-	public static final int SL = 14 ;
-	public static final int DH = 15 ;
-	public static final int DL = 16 ;
-	public static final int MY = 17 ;
+//	public static final int CH = 10 ;
+//	public static final int ID = 11 ;	
+//	public static final int NI = 12 ;
+//	public static final int SH = 13 ;
+//	public static final int SL = 14 ;
+//	public static final int DH = 15 ;
+//	public static final int DL = 16 ;
+//	public static final int MY = 17 ;
 	
 	
 	public static String getCommandName(int i) {
 		if(i==DELAY) return "DELAY";
 		if(i==PSEND) return "PSEND";
 		if(i==SEND) return "SEND";
+		if(i==READ) return "READ";
 		if(i==BREAK) return "BREAK";
 		if(i==WAIT) return "WAIT";
 		if(i==VAR) return "VAR";
 		if(i==LOOP) return "LOOP";
+		if(i==ADD) return "ADD";
 		return "";
 	}
 	

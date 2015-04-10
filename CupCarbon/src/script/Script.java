@@ -28,14 +28,13 @@ import device.SensorNode;
 
 public class Script {
 
-	//protected Command curr;
-	//protected Iterator<Command> iterator;
 	protected LinkedList<Command> commands = new LinkedList<Command>();
 	protected SensorNode sensor = null;
 	protected int index = 0;
 	protected int loopIndex = 0;
 	protected boolean waiting = false;
-
+	protected int event = Integer.MAX_VALUE-1;
+	
 	public Script(SensorNode sensor) {
 		//iterator = null;
 		index = 0;
@@ -134,7 +133,7 @@ public class Script {
 		if(getCurrent().getCommandType() == CommandType.SEND) {			
 			String message = getCurrent().getArg1();
 			if(message.charAt(0)=='$')
-				message =  sensor.getVariableValue(message.substring(1));
+				message = sensor.getVariableValue(message.substring(1));
 			event = message.length();
 			int destNodeId = getCurrent().getIntOfArg2();
 			SensorNode snode = DeviceList.getSensorNodeById(destNodeId);
@@ -168,47 +167,27 @@ public class Script {
 			waiting = true;
 		}
 		
-	}
-	
-//	public void waitVerification() {
-//		if(getCurrent().getCommandType() == CommandType.WAIT) {
-//			if(sensor.dataAvailable()) sensor.setEvent(0);
-//		}
-//	}
-	
-	protected int event = Integer.MAX_VALUE-1;
+		if(getCurrent().getCommandType() == CommandType.ADD) {
+			String k = getCurrent().getArg1();
+			String v1 = getCurrent().getArg1();
+			String v2 = getCurrent().getArg2();
+			if(k.charAt(0)=='$')
+				k = k.substring(1);
+			if(v1.charAt(0)=='$')
+				v1 = sensor.getVariableValue(v1.substring(1));			
+			if(v2.charAt(0)=='$')
+				v2 = sensor.getVariableValue(v2.substring(1));
+			int z = Integer.valueOf(v1) + Integer.valueOf(v2) ;
+			
+			SimLog.add("S"+sensor.getId()+" "+k+"="+k+"+"+Integer.valueOf(v2)+" -> "+z);
+			sensor.addVariable(k,""+z);		
+			event = 0;
+		}
+		
+	}	
 	
 	public int getEvent() {
-		//return getCurrent().getEvent();
 		return event;
-	}
-	
-
-	/*public static void main(String [] arts) {
-		Script script = new Script(null);		
-		script.add(CommandType.VAR, "x", "1");
-		script.add(CommandType.VAR, "y", "5");
-		script.add(CommandType.PSEND, 1000);
-		script.add(CommandType.DELAY, 500);
-		script.add(CommandType.LOOP);
-		script.add(CommandType.PSEND, 2000);
-		script.add(CommandType.DELAY, 800);		
-		script.execute();
-		System.out.println(script.getCurrent());
-		script.execute();
-		System.out.println(script.getCurrent());
-		script.execute();
-		System.out.println(script.getCurrent());
-		script.execute();
-		System.out.println(script.getCurrent());
-		script.execute();
-		System.out.println(script.getCurrent());
-		script.execute();
-		System.out.println(script.getCurrent());
-		script.execute();
-		System.out.println(script.getCurrent());
-		script.execute();
-		System.out.println(script.getCurrent());
-	}*/
+	}	
 	
 }

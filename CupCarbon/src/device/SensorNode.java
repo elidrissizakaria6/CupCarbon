@@ -424,6 +424,9 @@ public class SensorNode extends DeviceWithRadio {
 				if (inst[0].toLowerCase().equals("break")) {
 					script.add(CommandType.BREAK);
 				}
+				if (inst[0].toLowerCase().equals("add")) {
+					script.add(CommandType.ADD, inst[1], inst[2]);
+				}
 			}
 			br.close();
 		} catch (Exception e) {e.printStackTrace();}
@@ -446,13 +449,13 @@ public class SensorNode extends DeviceWithRadio {
 			bufferIndex++;
 			if(bufferIndex >= bufferSize) bufferIndex = 0;			
 		}		
-		String s = "";
-		for(int i=0; i<bufferSize; i++) {
-			if(buffer[i]!=13) 
-				s += (char)buffer[i];
-		}
+//		String s = "";
+//		for(int i=0; i<bufferSize; i++) {
+//			if(buffer[i]!=13) 
+//				s += (char)buffer[i];
+//		}
 		//SimLog.add("S"+id+" Buffer : "+s);
-	}	
+	}
 	
 	public int readMessage(String var) {
 		int i=0;
