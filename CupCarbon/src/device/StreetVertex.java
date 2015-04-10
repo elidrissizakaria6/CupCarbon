@@ -255,7 +255,7 @@ public class StreetVertex extends Device {
 		return "";
 	}
 
-	public LinkedList<StreetVertex> getNeighbors() {
+	public LinkedList<StreetVertex> getSVNeighbors() {
 		return neighbors;
 	}
 

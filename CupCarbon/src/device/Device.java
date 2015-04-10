@@ -1351,7 +1351,7 @@ public abstract class Device implements Runnable, MouseListener,
 		this.value = value;
 	}
 	
-	public List<Device> getNeghbors() {
+	public List<Device> getNeighbors() {
 		List<Device> neghnodes = new ArrayList<Device>();
 		for (int i = 0; i < DeviceList.size(); i++) {
 			if(this != DeviceList.getNodes().get(i)) 

@@ -54,7 +54,7 @@ public class StreetGraph {
 				fos.println(" " + streetVertex.isBusStation());
 			}
 			for (StreetVertex streetVertex : verticesList) {
-				for (StreetVertex sv : streetVertex.getNeighbors()) {
+				for (StreetVertex sv : streetVertex.getSVNeighbors()) {
 					fos.print(verticesList.indexOf(sv) + " ");
 				}
 				fos.println();

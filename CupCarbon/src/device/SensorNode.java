@@ -25,8 +25,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import project.Project;
 import script.CommandType;
@@ -443,6 +445,7 @@ public class SensorNode extends DeviceWithRadio {
 	}
 
 	public void setMessage(String message) {
+		//System.out.println(Arrays.toString(buffer));
 		buffer[bufferIndex+message.length()] = '\r';
 		for(int i=0; i<message.length(); i++) {
 			buffer[bufferIndex] = (byte) message.charAt(i);
@@ -508,6 +511,17 @@ public class SensorNode extends DeviceWithRadio {
 			i++;
 		}
 		return i;
+	}
+	
+	public List<SensorNode> getSensorNodeNeighbors() {
+		List<SensorNode> neighnodes = new ArrayList<SensorNode>();
+		
+		for(SensorNode snode : DeviceList.getSensorNodes()) {
+			if(((snode.radioDetect(this)) || (radioDetect(snode))) && this!=snode) {
+				neighnodes.add(snode);
+			}
+		}
+		return neighnodes;
 	}
 	
 }

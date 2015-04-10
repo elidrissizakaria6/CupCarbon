@@ -133,11 +133,23 @@ public class Script {
 			if(message.charAt(0)=='$')
 				message = sensor.getVariableValue(message.substring(1));
 			event = message.length();
-			int destNodeId = getCurrent().getIntOfArg2();
-			SensorNode snode = DeviceList.getSensorNodeById(destNodeId);
-			if(sensor.radioDetect(snode) && !snode.isDead()) {
-				SimLog.add("S"+sensor.getId()+" Sends the message : \""+message+"\" to S"+snode.getId());
-				snode.setMessage(message);	
+			
+			if(getCurrent().getArg2().equals("*")) {
+				SimLog.add("S"+sensor.getId()+" Sends the message : \""+message+"\" to the nodes : ");
+				for(SensorNode snode : sensor.getSensorNodeNeighbors()) {
+					if(sensor.radioDetect(snode) && !snode.isDead()) {
+						SimLog.add("  -> S"+snode.getId()+" ");
+						snode.setMessage(new String(message));	
+					}
+				}
+			}
+			else {
+				int destNodeId = getCurrent().getIntOfArg2();
+				SensorNode snode = DeviceList.getSensorNodeById(destNodeId);
+				if(sensor.radioDetect(snode) && !snode.isDead()) {
+					SimLog.add("S"+sensor.getId()+" Sends the message : \""+message+"\" to S"+snode.getId());
+					snode.setMessage(message);	
+				}
 			}
 		}
 		
