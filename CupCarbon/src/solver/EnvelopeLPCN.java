@@ -109,7 +109,8 @@ public class EnvelopeLPCN extends Thread {
 						if ((current != j) && (n1.radioDetect(n2) || n2.radioDetect(n1))) {
 								x2 = n2.getY();
 								y2 = n2.getX();
-								angle = getAngle(x1 - xc, y1 - yc, x2 - xc, y2 - yc);
+								//angle = getAngle(x1 - xc, y1 - yc, x2 - xc, y2 - yc);
+								angle = getAngle(x1, y1, xc, yc, x2, y2);
 								intersection = false;
 								int k = DeviceList.getLastEnvelopeSize()-1;								
 								while(k>0 && !intersection) {
@@ -151,7 +152,25 @@ public class EnvelopeLPCN extends Thread {
 		System.out.println("FINISH !");
 	}
 
-	public double getAngle(double x1, double y1, double x2, double y2) {
+//	public double getAngle(double x1, double y1, double x2, double y2) {
+//		if(x1==x2 && y1==y2) return Math.PI*2;
+//		double a = Math.atan2(x1, y1);
+//		if (a < 0)
+//			a = (2 * Math.PI) + a;
+//		double b = Math.atan2(x2, y2);
+//		if (b < 0)
+//			b = (2 * Math.PI) + b;
+//		b = b - a;
+//		if (b < 0)
+//			b = (2 * Math.PI) + b;
+//		return b;
+//	}
+	
+	public double getAngle(double x1, double y1, double xc, double yc, double x2, double y2) {
+		x1 = x1 - xc;
+		y1 = y1 - yc; 
+		x2 = x2 - xc;
+		y2 = y2 - yc;
 		if(x1==x2 && y1==y2) return Math.PI*2;
 		double a = Math.atan2(x1, y1);
 		if (a < 0)

@@ -116,7 +116,6 @@ public class Script {
 			SimLog.add("S"+sensor.getId()+" Set "+getCurrent().getArg1()+"="+getCurrent().getArg2());
 			sensor.addVariable(""+getCurrent().getArg1(),""+getCurrent().getArg2());			
 			event = 0;
-			//execute();
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.DELAY) {
@@ -126,8 +125,7 @@ public class Script {
 		
 		if(getCurrent().getCommandType() == CommandType.LOOP) {
 			SimLog.add("S"+sensor.getId()+" Starts the loop section.");
-			loopIndex = index+1 ;
-			//execute();
+			loopIndex = index+1 ;			
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.SEND) {			
@@ -145,7 +143,6 @@ public class Script {
 		
 		if(getCurrent().getCommandType() == CommandType.READ) {
 			event = sensor.readMessage(getCurrent().getArg1());	
-			//execute();
 		}
 		
 		if(getCurrent().getCommandType() == CommandType.WAIT) {			

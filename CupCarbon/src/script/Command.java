@@ -24,6 +24,10 @@ public class Command {
 	private int commandType ;
 	private String arg1 = "" ;
 	private String arg2 = "" ;
+	private String arg3 = "" ;
+	private String arg4 = "" ;
+	private String arg5 = "" ;
+	private String arg6 = "" ;
 	private int destination ;
 	
 	public Command() {
@@ -46,6 +50,16 @@ public class Command {
 		this.commandType = commandType ;
 		this.arg1 = ""+arg1 ;
 		this.arg2 = ""+arg2 ;
+	}
+	
+	public Command(int commandType, String arg1, String arg2, String arg3, String arg4, String arg5, String arg6) {
+		this.commandType = commandType ;
+		this.arg1 = ""+arg1 ;
+		this.arg2 = ""+arg2 ;
+		this.arg3 = ""+arg3 ;
+		this.arg4 = ""+arg4 ;
+		this.arg5 = ""+arg5 ;
+		this.arg6 = ""+arg6 ;
 	}
 	
 	public Command(int commandType, String arg) {
@@ -88,6 +102,38 @@ public class Command {
 		return arg2;
 	}
 	
+	public String getArg3() {
+		return arg3;
+	}
+
+	public void setArg3(String arg3) {
+		this.arg3 = arg3;
+	}
+
+	public String getArg4() {
+		return arg4;
+	}
+
+	public void setArg4(String arg4) {
+		this.arg4 = arg4;
+	}
+
+	public String getArg5() {
+		return arg5;
+	}
+
+	public void setArg5(String arg5) {
+		this.arg5 = arg5;
+	}
+
+	public String getArg6() {
+		return arg6;
+	}
+
+	public void setArg6(String arg6) {
+		this.arg6 = arg6;
+	}
+	
 	public int getIntOfArg2() {
 		return Integer.parseInt(arg2);
 	}
@@ -99,17 +145,6 @@ public class Command {
 	public void set2(int arg) {
 		this.arg2 = String.valueOf(arg);
 	}
-	
-//	public int getEvent() {
-//		if (commandType == CommandType.PSEND) return Integer.parseInt(arg1);
-//		if (commandType == CommandType.DELAY) return Integer.parseInt(arg1);
-//		if (commandType == CommandType.SEND) return arg1.length();
-//		if (commandType == CommandType.READ) return 127;
-//		if (commandType == CommandType.WAIT) return Integer.MAX_VALUE;		
-//		if (commandType == CommandType.VAR) return 0 ;
-//		
-//		return Integer.MAX_VALUE;
-//	}
 	
 	public int getDestination() {
 		return destination;
@@ -123,5 +158,5 @@ public class Command {
 	public String toString() {
 		return CommandType.getCommandName(commandType)+"\t"+arg1;
 	}
-
+	
 }

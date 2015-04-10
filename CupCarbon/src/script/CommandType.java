@@ -31,6 +31,7 @@ public final class CommandType {
 	public static final int AT = 7 ;
 	public static final int LOOP = 8 ;
 	public static final int ADD = 9 ;
+	public static final int ANGLE = 10 ;
 	
 	//-- AT
 //	public static final int CH = 10 ;
@@ -53,6 +54,7 @@ public final class CommandType {
 		if(i==VAR) return "VAR";
 		if(i==LOOP) return "LOOP";
 		if(i==ADD) return "ADD";
+		if(i==ANGLE) return "ANGLE";
 		return "";
 	}
 	
