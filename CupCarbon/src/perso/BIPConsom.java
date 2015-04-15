@@ -12,12 +12,12 @@ import javax.swing.JOptionPane;
 import device.DeviceList;
 import device.SensorNode;
 
-public class BIP extends Thread {
+public class BIPConsom extends Thread {
 
 	public void run() {
 //		int i=0;
 		final int DEFAULTRADIOVALUE=100;
-		double valeurMin= 100;
+		double valeurMin= 100000000;
 //		ArrayList<arete> aretes = new ArrayList<arete>();
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
 		List<SensorNode> noeudsNonMarques = new ArrayList<SensorNode>();
@@ -37,8 +37,8 @@ public class BIP extends Thread {
 		//initialisation des noeuds
 		for( SensorNode a : capteurs )
 		{
-			a.setRadioRadius(DEFAULTRADIOVALUE);
-			a.setValue(a.getRadioRadius());// la
+			a.setRadioRadius(0);
+			a.setValue(0);
 			if(a.isSelected()){ a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
 			else {a.setMarked(false);noeudsNonMarques.add(a);}
 		}
@@ -56,33 +56,35 @@ public class BIP extends Thread {
 						
 						if(capteurs.get(j).isMarked()==false){
 							System.out.println("papa");
-							if((NoeudMarque.distance(capteurs.get(j))-NoeudMarque.getValue())<valeurMin)
+							System.out.println("hana "+(NoeudMarque.Consommation(capteurs.get(j))-NoeudMarque.getValue()));
+							if((NoeudMarque.Consommation(capteurs.get(j))-NoeudMarque.getValue())<valeurMin)
 								{	
 								System.out.println(NoeudMarque +" veut marqué " + capteurs.get(j));
 								NoeudNonMarque=capteurs.get(j);
 								numSommetNMCandidat=j;
 								NoeudMarqueChoisi=NoeudMarque;
-								valeurMin=(NoeudMarque.distance(NoeudNonMarque)-NoeudMarque.getValue());
+								valeurMin=(NoeudMarque.Consommation(NoeudNonMarque)-NoeudMarque.getValue());
 								}
 						}
 					}
 				}
 			}
 			System.out.println(NoeudMarqueChoisi +" a marqué " + NoeudNonMarque);
-			NoeudMarqueChoisi.setRadioRadius(NoeudMarqueChoisi.getValue()+valeurMin);
-			NoeudMarqueChoisi.setValue(NoeudMarqueChoisi.getRadioRadius());
+			NoeudMarqueChoisi.setRadioRadius(NoeudMarqueChoisi.distance(capteurs.get(numSommetNMCandidat)));
+			NoeudMarqueChoisi.setValue(NoeudMarqueChoisi.Consommation(capteurs.get(numSommetNMCandidat)));
 			capteurs.get(numSommetNMCandidat).setMarked(true);
 //			NoeudNonMarque.setMarked(true);//je me demandais si je dois marque dans la liste capteurs ou comme ici
 			System.out.println("je suis la");
 			noeudsMarques.add(NoeudNonMarque);
 			noeudsNonMarques.remove(NoeudNonMarque);
-			valeurMin=5000;
+			valeurMin=100000000;
 		}
 
 		final JFrame parent = new JFrame();
 		try {
 			sleep(5);
-			JOptionPane.showMessageDialog(parent, "la puissance = "+calculerPuissanceGlobale(capteurs));
+			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
+					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,6 +101,17 @@ public class BIP extends Thread {
 			if(s.isMarked()==true) puissance+=s.getRadioRadius();
 		}
 		return puissance;
+	}
+	public double calculerComsommationGlobale(List<SensorNode> capteurs)
+	{
+		double Conso=0;
+		for(SensorNode s : capteurs)
+		{
+//			if(s.isMarked()==true) Conso+=s.getValue(); valeurs différente avec l'algo BIPConso
+			if(s.isMarked()==true) Conso+=s.getConsommation();
+
+		}
+		return Conso;
 	}
 	
 }

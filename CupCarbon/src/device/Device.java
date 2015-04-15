@@ -41,6 +41,7 @@ import map.Layer;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
+import consumer.MaConsommation;
 import script.Script;
 import utilities.MapCalc;
 import utilities.UColor;
@@ -106,7 +107,9 @@ public abstract class Device implements Runnable, MouseListener,
 	protected boolean mobile = false;
 	protected boolean detection = false;
 	protected boolean displayRadius = false;
-	protected boolean displayDistance = false;	
+	protected boolean displayDistance = false;
+	//Zakaria
+	protected double consommation=0;
 	protected boolean visited = false;
 	protected boolean visible = true;
 
@@ -556,7 +559,14 @@ public abstract class Device implements Runnable, MouseListener,
 		double y2 = device.getY();
 		return MapCalc.distance(longitude, latitude, x2, y2);
 	}
-
+	// Zakaria
+	public double getConsommation(){
+		return MaConsommation.getConsommation(this.getRadioRadius());
+	}
+	public double Consommation(Device device){
+		return MaConsommation.Consommation(this.distance(device));
+	}
+	// Zakaria
 	/**
 	 * @param device
 	 * @return the horizontal distance in meters between the current design and

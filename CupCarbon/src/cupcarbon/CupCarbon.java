@@ -62,6 +62,8 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import osm.City;
 import perso.BIP;
+import perso.BIPConsom;
+import perso.CalculerPuissanceConsommation;
 import perso.ExampleClass;
 import perso.MSTKRUSKAL;
 import perso.MonAlgoClass;
@@ -1553,6 +1555,30 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoBipMenu);
+		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem algoBipConsoMenu = new JMenuItem("Algo BIP Consommation");
+		algoBipConsoMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BIPConsom monBipConso = new BIPConsom();
+				monBipConso.start();
+			}
+		});
+		mnPerso.add(algoBipConsoMenu);
+		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem calculerConsoMenu = new JMenuItem("Calculer la puissance");
+		calculerConsoMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CalculerPuissanceConsommation calculerpuisconso = new CalculerPuissanceConsommation();
+				calculerpuisconso.start();
+			}
+		});
+		mnPerso.add(calculerConsoMenu);
 
 		//------------------------------------------------------------
 		//------------------------------------------------------------
