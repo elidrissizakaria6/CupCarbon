@@ -31,8 +31,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import map.Layer;
@@ -45,6 +47,7 @@ import utilities.UColor;
 import utilities._Constantes;
 import wisen_simulation_mehdi.MehdiDeviceSimulator;
 import wisen_simulation_mehdi.MehdiSimulation;
+import arete.arete;
 import battery.Battery;
 import cupcarbon.DeviceParametersWindow;
 
@@ -136,8 +139,22 @@ public abstract class Device implements Runnable, MouseListener,
 	protected boolean marked = false;
 	protected double value = 0;
 	protected LinkedList<Double> valueList;
+	protected Set<Device> composantescnx=new HashSet<Device>();
+	
 	//----------------------------------
 	
+	public Set<Device> getComposantescnx() {
+		return composantescnx;
+	}
+
+	public void setComposantescnx(Set<Device> composantescnx) {
+		this.composantescnx = composantescnx;
+	}
+	public void ajouterComposantescnx(Device a)
+	{
+		this.composantescnx.add(a);
+	}
+
 	protected int event = -1;
 	protected int event2 = -1;
 
@@ -1031,7 +1048,7 @@ public abstract class Device implements Runnable, MouseListener,
 			// double dMax = Math.max(MapCalc.rayonEnPixel(getRadioRadius()),
 			// MapCalc.rayonEnPixel(node.getRadioRadius()));
 			double dMax = Math.max(getRadioRadius(), device.getRadioRadius());
-			return (dMax > (distance(device)));
+			return (dMax >= (distance(device)));
 		}
 		return false;
 	}

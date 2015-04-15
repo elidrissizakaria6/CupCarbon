@@ -14,8 +14,10 @@ public class ExampleClass extends Thread {
 	public void run() {
 		// Get the node list
 		nodes = DeviceList.getNodes();
-
-		SensorNode s1 = (SensorNode) nodes.get(0);
+		SensorNode s1 = new SensorNode();
+		try{
+		s1 = (SensorNode) nodes.get(0);
+		}catch(IndexOutOfBoundsException e){System.out.println("une erreur pas tres grave");}
 		s1.loadRouteFromFile();
 		s1.fixori();
 		int i=0;

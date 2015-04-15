@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import arete.arete;
 import device.Device;
 import device.DeviceList;
 import device.SensorNode;
 
-public class MonAlgoClass extends Thread {
+public class MSTKRUSKAL extends Thread {
 
 	public void run() {
 		int i=0;
@@ -39,7 +42,7 @@ public class MonAlgoClass extends Thread {
 		Collections.sort(aretes);
 				
 		for( SensorNode a : capteurs )
-		{a.setMarked(false);a.ajouterComposantescnx(a);}
+		{a.setMarked(false);a.getComposantescnx().clear();a.ajouterComposantescnx(a);}
 		for( SensorNode a : capteurs ){
 			
 			System.out.println(a.getComposantescnx());
@@ -56,28 +59,34 @@ public class MonAlgoClass extends Thread {
 			}
 			
 		}
-		
+		final JFrame parent = new JFrame();
+		try {
+			sleep(5);
+			JOptionPane.showMessageDialog(parent, "la puissance = "+calculerPuissanceGlobale(capteurs));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 		
 
-	}
 
 	public boolean isCycle(arete ar)
 	{
 			if((ar.getDevice1().getComposantescnx().equals(ar.getDevice1()))||(ar.getDevice2().getComposantescnx().equals(ar.getDevice2())))
 			{
-				System.out.println("fchkel");
+				System.out.println("cas superflu");
 				return false;
 			}
 			else if (ar.getDevice1().getComposantescnx().equals(ar.getDevice2().getComposantescnx()))
 			{
-				System.out.println("hana dkhelt "+ar.getDevice1().getComposantescnx()+"="+ar.getDevice2().getComposantescnx());
+				System.out.println("cas égalité "+ar.getDevice1().getComposantescnx()+"="+ar.getDevice2().getComposantescnx());
 
 				return true;
 			}
 			else{
-				System.out.println("normal");
+				System.out.println("pas de cycle normal");
 				return false;
-			
 			}
 		
 	}
@@ -89,6 +98,15 @@ public class MonAlgoClass extends Thread {
 		{
 			s.getComposantescnx().addAll(a.getDevice1().getComposantescnx());
 		}
+	}
+	public double calculerPuissanceGlobale(List<SensorNode> capteurs)
+	{
+		double puissance=0;
+		for(SensorNode s : capteurs)
+		{
+			puissance+=s.getRadioRadius();
+		}
+		return puissance;
 	}
 	
 }

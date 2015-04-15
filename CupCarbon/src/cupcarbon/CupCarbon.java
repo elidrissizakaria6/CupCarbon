@@ -61,7 +61,9 @@ import map.WorldMap;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import osm.City;
+import perso.BIP;
 import perso.ExampleClass;
+import perso.MSTKRUSKAL;
 import perso.MonAlgoClass;
 import perso.MyClass;
 import project.Project;
@@ -1529,6 +1531,28 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(monMenuAlgo);
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem algoMstMenu = new JMenuItem("Algo MST KRUSKAL");
+		algoMstMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MSTKRUSKAL mstKruskal = new MSTKRUSKAL();
+				mstKruskal.start();
+			}
+		});
+		mnPerso.add(algoMstMenu);
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem algoBipMenu = new JMenuItem("Algo BIP");
+		algoBipMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BIP monBip = new BIP();
+				monBip.start();
+			}
+		});
+		mnPerso.add(algoBipMenu);
 
 		//------------------------------------------------------------
 		//------------------------------------------------------------
