@@ -73,11 +73,17 @@ public class BIPConsom extends Thread {
 			NoeudMarqueChoisi.setRadioRadius(NoeudMarqueChoisi.distance(capteurs.get(numSommetNMCandidat)));
 			NoeudMarqueChoisi.setValue(NoeudMarqueChoisi.Consommation(capteurs.get(numSommetNMCandidat)));
 			capteurs.get(numSommetNMCandidat).setMarked(true);
-//			NoeudNonMarque.setMarked(true);//je me demandais si je dois marque dans la liste capteurs ou comme ici
 			System.out.println("je suis la");
 			noeudsMarques.add(NoeudNonMarque);
 			noeudsNonMarques.remove(NoeudNonMarque);
 			valeurMin=100000000;
+			try {
+				sleep(1000);
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		final JFrame parent = new JFrame();
