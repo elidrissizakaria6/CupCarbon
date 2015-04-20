@@ -281,7 +281,6 @@ public class DeviceList2 {
 						n2 = iterator2.next();
 						if (n1.radioDetect(n2) && n2.radioDetect(n1) && drawLinks) {
 							// Zakaria biderictionelle 
-							System.out.println("2");
 							n1.drawRadioLink(n2, g);
 							if (displayConnectionDistance) {
 								Layer.drawDistance(n1.getX(), n1.getY(),

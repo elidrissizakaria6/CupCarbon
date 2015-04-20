@@ -41,15 +41,14 @@ import map.Layer;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
-import consumer.MaConsommation;
 import script.Script;
 import utilities.MapCalc;
 import utilities.UColor;
 import utilities._Constantes;
 import wisen_simulation_mehdi.MehdiDeviceSimulator;
 import wisen_simulation_mehdi.MehdiSimulation;
-import arete.arete;
 import battery.Battery;
+import consumer.MaConsommation;
 import cupcarbon.DeviceParametersWindow;
 
 /**
@@ -1053,11 +1052,20 @@ public abstract class Device implements Runnable, MouseListener,
 	 * @param device
 	 * @return if a device is in the radio area of the current device
 	 */
-	public boolean radioDetect(Device device) {
+	public boolean radioDetectZakaria(Device device) {
 		if (withRadio && device.withRadio()) {
 			// double dMax = Math.max(MapCalc.rayonEnPixel(getRadioRadius()),
 			// MapCalc.rayonEnPixel(node.getRadioRadius()));
 			double dMax = Math.min(getRadioRadius(), device.getRadioRadius());// j'ai remplacer max par min pour" bidirectionel"
+			return (dMax >= (distance(device)));
+		}
+		return false;
+	}
+	public boolean radioDetect(Device device) {
+		if (withRadio && device.withRadio()) {
+			// double dMax = Math.max(MapCalc.rayonEnPixel(getRadioRadius()),
+			// MapCalc.rayonEnPixel(node.getRadioRadius()));
+			double dMax = Math.max(getRadioRadius(), device.getRadioRadius());
 			return (dMax >= (distance(device)));
 		}
 		return false;
@@ -1122,7 +1130,27 @@ public abstract class Device implements Runnable, MouseListener,
 		// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
 		// int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
 		// int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
+		g.setColor(Color.GREEN);
+		g.drawLine(lx1, ly1, lx2, ly2);
+	}
+	
+	//zakaria
+	
+	public void drawRadioLinkZakaria(Device device, Graphics g) {
+
+		int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
+		int lx1 = coord[0];
+		int ly1 = coord[1];
+		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
+		int lx2 = coord[0];
+		int ly2 = coord[1];
+
+		// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
+		// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
+		// int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
+		// int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
 		g.setColor(Color.BLACK);
+		
 		g.drawLine(lx1, ly1, lx2, ly2);
 	}
 			

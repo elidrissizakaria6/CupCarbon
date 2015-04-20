@@ -324,16 +324,25 @@ public class DeviceList {
 						while (iterator2.hasNext()) {
 							n2 = iterator2.next();
 							if(!n2.isDead()) {
-								//Zakaria Bidirectionelle
-								if (n1.radioDetect(n2) && n2.radioDetect(n1) && drawLinks) {
+								// Unidirectionelle
+								if(n1.radioDetect(n2)&&drawLinks){
 									n1.drawRadioLink(n2, g);
-									System.out.println("1");
 									if (displayConnectionDistance) {
 										Layer.drawDistance(n1.getX(), n1.getY(),
 												n2.getX(), n2.getY(),
 												(int) n1.distance(n2), g);
 									}
 								}
+								//Zakaria Bidirectionelle
+								if (n1.radioDetectZakaria(n2) && n2.radioDetectZakaria(n1) && drawLinks) {
+									n1.drawRadioLinkZakaria(n2, g);
+									if (displayConnectionDistance) {
+										Layer.drawDistance(n1.getX(), n1.getY(),
+												n2.getX(), n2.getY(),
+												(int) n1.distance(n2), g);
+									}
+								}
+								
 								if (linksDetection) {
 									if (n1.detection(n2)) {
 										n1.setDetection(true);

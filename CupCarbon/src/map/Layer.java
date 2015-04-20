@@ -780,6 +780,7 @@ public class Layer implements Painter<Object>, MouseListener,
 		streetGraph.setSelectionOfAllVertices(selection, type, addSelection);
 	}
 
+	
 	public static void drawDistance(double x, double y, double x2, double y2,
 			int d, Graphics g) {
 		int[] coord = MapCalc.geoToIntPixelMapXY(x, y);

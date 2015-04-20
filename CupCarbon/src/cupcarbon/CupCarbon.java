@@ -63,6 +63,8 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import osm.City;
 import perso.BIP;
+import perso.BIPAdapte;
+import perso.BIPBidirectionnel;
 import perso.BIPConsom;
 import perso.CalculerPuissanceConsommation;
 import perso.ExampleClass;
@@ -1588,6 +1590,30 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoBipConsoMenu);
+		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem algoBipBidiMenu = new JMenuItem("Algo BIP Bidirectionnel");
+		algoBipBidiMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BIPBidirectionnel monBipBidi = new BIPBidirectionnel();
+				monBipBidi.start();
+			}
+		});
+		mnPerso.add(algoBipBidiMenu);
+		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem algoBipAdapMenu = new JMenuItem("Algo BIP Adapté");
+		algoBipAdapMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BIPAdapte monBipAdap = new BIPAdapte();
+				monBipAdap.start();
+			}
+		});
+		mnPerso.add(algoBipAdapMenu);
 		
 		/**
 		 * @author Zakaria
