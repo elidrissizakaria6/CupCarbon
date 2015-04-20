@@ -1057,7 +1057,7 @@ public abstract class Device implements Runnable, MouseListener,
 		if (withRadio && device.withRadio()) {
 			// double dMax = Math.max(MapCalc.rayonEnPixel(getRadioRadius()),
 			// MapCalc.rayonEnPixel(node.getRadioRadius()));
-			double dMax = Math.max(getRadioRadius(), device.getRadioRadius());
+			double dMax = Math.min(getRadioRadius(), device.getRadioRadius());// j'ai remplacer max par min pour" bidirectionel"
 			return (dMax >= (distance(device)));
 		}
 		return false;

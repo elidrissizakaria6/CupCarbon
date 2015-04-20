@@ -30,6 +30,7 @@ public class CalculerPuissanceConsommation extends Thread {
 		{
 			 puissance+=s.getRadioRadius();
 		}
+		System.out.println(capteurs.get(0).distanceInPixel(capteurs.get(1)));
 		return puissance;
 	}
 	public double calculerComsommationGlobale(List<SensorNode> capteurs)

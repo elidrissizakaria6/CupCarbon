@@ -94,7 +94,7 @@ public class WorldMap extends JXMapKit {
 		// setCenterPosition(new GeoPosition(25.14, 55.2)); //Dubai
 		// setCenterPosition(new GeoPosition(47.720520033704954,
 		// -3.3709144592285156));//Lorient
-		setCenterPosition(new GeoPosition(48.39188295873048, -4.44371223449707)); // Brest
+		setCenterPosition(new GeoPosition(45.761287, 3.107020)); // Brest
 		//setCenterPosition(new GeoPosition(48.40467657851382,-4.501540660858154)); // Brest 2
 		// setCenterPosition(new
 		// GeoPosition(48.58273977037357,-3.8297653198242188));//Morlaix

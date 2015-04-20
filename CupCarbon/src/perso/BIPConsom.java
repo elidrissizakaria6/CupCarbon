@@ -16,7 +16,6 @@ public class BIPConsom extends Thread {
 
 	public void run() {
 //		int i=0;
-		final int DEFAULTRADIOVALUE=100;
 		double valeurMin= 100000000;
 //		ArrayList<arete> aretes = new ArrayList<arete>();
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();

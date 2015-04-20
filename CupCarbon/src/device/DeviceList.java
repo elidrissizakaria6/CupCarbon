@@ -324,8 +324,10 @@ public class DeviceList {
 						while (iterator2.hasNext()) {
 							n2 = iterator2.next();
 							if(!n2.isDead()) {
-								if (n1.radioDetect(n2) && drawLinks) {
+								//Zakaria Bidirectionelle
+								if (n1.radioDetect(n2) && n2.radioDetect(n1) && drawLinks) {
 									n1.drawRadioLink(n2, g);
+									System.out.println("1");
 									if (displayConnectionDistance) {
 										Layer.drawDistance(n1.getX(), n1.getY(),
 												n2.getX(), n2.getY(),

@@ -54,6 +54,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileFilter;
 
+import map.Fenetre;
 import map.Layer;
 import map.RandomDevices;
 import map.WorldMap;
@@ -107,13 +108,18 @@ public class CupCarbon {
 	private ComScriptWindow comScriptWindow = new ComScriptWindow();
 	private SolverProxyParamsWindow solverProxyParamsWindow = new SolverProxyParamsWindow();
 	private CupCarbonMap cupCarbonMap;
+	//zakaria
+	private Fenetre fenetre;
 	private GpsWindow gpsWindow = new GpsWindow();
 	private DeviceParametersWindow deviceParametersWindow = new DeviceParametersWindow();
+	//zakaria
+	private DevicesParametersConsoWindows devicesParametersConsoWindows=new DevicesParametersConsoWindows(); 
 	private FlyingObjParametersWindow flyingObjParametersWindow = new FlyingObjParametersWindow();
 	private InformationWindow infoWindow = new InformationWindow();
 	private WsnSimulationWindow wsnSimWindow = new WsnSimulationWindow();
 	private RealTrackingDialog realTrackingDialog;
 	private MenuDemoWindow menuDemoWindow = new MenuDemoWindow();
+
 
 	public static int simulationNumber = 0;
 	private JTextField cityTextEdit;
@@ -1453,6 +1459,7 @@ public class CupCarbon {
 				changeTiles("http://localhost:8888/cupcarbon/tiles/");
 			}
 		});
+		mnMap.add(mntmLocal);
 		
 		JRadioButtonMenuItem mntmMapbox = new JRadioButtonMenuItem("MapBox");
 		mntmMapbox.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
@@ -1463,7 +1470,20 @@ public class CupCarbon {
 			}
 		});
 		mnMap.add(mntmMapbox);		
-		mnMap.add(mntmLocal);
+		
+		//Zakaria
+		
+		JRadioButtonMenuItem mntmGrille = new JRadioButtonMenuItem("Grille");
+		mntmGrille.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
+		buttonGroup.add(mntmGrille);
+		mntmGrille.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				changeTiles("http://a.tiles.mapbox.com/v3/examples.map-zr0njcqy/");
+			}
+		});
+		mnMap.add(mntmGrille);	
+		
+		//
 		
 		JSeparator separator_16 = new JSeparator();
 		mnMap.add(separator_16);
@@ -1491,6 +1511,7 @@ public class CupCarbon {
 		mnPerso.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "personal-icon.png"));
 		menuBar.add(mnPerso);
+		
 		
 		//------------------------------------------------------------
 		//------------------------------------------------------------
@@ -1723,6 +1744,7 @@ public class CupCarbon {
 		toolBar.add(btnSensorParameters);
 		
 		JButton btnMenuDemo = new JButton("MENU DEMO");
+		btnMenuDemo.setVisible(false);// Zakaria je l'ai cacher car il n'est pas fonctionnel
 		btnMenuDemo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Layer.initClick();
@@ -1736,6 +1758,23 @@ public class CupCarbon {
 		btnMenuDemo.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "ui_menu_blue.png"));
 		toolBar.add(btnMenuDemo);
+		
+		//zakaria
+		
+		JButton btnParamConso = new JButton("consumption parameters");
+		btnParamConso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Layer.initClick();
+				if (!devicesParametersConsoWindows.isVisible()) {
+					devicesParametersConsoWindows.setVisible(true);
+					desktopPane.add(devicesParametersConsoWindows);
+				}
+				devicesParametersConsoWindows.toFront();
+			}
+		});
+		btnParamConso.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "ui_menu_blue.png"));
+		toolBar.add(btnParamConso);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -1777,7 +1816,7 @@ public class CupCarbon {
 		mainFrame.getContentPane().add(desktopPane, BorderLayout.CENTER);
 		desktopPane.setBackground(new Color(173, 216, 230));
 		desktopPane.add(cupCarbonMap);
-
+		
 		try {
 
 			cupCarbonMap.setMaximum(true);
@@ -1788,6 +1827,22 @@ public class CupCarbon {
 
 		}
 		// moveToFront(cupCarbonMap);
+		
+		// Zakaria
+//				fenetre =new Fenetre();
+//				fenetre.setLocation(280,91);
+//				fenetre.setFrameIcon(new ImageIcon(
+//						"images/cupcarbon_logo_small.png"));
+//				fenetre.setVisible(true);
+//				mainFrame.getContentPane().add(desktopPane,BorderLayout.CENTER);
+//				desktopPane.setBackground(new Color(173, 216, 230));
+//				desktopPane.add(fenetre);
+//				try {
+//					fenetre.setMaximum(true);
+//				} catch (PropertyVetoException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 	}
 
 	private void openDeviceParemeterWindow() {
