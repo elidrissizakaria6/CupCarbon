@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.swing.SwingUtilities;
+
 import map.Layer;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
@@ -49,7 +51,9 @@ import wisen_simulation_mehdi.MehdiDeviceSimulator;
 import wisen_simulation_mehdi.MehdiSimulation;
 import battery.Battery;
 import consumer.MaConsommation;
+import cupcarbon.CupCarbon;
 import cupcarbon.DeviceParametersWindow;
+import cupcarbon.EasyDeviceParametersWindow;
 
 /**
  * @author Ahcene Bounceur
@@ -109,6 +113,7 @@ public abstract class Device implements Runnable, MouseListener,
 	protected boolean displayDistance = false;
 	//Zakaria
 	protected double consommation=0;
+	protected static EasyDeviceParametersWindow easyDeviceParametersWindow=new EasyDeviceParametersWindow();
 	protected boolean visited = false;
 	protected boolean visible = true;
 
@@ -653,6 +658,33 @@ public abstract class Device implements Runnable, MouseListener,
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		//Clique droit
+		if(SwingUtilities.isRightMouseButton(e)){
+			if (!inside && !ctrlDown) {
+				selected = false;
+				Layer.getMapViewer().repaint();
+			}
+
+			if (inside) {
+				selected = true;
+				Layer.getMapViewer().repaint();
+			}
+
+			increaseNode = false;
+			reduceNode = false;
+			sensorParametersUpdate();
+			
+			EasyDeviceParametersWindow.setFenetrex(getX());
+			EasyDeviceParametersWindow.setFenetrey(getY());
+				Layer.initClick();
+				if (!easyDeviceParametersWindow.isVisible()) {
+					easyDeviceParametersWindow.setVisible(true);
+					CupCarbon.getDesktopPane().add(easyDeviceParametersWindow);
+				}
+				easyDeviceParametersWindow.toFront();
+		}
+		//Clique gauche
+		else{
 		if (!inside && !ctrlDown) {
 			selected = false;
 			Layer.getMapViewer().repaint();
@@ -666,6 +698,8 @@ public abstract class Device implements Runnable, MouseListener,
 		increaseNode = false;
 		reduceNode = false;
 		sensorParametersUpdate();
+		
+		}
 	}
 
 	/*
@@ -1028,7 +1062,7 @@ public abstract class Device implements Runnable, MouseListener,
 	 *            Graphics
 	 */
 	public void initDraw(Graphics g) {
-		g.setFont(new Font("arial", 1, 12));
+		g.setFont(new Font("arial", 1, 10));
 	}
 
 	/**
@@ -1130,8 +1164,10 @@ public abstract class Device implements Runnable, MouseListener,
 		// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
 		// int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
 		// int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
+		if(CupCarbon.isBidi()){
 		g.setColor(Color.GREEN);
 		g.drawLine(lx1, ly1, lx2, ly2);
+		}
 	}
 	
 	//zakaria
@@ -1144,14 +1180,23 @@ public abstract class Device implements Runnable, MouseListener,
 		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
 		int lx2 = coord[0];
 		int ly2 = coord[1];
-
-		// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
-		// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
-		// int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
-		// int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
 		g.setColor(Color.BLACK);
-		
 		g.drawLine(lx1, ly1, lx2, ly2);
+	}
+	
+	
+	//zakaria
+	public void drawWeightZakaria(Device device, Graphics g) {
+		int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
+		int lx1 = coord[0];
+		int ly1 = coord[1];
+		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
+		int lx2 = coord[0];
+		int ly2 = coord[1];
+		if(CupCarbon.isPoids()==true){
+			g.setColor(Color.red);
+			g.drawString(String.valueOf((int)this.Consommation(device)), (lx1+lx2)/2, (ly1+ly2)/2);
+		}
 	}
 			
 	/**
@@ -1411,6 +1456,16 @@ public abstract class Device implements Runnable, MouseListener,
 		for (int i = 0; i < DeviceList.size(); i++) {
 			if(this != DeviceList.getNodes().get(i)) 
 				if((DeviceList.getNodes().get(i).radioDetect(this)) || (radioDetect(DeviceList.getNodes().get(i)))) {
+					neghnodes.add(DeviceList.getNodes().get(i));
+				}
+		}
+		return neghnodes;
+	}
+	public List<Device> getNeighborsZakaria() {
+		List<Device> neghnodes = new ArrayList<Device>();
+		for (int i = 0; i < DeviceList.size(); i++) {
+			if(this != DeviceList.getNodes().get(i)) 
+				if((DeviceList.getNodes().get(i).radioDetectZakaria(this)) && (this.radioDetectZakaria(DeviceList.getNodes().get(i)))) {
 					neghnodes.add(DeviceList.getNodes().get(i));
 				}
 		}

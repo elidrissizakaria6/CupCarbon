@@ -37,9 +37,12 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXMapViewer;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
@@ -48,9 +51,17 @@ import org.jdesktop.swingx.painter.Painter;
 import project.Project;
 import utilities.MapCalc;
 import utilities.UColor;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import cupcarbon.CupCarbon;
 import cupcarbon.CupCarbonMap;
 import cupcarbon.DeviceParametersWindow;
+import cupcarbon.EasyDeviceParametersWindow;
 import device.BaseStation;
 import device.Device;
 import device.DeviceList;
@@ -93,7 +104,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	public static boolean mousePressed = false;
 	public static String projectPath = "";
 	public static String projectName = "";
-
+	private EasyDeviceParametersWindow easyDeviceParametersWindow;
 	private boolean debutSelection = false;
 
 	public Layer() {
@@ -143,7 +154,27 @@ public class Layer implements Painter<Object>, MouseListener,
 		return mapViewer;
 	}
 
-	
+	public static void PrintFrameToPDF()  {
+	    try {
+	        Document d = new Document();
+	        PdfWriter writer = PdfWriter.getInstance(d, new FileOutputStream ("C:/Users/Public/Documents/sample.pdf"));
+	        d.open ();
+
+	        PdfContentByte cb = writer.getDirectContent( );
+			PdfTemplate template = cb.createTemplate(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+	        cb.addTemplate(template, 0, 0);
+			Graphics2D g2d = template.createGraphics(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+	        g2d.scale(0.4, 0.4);
+	        mapViewer.addNotify();
+	        mapViewer.validate();
+	        g2d.dispose();
+
+	        d.close ();
+	    }
+	    catch(Exception e)  { e.printStackTrace();
+	        //
+	    }
+	}
 	
 	@Override
 	public void paint(Graphics2D g, Object arg1, int arg2, int arg3) {
@@ -190,14 +221,12 @@ public class Layer implements Painter<Object>, MouseListener,
 			//
 			// g.fillArc((int) (x - 10), (int) (y - 10), 20, 20, -15, 30);
 		}
-
 		markerList.draw(g);
 		trackingPointsList.draw(g);
 		streetGraph.dessiner(g);
 		nodeList.draw(g);
 		nodeList.drawEnvelopeList(g);
 		bList.draw(g);
-
 		if (dessinerCadre) {
 			Point2D p1 = MapCalc.pixelPanelToPixelMap(cadreX1, cadreY1);
 			Point2D p2 = MapCalc.pixelPanelToPixelMap(cadreX2, cadreY2);
@@ -251,6 +280,10 @@ public class Layer implements Painter<Object>, MouseListener,
 
 	@Override
 	public void mouseClicked(MouseEvent arg) {
+		//Clic droit  TODO je dois penser à l'endroit de ce bout de code
+		
+		
+		//clic gauche
 		if (arg.getClickCount() == 2) {						
 			Point p = new Point(arg.getX(), arg.getY());
 			GeoPosition gp = mapViewer.convertPointToGeoPosition(p);
@@ -304,6 +337,7 @@ public class Layer implements Painter<Object>, MouseListener,
 				mapViewer.repaint();
 			}
 		}
+		
 		
 		CupCarbon.updateInfos();
 	}

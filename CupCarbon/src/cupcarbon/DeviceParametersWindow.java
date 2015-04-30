@@ -106,7 +106,6 @@ public class DeviceParametersWindow extends JInternalFrame {
 						
 						gpsPathNameComboBox.getSelectedItem()+"",
 						//Project.getProjectGpsPath() + File.separator
-						//		+ gpsPathNameComboBox.getSelectedItem(),
 								
 								
 								eMaxTextField.getText(),

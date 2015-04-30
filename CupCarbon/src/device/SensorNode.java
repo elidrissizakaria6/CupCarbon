@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import cupcarbon.CupCarbon;
 import project.Project;
 import script.CommandType;
 import script.Script;
@@ -242,6 +243,7 @@ public class SensorNode extends DeviceWithRadio {
 				g.drawLine(x + rayon + 3, y + rayon + 3, x + rayon + 3, y
 						+ rayon - 2);
 			}
+			if(CupCarbon.isLocal()==false){
 			g.setColor(Color.DARK_GRAY);
 			if(hide == 0 || hide==4) {	
 				if (inside) {
@@ -249,7 +251,7 @@ public class SensorNode extends DeviceWithRadio {
 				} else {
 					if(channel == 0) {
 						g.setColor(UColor.MAUVE_TRANSPARENT);
-						//if(faulty) g.setColor(UColor.NOIRF_TTTRANSPARENT);
+//						if(faulty) g.setColor(UColor.NOIRF_TTTRANSPARENT);
 					}
 					else 
 						g.setColor(UColor.channelColor[channel]);
@@ -261,10 +263,10 @@ public class SensorNode extends DeviceWithRadio {
 			}
 			if(hide == 0 || hide == 1) {
 				sensorUnit.setXY(x, y);
-				sensorUnit.draw(g, 0, detection);
+				sensorUnit.draw(g, 0, detection); //contour interieur
 			}
 			if(hide == 0 || hide == 3) {
-				g.drawOval(x - rayon, y - rayon, rayon * 2, rayon * 2);
+				g.drawOval(x - rayon, y - rayon, rayon * 2, rayon * 2); //contour exterieur
 			}
 			if(hide == 2) {
 				sensorUnit.setXY(x, y);
@@ -287,6 +289,7 @@ public class SensorNode extends DeviceWithRadio {
 			drawRadius(x, y, rayon, g);
 			drawRadioRadius(x, y, rayon2, g);
 			sensorUnit.drawDetectionRadius(x, y, capRadius, g);
+			}
 
 			if (underSimulation) {
 				g.setColor(UColor.GREEN);

@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import map.Grille;
 import map.Layer;
 import solver.SensorGraph;
 import tracking.TrackingTasksManager;
@@ -52,6 +53,7 @@ public class DeviceList {
 	private static List<Device> nodes = new ArrayList<Device>();
 	private boolean drawLinks = true;
 	private boolean linksDetection = true;
+	private Grille grille=new Grille();
 	private boolean displayConnectionDistance = false;
 	private LinkedList<Point[]> linksCoord = new LinkedList<Point[]>();
 	private static TrackingTasksManager trackingManager;
@@ -314,7 +316,6 @@ public class DeviceList {
 			if(trackingManager != null){
 				trackingManager.draw(g);
 			}
-			
 			if (drawLinks || linksDetection) {
 				iterator = nodes.listIterator();
 				while (iterator.hasNext() && iterator.nextIndex() < nodes.size() - 1) {
@@ -324,18 +325,20 @@ public class DeviceList {
 						while (iterator2.hasNext()) {
 							n2 = iterator2.next();
 							if(!n2.isDead()) {
-								// Unidirectionelle
-								if(n1.radioDetect(n2)&&drawLinks){
-									n1.drawRadioLink(n2, g);
+								//Zakaria Bidirectionelle
+								if (n1.radioDetectZakaria(n2) && n2.radioDetectZakaria(n1) && drawLinks) {
+									n1.drawRadioLinkZakaria(n2, g);
+									n1.drawWeightZakaria(n2,g);
 									if (displayConnectionDistance) {
 										Layer.drawDistance(n1.getX(), n1.getY(),
 												n2.getX(), n2.getY(),
 												(int) n1.distance(n2), g);
 									}
+									 // pour ne pas colorier encore l'arete avec du vert n1.drawRadioLink(n2, g);
 								}
-								//Zakaria Bidirectionelle
-								if (n1.radioDetectZakaria(n2) && n2.radioDetectZakaria(n1) && drawLinks) {
-									n1.drawRadioLinkZakaria(n2, g);
+								// Unidirectionelle
+								else if(n1.radioDetect(n2)&&drawLinks){
+									n1.drawRadioLink(n2, g);
 									if (displayConnectionDistance) {
 										Layer.drawDistance(n1.getX(), n1.getY(),
 												n2.getX(), n2.getY(),
@@ -579,7 +582,23 @@ public class DeviceList {
 			}
 		}
 	}
-
+	//zakaria
+	public static void updateRadioRadiusFromMap(int valeur){
+		
+		Device node;
+		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
+			node = iterator.next();
+			if (node.isSelected()) {
+				if(valeur<0){
+					if((node.getRadioRadius()>=0))
+						node.setRadioRadius(node.getRadioRadius()+valeur);
+				}
+				else node.setRadioRadius(node.getRadioRadius()+valeur);
+			}
+		}
+		Layer.getMapViewer().repaint();
+		
+	}
 	public static void updateFromMap(String xS, String yS, String radiusS,
 			String radioRadiusS, String captureRadiusS, String gpsFileName,
 			String eMax, String eTx, String eRx, String eS, String beta, String targetName
