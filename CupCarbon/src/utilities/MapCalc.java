@@ -143,7 +143,7 @@ public class MapCalc {
 	 * @return The distance in meters between two GPS coordinates.
 	 */
 	public static double distance(double x1, double y1, double x2, double y2) {
-		double earth_radius = 6378137; // Terre = sphère de 6378km de rayon
+		double earth_radius = 6378137; // Terre = sphere de 6378km de rayon
 		double rla1 = Math.toRadians(x1);
 		double rlo1 = Math.toRadians(y1);
 		double rla2 = Math.toRadians(x2);
