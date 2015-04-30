@@ -46,6 +46,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -62,13 +63,14 @@ import map.WorldMap;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import osm.City;
-import perso.BIP;
 import perso.BIPAdapte;
 import perso.BIPBidirectionnel;
 import perso.BIPConsom;
 import perso.CalculerPuissanceConsommation;
 import perso.ExampleClass;
+import perso.Heuristique;
 import perso.MSTKRUSKAL;
+import perso.MSTKRUSKAL2;
 import perso.MonAlgoClass;
 import perso.MyClass;
 import project.Project;
@@ -95,6 +97,7 @@ import device.TrackingPointsList;
 /**
  * @author Ahcene Bounceur
  * @author Lounis Massinissa
+ * @author Zakaria El Idrissi
  * @version 1.0
  */
 public class CupCarbon {
@@ -102,7 +105,7 @@ public class CupCarbon {
 	private JFrame mainFrame;
 	private AboutCupCarbon aboutBox = null;
 	private HelpCupCarbon helpWindow = new HelpCupCarbon();
-	private JDesktopPane desktopPane = new JDesktopPane();
+	private static JDesktopPane desktopPane = new JDesktopPane();
 	private JLabel lblNodesNumber;
 	private static JLabel label;
 	private static JLabel sspeedLabel;
@@ -112,10 +115,14 @@ public class CupCarbon {
 	private CupCarbonMap cupCarbonMap;
 	//zakaria
 	private Fenetre fenetre;
-	private GpsWindow gpsWindow = new GpsWindow();
-	private DeviceParametersWindow deviceParametersWindow = new DeviceParametersWindow();
+	private static boolean local=false;
 	//zakaria
-	private DevicesParametersConsoWindows devicesParametersConsoWindows=new DevicesParametersConsoWindows(); 
+	private static boolean bidi=false;
+	private static boolean poids=false;
+	private GpsWindow gpsWindow = new GpsWindow();
+	private static DeviceParametersWindow deviceParametersWindow=new DeviceParametersWindow();
+	//zakaria
+	private DevicesParametersConsoWindows devicesParametersConsoWindows;
 	private FlyingObjParametersWindow flyingObjParametersWindow = new FlyingObjParametersWindow();
 	private InformationWindow infoWindow = new InformationWindow();
 	private WsnSimulationWindow wsnSimWindow = new WsnSimulationWindow();
@@ -403,7 +410,7 @@ public class CupCarbon {
 				Layer.initClick();
 				if (!menuDemoWindow.isVisible()) {
 					menuDemoWindow.setVisible(true);
-					desktopPane.add(menuDemoWindow);
+					getDesktopPane().add(menuDemoWindow);
 				}
 				menuDemoWindow.toFront();
 			}
@@ -919,7 +926,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!infoWindow.isVisible()) {
 					infoWindow.setVisible(true);
-					desktopPane.add(infoWindow);
+					getDesktopPane().add(infoWindow);
 				}
 				infoWindow.toFront();
 				infoWindow.getTextPane().setText(
@@ -933,7 +940,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				if (!infoWindow.isVisible()) {
 					infoWindow.setVisible(true);
-					desktopPane.add(infoWindow);
+					getDesktopPane().add(infoWindow);
 				}
 				infoWindow.toFront();
 				infoWindow.getTextPane().setText(
@@ -1137,7 +1144,7 @@ public class CupCarbon {
 		mntmProxyParameters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!solverProxyParamsWindow.isVisible()) {
-					desktopPane.add(solverProxyParamsWindow);
+					getDesktopPane().add(solverProxyParamsWindow);
 					solverProxyParamsWindow.setVisible(true);
 				}
 				solverProxyParamsWindow.toFront();
@@ -1286,7 +1293,7 @@ public class CupCarbon {
 				}
 
 				if (!comScriptWindow.isVisible()) {
-					desktopPane.add(comScriptWindow);
+					getDesktopPane().add(comScriptWindow);
 					comScriptWindow.setVisible(true);
 				}
 				comScriptWindow.toFront();
@@ -1306,7 +1313,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				WorldMap.deSimulation();
 				if (!wsnSimWindow.isVisible()) {
-					desktopPane.add(wsnSimWindow);
+					getDesktopPane().add(wsnSimWindow);
 					wsnSimWindow.setVisible(true);
 				}
 				wsnSimWindow.toFront();
@@ -1335,7 +1342,7 @@ public class CupCarbon {
 				System.out.println(Project.getProjectResultsPath());
 				GraphViewer graphViewer = new GraphViewer();
 				if (!graphViewer.isVisible()) {
-					desktopPane.add(graphViewer);
+					getDesktopPane().add(graphViewer);
 					graphViewer.setVisible(true);
 					graphViewer.draw();
 				}
@@ -1397,6 +1404,7 @@ public class CupCarbon {
 		buttonGroup.add(rdbtnmntmClassic);
 		rdbtnmntmClassic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				setLocal(false);
 				changeTiles("http://a.tile.openstreetmap.org/");
 			}
 		});
@@ -1407,6 +1415,7 @@ public class CupCarbon {
 		buttonGroup.add(rdbtnmntmOsm);
 		rdbtnmntmOsm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setLocal(false);
 				changeTiles("http://otile1.mqcdn.com/tiles/1.0.0/osm/");
 			}
 		});
@@ -1418,6 +1427,7 @@ public class CupCarbon {
 		buttonGroup.add(rdbtnmntmSatellit);
 		rdbtnmntmSatellit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setLocal(false);
 				changeTiles("http://otile1.mqcdn.com/tiles/1.0.0/sat/");
 			}
 		});
@@ -1428,6 +1438,7 @@ public class CupCarbon {
 		buttonGroup.add(rdbtnmntmCyclic);
 		rdbtnmntmCyclic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setLocal(false);
 				changeTiles("http://a.tile.opencyclemap.org/cycle/");
 			}
 		});
@@ -1438,6 +1449,7 @@ public class CupCarbon {
 		buttonGroup.add(mntmTransport);
 		mntmTransport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setLocal(false);
 				changeTiles("http://a.tile2.opencyclemap.org/transport/");
 			}
 		});
@@ -1448,26 +1460,19 @@ public class CupCarbon {
 		buttonGroup.add(mntmTerrain);
 		mntmTerrain.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setLocal(false);
 				changeTiles("http://tile.stamen.com/terrain-background/");
 			}
 		});
 		mnMap.add(mntmTerrain);
 		
-		JRadioButtonMenuItem mntmLocal = new JRadioButtonMenuItem("Local");
-		mntmLocal.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
-		buttonGroup.add(mntmLocal);
-		mntmLocal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				changeTiles("http://localhost:8888/cupcarbon/tiles/");
-			}
-		});
-		mnMap.add(mntmLocal);
 		
 		JRadioButtonMenuItem mntmMapbox = new JRadioButtonMenuItem("MapBox");
 		mntmMapbox.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
 		buttonGroup.add(mntmMapbox);
 		mntmMapbox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				setLocal(false);
 				changeTiles("http://a.tiles.mapbox.com/v3/examples.map-zr0njcqy/");
 			}
 		});
@@ -1475,17 +1480,28 @@ public class CupCarbon {
 		
 		//Zakaria
 		
-		JRadioButtonMenuItem mntmGrille = new JRadioButtonMenuItem("Grille");
-		mntmGrille.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
-		buttonGroup.add(mntmGrille);
-		mntmGrille.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				changeTiles("http://a.tiles.mapbox.com/v3/examples.map-zr0njcqy/");
-			}
-		});
-		mnMap.add(mntmGrille);	
+//		JRadioButtonMenuItem mntmGrille = new JRadioButtonMenuItem("Grille");
+//		mntmGrille.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
+//		buttonGroup.add(mntmGrille);
+//		mntmGrille.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				changeTiles("http://a.tiles.mapbox.com/v3/examples.map-zr0njcqy/");
+//			}
+//		});
+//		mnMap.add(mntmGrille);	
 		
 		//
+		
+		JRadioButtonMenuItem mntmLocal = new JRadioButtonMenuItem("White Plan");
+		mntmLocal.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
+		buttonGroup.add(mntmLocal);
+		mntmLocal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setLocal(true);
+				changeTiles("file:///C:/Users/Zakaria/workspace/CupCarbon/images/mer");	
+			}
+		});
+		mnMap.add(mntmLocal);
 		
 		JSeparator separator_16 = new JSeparator();
 		mnMap.add(separator_16);
@@ -1567,22 +1583,23 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoMstMenu);
-		/**
-		 * @author Zakaria
-		 */
-		JMenuItem algoBipMenu = new JMenuItem("Algo BIP");
-		algoBipMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				BIP monBip = new BIP();
-				monBip.start();
-			}
-		});
-		mnPerso.add(algoBipMenu);
 		
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem algoBipConsoMenu = new JMenuItem("Algo BIP Consommation");
+		JMenuItem algoMst2Menu = new JMenuItem("Algo MST KRUSKAL2");
+		algoMst2Menu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MSTKRUSKAL2 mstKruskal2 = new MSTKRUSKAL2();
+				mstKruskal2.start();
+			}
+		});
+		mnPerso.add(algoMst2Menu);
+		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem algoBipConsoMenu = new JMenuItem("Algo BIP Unidirectionel");
 		algoBipConsoMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				BIPConsom monBipConso = new BIPConsom();
@@ -1618,6 +1635,18 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
+		JMenuItem algoHeurisMenu = new JMenuItem("Heuristique");
+		algoHeurisMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Heuristique monHeuris = new Heuristique();
+				monHeuris.start();
+			}
+		});
+		mnPerso.add(algoHeurisMenu);
+		
+		/**
+		 * @author Zakaria
+		 */
 		JMenuItem calculerConsoMenu = new JMenuItem("Calculer la puissance");
 		calculerConsoMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1626,6 +1655,20 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(calculerConsoMenu);
+		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem PDFMenu = new JMenuItem("Imprimer en PNG");
+		PDFMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+//				cupCarbonMap.PrintFrameToPDF();
+//				Layer.PrintFrameToPDF();
+//				cupCarbonMap.saveImage();
+				cupCarbonMap.saveHDImage(CupCarbonMap.map);
+			}
+		});
+		mnPerso.add(PDFMenu);
 
 		//------------------------------------------------------------
 		//------------------------------------------------------------
@@ -1653,7 +1696,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if (!helpWindow.isVisible()) {
-					desktopPane.add(helpWindow);
+					getDesktopPane().add(helpWindow);
 					helpWindow.setVisible(true);
 				}
 				helpWindow.toFront();
@@ -1661,6 +1704,30 @@ public class CupCarbon {
 		});
 		mnHelp.add(mntmHelp);
 		mnHelp.add(mntmAboutCupcarbon);
+		
+		final JRadioButton mnRadioUni = new JRadioButton();//todo
+		mnRadioUni.setSelected(false);
+		mnRadioUni.setText("Liens Unidirectionnel");
+		mnRadioUni.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {				
+			if(mnRadioUni.isSelected()) bidi=true;
+			else bidi=false;
+			Layer.mapViewer.repaint();
+		}
+		});
+		menuBar.add(mnRadioUni);
+		
+		final JRadioButton mnRadioPoids = new JRadioButton();//todo
+		mnRadioPoids.setSelected(false);
+		mnRadioPoids.setText("Poids");
+		mnRadioPoids.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {				
+			if(mnRadioPoids.isSelected()) poids=true;
+			else poids=false;
+			Layer.mapViewer.repaint();
+		}
+		});
+		menuBar.add(mnRadioPoids);
 
 		JToolBar toolBar = new JToolBar();
 		mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
@@ -1758,7 +1825,7 @@ public class CupCarbon {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!gpsWindow.isVisible()) {
-					desktopPane.add(gpsWindow);
+					getDesktopPane().add(gpsWindow);
 					gpsWindow.setVisible(true);
 				}
 				gpsWindow.toFront();
@@ -1776,7 +1843,7 @@ public class CupCarbon {
 				Layer.initClick();
 				if (!menuDemoWindow.isVisible()) {
 					menuDemoWindow.setVisible(true);
-					desktopPane.add(menuDemoWindow);
+					getDesktopPane().add(menuDemoWindow);
 				}
 				menuDemoWindow.toFront();
 			}
@@ -1787,13 +1854,14 @@ public class CupCarbon {
 		
 		//zakaria
 		
-		JButton btnParamConso = new JButton("consumption parameters");
+		JButton btnParamConso = new JButton("Consumption Parameters");
 		btnParamConso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Layer.initClick();
+				devicesParametersConsoWindows=new DevicesParametersConsoWindows(); 
 				if (!devicesParametersConsoWindows.isVisible()) {
 					devicesParametersConsoWindows.setVisible(true);
-					desktopPane.add(devicesParametersConsoWindows);
+					getDesktopPane().add(devicesParametersConsoWindows);
 				}
 				devicesParametersConsoWindows.toFront();
 			}
@@ -1839,9 +1907,9 @@ public class CupCarbon {
 				"images/cupcarbon_logo_small.png"));
 		cupCarbonMap.setVisible(true);
 
-		mainFrame.getContentPane().add(desktopPane, BorderLayout.CENTER);
-		desktopPane.setBackground(new Color(173, 216, 230));
-		desktopPane.add(cupCarbonMap);
+		mainFrame.getContentPane().add(getDesktopPane(), BorderLayout.CENTER);
+		getDesktopPane().setBackground(new Color(173, 216, 230));
+		getDesktopPane().add(cupCarbonMap);
 		
 		try {
 
@@ -1871,7 +1939,7 @@ public class CupCarbon {
 //				}
 	}
 
-	private void openDeviceParemeterWindow() {
+	public static void openDeviceParemeterWindow() {
 		File gpsFiles = new File(Project.getProjectGpsPath());
 		String[] s = gpsFiles.list();
 		if (s == null)
@@ -1894,7 +1962,7 @@ public class CupCarbon {
 
 		if (!deviceParametersWindow.isVisible()) {
 			deviceParametersWindow.setVisible(true);
-			desktopPane.add(deviceParametersWindow);
+			getDesktopPane().add(deviceParametersWindow);
 		}
 		deviceParametersWindow.toFront();
 	}
@@ -1902,7 +1970,7 @@ public class CupCarbon {
 	private void openFlyingObjectParemeterWindow() {
 		if (!flyingObjParametersWindow.isVisible()) {
 			flyingObjParametersWindow.setVisible(true);
-			desktopPane.add(flyingObjParametersWindow);
+			getDesktopPane().add(flyingObjParametersWindow);
 		}
 		flyingObjParametersWindow.toFront();
 	}
@@ -1915,5 +1983,27 @@ public class CupCarbon {
 	public void changeTiles(String s) {
 		WorldMap.tileUrl = s;				
 		Layer.getMapViewer().repaint();
+	}
+	public static boolean isBidi()
+	{
+		return bidi;
+	}
+	public static boolean isPoids()
+	{
+		return poids;
+	}
+	public static boolean isLocal(){
+		return local;
+	}
+	public static boolean setLocal(boolean local){
+		return CupCarbon.local=local;
+	}
+
+	public static JDesktopPane getDesktopPane() {
+		return desktopPane;
+	}
+
+	public static void setDesktopPane(JDesktopPane desktopPane) {
+		CupCarbon.desktopPane = desktopPane;
 	}
 }
