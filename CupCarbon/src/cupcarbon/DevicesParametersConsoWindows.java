@@ -34,14 +34,15 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
 
 import consumer.MaConsommation;
+import device.DeviceList;
 
 /**
  * @author Ahcene Bounceur
  * @author Kamal Mehdi
  * @author Lounis Massinissa
+ * @author Zakaria El Idrissi
  * @version 1.0
  */
 public class DevicesParametersConsoWindows extends JInternalFrame {
@@ -76,7 +77,7 @@ public class DevicesParametersConsoWindows extends JInternalFrame {
 		setMaximizable(true);
 		setClosable(true);
 		setIconifiable(true);
-		setTitle("Consommations Parametres");
+		setTitle("Paramètres de Consommation d'énergie");
 		setBounds(100, 100, 550, 150);
 
 		JPanel panel_2 = new JPanel();
@@ -87,8 +88,8 @@ public class DevicesParametersConsoWindows extends JInternalFrame {
 				+ "loopnone-1.png"));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MaConsommation.setCoefficientAtten(Double.valueOf(textField_1.getText()));
-				MaConsommation.setCte(Double.valueOf(textField_2.getText()));
+				MaConsommation.setCoefficientAtten(Integer.valueOf(textField_1.getText()));
+				MaConsommation.setCte(Integer.valueOf(textField_2.getText()));
 				try {
 					setClosed(true);
 				} catch (PropertyVetoException e1) {
@@ -119,13 +120,16 @@ public class DevicesParametersConsoWindows extends JInternalFrame {
 		panel_8.add(panel_10, BorderLayout.CENTER);
 		panel_10.setLayout(new GridLayout(0, 1, 0, 0));
 
-		textField_1 = new JTextField("1");
+		textField_1 = new JTextField();
 		panel_10.add(textField_1);
 		textField_1.setColumns(2);
 
-		textField_2 = new JTextField("0");
+		textField_2 = new JTextField();
 		panel_10.add(textField_2);
 		textField_2.setColumns(2);
+		
+		textField_1.setText(String.valueOf(MaConsommation.getCoefficientAtten()));
+		textField_2.setText(String.valueOf(MaConsommation.getCte()));
 
 		JPanel panel_11 = new JPanel();
 		panel_8.add(panel_11, BorderLayout.EAST);
@@ -139,10 +143,26 @@ public class DevicesParametersConsoWindows extends JInternalFrame {
 
 		JButton button_18 = new JButton("");
 		button_18.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "bPrev.png"));
+		button_18.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println(Project.getProjectScriptPath()+File.separator+ scriptComboBox.getSelectedItem());
+				//DeviceList.setScriptFileName(//Project.getProjectScriptPath()
+						//+ File.separator + 
+				textField_1.setText(String.valueOf(Integer.parseInt(textField_1.getText())-1));
+			}
+		});
 		panel_16.add(button_18);
 
 		JButton button_19 = new JButton("");
 		button_19.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "bNext.png"));
+		button_19.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println(Project.getProjectScriptPath()+File.separator+ scriptComboBox.getSelectedItem());
+				//DeviceList.setScriptFileName(//Project.getProjectScriptPath()
+						//+ File.separator + 
+				textField_1.setText(String.valueOf(Integer.parseInt(textField_1.getText())+1));
+			}
+		});
 		panel_16.add(button_19);		
 		
 		JPanel panel = new JPanel();
@@ -153,10 +173,26 @@ public class DevicesParametersConsoWindows extends JInternalFrame {
 		
 		JButton button_2 = new JButton("");
 		button_2.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "bPrev.png"));
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println(Project.getProjectScriptPath()+File.separator+ scriptComboBox.getSelectedItem());
+				//DeviceList.setScriptFileName(//Project.getProjectScriptPath()
+						//+ File.separator + 
+				textField_2.setText(String.valueOf(Integer.parseInt(textField_2.getText())+1));
+			}
+		});
 		panel.add(button_2);
 		
 		JButton button_3 = new JButton("");
 		button_3.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "bNext.png"));
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println(Project.getProjectScriptPath()+File.separator+ scriptComboBox.getSelectedItem());
+				//DeviceList.setScriptFileName(//Project.getProjectScriptPath()
+						//+ File.separator + 
+				textField_2.setText(String.valueOf(Integer.parseInt(textField_2.getText())+1));
+			}
+		});
 		panel.add(button_3);
 
 		

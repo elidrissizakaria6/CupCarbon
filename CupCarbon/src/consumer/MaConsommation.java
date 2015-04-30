@@ -4,8 +4,8 @@
 package consumer;
 
 public class MaConsommation extends AConsumption {
-	protected static double coefficientAtten=1;
-	protected static double Cte=0;
+	protected static int coefficientAtten=1;
+	protected static int Cte=0;
 	@Override
 	public double getConsumedUnit() {
 		// TODO Auto-generated method stub
@@ -24,20 +24,20 @@ public class MaConsommation extends AConsumption {
 		return Math.pow(distance,coefficientAtten)+Cte;
 	}
 
-	public static double getCoefficientAtten() {
+	public static int getCoefficientAtten() {
 		return coefficientAtten;
 	}
 
-	public static void setCoefficientAtten(double coefficientAtten) {
+	public static void setCoefficientAtten(int coefficientAtten) {
 		MaConsommation.coefficientAtten = coefficientAtten;
 	}
 
-	public static double getCte() {
+	public static int getCte() {
 		return Cte;
 	}
 
-	public static void setCte(double cte) {
-		Cte = cte;
+	public static void setCte(int double1) {
+		Cte = double1;
 	}
 	
 	
