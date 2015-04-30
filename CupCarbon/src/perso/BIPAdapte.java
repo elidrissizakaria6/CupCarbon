@@ -9,13 +9,14 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import map.Layer;
 import device.DeviceList;
 import device.SensorNode;
 
 public class BIPAdapte extends Thread {
 
 	public void run() {
-//		int i=0;
+		boolean marker=false;
 		double valeurMin= Double.MAX_VALUE;
 //		ArrayList<arete> aretes = new ArrayList<arete>();
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
@@ -38,8 +39,12 @@ public class BIPAdapte extends Thread {
 		{
 			a.setRadioRadius(0);
 			a.setValue(0);
-			if(a.isSelected()){ a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
+			if(a.isSelected()){marker=true; a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
 			else {a.setMarked(false);noeudsNonMarques.add(a);}
+		}
+		if(marker==false)
+		{
+			capteurs.get((1 + (int)(Math.random() * ((capteurs.size() - 2) + 1)))).setMarked(true);
 		}
 		SensorNode NoeudNonMarque=new SensorNode();
 		SensorNode NoeudMarque=new SensorNode();
@@ -78,6 +83,7 @@ public class BIPAdapte extends Thread {
 			noeudsMarques.add(NoeudNonMarque);
 			noeudsNonMarques.remove(NoeudNonMarque);
 			valeurMin=Double.MAX_VALUE;
+			Layer.getMapViewer().repaint();
 //			try {
 //				sleep(1000);
 //				
@@ -90,6 +96,7 @@ public class BIPAdapte extends Thread {
 		final JFrame parent = new JFrame();
 			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
 					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
+
 
 	}
 		

@@ -15,7 +15,7 @@ import device.SensorNode;
 public class BIPBidirectionnel extends Thread {
 
 	public void run() {
-//		int i=0;
+		boolean marker=false;
 		double valeurMin= Double.MAX_VALUE;
 //		ArrayList<arete> aretes = new ArrayList<arete>();
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
@@ -38,8 +38,12 @@ public class BIPBidirectionnel extends Thread {
 		{
 			a.setRadioRadius(0);
 			a.setValue(0);
-			if(a.isSelected()){ a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
+			if(a.isSelected()){ marker=true;a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
 			else {a.setMarked(false);noeudsNonMarques.add(a);}
+		}
+		if(marker==false)
+		{
+			capteurs.get((1 + (int)(Math.random() * ((capteurs.size() - 1) + 1)))).setMarked(true);
 		}
 		SensorNode NoeudNonMarque=new SensorNode();
 		SensorNode NoeudMarque=new SensorNode();

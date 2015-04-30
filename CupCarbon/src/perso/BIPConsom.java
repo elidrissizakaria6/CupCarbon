@@ -9,13 +9,14 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import map.Layer;
 import device.DeviceList;
 import device.SensorNode;
 
 public class BIPConsom extends Thread {
 
 	public void run() {
-//		int i=0;
+		boolean marker=false;
 		double valeurMin= 100000000;
 //		ArrayList<arete> aretes = new ArrayList<arete>();
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
@@ -38,8 +39,12 @@ public class BIPConsom extends Thread {
 		{
 			a.setRadioRadius(0);
 			a.setValue(0);
-			if(a.isSelected()){ a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
+			if(a.isSelected()){marker=true; a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
 			else {a.setMarked(false);noeudsNonMarques.add(a);}
+		}
+		if(marker==false)
+		{
+			capteurs.get((1 + (int)(Math.random() * ((capteurs.size() - 1) + 1)))).setMarked(true);
 		}
 		SensorNode NoeudNonMarque=new SensorNode();
 		SensorNode NoeudMarque=new SensorNode();
@@ -77,8 +82,8 @@ public class BIPConsom extends Thread {
 			noeudsNonMarques.remove(NoeudNonMarque);
 			valeurMin=100000000;
 			try {
-				sleep(1000);
-				
+				sleep(500);
+				Layer.getMapViewer().repaint();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -94,6 +99,7 @@ public class BIPConsom extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 		
 
@@ -112,8 +118,7 @@ public class BIPConsom extends Thread {
 		double Conso=0;
 		for(SensorNode s : capteurs)
 		{
-//			if(s.isMarked()==true) Conso+=s.getValue(); valeurs différente avec l'algo BIPConso
-			if(s.isMarked()==true) Conso+=s.getConsommation();
+			if(s.isMarked()==true){ Conso+=s.getConsommation();s.setMarked(false);}
 
 		}
 		return Conso;
