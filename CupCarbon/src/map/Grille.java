@@ -10,13 +10,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
+import device.Device;
+
 
 	 public class Grille extends JPanel 
 	   {
 		 private static Layer layer;
 		 public Grille()
 		 {
-			 
+			 System.out.println("je suis appelé");
 		 }
 	   
 	      public JFrame laGrille()
@@ -59,39 +61,7 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 	         return fenetre;
 	         
 	      } 
-	   
-	      @Override 
-	      public void paintComponent(Graphics g)
-	      { 
-	         super.paintComponent(g); 
-	         int larg = getWidth(); 
-	         int haut = getHeight();
-	         //g.setColor (Color.black); // black par défaut
-	         
-	      	// Pour dessiner une ligne:
-	      	//drawLine(int x1, int y1, int x2, int y2)
-	      	
-	      	// Pour dessiner un cercle (un oval de diametre horizontal = diametre vertical)
-	         /*g.setColor(Color.blue); // couleur de remplissage
-	         g.fillOval(x, y, diametre_horizontal, diametre_vertical); // remplissage (fill)
-	         g.setColor(Color.green);  // couleur du panel pour que ce soit (un peu) plus net
-	         g.drawOval(x, y, diametre_horizontal, diametre_vertical); // affichage, dessiner (draw) */
-	      
-	         int dim = 20; //dimension d'une case de la grille
-	         
-	         // La grille:
-	         for(int i = 0; i < larg; i +=dim)
-	         {
-	            g.drawLine(i,0,i, haut); // Les lignes verticales de la grille
-	            g.drawLine(0,i,larg, i); // Les lignes horizontales de la grille
-	            System.out.println(i);
-	         }
-	        
-	         
-	      }
-	      public static Layer getLayer() {
-	  		return layer;
-	  	}
+
 	  	
 	  	public static void deSimulation() {
 	  		System.out.println("DE simulation");

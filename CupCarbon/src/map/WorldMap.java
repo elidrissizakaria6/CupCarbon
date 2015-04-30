@@ -25,6 +25,8 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
 
+import cupcarbon.CupCarbon;
+
 public class WorldMap extends JXMapKit {
 
 	private static final long serialVersionUID = 1L;
@@ -47,11 +49,11 @@ public class WorldMap extends JXMapKit {
 
 			public String getTileUrl(int x, int y, int zoom) {
 				zoom = max - zoom;
-				 //return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
-				 //return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom + "/" + x + "/" + y + ".jpg";
+				//return this.baseURL +"/"+zoom+"/"+x+"/"+y+".png";
+				//return "http://otile1.mqcdn.com/tiles/1.0.0/sat/" + zoom + "/" + x + "/" + y + ".jpg";
 				//return "http://otile1.mqcdn.com/tiles/1.0.0/osm/" + zoom + "/" + x + "/" + y + ".jpg";
-				
-				return tileUrl+zoom+"/"+x+"/"+y+tileType ;
+				if (CupCarbon.isLocal()==true) return tileUrl+tileType;
+				else return tileUrl+zoom+"/"+x+"/"+y+tileType ;
 				
 				//return "http://localhost:8888/cupcarbon/tiles/" + zoom + "/" + x + "/" + y + ".png";
 				// return
@@ -94,7 +96,7 @@ public class WorldMap extends JXMapKit {
 		// setCenterPosition(new GeoPosition(25.14, 55.2)); //Dubai
 		// setCenterPosition(new GeoPosition(47.720520033704954,
 		// -3.3709144592285156));//Lorient
-		setCenterPosition(new GeoPosition(45.761287, 3.107020)); // Brest
+		setCenterPosition(new GeoPosition(45.761287, 3.107020)); // Clermont-Ferrand
 		//setCenterPosition(new GeoPosition(48.40467657851382,-4.501540660858154)); // Brest 2
 		// setCenterPosition(new
 		// GeoPosition(48.58273977037357,-3.8297653198242188));//Morlaix

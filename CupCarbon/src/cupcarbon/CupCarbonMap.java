@@ -20,14 +20,28 @@
 package cupcarbon;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
 import map.WorldMap;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * @author Ahcene Bounceur
@@ -63,12 +77,19 @@ public class CupCarbonMap extends JInternalFrame {
 		map.getMainMap().setLoadingImage(
 				Toolkit.getDefaultToolkit()
 						.getImage(CupCarbonParameters.IMGPATH + "mer.png"));
+		if(CupCarbon.isLocal()==true){
+			map.getMiniMap().setEnabled(false);
+			map.getZoomSlider().setEnabled(false);
+			System.out.println("local");
+		}
+		else{
 		map.getZoomSlider().setSnapToTicks(false);
 		map.getZoomSlider().setPaintTicks(false);
 		map.getZoomInButton().setBackground(Color.LIGHT_GRAY);
 		map.getMiniMap().setLoadingImage(
 				Toolkit.getDefaultToolkit()
 						.getImage(CupCarbonParameters.IMGPATH + "mer.png"));
+		}
 		setContentPane(map);
 		setBounds(0, 0, 800, 500);
 		map.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -85,5 +106,73 @@ public class CupCarbonMap extends JInternalFrame {
 	public void infos() {
 		System.out.println("->"+this.getSize());
 	}
+	public void PrintFrameToPDF()  {
+	    try {
+	        Document d = new Document();
+	        PdfWriter writer = PdfWriter.getInstance(d, new FileOutputStream ("C:/Users/Public/Documents/sample.pdf"));
+	        d.open ();
 
+	        PdfContentByte cb = writer.getDirectContent( );
+			PdfTemplate template = cb.createTemplate(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+	        cb.addTemplate(template, 0, 0);
+			Graphics2D g2d = template.createGraphics(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+	        g2d.scale(0.4, 0.4);
+	        map.print(g2d);
+	        map.addNotify();
+	        map.validate();
+	        g2d.dispose();
+
+	        d.close ();
+	    }
+	    catch(Exception e)  { e.printStackTrace();
+	        //
+	    }
+	}
+	public void saveImage() {
+	    BufferedImage img = new BufferedImage(map.getWidth(), map.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE);
+	    map.paint(img.getGraphics());
+	    try {
+	        ImageIO.write(img, "png", new File("C:/Users/Public/Documents/sample.png"));
+	        System.out.println("panel saved as image");
+
+	    } catch (Exception e) {
+	        System.out.println("panel not saved" + e.getMessage());
+	    }
+	}
+	public void saveHDImage(WorldMap map2){
+		WorldMap map= map2;
+		Dimension original = map.getSize();
+
+		System.out.println("Original = " + original);
+
+		int width = map.getWidth()*1 ;
+		int height = map.getHeight()*1 ;
+
+		System.out.println("Target = " + width + "x" + height);
+		map.setSize(width, height);
+		map.doLayout();
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = img.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+		map.print(g2d);
+		g2d.dispose();
+
+		map.setSize(original);
+		map.doLayout();
+
+		try {
+		    ImageIO.write(img, "png", new File("C:/Users/Public/Documents/sample.png"));
+		} catch (IOException ex) {
+		    ex.printStackTrace();
+		}
+	}
 }
+
+
