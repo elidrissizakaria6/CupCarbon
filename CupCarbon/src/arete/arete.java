@@ -44,5 +44,9 @@ public class arete implements Comparable<arete>{
 		if(this.distance < o.distance) return (-1); else return 1 ;
 	}
 	
+	public int compareTo1(arete o) {
+		// TODO Auto-generated method stub idée !!
+		if(((this.device1.Consommation(device2)-this.device1.getValue())+(this.device2.Consommation(device1)-this.device2.getValue()))<((o.device1.Consommation(device2)-o.device1.getValue())+ (o.device2.Consommation(device1)-o.device2.getValue()))) return (-1); else return 1 ;
+	}
 	
 }
