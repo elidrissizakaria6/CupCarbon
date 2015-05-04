@@ -42,8 +42,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.swing.SwingUtilities;
-
 import org.jdesktop.swingx.JXMapViewer;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.painter.Painter;
@@ -61,7 +59,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import cupcarbon.CupCarbon;
 import cupcarbon.CupCarbonMap;
 import cupcarbon.DeviceParametersWindow;
-import cupcarbon.EasyDeviceParametersWindow;
 import device.BaseStation;
 import device.Device;
 import device.DeviceList;
@@ -104,7 +101,6 @@ public class Layer implements Painter<Object>, MouseListener,
 	public static boolean mousePressed = false;
 	public static String projectPath = "";
 	public static String projectName = "";
-	private EasyDeviceParametersWindow easyDeviceParametersWindow;
 	private boolean debutSelection = false;
 
 	public Layer() {
@@ -279,9 +275,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg) {
-		//Clic droit  TODO je dois penser à l'endroit de ce bout de code
-		
+	public void mouseClicked(MouseEvent arg) {		
 		
 		//clic gauche
 		if (arg.getClickCount() == 2) {						
@@ -429,6 +423,7 @@ public class Layer implements Painter<Object>, MouseListener,
 			}
 			
 			mapViewer.repaint();
+			
 		}
 	}
 

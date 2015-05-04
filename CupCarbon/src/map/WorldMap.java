@@ -101,6 +101,7 @@ public class WorldMap extends JXMapKit {
 		// setCenterPosition(new
 		// GeoPosition(48.58273977037357,-3.8297653198242188));//Morlaix
 		setZoom(2);
+		
 		layer = new Layer(getMainMap());
 	}
 

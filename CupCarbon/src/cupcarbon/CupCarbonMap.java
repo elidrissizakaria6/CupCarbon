@@ -73,23 +73,16 @@ public class CupCarbonMap extends JInternalFrame {
 	public CupCarbonMap() {
 		super("CupCarbon Map");
 		map = new WorldMap();
-
 		map.getMainMap().setLoadingImage(
 				Toolkit.getDefaultToolkit()
 						.getImage(CupCarbonParameters.IMGPATH + "mer.png"));
-		if(CupCarbon.isLocal()==true){
-			map.getMiniMap().setEnabled(false);
-			map.getZoomSlider().setEnabled(false);
-			System.out.println("local");
-		}
-		else{
+			System.out.println("Non local");
 		map.getZoomSlider().setSnapToTicks(false);
 		map.getZoomSlider().setPaintTicks(false);
 		map.getZoomInButton().setBackground(Color.LIGHT_GRAY);
 		map.getMiniMap().setLoadingImage(
 				Toolkit.getDefaultToolkit()
 						.getImage(CupCarbonParameters.IMGPATH + "mer.png"));
-		}
 		setContentPane(map);
 		setBounds(0, 0, 800, 500);
 		map.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -172,6 +165,21 @@ public class CupCarbonMap extends JInternalFrame {
 		} catch (IOException ex) {
 		    ex.printStackTrace();
 		}
+	}
+	public static void CacherZoomEtMiniMap(){
+		map.setZoom(2);
+		map.getMiniMap().setVisible(false);
+		map.getZoomSlider().setVisible(false);
+		map.getZoomInButton().setVisible(false);
+		map.getZoomOutButton().setVisible(false);
+	}
+	public static void AfficherZoomEtMiniMap(){
+		map.getMiniMap().setEnabled(true);
+		map.getZoomSlider().setEnabled(true);
+		map.getMiniMap().setVisible(true);
+		map.getZoomSlider().setVisible(true);
+		map.getZoomInButton().setVisible(true);
+		map.getZoomOutButton().setVisible(true);
 	}
 }
 

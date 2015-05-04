@@ -53,6 +53,13 @@ public class MapCalc {
 				.geoToPixel(new GeoPosition(x, y),
 						Layer.getMapViewer().getZoom());
 	}
+	
+	public static GeoPosition PixelMapTogeoXY(Point2D p2d) {
+		return Layer
+				.getMapViewer()
+				.getTileFactory()
+				.pixelToGeo(p2d, Layer.getMapViewer().getZoom());
+	}
 
 	// public static GeoPosition geoXYToPixel(int x, int y) {
 	// return Layer.getMapViewer().getTileFactory()
@@ -106,6 +113,13 @@ public class MapCalc {
 	public static int[] geoToIntPixelMapXY(double x, double y) {
 		Point2D p = geoXYToPixelMap(x, y);
 		int[] v = { (int) p.getX(), (int) p.getY() };
+		return v;
+	}
+	
+	public static double[] IntPixelMapXYToGeo(int x,int y){
+		Point p = new Point(x, y);
+		GeoPosition g=PixelMapTogeoXY(p);
+		double[] v = { (int) g.getLatitude(), (int) g.getLongitude() };
 		return v;
 	}
 

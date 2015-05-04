@@ -55,7 +55,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileFilter;
 
-import map.Fenetre;
 import map.Layer;
 import map.RandomDevices;
 import map.WorldMap;
@@ -64,6 +63,7 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import osm.City;
 import perso.BIPAdapte;
+import perso.BIPAdapteA;
 import perso.BIPBidirectionnel;
 import perso.BIPConsom;
 import perso.CalculerPuissanceConsommation;
@@ -114,7 +114,6 @@ public class CupCarbon {
 	private SolverProxyParamsWindow solverProxyParamsWindow = new SolverProxyParamsWindow();
 	private CupCarbonMap cupCarbonMap;
 	//zakaria
-	private Fenetre fenetre;
 	private static boolean local=false;
 	//zakaria
 	private static boolean bidi=false;
@@ -1406,6 +1405,8 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent arg0) {
 				setLocal(false);
 				changeTiles("http://a.tile.openstreetmap.org/");
+				CupCarbonMap.AfficherZoomEtMiniMap();
+				
 			}
 		});
 		mnMap.add(rdbtnmntmClassic);
@@ -1417,6 +1418,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				setLocal(false);
 				changeTiles("http://otile1.mqcdn.com/tiles/1.0.0/osm/");
+				CupCarbonMap.AfficherZoomEtMiniMap();
 			}
 		});
 		rdbtnmntmOsm.setSelected(true);
@@ -1429,6 +1431,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				setLocal(false);
 				changeTiles("http://otile1.mqcdn.com/tiles/1.0.0/sat/");
+				CupCarbonMap.AfficherZoomEtMiniMap();
 			}
 		});
 		mnMap.add(rdbtnmntmSatellit);
@@ -1440,6 +1443,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				setLocal(false);
 				changeTiles("http://a.tile.opencyclemap.org/cycle/");
+				CupCarbonMap.AfficherZoomEtMiniMap();
 			}
 		});
 		mnMap.add(rdbtnmntmCyclic);
@@ -1451,6 +1455,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				setLocal(false);
 				changeTiles("http://a.tile2.opencyclemap.org/transport/");
+				CupCarbonMap.AfficherZoomEtMiniMap();
 			}
 		});
 		mnMap.add(mntmTransport);
@@ -1462,6 +1467,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				setLocal(false);
 				changeTiles("http://tile.stamen.com/terrain-background/");
+				CupCarbonMap.AfficherZoomEtMiniMap();
 			}
 		});
 		mnMap.add(mntmTerrain);
@@ -1474,6 +1480,7 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent arg0) {
 				setLocal(false);
 				changeTiles("http://a.tiles.mapbox.com/v3/examples.map-zr0njcqy/");
+				CupCarbonMap.AfficherZoomEtMiniMap();
 			}
 		});
 		mnMap.add(mntmMapbox);		
@@ -1499,6 +1506,8 @@ public class CupCarbon {
 			public void actionPerformed(ActionEvent e) {
 				setLocal(true);
 				changeTiles("file:///C:/Users/Zakaria/workspace/CupCarbon/images/mer");	
+				CupCarbonMap.CacherZoomEtMiniMap();
+					System.out.println("local");
 			}
 		});
 		mnMap.add(mntmLocal);
@@ -1631,6 +1640,18 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoBipAdapMenu);
+		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem algoBipAdapAMenu = new JMenuItem("Algo BIP AdaptéA");
+		algoBipAdapAMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BIPAdapteA monBipAdapA = new BIPAdapteA();
+				monBipAdapA.start();
+			}
+		});
+		mnPerso.add(algoBipAdapAMenu);
 		
 		/**
 		 * @author Zakaria

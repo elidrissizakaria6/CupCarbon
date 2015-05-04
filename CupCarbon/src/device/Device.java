@@ -1282,6 +1282,14 @@ public abstract class Device implements Runnable, MouseListener,
 					lx1 + 30, ly1 + 50);
 		}
 	}
+	
+	//zakaria
+	public boolean isInDeviceList(){
+		for(Device d :DeviceList.getNodes()){
+			if((this.getX()==d.getX())&&(this.getY()==d.getY())) return true;
+		}
+		return false;
+	}
 
 	/*
 	 * (non-Javadoc)

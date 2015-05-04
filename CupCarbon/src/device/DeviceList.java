@@ -35,7 +35,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import map.Grille;
 import map.Layer;
 import solver.SensorGraph;
 import tracking.TrackingTasksManager;
@@ -53,7 +52,6 @@ public class DeviceList {
 	private static List<Device> nodes = new ArrayList<Device>();
 	private boolean drawLinks = true;
 	private boolean linksDetection = true;
-	private Grille grille=new Grille();
 	private boolean displayConnectionDistance = false;
 	private LinkedList<Point[]> linksCoord = new LinkedList<Point[]>();
 	private static TrackingTasksManager trackingManager;
