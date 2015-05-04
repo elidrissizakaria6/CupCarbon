@@ -69,7 +69,7 @@ public class MSTKRUSKAL extends Thread {
 			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n La consommation globale = "+calculerComsommationGlobale(capteurs));
 			Layer.mapViewer.repaint();
 	}
-		
+	
 
 
 	public boolean isCycle(arete ar)
