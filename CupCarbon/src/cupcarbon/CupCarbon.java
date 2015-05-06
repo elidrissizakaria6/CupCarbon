@@ -116,8 +116,9 @@ public class CupCarbon {
 	//zakaria
 	private static boolean local=false;
 	//zakaria
-	private static boolean bidi=false;
+	private static boolean unidirectionnel=false;
 	private static boolean poids=false;
+	private static boolean infoNode=true;
 	private GpsWindow gpsWindow = new GpsWindow();
 	private static DeviceParametersWindow deviceParametersWindow=new DeviceParametersWindow();
 	//zakaria
@@ -1731,8 +1732,8 @@ public class CupCarbon {
 		mnRadioUni.setText("Liens Unidirectionnel");
 		mnRadioUni.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {				
-			if(mnRadioUni.isSelected()) bidi=true;
-			else bidi=false;
+			if(mnRadioUni.isSelected()) unidirectionnel=true;
+			else unidirectionnel=false;
 			Layer.mapViewer.repaint();
 		}
 		});
@@ -1749,6 +1750,19 @@ public class CupCarbon {
 		}
 		});
 		menuBar.add(mnRadioPoids);
+		
+		final JRadioButton mnRadioInfoNode = new JRadioButton();//todo
+		mnRadioInfoNode.setSelected(false);
+		mnRadioInfoNode.setText("Infos Capteurs");
+		mnRadioInfoNode.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {		
+			mnRadioInfoNode.setSelected(true);
+			if(mnRadioInfoNode.isSelected()) Device.setDisplayDetails(true);
+			else Device.setDisplayDetails(false);
+			Layer.mapViewer.repaint();
+		}
+		});
+		menuBar.add(mnRadioInfoNode);
 
 		JToolBar toolBar = new JToolBar();
 		mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
@@ -1940,24 +1954,8 @@ public class CupCarbon {
 
 			ex.printStackTrace();
 
-		}
-		// moveToFront(cupCarbonMap);
-		
-		// Zakaria
-//				fenetre =new Fenetre();
-//				fenetre.setLocation(280,91);
-//				fenetre.setFrameIcon(new ImageIcon(
-//						"images/cupcarbon_logo_small.png"));
-//				fenetre.setVisible(true);
-//				mainFrame.getContentPane().add(desktopPane,BorderLayout.CENTER);
-//				desktopPane.setBackground(new Color(173, 216, 230));
-//				desktopPane.add(fenetre);
-//				try {
-//					fenetre.setMaximum(true);
-//				} catch (PropertyVetoException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
+		}		
+
 	}
 
 	public static void openDeviceParemeterWindow() {
@@ -2005,10 +2003,14 @@ public class CupCarbon {
 		WorldMap.tileUrl = s;				
 		Layer.getMapViewer().repaint();
 	}
-	public static boolean isBidi()
-	{
-		return bidi;
+	public static boolean isUnidirectionnel() {
+		return unidirectionnel;
 	}
+
+	public static void setUnidirectionnel(boolean unidirectionnel) {
+		CupCarbon.unidirectionnel = unidirectionnel;
+	}
+
 	public static boolean isPoids()
 	{
 		return poids;
@@ -2016,6 +2018,14 @@ public class CupCarbon {
 	public static boolean isLocal(){
 		return local;
 	}
+	public static boolean isInfoNode() {
+		return infoNode;
+	}
+
+	public static void setInfoNode(boolean infoNode) {
+		CupCarbon.infoNode = infoNode;
+	}
+
 	public static boolean setLocal(boolean local){
 		return CupCarbon.local=local;
 	}
