@@ -19,8 +19,9 @@ import device.SensorNode;
 public class MSTKRUSKAL extends Thread {
 
 	public void run() {
+		long debut,fin;
+		debut=System.currentTimeMillis();
 		int i=0;
-		//List<Device> noeuds = DeviceList.getNodes();
 		ArrayList<arete> aretes = new ArrayList<arete>();
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
 		
@@ -35,7 +36,6 @@ public class MSTKRUSKAL extends Thread {
 		
 		for (i=0;i<capteurs.size();i++) {
 			SensorNode capteur=capteurs.get(i);
-//			capteur.setRadioRadius(5000);
 			
 			for (int j=i;j<capteurs.size();j++) {
 				SensorNode voisin=capteurs.get(j);
@@ -46,25 +46,24 @@ public class MSTKRUSKAL extends Thread {
 					
 			}
 			
-			System.out.println();
 			
 		}
 		Collections.sort(aretes);
-		System.out.println("Le nombre d'aretes"+aretes.size());
 
 		
 		
 		for( arete a : aretes ){	
-//			System.out.println(a.getDistance());
 			if(isCycle(a)==false)
 			{
 			a.getDevice1().setRadioRadius(a.getDistance());
 			a.getDevice2().setRadioRadius(a.getDistance());
 			majComposantecnx(a);
-			System.out.println("entrer");
 			}
 			
-		}
+			}
+		fin=System.currentTimeMillis();
+		System.out.println("Le temps d'execution de l'algo avec la nouvelle procedure, en Milliseconde = "+(fin-debut));
+	
 		final JFrame parent = new JFrame();
 			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n La consommation globale = "+calculerComsommationGlobale(capteurs));
 			Layer.mapViewer.repaint();
@@ -76,17 +75,14 @@ public class MSTKRUSKAL extends Thread {
 	{
 			if((ar.getDevice1().getComposantescnx().equals(ar.getDevice1()))||(ar.getDevice2().getComposantescnx().equals(ar.getDevice2())))
 			{
-//				System.out.println("cas superflu");
 				return false;
 			}
 			else if (ar.getDevice1().getComposantescnx().equals(ar.getDevice2().getComposantescnx()))
 			{
-//				System.out.println("cas égalité "+ar.getDevice1().getComposantescnx()+"="+ar.getDevice2().getComposantescnx());
 
 				return true;
 			}
 			else{
-//				System.out.println("pas de cycle normal");
 				return false;
 			}
 		

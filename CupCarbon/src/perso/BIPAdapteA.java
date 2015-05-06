@@ -17,16 +17,17 @@ public class BIPAdapteA extends Thread {
 
 	public void run() {
 		boolean marker=false;
+		long debut,fin;
+		debut=System.currentTimeMillis();
 		double valeurMin= Double.MAX_VALUE;
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
 		List<SensorNode> noeudsNonMarques = new ArrayList<SensorNode>();
 		List<SensorNode> noeudsMarques = new ArrayList<SensorNode>();
-		System.out.println("je fais un truc");
 		for( SensorNode a : capteurs )
 		{
 			a.setRadioRadius(0);
 			a.setValue(0);
-			if(a.isSelected()){marker=true; a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
+			if(a.isSelected()){marker=true; a.setMarked(true);noeudsMarques.add(a);}
 			else {a.setMarked(false);noeudsNonMarques.add(a);}
 		}
 		if(marker==false)
@@ -40,34 +41,22 @@ public class BIPAdapteA extends Thread {
 		SensorNode NoeudMarqueChoisi=new SensorNode();
 		int i=0,j=0;
 		while(noeudsMarques.size()<capteurs.size()){
-//			for(int i=0;i<capteurs.size();i++){
 			i=0;
 			while(i<noeudsMarques.size()){
-				System.out.println("apres le permier for");
-				if(noeudsMarques.get(i).isMarked()==true){
-					System.out.println("mama");
 					NoeudMarque=noeudsMarques.get(i);
-//					for(int j=0;j<capteurs.size();j++){
 					j=0;
 					while(j<noeudsNonMarques.size()){
 						
-						if(noeudsNonMarques.get(j).isMarked()==false){
-							System.out.println("papa");
-							System.out.println("hana "+(NoeudMarque.Consommation(noeudsNonMarques.get(j))-NoeudMarque.getValue()));
 							if(((NoeudMarque.Consommation(noeudsNonMarques.get(j))-NoeudMarque.getValue())+(noeudsNonMarques.get(j).Consommation(NoeudMarque)-noeudsNonMarques.get(j).getValue()))<valeurMin)
 								{	
-								System.out.println(NoeudMarque +" veut marqué " + noeudsNonMarques.get(j));
 								NoeudNonMarque=noeudsNonMarques.get(j);
 								NoeudMarqueChoisi=NoeudMarque;
 								valeurMin=(NoeudMarque.Consommation(NoeudNonMarque)-NoeudMarque.getValue())+(noeudsNonMarques.get(j).Consommation(NoeudMarque)-noeudsNonMarques.get(j).getValue());
 								}
-						}
 						j++;
 					}
-				}
 				i++;
 			}
-			System.out.println(NoeudMarqueChoisi +" a marqué " + NoeudNonMarque);
 			//Si on met pas le max, on va voir un noeud marqué diminuer sa valeur par rapport à un nouveau noeud non marqué 
 			NoeudMarqueChoisi.setRadioRadius(Math.max(NoeudMarqueChoisi.distance(NoeudNonMarque), NoeudMarqueChoisi.getRadioRadius()));
 			NoeudMarqueChoisi.setValue(NoeudMarqueChoisi.getConsommation());
@@ -75,13 +64,15 @@ public class BIPAdapteA extends Thread {
 			NoeudNonMarque.setValue(NoeudMarqueChoisi.getConsommation());
 
 			NoeudNonMarque.setMarked(true);
-			System.out.println("je suis la");
 			noeudsMarques.add(NoeudNonMarque);
 			noeudsNonMarques.remove(NoeudNonMarque);
 			valeurMin=Double.MAX_VALUE;
 			Layer.getMapViewer().repaint();
 		}
 
+		fin=System.currentTimeMillis();
+		System.out.println("Le temps d'execution de l'algo avec la nouvelle procedure, en Milliseconde = "+(fin-debut));
+		
 		final JFrame parent = new JFrame();
 			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
 					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
