@@ -325,7 +325,7 @@ public class DeviceList {
 							if(!n2.isDead()) {
 								//Zakaria Bidirectionelle
 								if (n1.radioDetectZakaria(n2) && n2.radioDetectZakaria(n1) && drawLinks) {
-									n1.drawRadioLinkZakaria(n2, g);
+									n1.drawRadioLinkBidirectionnelZakaria(n2, g);
 									n1.drawWeightZakaria(n2,g);
 									if (displayConnectionDistance) {
 										Layer.drawDistance(n1.getX(), n1.getY(),
@@ -336,7 +336,7 @@ public class DeviceList {
 								}
 								// Unidirectionelle
 								else if(n1.radioDetect(n2)&&drawLinks){
-									n1.drawRadioLink(n2, g);
+									n1.drawRadioLinkUnidirectionnelZakaria(n2, g);
 									if (displayConnectionDistance) {
 										Layer.drawDistance(n1.getX(), n1.getY(),
 												n2.getX(), n2.getY(),

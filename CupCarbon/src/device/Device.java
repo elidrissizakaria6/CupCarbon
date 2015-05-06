@@ -1081,6 +1081,15 @@ public abstract class Device implements Runnable, MouseListener,
 			g.drawString(getNodeIdName(), (int) (x + 10), (int) (y + 10));
 		}
 	}
+	
+	public void drawIdAndPower(int x, int y, Graphics g) {
+		if (displayDetails) {
+			g.setColor(Color.BLACK);
+			g.drawString(getNodeIdName(), (int) (x + 10), (int) (y + 10));
+			drawPowerZakaria(x,y,g);
+		}
+	}
+	
 
 	/**
 	 * @param device
@@ -1159,20 +1168,17 @@ public abstract class Device implements Runnable, MouseListener,
 		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
 		int lx2 = coord[0];
 		int ly2 = coord[1];
-
-		// int lx1 = MapCalc.geoToIntPixelMapX(x, y);
-		// int ly1 = MapCalc.geoToIntPixelMapY(x, y);
-		// int lx2 = MapCalc.geoToIntPixelMapX(device.getX(), device.getY());
-		// int ly2 = MapCalc.geoToIntPixelMapY(device.getX(), device.getY());
-		if(CupCarbon.isBidi()){
-		g.setColor(Color.GREEN);
+		g.setColor(Color.BLACK);
 		g.drawLine(lx1, ly1, lx2, ly2);
-		}
 	}
 	
-	//zakaria
 	
-	public void drawRadioLinkZakaria(Device device, Graphics g) {
+	/**Draw Black (line) radio link
+	 * @author Zakaria
+	 * @param device
+	 * @param g
+	 */
+	public void drawRadioLinkBidirectionnelZakaria(Device device, Graphics g) {
 
 		int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 		int lx1 = coord[0];
@@ -1184,8 +1190,27 @@ public abstract class Device implements Runnable, MouseListener,
 		g.drawLine(lx1, ly1, lx2, ly2);
 	}
 	
+	public void drawRadioLinkUnidirectionnelZakaria(Device device, Graphics g) {
+		int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
+		int lx1 = coord[0];
+		int ly1 = coord[1];
+		coord = MapCalc.geoToIntPixelMapXY(device.getX(), device.getY());
+		int lx2 = coord[0];
+		int ly2 = coord[1];
+		
+		if(CupCarbon.isUnidirectionnel()){
+			g.setColor(Color.GREEN);
+			g.drawLine(lx1, ly1, lx2, ly2);
+		}
+	}
 	
-	//zakaria
+	
+	/**
+	 * Draw Weight (number) on the edge
+	 * @author Zakaria
+	 * @param device
+	 * @param g
+	 */
 	public void drawWeightZakaria(Device device, Graphics g) {
 		int[] coord = MapCalc.geoToIntPixelMapXY(longitude, latitude);
 		int lx1 = coord[0];
@@ -1198,6 +1223,32 @@ public abstract class Device implements Runnable, MouseListener,
 			g.drawString(String.valueOf((int)this.Consommation(device)), (lx1+lx2)/2, (ly1+ly2)/2);
 		}
 	}
+	
+	/**
+	 * Draw Power/consumption of the node
+	 * @author Zakaria
+	 * @param device
+	 * @param g
+	 */
+		public void drawPowerZakaria(int x,int y, Graphics g) {
+		
+			if (displayDetails) {
+				g.setColor(Color.BLACK);
+				if(this.getId()>999){
+					g.drawString("["+(int)getConsommation()+"]", (int) (x + 40), (int) (y + 10));
+				}
+				else if(this.getId()>99){
+					g.drawString("["+(int)getConsommation()+"]", (int) (x + 35), (int) (y + 10));
+				}
+				else if(this.getId()>9){
+					g.drawString("["+(int)getConsommation()+"]", (int) (x + 30), (int) (y + 10));
+				}
+				else{
+					g.drawString("["+(int)getConsommation()+"]", (int) (x + 25), (int) (y + 10));
+				}
+				
+			}
+		}
 			
 	/**
 	 * Draw the (line) detection link
@@ -1540,6 +1591,14 @@ public abstract class Device implements Runnable, MouseListener,
 	
 	public int getEvent2() {
 		return event2;
+	}
+
+	public static boolean isDisplayDetails() {
+		return displayDetails;
+	}
+
+	public static void setDisplayDetails(boolean displayDetails) {
+		Device.displayDetails = displayDetails;
 	}
 
 	public void loadScript() {}

@@ -243,7 +243,10 @@ public class SensorNode extends DeviceWithRadio {
 				g.drawLine(x + rayon + 3, y + rayon + 3, x + rayon + 3, y
 						+ rayon - 2);
 			}
-			if(CupCarbon.isLocal()==false){
+			if(CupCarbon.isLocal()==true){
+				hide=5;
+			}
+			else hide=0;
 			g.setColor(Color.DARK_GRAY);
 			if(hide == 0 || hide==4) {	
 				if (inside) {
@@ -289,7 +292,6 @@ public class SensorNode extends DeviceWithRadio {
 			drawRadius(x, y, rayon, g);
 			drawRadioRadius(x, y, rayon2, g);
 			sensorUnit.drawDetectionRadius(x, y, capRadius, g);
-			}
 
 			if (underSimulation) {
 				g.setColor(UColor.GREEN);
@@ -311,7 +313,8 @@ public class SensorNode extends DeviceWithRadio {
 			}
 
 			drawMoveArrows(x, y, g);
-			drawId(x, y, g);
+//			drawId(x, y, g);
+			drawIdAndPower(x,y,g);
 			drawInfos(this, g);
 		}
 	}
