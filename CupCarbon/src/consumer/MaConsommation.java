@@ -18,10 +18,12 @@ public class MaConsommation extends AConsumption {
 		return 0;
 	}
 	public static double getConsommation(double porte){
-		return Math.pow(porte,coefficientAtten)+Cte;
+		if(Cte==0) return Math.pow(porte,coefficientAtten);
+		else return Math.pow(porte,coefficientAtten)+Math.pow(10,Cte);
 	}
 	public static double Consommation(double distance){
-		return Math.pow(distance,coefficientAtten)+Cte;
+		if(Cte==0) return Math.pow(distance,coefficientAtten);
+		else return Math.pow(distance,coefficientAtten)+Math.pow(10,Cte);
 	}
 
 	public static int getCoefficientAtten() {
