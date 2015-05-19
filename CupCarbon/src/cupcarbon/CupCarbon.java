@@ -67,12 +67,10 @@ import perso.BIPAdapteA;
 import perso.BIPBidirectionnel;
 import perso.BIPConsom;
 import perso.CalculerPuissanceConsommation;
-import perso.ExampleClass;
 import perso.Heuristique;
 import perso.MSTKRUSKAL;
 import perso.MSTKRUSKAL2;
-import perso.MonAlgoClass;
-import perso.MyClass;
+import perso.TesterLaConnexite;
 import project.Project;
 import simulation.FaultInjector;
 import solver.CharlySchedul;
@@ -88,6 +86,7 @@ import solver.SensorColoring;
 import solver.SensorSetCover;
 import solver.SensorTargetCoverageRun;
 import utilities.GraphViewer;
+import window.showSensorsListWindow;
 import device.Device;
 import device.DeviceList;
 import device.Marker;
@@ -123,6 +122,8 @@ public class CupCarbon {
 	private static DeviceParametersWindow deviceParametersWindow=new DeviceParametersWindow();
 	//zakaria
 	private DevicesParametersConsoWindows devicesParametersConsoWindows;
+	private RandomDeviceParametersWindows randomDeviceParametersWindows;
+	private showSensorsListWindow showSensorsListWindow;
 	private FlyingObjParametersWindow flyingObjParametersWindow = new FlyingObjParametersWindow();
 	private InformationWindow infoWindow = new InformationWindow();
 	private WsnSimulationWindow wsnSimWindow = new WsnSimulationWindow();
@@ -470,6 +471,15 @@ public class CupCarbon {
 		JMenuItem mntmDelete = new JMenuItem("Delete");
 		mntmDelete.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "Supprimer.png"));
 		mnEdition.add(mntmDelete);
+		
+		JMenuItem mntmClearAll = new JMenuItem("Clear ALL");
+		mntmClearAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DeviceList.clearNodes();
+			}
+		});
+		mntmClearAll.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "Supprimer.png"));
+		mnEdition.add(mntmClearAll);
 
 		JSeparator separator_3 = new JSeparator();
 		mnEdition.add(separator_3);
@@ -792,7 +802,13 @@ public class CupCarbon {
 		JMenuItem mntmAddSensors = new JMenuItem("Add 10 sensors");
 		mntmAddSensors.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				RandomDevices.addRandomSensors(10);
+				Layer.initClick();
+				randomDeviceParametersWindows=new RandomDeviceParametersWindows();
+				if (!randomDeviceParametersWindows.isVisible()) {
+					randomDeviceParametersWindows.setVisible(true);
+					getDesktopPane().add(randomDeviceParametersWindows);
+				}
+				randomDeviceParametersWindows.toFront();
 			}
 		});
 		mnRandom.add(mntmAddSensors);
@@ -800,7 +816,7 @@ public class CupCarbon {
 		JMenuItem mntmAddSensors_1 = new JMenuItem("Add 50 sensors");
 		mntmAddSensors_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				RandomDevices.addRandomSensors(50);
+				RandomDevices.addRandomSensors(50,30,20);
 			}
 		});
 		mnRandom.add(mntmAddSensors_1);
@@ -808,7 +824,7 @@ public class CupCarbon {
 		JMenuItem mntmAddSensors_3 = new JMenuItem("Add 100 sensors");
 		mntmAddSensors_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RandomDevices.addRandomSensors(100);
+//				RandomDevices.addRandomSensors(100);
 			}
 		});
 		mnRandom.add(mntmAddSensors_3);
@@ -816,7 +832,7 @@ public class CupCarbon {
 		JMenuItem mntmAddSensors_2 = new JMenuItem("Add 500 sensors");
 		mntmAddSensors_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RandomDevices.addRandomSensors(500);
+//				RandomDevices.addRandomSensors(500);
 			}
 		});
 		mnRandom.add(mntmAddSensors_2);
@@ -1356,8 +1372,19 @@ public class CupCarbon {
 		menuBar.add(mnWindow);
 
 		JMenuItem mntmSensors = new JMenuItem("Sensors");
+		mntmSensors.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showSensorsListWindow  = new showSensorsListWindow();
+				if (!showSensorsListWindow.isVisible()) {
+					getDesktopPane().add(showSensorsListWindow);
+					showSensorsListWindow.setVisible(true);
+				}
+				showSensorsListWindow.toFront();
+			}
+		});
 		mntmSensors.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "activity_window.png"));
+		
 		mnWindow.add(mntmSensors);
 
 		JMenuItem mntmGasses = new JMenuItem("Gasses");
@@ -1535,10 +1562,15 @@ public class CupCarbon {
 		});
 		mnCenter.add(btnOk);
 		
-		JMenu mnPerso = new JMenu("Perso");
+		JMenu mnPerso = new JMenu("AlgoAffectPuiss");
 		mnPerso.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "personal-icon.png"));
 		menuBar.add(mnPerso);
+		//zakaria
+		JMenu mnOutilsAlgo = new JMenu("OutilsAlgo");
+		mnOutilsAlgo.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "personal-icon.png"));
+		menuBar.add(mnOutilsAlgo);
 		
 		
 		//------------------------------------------------------------
@@ -1546,15 +1578,15 @@ public class CupCarbon {
 		//	My Action Menu Item
 		//------------------------------------------------------------
 		//------------------------------------------------------------		
-		JMenuItem mntmMyAction = new JMenuItem("My Action");
-		mntmMyAction.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				// Think about importing the package where your class is created
-				MyClass myclass = new MyClass();
-				myclass.start();
-			}
-		});
-		mnPerso.add(mntmMyAction);
+//		JMenuItem mntmMyAction = new JMenuItem("My Action");
+//		mntmMyAction.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				// Think about importing the package where your class is created
+//				MyClass myclass = new MyClass();
+//				myclass.start();
+//			}
+//		});
+//		mnPerso.add(mntmMyAction);
 
 		//------------------------------------------------------------
 		//------------------------------------------------------------
@@ -1565,23 +1597,23 @@ public class CupCarbon {
 		//	My Action Menu Item
 		//------------------------------------------------------------
 		//------------------------------------------------------------		
-		JMenuItem mntmExample = new JMenuItem("Example");
-		mntmExample.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ExampleClass exc = new ExampleClass();
-				exc.start();
-			}
-		});
-		mnPerso.add(mntmExample);
-		
-		JMenuItem monMenuAlgo = new JMenuItem("Mon Algo");
-		monMenuAlgo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MonAlgoClass monAlgo = new MonAlgoClass();
-				monAlgo.start();
-			}
-		});
-		mnPerso.add(monMenuAlgo);
+//		JMenuItem mntmExample = new JMenuItem("Example");
+//		mntmExample.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				ExampleClass exc = new ExampleClass();
+//				exc.start();
+//			}
+//		});
+//		mnPerso.add(mntmExample);
+//		
+//		JMenuItem monMenuAlgo = new JMenuItem("Mon Algo");
+//		monMenuAlgo.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				MonAlgoClass monAlgo = new MonAlgoClass();
+//				monAlgo.start();
+//			}
+//		});
+//		mnPerso.add(monMenuAlgo);
 		/**
 		 * @author Zakaria
 		 */
@@ -1676,7 +1708,19 @@ public class CupCarbon {
 				calculerpuisconso.start();
 			}
 		});
-		mnPerso.add(calculerConsoMenu);
+		mnOutilsAlgo.add(calculerConsoMenu);
+		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem TestConnexeMenu = new JMenuItem("Tester La Connexité");
+		TestConnexeMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TesterLaConnexite calculerpuisconso = new TesterLaConnexite();
+				calculerpuisconso.start();
+			}
+		});
+		mnOutilsAlgo.add(TestConnexeMenu);
 		
 		/**
 		 * @author Zakaria
@@ -1690,7 +1734,43 @@ public class CupCarbon {
 				cupCarbonMap.saveHDImage(CupCarbonMap.map);
 			}
 		});
-		mnPerso.add(PDFMenu);
+		mnOutilsAlgo.add(PDFMenu);
+		
+		final JRadioButton mnRadioUni = new JRadioButton();//todo
+		mnRadioUni.setSelected(false);
+		mnRadioUni.setText("Liens Unidirectionnel");
+		mnRadioUni.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {				
+			if(mnRadioUni.isSelected()) unidirectionnel=true;
+			else unidirectionnel=false;
+			Layer.mapViewer.repaint();
+		}
+		});
+		mnOutilsAlgo.add(mnRadioUni);
+		
+		final JRadioButton mnRadioPoids = new JRadioButton();//todo
+		mnRadioPoids.setSelected(false);
+		mnRadioPoids.setText("Poids");
+		mnRadioPoids.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {				
+			if(mnRadioPoids.isSelected()) poids=true;
+			else poids=false;
+			Layer.mapViewer.repaint();
+		}
+		});
+		mnOutilsAlgo.add(mnRadioPoids);
+		
+		final JRadioButton mnRadioInfoNode = new JRadioButton();//todo
+		mnRadioInfoNode.setSelected(true);
+		mnRadioInfoNode.setText("Infos Capteurs");
+		mnRadioInfoNode.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {		
+			if(mnRadioInfoNode.isSelected()) Device.setDisplayDetails(true);
+			else Device.setDisplayDetails(false);
+			Layer.mapViewer.repaint();
+		}
+		});
+		mnOutilsAlgo.add(mnRadioInfoNode);
 
 		//------------------------------------------------------------
 		//------------------------------------------------------------
@@ -1727,42 +1807,7 @@ public class CupCarbon {
 		mnHelp.add(mntmHelp);
 		mnHelp.add(mntmAboutCupcarbon);
 		
-		final JRadioButton mnRadioUni = new JRadioButton();//todo
-		mnRadioUni.setSelected(false);
-		mnRadioUni.setText("Liens Unidirectionnel");
-		mnRadioUni.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {				
-			if(mnRadioUni.isSelected()) unidirectionnel=true;
-			else unidirectionnel=false;
-			Layer.mapViewer.repaint();
-		}
-		});
-		menuBar.add(mnRadioUni);
 		
-		final JRadioButton mnRadioPoids = new JRadioButton();//todo
-		mnRadioPoids.setSelected(false);
-		mnRadioPoids.setText("Poids");
-		mnRadioPoids.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {				
-			if(mnRadioPoids.isSelected()) poids=true;
-			else poids=false;
-			Layer.mapViewer.repaint();
-		}
-		});
-		menuBar.add(mnRadioPoids);
-		
-		final JRadioButton mnRadioInfoNode = new JRadioButton();//todo
-		mnRadioInfoNode.setSelected(false);
-		mnRadioInfoNode.setText("Infos Capteurs");
-		mnRadioInfoNode.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {		
-			mnRadioInfoNode.setSelected(true);
-			if(mnRadioInfoNode.isSelected()) Device.setDisplayDetails(true);
-			else Device.setDisplayDetails(false);
-			Layer.mapViewer.repaint();
-		}
-		});
-		menuBar.add(mnRadioInfoNode);
 
 		JToolBar toolBar = new JToolBar();
 		mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
