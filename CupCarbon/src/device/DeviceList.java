@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import cupcarbon.CupCarbon;
 import map.Layer;
 import solver.SensorGraph;
 import tracking.TrackingTasksManager;
@@ -71,6 +72,13 @@ public class DeviceList {
 	 */
 	public static List<Device> getNodes() {
 		return nodes;
+	}
+	
+	public static void clearNodes(){
+		nodes.clear();
+		Layer.mapViewer.repaint();
+		System.out.println("clear ALL");
+		Device.number=0;
 	}
 	
 	/**
@@ -550,7 +558,8 @@ public class DeviceList {
 		Device node;
 		for (Iterator<Device> iterator = nodes.iterator(); iterator.hasNext();) {
 			node = iterator.next();
-			if (node.isSelected() && node.getHide()==0) {
+			if (node.isSelected()) {
+//			if (node.isSelected() && node.getHide()==0) {
 				Layer.getMapViewer().removeMouseListener(node);
 				Layer.getMapViewer().removeMouseMotionListener(node);
 				Layer.getMapViewer().removeKeyListener(node);

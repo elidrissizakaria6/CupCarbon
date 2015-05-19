@@ -563,12 +563,17 @@ public abstract class Device implements Runnable, MouseListener,
 		double y2 = device.getY();
 		return MapCalc.distance(longitude, latitude, x2, y2);
 	}
+	public double distanceManhattan(Device device) {
+		double x2 = device.getX();
+		double y2 = device.getY();
+		return MapCalc.distanceManhattan(longitude, latitude, x2, y2);
+	}
 	// Zakaria
 	public double getConsommation(){
 		return MaConsommation.getConsommation(this.getRadioRadius());
 	}
 	public double Consommation(Device device){
-		return MaConsommation.Consommation(this.distance(device));
+		return MaConsommation.Consommation(this.distanceManhattan(device));
 	}
 	// Zakaria
 	/**
@@ -992,7 +997,8 @@ public abstract class Device implements Runnable, MouseListener,
 			Layer.getMapViewer().repaint();
 		}
 
-		if ((move && selected) && hide == 0) {
+//		if ((move && selected) && hide == 0) {
+		if ((move && selected)) {
 			longitude = ex - dlongitude;
 			latitude = ey - dlatitude;
 			Layer.getMapViewer().repaint();
@@ -1085,8 +1091,7 @@ public abstract class Device implements Runnable, MouseListener,
 	public void drawIdAndPower(int x, int y, Graphics g) {
 		if (displayDetails) {
 			g.setColor(Color.BLACK);
-			g.drawString(getNodeIdName(), (int) (x + 10), (int) (y + 10));
-			drawPowerZakaria(x,y,g);
+			g.drawString(getNodeIdName()+" ["+(int)getConsommation()+"]", (int) (x + 10), (int) (y + 10));
 		}
 	}
 	
@@ -1223,32 +1228,6 @@ public abstract class Device implements Runnable, MouseListener,
 			g.drawString(String.valueOf((int)this.Consommation(device)), (lx1+lx2)/2, (ly1+ly2)/2);
 		}
 	}
-	
-	/**
-	 * Draw Power/consumption of the node
-	 * @author Zakaria
-	 * @param device
-	 * @param g
-	 */
-		public void drawPowerZakaria(int x,int y, Graphics g) {
-		
-			if (displayDetails) {
-				g.setColor(Color.BLACK);
-				if(this.getId()>999){
-					g.drawString("["+(int)getConsommation()+"]", (int) (x + 40), (int) (y + 10));
-				}
-				else if(this.getId()>99){
-					g.drawString("["+(int)getConsommation()+"]", (int) (x + 35), (int) (y + 10));
-				}
-				else if(this.getId()>9){
-					g.drawString("["+(int)getConsommation()+"]", (int) (x + 30), (int) (y + 10));
-				}
-				else{
-					g.drawString("["+(int)getConsommation()+"]", (int) (x + 25), (int) (y + 10));
-				}
-				
-			}
-		}
 			
 	/**
 	 * Draw the (line) detection link

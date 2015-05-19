@@ -246,7 +246,6 @@ public class SensorNode extends DeviceWithRadio {
 			if(CupCarbon.isLocal()==true){
 				hide=5;
 			}
-			else hide=0;
 			g.setColor(Color.DARK_GRAY);
 			if(hide == 0 || hide==4) {	
 				if (inside) {
