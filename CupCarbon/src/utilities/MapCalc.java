@@ -171,6 +171,11 @@ public class MapCalc {
 		double d = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return (earth_radius * d);
 	}
+	public static double distanceManhattan(double x1, double y1, double x2, double y2){
+		Point2D p1 = geoXYToPixelMap(x1, y1);
+		Point2D p2 = geoXYToPixelMap(x2, y2);
+		return (Math.abs(p2.getX()-p1.getX())+Math.abs(p2.getY()-p1.getY()));
+	}
 
 	/**
 	 * Calculate the number of pixels that corresponds to a given radius
