@@ -28,8 +28,15 @@ public class BIPAdapte extends Thread {
 		{
 			a.setRadioRadius(0);
 			a.setValue(0);
-			if(a.isSelected()){marker=true; a.setMarked(true);noeudsMarques.add(a);}
-			else {a.setMarked(false);noeudsNonMarques.add(a);}
+			if(a.isSelected()){
+				marker=true; 
+				a.setMarked(true);
+				noeudsMarques.add(a);
+			}
+			else {
+				a.setMarked(false);
+				noeudsNonMarques.add(a);
+			}
 		}
 		if(marker==false)
 		{

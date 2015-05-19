@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import map.Layer;
 import device.DeviceList;
 import device.SensorNode;
 
@@ -17,34 +16,28 @@ public class BIPConsom extends Thread {
 
 	public void run() {
 		boolean marker=false;
-		double valeurMin= 100000000;
-//		ArrayList<arete> aretes = new ArrayList<arete>();
+		double valeurMin=Double.MAX_VALUE;
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
 		List<SensorNode> noeudsNonMarques = new ArrayList<SensorNode>();
 		List<SensorNode> noeudsMarques = new ArrayList<SensorNode>();
-		System.out.println("je fais un truc");
-//		for (i=0;i<capteurs.size();i++) {
-//			SensorNode capteur=capteurs.get(i);
-//			
-//			for (int j=1;j<capteurs.size();j++) {
-//				SensorNode voisin=capteurs.get(j);
-//						aretes.add(new arete(capteur, voisin, capteur.distance(voisin)));		
-//			}
-//						
-//		}
-		
-//		Collections.sort(aretes);
 		//initialisation des noeuds
 		for( SensorNode a : capteurs )
 		{
 			a.setRadioRadius(0);
 			a.setValue(0);
-			if(a.isSelected()){marker=true; a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
-			else {a.setMarked(false);noeudsNonMarques.add(a);}
+			if(a.isSelected()){
+				marker=true; 
+				a.setMarked(true);
+				noeudsMarques.add(a);
+			}
+			else {
+				a.setMarked(false);
+				noeudsNonMarques.add(a);
+			}
 		}
 		if(marker==false)
 		{
-			capteurs.get((1 + (int)(Math.random() * ((capteurs.size() - 1) + 1)))).setMarked(true);
+			capteurs.get((1 + (int)(Math.random() * ((capteurs.size() - 2) + 1)))).setMarked(true);
 		}
 		SensorNode NoeudNonMarque=new SensorNode();
 		SensorNode NoeudMarque=new SensorNode();
@@ -52,18 +45,13 @@ public class BIPConsom extends Thread {
 		int numSommetNMCandidat = 0;
 		while(noeudsMarques.size()<capteurs.size()){	
 			for(int i=0;i<capteurs.size();i++){
-				System.out.println("apres le permier for");
 				if(capteurs.get(i).isMarked()==true){
-					System.out.println("mama");
 					NoeudMarque=capteurs.get(i);
 					for(int j=0;j<capteurs.size();j++){
 						
 						if(capteurs.get(j).isMarked()==false){
-							System.out.println("papa");
-							System.out.println("hana "+(NoeudMarque.Consommation(capteurs.get(j))-NoeudMarque.getValue()));
 							if((NoeudMarque.Consommation(capteurs.get(j))-NoeudMarque.getValue())<valeurMin)
 								{	
-								System.out.println(NoeudMarque +" veut marqué " + capteurs.get(j));
 								NoeudNonMarque=capteurs.get(j);
 								numSommetNMCandidat=j;
 								NoeudMarqueChoisi=NoeudMarque;
@@ -73,21 +61,13 @@ public class BIPConsom extends Thread {
 					}
 				}
 			}
-			System.out.println(NoeudMarqueChoisi +" a marqué " + NoeudNonMarque);
 			NoeudMarqueChoisi.setRadioRadius(NoeudMarqueChoisi.distance(capteurs.get(numSommetNMCandidat)));
 			NoeudMarqueChoisi.setValue(NoeudMarqueChoisi.Consommation(capteurs.get(numSommetNMCandidat)));
 			capteurs.get(numSommetNMCandidat).setMarked(true);
-			System.out.println("je suis la");
 			noeudsMarques.add(NoeudNonMarque);
 			noeudsNonMarques.remove(NoeudNonMarque);
 			valeurMin=100000000;
-			try {
-				sleep(500);
-				Layer.getMapViewer().repaint();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 		}
 
 		final JFrame parent = new JFrame();

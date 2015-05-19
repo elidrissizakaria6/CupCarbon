@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import map.Layer;
 import device.DeviceList;
 import device.SensorNode;
 
@@ -17,83 +18,69 @@ public class BIPBidirectionnel extends Thread {
 	public void run() {
 		boolean marker=false;
 		double valeurMin= Double.MAX_VALUE;
-//		ArrayList<arete> aretes = new ArrayList<arete>();
+		long debut,fin;
+		debut=System.currentTimeMillis();
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
 		List<SensorNode> noeudsNonMarques = new ArrayList<SensorNode>();
 		List<SensorNode> noeudsMarques = new ArrayList<SensorNode>();
-		System.out.println("je fais un truc");
-//		for (i=0;i<capteurs.size();i++) {
-//			SensorNode capteur=capteurs.get(i);
-//			
-//			for (int j=1;j<capteurs.size();j++) {
-//				SensorNode voisin=capteurs.get(j);
-//						aretes.add(new arete(capteur, voisin, capteur.distance(voisin)));		
-//			}
-//						
-//		}
-		
-//		Collections.sort(aretes);
 		//initialisation des noeuds
 		for( SensorNode a : capteurs )
 		{
-			a.setRadioRadius(0);
+			a.setRadioRadius(100);
 			a.setValue(0);
-			if(a.isSelected()){ marker=true;a.setMarked(true);noeudsMarques.add(a);System.out.println(a.getRadioRadius());}
-			else {a.setMarked(false);noeudsNonMarques.add(a);}
+			if(a.isSelected()){
+				marker=true; 
+				a.setMarked(true);
+				noeudsMarques.add(a);
+			}
+			else {
+				a.setMarked(false);
+				noeudsNonMarques.add(a);
+			}
 		}
 		if(marker==false)
 		{
-			capteurs.get((1 + (int)(Math.random() * ((capteurs.size() - 1) + 1)))).setMarked(true);
+			capteurs.get((1 + (int)(Math.random() * ((capteurs.size() - 2) + 1)))).setMarked(true);
 		}
 		SensorNode NoeudNonMarque=new SensorNode();
 		SensorNode NoeudMarque=new SensorNode();
 		SensorNode NoeudMarqueChoisi=new SensorNode();
 		while(noeudsMarques.size()<capteurs.size()){	
 			for(int i=0;i<capteurs.size();i++){
-				System.out.println("apres le permier for");
 				if(capteurs.get(i).isMarked()==true){
-					System.out.println("mama");
 					NoeudMarque=capteurs.get(i);
-					for(int j=0;j<capteurs.size();j++){
+					for(int j=0;j<NoeudMarque.getNeighbors().size();j++){
 						
-						if(capteurs.get(j).isMarked()==false){
-							System.out.println("papa");
-							System.out.println("hana "+(NoeudMarque.Consommation(capteurs.get(j))-NoeudMarque.getValue()));
-							if((NoeudMarque.Consommation(capteurs.get(j))-NoeudMarque.getValue())<valeurMin)
+						if(NoeudMarque.getNeighbors().get(j).isMarked()==false){
+							if(((NoeudMarque.Consommation(NoeudMarque.getNeighbors().get(j))-NoeudMarque.getValue())+(NoeudMarque.getNeighbors().get(j).Consommation(NoeudMarque)-NoeudMarque.getNeighbors().get(j).getValue()))<valeurMin)
 								{	
-								System.out.println(NoeudMarque +" veut marqué " + capteurs.get(j));
-								NoeudNonMarque=capteurs.get(j);
+								NoeudNonMarque=(SensorNode) NoeudMarque.getNeighbors().get(j);
 								NoeudMarqueChoisi=NoeudMarque;
-								valeurMin=(NoeudMarque.Consommation(NoeudNonMarque)-NoeudMarque.getValue());
+								valeurMin=(NoeudMarque.Consommation(NoeudNonMarque)-NoeudMarque.getValue())+(NoeudNonMarque.Consommation(NoeudMarque)-NoeudNonMarque.getValue());
 								}
 						}
 					}
 				}
 			}
-			System.out.println(NoeudMarqueChoisi +" a marqué " + NoeudNonMarque);
 			//Si on met pas le max, on va voir un noeud marqué diminuer sa valeur par rapport à un nouveau noeud non marqué 
-			NoeudMarqueChoisi.setRadioRadius(Math.max(NoeudMarqueChoisi.distance(NoeudNonMarque), NoeudMarqueChoisi.getRadioRadius()));
+			NoeudMarqueChoisi.setRadioRadius(Math.max(NoeudMarqueChoisi.distance(NoeudNonMarque), NoeudMarqueChoisi.getValue()));
 			NoeudMarqueChoisi.setValue(NoeudMarqueChoisi.getConsommation());
 			NoeudNonMarque.setRadioRadius(NoeudMarqueChoisi.distance(NoeudNonMarque));
 			NoeudNonMarque.setValue(NoeudMarqueChoisi.getConsommation());
 
 			NoeudNonMarque.setMarked(true);
-			System.out.println("je suis la");
 			noeudsMarques.add(NoeudNonMarque);
 			noeudsNonMarques.remove(NoeudNonMarque);
 			valeurMin=Double.MAX_VALUE;
-//			try {
-//				sleep(1000);
-//				
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			Layer.getMapViewer().repaint();
 		}
-
+		fin=System.currentTimeMillis();
+		System.out.println("Le temps d'execution de l'algo avec la nouvelle procedure, en Milliseconde = "+(fin-debut));
+		
 		final JFrame parent = new JFrame();
 			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
 					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
+
 
 	}
 		
