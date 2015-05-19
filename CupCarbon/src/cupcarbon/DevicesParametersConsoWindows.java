@@ -36,7 +36,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import consumer.MaConsommation;
-import device.DeviceList;
 
 /**
  * @author Ahcene Bounceur
