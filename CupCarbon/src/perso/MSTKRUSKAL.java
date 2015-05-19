@@ -50,8 +50,6 @@ public class MSTKRUSKAL extends Thread {
 		}
 		Collections.sort(aretes);
 
-		
-		
 		for( arete a : aretes ){	
 			if(isCycle(a)==false)
 			{
@@ -73,11 +71,7 @@ public class MSTKRUSKAL extends Thread {
 
 	public boolean isCycle(arete ar)
 	{
-			if((ar.getDevice1().getComposantescnx().equals(ar.getDevice1()))||(ar.getDevice2().getComposantescnx().equals(ar.getDevice2())))
-			{
-				return false;
-			}
-			else if (ar.getDevice1().getComposantescnx().equals(ar.getDevice2().getComposantescnx()))
+			if (ar.getDevice1().getComposantescnx().equals(ar.getDevice2().getComposantescnx()))
 			{
 
 				return true;
