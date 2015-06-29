@@ -35,7 +35,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import cupcarbon.CupCarbon;
 import map.Layer;
 import solver.SensorGraph;
 import tracking.TrackingTasksManager;
@@ -76,6 +75,7 @@ public class DeviceList {
 	
 	public static void clearNodes(){
 		nodes.clear();
+		MarkerList.getMarkers().clear();
 		Layer.mapViewer.repaint();
 		System.out.println("clear ALL");
 		Device.number=0;

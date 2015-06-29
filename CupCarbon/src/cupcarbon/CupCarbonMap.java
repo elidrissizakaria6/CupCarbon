@@ -76,7 +76,6 @@ public class CupCarbonMap extends JInternalFrame {
 		map.getMainMap().setLoadingImage(
 				Toolkit.getDefaultToolkit()
 						.getImage(CupCarbonParameters.IMGPATH + "mer.png"));
-			System.out.println("Non local");
 		map.getZoomSlider().setSnapToTicks(false);
 		map.getZoomSlider().setPaintTicks(false);
 		map.getZoomInButton().setBackground(Color.LIGHT_GRAY);
@@ -90,6 +89,10 @@ public class CupCarbonMap extends JInternalFrame {
 		setFrameIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "logo_cap_carbon.png"));
 		setResizable(true);
 		setIconifiable(true);
+		//zakria
+		//lancement de l'application en mode White Plan
+		CacherZoomEtMiniMap();
+		//zakaria
 	}
 	
 	public static WorldMap getMap() {
@@ -121,25 +124,62 @@ public class CupCarbonMap extends JInternalFrame {
 	        //
 	    }
 	}
-	public void saveImage() {
+	public static void saveHImage(int i) {
+		WorldMap map= CupCarbonMap.map;
 	    BufferedImage img = new BufferedImage(map.getWidth(), map.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE);
 	    map.paint(img.getGraphics());
 	    try {
-	        ImageIO.write(img, "png", new File("C:/Users/Public/Documents/sample.png"));
+	        ImageIO.write(img, "png", new File("C:/Users/Public/Documents/sample"+i+".png"));
 	        System.out.println("panel saved as image");
 
 	    } catch (Exception e) {
 	        System.out.println("panel not saved" + e.getMessage());
 	    }
 	}
-	public void saveHDImage(WorldMap map2){
+	public void saveHDImage(WorldMap map2,String pathFile) {
 		WorldMap map= map2;
 		Dimension original = map.getSize();
 
 		System.out.println("Original = " + original);
 
-		int width = map.getWidth()*1 ;
-		int height = map.getHeight()*1 ;
+		int width = map.getWidth() ;
+		int height = map.getHeight() ;
+		map.setSize(width, height);
+		map.doLayout();
+	    BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+	    
+	    Graphics2D g2d = img.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+		map.print(g2d);
+		g2d.dispose();
+	    
+	    map.paint(img.getGraphics());
+	    map.setSize(original);
+		map.doLayout();
+	    try {
+	        ImageIO.write(img, "png", new File(pathFile));
+	        System.out.println("panel saved as image");
+
+	    } catch (Exception e) {
+	        System.out.println("panel not saved" + e.getMessage());
+	    }
+	    
+	}
+	public void saveImage(WorldMap map2){
+		WorldMap map= map2;
+		Dimension original = map.getSize();
+
+		System.out.println("Original = " + original);
+
+		int width = map.getWidth() ;
+		int height = map.getHeight() ;
 
 		System.out.println("Target = " + width + "x" + height);
 		map.setSize(width, height);
@@ -166,6 +206,7 @@ public class CupCarbonMap extends JInternalFrame {
 		    ex.printStackTrace();
 		}
 	}
+	//zakaria
 	public static void CacherZoomEtMiniMap(){
 		map.setZoom(2);
 		map.getMiniMap().setVisible(false);

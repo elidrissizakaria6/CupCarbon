@@ -570,10 +570,11 @@ public abstract class Device implements Runnable, MouseListener,
 	}
 	// Zakaria
 	public double getConsommation(){
-		return MaConsommation.getConsommation(this.getRadioRadius());
+		return MaConsommation.getConsommation(this);
 	}
+	
 	public double Consommation(Device device){
-		return MaConsommation.Consommation(this.distanceManhattan(device));
+		return MaConsommation.Consommation(this.distance(device));
 	}
 	// Zakaria
 	/**
@@ -696,7 +697,7 @@ public abstract class Device implements Runnable, MouseListener,
 		}
 
 		if (inside) {
-			selected = !selected;
+			selected = true;
 			Layer.getMapViewer().repaint();
 		}
 
@@ -1114,6 +1115,16 @@ public abstract class Device implements Runnable, MouseListener,
 			// double dMax = Math.max(MapCalc.rayonEnPixel(getRadioRadius()),
 			// MapCalc.rayonEnPixel(node.getRadioRadius()));
 			double dMax = Math.max(getRadioRadius(), device.getRadioRadius());
+			return (dMax >= (distance(device)));
+		}
+		return false;
+	}
+	
+	public boolean radioDetectzak(Device device) {
+		if (withRadio && device.withRadio()) {
+			// double dMax = Math.max(MapCalc.rayonEnPixel(getRadioRadius()),
+			// MapCalc.rayonEnPixel(node.getRadioRadius()));
+			double dMax = getRadioRadius();
 			return (dMax >= (distance(device)));
 		}
 		return false;
