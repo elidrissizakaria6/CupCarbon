@@ -19,6 +19,8 @@
 
 package cupcarbon;
 
+import graph.GraphFile;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -56,20 +58,22 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileFilter;
 
 import map.Layer;
-import map.RandomDevices;
 import map.WorldMap;
 
+import org.jdesktop.swingx.JXTitledSeparator;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import osm.City;
 import perso.BIPAdapte;
-import perso.BIPAdapteA;
-import perso.BIPBidirectionnel;
-import perso.BIPConsom;
+import perso.BorneInf;
+import perso.BorneSup;
 import perso.CalculerPuissanceConsommation;
+import perso.GrapheRNG;
 import perso.Heuristique;
+import perso.LBIP;
+import perso.LMST;
 import perso.MSTKRUSKAL;
-import perso.MSTKRUSKAL2;
+import perso.MonHeuristique;
 import perso.TesterLaConnexite;
 import project.Project;
 import simulation.FaultInjector;
@@ -96,11 +100,10 @@ import device.TrackingPointsList;
 /**
  * @author Ahcene Bounceur
  * @author Lounis Massinissa
- * @author Zakaria El Idrissi
  * @version 1.0
  */
 public class CupCarbon {
-
+	
 	private JFrame mainFrame;
 	private AboutCupCarbon aboutBox = null;
 	private HelpCupCarbon helpWindow = new HelpCupCarbon();
@@ -123,6 +126,11 @@ public class CupCarbon {
 	//zakaria
 	private DevicesParametersConsoWindows devicesParametersConsoWindows;
 	private RandomDeviceParametersWindows randomDeviceParametersWindows;
+	private StatParametersWindow statParametersWindow;
+	private RandomDeviceParametersWindowsWithMarkers randomDeviceParametersWindowsWithMarkers;
+	private RandomDeviceParametersWindowsWitoutGrid deviceParametersWindowsWitoutGrid;
+	private RandomDeviceParametersWindowsWithoutGrid_WithMarkers deviceParametersWindowsWithoutGrid_WithMarkers;
+	
 	private showSensorsListWindow showSensorsListWindow;
 	private FlyingObjParametersWindow flyingObjParametersWindow = new FlyingObjParametersWindow();
 	private InformationWindow infoWindow = new InformationWindow();
@@ -211,7 +219,7 @@ public class CupCarbon {
 		mainFrame.setBounds(100, 0, 1000, 700);
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
+		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Arial", Font.PLAIN, 12));
 		mainFrame.setJMenuBar(menuBar);
@@ -796,10 +804,14 @@ public class CupCarbon {
 				+ "marker_rounded_light_blue.png"));
 		mnNodes.add(mntmAddMarkers);
 		
-		JMenu mnRandom = new JMenu("Random");
+		JMenu mnRandom = new JMenu("Add Sensors Randomly");
+		mnRandom.setSize(100, 100);
 		mnNodes.add(mnRandom);
 		
-		JMenuItem mntmAddSensors = new JMenuItem("Add 10 sensors");
+		JXTitledSeparator sep = new JXTitledSeparator();
+		  sep.setTitle("In a Grid");
+		  mnRandom.add(sep);
+		JMenuItem mntmAddSensors = new JMenuItem("Whitout Markers");
 		mntmAddSensors.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Layer.initClick();
@@ -813,30 +825,52 @@ public class CupCarbon {
 		});
 		mnRandom.add(mntmAddSensors);
 		
-		JMenuItem mntmAddSensors_1 = new JMenuItem("Add 50 sensors");
-		mntmAddSensors_1.addActionListener(new ActionListener() {
+		JMenuItem mntmAddSensorsMarkers = new JMenuItem("With Markers");
+		mntmAddSensorsMarkers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				RandomDevices.addRandomSensors(50,30,20);
+				Layer.initClick();
+				randomDeviceParametersWindowsWithMarkers=new RandomDeviceParametersWindowsWithMarkers();
+				if (!randomDeviceParametersWindowsWithMarkers.isVisible()) {
+					randomDeviceParametersWindowsWithMarkers.setVisible(true);
+					getDesktopPane().add(randomDeviceParametersWindowsWithMarkers);
+				}
+				randomDeviceParametersWindowsWithMarkers.toFront();
 			}
 		});
-		mnRandom.add(mntmAddSensors_1);
+		mnRandom.add(mntmAddSensorsMarkers);
 		
-		JMenuItem mntmAddSensors_3 = new JMenuItem("Add 100 sensors");
+		JXTitledSeparator sep1 = new JXTitledSeparator();
+		  sep1.setTitle("On the plane");
+		  mnRandom.add(sep1);
+		
+		  JMenuItem mntmAddSensors_1 = new JMenuItem("Without Markers");
+			mntmAddSensors_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Layer.initClick();
+					deviceParametersWindowsWitoutGrid=new RandomDeviceParametersWindowsWitoutGrid();
+					if (!deviceParametersWindowsWitoutGrid.isVisible()) {
+						deviceParametersWindowsWitoutGrid.setVisible(true);
+						getDesktopPane().add(deviceParametersWindowsWitoutGrid);
+					}
+					deviceParametersWindowsWitoutGrid.toFront();
+				}
+			});
+			mnRandom.add(mntmAddSensors_1);
+		  
+		JMenuItem mntmAddSensors_3 = new JMenuItem("With Markers");
 		mntmAddSensors_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				RandomDevices.addRandomSensors(100);
+				Layer.initClick();
+				deviceParametersWindowsWithoutGrid_WithMarkers=new RandomDeviceParametersWindowsWithoutGrid_WithMarkers();
+				if (!deviceParametersWindowsWithoutGrid_WithMarkers.isVisible()) {
+					deviceParametersWindowsWithoutGrid_WithMarkers.setVisible(true);
+					getDesktopPane().add(deviceParametersWindowsWithoutGrid_WithMarkers);
+				}
+				deviceParametersWindowsWithoutGrid_WithMarkers.toFront();
 			}
 		});
 		mnRandom.add(mntmAddSensors_3);
-		
-		JMenuItem mntmAddSensors_2 = new JMenuItem("Add 500 sensors");
-		mntmAddSensors_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//				RandomDevices.addRandomSensors(500);
-			}
-		});
-		mnRandom.add(mntmAddSensors_2);
-
+        
 		JSeparator separator_6 = new JSeparator();
 		mnNodes.add(separator_6);
 
@@ -966,6 +1000,71 @@ public class CupCarbon {
 		mntmSensortargetGraph.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "graph.png"));
 		mnGraph.add(mntmSensortargetGraph);
+		
+		//Zakaria
+		JMenuItem mnSaveGraphFile = new JMenuItem("Sauvegarder dans un fichier");
+		mnSaveGraphFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FileFilter projectFilter = new FileFilter() {
+					public boolean accept(File f) {
+						if (f.isDirectory())
+							return true;
+						else if (f.getName().endsWith(".txt"))
+							return true;
+						else
+							return false;
+					}
+
+					public String getDescription() {
+						return "Fichier txt";
+					}
+				};
+
+				JFileChooser fc = new JFileChooser("Sauvegarder");
+				fc.setFileFilter(projectFilter);
+				int val = fc.showDialog(fc, "Sauvegarder");
+				if (val == 0) {
+					GraphFile.save(fc.getSelectedFile().getParent()
+							+ File.separator
+							+ fc.getSelectedFile().getName()+".txt");
+				}
+			}
+		});
+		mnGraph.add(mnSaveGraphFile);
+		mnSaveGraphFile.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "graph.png"));
+		JMenuItem mnOpenGraphFile = new JMenuItem("Ouvrir depuis un fichier");
+		mnOpenGraphFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FileFilter projectFilter = new FileFilter() {
+					public boolean accept(File f) {
+						if (f.isDirectory())
+							return true;
+						else if (f.getName().endsWith(".txt"))
+							return true;
+						else
+							return false;
+					}
+
+					public String getDescription() {
+						return "Fichier txt";
+					}
+				};
+				
+				JFileChooser fc = new JFileChooser("Ouvrir");
+				fc.setFileFilter(projectFilter);
+				int val = fc.showDialog(fc, "Ouvrir");
+				if (val == 0) {
+					GraphFile.open(fc.getSelectedFile().getParent()
+							+ File.separator
+							+ fc.getSelectedFile().getName());
+				}
+			}
+		});
+		mnGraph.add(mnOpenGraphFile);
+		mnOpenGraphFile.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
+				+ "graph.png"));
+		//zakaria
 
 		JMenu mnResolution = new JMenu("Solver");
 		mnResolution.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
@@ -1449,7 +1548,7 @@ public class CupCarbon {
 				CupCarbonMap.AfficherZoomEtMiniMap();
 			}
 		});
-		rdbtnmntmOsm.setSelected(true);
+//		rdbtnmntmOsm.setSelected(true);
 		mnMap.add(rdbtnmntmOsm);
 		
 		JRadioButtonMenuItem rdbtnmntmSatellit = new JRadioButtonMenuItem("Satellite");
@@ -1530,12 +1629,12 @@ public class CupCarbon {
 		JRadioButtonMenuItem mntmLocal = new JRadioButtonMenuItem("White Plan");
 		mntmLocal.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
 		buttonGroup.add(mntmLocal);
+		mntmLocal.setSelected(true);
 		mntmLocal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setLocal(true);
 				changeTiles("file:///C:/Users/Zakaria/workspace/CupCarbon/images/mer");	
 				CupCarbonMap.CacherZoomEtMiniMap();
-					System.out.println("local");
 			}
 		});
 		mnMap.add(mntmLocal);
@@ -1629,38 +1728,26 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem algoMst2Menu = new JMenuItem("Algo MST KRUSKAL2");
-		algoMst2Menu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MSTKRUSKAL2 mstKruskal2 = new MSTKRUSKAL2();
-				mstKruskal2.start();
-			}
-		});
-		mnPerso.add(algoMst2Menu);
+//		JMenuItem algoMst2Menu = new JMenuItem("Algo MST KRUSKAL2");
+//		algoMst2Menu.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				MSTKRUSKAL2 mstKruskal2 = new MSTKRUSKAL2();
+//				mstKruskal2.start();
+//			}
+//		});
+//		mnPerso.add(algoMst2Menu);
 		
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem algoBipConsoMenu = new JMenuItem("Algo BIP Unidirectionel");
-		algoBipConsoMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				BIPConsom monBipConso = new BIPConsom();
-				monBipConso.start();
-			}
-		});
-		mnPerso.add(algoBipConsoMenu);
-		
-		/**
-		 * @author Zakaria
-		 */
-		JMenuItem algoBipBidiMenu = new JMenuItem("Algo BIP Bidirectionnel");
-		algoBipBidiMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				BIPBidirectionnel monBipBidi = new BIPBidirectionnel();
-				monBipBidi.start();
-			}
-		});
-		mnPerso.add(algoBipBidiMenu);
+//		JMenuItem algoBipConsoMenu = new JMenuItem("Algo BIP Unidirectionel");
+//		algoBipConsoMenu.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				BIPConsom monBipConso = new BIPConsom();
+//				monBipConso.start();
+//			}
+//		});
+//		mnPerso.add(algoBipConsoMenu);
 		
 		/**
 		 * @author Zakaria
@@ -1673,18 +1760,29 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoBipAdapMenu);
-		
+
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem algoBipAdapAMenu = new JMenuItem("Algo BIP AdaptéA");
-		algoBipAdapAMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				BIPAdapteA monBipAdapA = new BIPAdapteA();
-				monBipAdapA.start();
-			}
-		});
-		mnPerso.add(algoBipAdapAMenu);
+//		JMenuItem algoBipBidiMenu = new JMenuItem("Algo BIP Adapté non Connexe");
+//		algoBipBidiMenu.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				BIPBidirectionnel monBipBidi = new BIPBidirectionnel();
+//				monBipBidi.start();
+//			}
+//		});
+//		mnPerso.add(algoBipBidiMenu);
+		/**
+		 * @author Zakaria
+		 */
+//		JMenuItem algoBipAdapAMenu = new JMenuItem("Algo BIP AdaptéA");
+//		algoBipAdapAMenu.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				BIPAdapteA monBipAdapA = new BIPAdapteA();
+//				monBipAdapA.start();
+//			}
+//		});
+//		mnPerso.add(algoBipAdapAMenu);
 		
 		/**
 		 * @author Zakaria
@@ -1697,7 +1795,84 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoHeurisMenu);
-		
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem algoMonHeurisMenu = new JMenuItem("MonHeuristique");
+		algoMonHeurisMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MonHeuristique monHeuris = new MonHeuristique();
+				monHeuris.start();
+			}
+		});
+		mnPerso.add(algoMonHeurisMenu);
+		/**
+		 * @author Zakaria
+		 */
+//		JMenuItem algoHeurisNonConnexeMenu = new JMenuItem("Heuristique Non Connexe");
+//		algoHeurisNonConnexeMenu.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				HeuristiqueNonConnexe monHeurisNonConnexe = new HeuristiqueNonConnexe();
+//				monHeurisNonConnexe.start();
+//			}
+//		});
+//		mnPerso.add(algoHeurisNonConnexeMenu);
+
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem GrapheRNGMenu = new JMenuItem("RNG");
+		GrapheRNGMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				GrapheRNG grapheRNG= new GrapheRNG();
+				grapheRNG.start();
+			}
+		});
+		mnPerso.add(GrapheRNGMenu);
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem LMSTMenu = new JMenuItem("LMST");
+		LMSTMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				LMST lmst= new LMST();
+				lmst.start();
+			}
+		});
+		mnPerso.add(LMSTMenu);
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem LBIPMenu = new JMenuItem("LBIP");
+		LBIPMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				LBIP lbip= new LBIP();
+				lbip.start();
+			}
+		});
+		mnPerso.add(LBIPMenu);
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem BorneInfMenu = new JMenuItem("Borne Inf");
+		BorneInfMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BorneInf borneInf = new BorneInf();
+				borneInf.start();
+			}
+		});
+		mnPerso.add(BorneInfMenu);
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem BorneSupMenu = new JMenuItem("Borne Sup");
+		BorneSupMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BorneSup borneSup = new BorneSup();
+				borneSup.start();
+			}
+		});
+		mnPerso.add(BorneSupMenu);
 		/**
 		 * @author Zakaria
 		 */
@@ -1721,20 +1896,59 @@ public class CupCarbon {
 			}
 		});
 		mnOutilsAlgo.add(TestConnexeMenu);
+		/**
+		 * @author Zakaria
+		 */
+		JMenuItem StatistiquesMenu = new JMenuItem("Générer des Statistiques");
+		StatistiquesMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+//				Statistiques statistiques = new Statistiques();
+//				statistiques.start();
+				statParametersWindow=new StatParametersWindow();
+				Layer.initClick();
+				if (!statParametersWindow.isVisible()) {
+					statParametersWindow.setVisible(true);
+					getDesktopPane().add(statParametersWindow);
+				}
+				statParametersWindow.toFront();
+			}
+		});
+		mnOutilsAlgo.add(StatistiquesMenu);
 		
 		/**
 		 * @author Zakaria
 		 */
 		JMenuItem PDFMenu = new JMenuItem("Imprimer en PNG");
 		PDFMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-//				cupCarbonMap.PrintFrameToPDF();
-//				Layer.PrintFrameToPDF();
-//				cupCarbonMap.saveImage();
-				cupCarbonMap.saveHDImage(CupCarbonMap.map);
+					public void actionPerformed(ActionEvent arg0) {
+						FileFilter projectFilter = new FileFilter() {
+							public boolean accept(File f) {
+								if (f.isDirectory())
+									return true;
+								else if (f.getName().endsWith(".png"))
+									return true;
+								else
+									return false;
+							}
+
+							public String getDescription() {
+								return ".png";
+							}
+						};
+
+						JFileChooser fc = new JFileChooser("Sauvegarder");
+						fc.setFileFilter(projectFilter);
+						int val = fc.showDialog(fc, "Sauvegarder");
+						if (val == 0) {
+							cupCarbonMap.saveHDImage(CupCarbonMap.map,fc.getSelectedFile().getParent()
+									+ File.separator
+									+ fc.getSelectedFile().getName()+".png");
+						}
+				
 			}
 		});
 		mnOutilsAlgo.add(PDFMenu);
+		
 		
 		final JRadioButton mnRadioUni = new JRadioButton();//todo
 		mnRadioUni.setSelected(false);
