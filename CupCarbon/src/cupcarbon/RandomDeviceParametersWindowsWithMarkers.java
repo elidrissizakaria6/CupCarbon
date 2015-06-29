@@ -16,9 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import map.RandomDevices;
-public class RandomDeviceParametersWindows extends JInternalFrame {
-
-
+import device.MarkerList;
+public class RandomDeviceParametersWindowsWithMarkers extends JInternalFrame {
 
 	  /**
 	 * 
@@ -44,7 +43,7 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RandomDeviceParametersWindows frame = new RandomDeviceParametersWindows();
+					RandomDeviceParametersWindowsWithMarkers frame = new RandomDeviceParametersWindowsWithMarkers();
 					frame.setVisible(false);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,7 +54,7 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RandomDeviceParametersWindows() {
+	public RandomDeviceParametersWindowsWithMarkers() {
 		// TODO Auto-generated constructor stub
 		setResizable(true);
 		setMaximizable(true);
@@ -68,6 +67,7 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 		final JPanel panel10=new JPanel();
 		final JPanel panel11=new JPanel();
 	    getContentPane().add(panel,BorderLayout.SOUTH);
+	    
 	   
         JButton btnNewButton = new JButton("Générer");
 		btnNewButton.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
@@ -79,8 +79,7 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 					x=Integer.parseInt(X.getText());
 					y=Integer.parseInt(Y.getText());
 					if((n!=0&&x!=0&&y!=0)&&(x*y>=n)){
-						RandomDevices.addRandomSensorsWithoutMarkersInGrid(n,x,y);
-						error=false;
+						RandomDevices.addRandomSensorsWithMarkersInGrid(n,x,y);
 					}
 					else{
 						if(x*y<n){

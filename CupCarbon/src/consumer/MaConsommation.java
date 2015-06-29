@@ -3,6 +3,8 @@
 **/
 package consumer;
 
+import device.Device;
+
 public class MaConsommation extends AConsumption {
 	protected static int coefficientAtten=1;
 	protected static int Cte=0;
@@ -17,13 +19,19 @@ public class MaConsommation extends AConsumption {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	public static double getConsommation(double porte){
-		if(Cte==0) return Math.pow(porte,coefficientAtten);
-		else return Math.pow(porte,coefficientAtten)+Math.pow(10,Cte);
+	public static double getConsommation(Device device){
+		if(device.getRadioRadius()!=0){
+			if(Cte==0) return Math.pow(device.getRadioRadius(),coefficientAtten);
+			else return (Math.pow(device.getRadioRadius(),coefficientAtten)+Math.pow(10,Cte));
+		}
+		else return 0D;
 	}
 	public static double Consommation(double distance){
-		if(Cte==0) return Math.pow(distance,coefficientAtten);
-		else return Math.pow(distance,coefficientAtten)+Math.pow(10,Cte);
+		if(distance!=0){
+			if(Cte==0) return Math.pow(distance,coefficientAtten);
+			else return (Math.pow(distance,coefficientAtten)+Math.pow(10,Cte));
+		}
+		else return 0D;
 	}
 
 	public static int getCoefficientAtten() {

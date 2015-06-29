@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import map.RandomDevices;
-public class RandomDeviceParametersWindows extends JInternalFrame {
+public class RandomDeviceParametersWindowsWitoutGrid extends JInternalFrame {
 
 
 
@@ -26,13 +26,8 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 
 	private int n=0;
-	private int x=0;
-	private int y=0;
 	public static JTextField NBNoeuds;
-    public static JTextField X ;
-    public static JTextField Y ;
     public static JLabel ErrorVoid;
-    public static JLabel ErrorImpo;
     public boolean error=false;
     
     /**
@@ -44,7 +39,7 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RandomDeviceParametersWindows frame = new RandomDeviceParametersWindows();
+					RandomDeviceParametersWindowsWitoutGrid frame = new RandomDeviceParametersWindowsWitoutGrid();
 					frame.setVisible(false);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,14 +50,14 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RandomDeviceParametersWindows() {
+	public RandomDeviceParametersWindowsWitoutGrid() {
 		// TODO Auto-generated constructor stub
 		setResizable(true);
 		setMaximizable(true);
 		setClosable(true);
 		setIconifiable(true);
 		setTitle("Random");
-		setBounds(100, 100, 550, 160);
+		setBounds(100, 100, 550, 120);
 //	    JPanel panel = new JPanel(new GridLayout(0, 1));
 		final JPanel panel = new JPanel();
 		final JPanel panel10=new JPanel();
@@ -76,18 +71,8 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					n=Integer.parseInt(NBNoeuds.getText());
-					x=Integer.parseInt(X.getText());
-					y=Integer.parseInt(Y.getText());
-					if((n!=0&&x!=0&&y!=0)&&(x*y>=n)){
-						RandomDevices.addRandomSensorsWithoutMarkersInGrid(n,x,y);
-						error=false;
-					}
-					else{
-						if(x*y<n){
-							error=true;
-							ErrorImpo.setVisible(true);
-						}
-					}
+					
+						RandomDevices.addRandomSensorsWithoutMarkers(n);
 						
 				}catch (NumberFormatException e2){
 //					e2.printStackTrace();
@@ -109,11 +94,8 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.add(panel11, BorderLayout.SOUTH);
 		panel.add(panel10, BorderLayout.CENTER);
-		ErrorImpo=new JLabel("Vous Ne Pouvez Pas Générer Ce nombre de Capteurs Sur Cette Grille");
 		ErrorVoid=new JLabel("Vieullez Remplir Tous Les Champs");
 		ErrorVoid.setVisible(false);
-		ErrorImpo.setVisible(false);
-		panel11.add(ErrorImpo);
 		panel11.add(ErrorVoid);
 		JPanel panel1=new JPanel(); 
 		getContentPane().add(panel1, BorderLayout.NORTH);
@@ -126,27 +108,13 @@ public class RandomDeviceParametersWindows extends JInternalFrame {
 		label_1.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel2.add(label_1);
 		
-		JLabel label_2 =new JLabel("Nombre De Colonnes:");
-		label_2.setFont(new Font("Arial", Font.PLAIN, 12));
-		panel2.add(label_2);
-		
-		JLabel label_3 =new JLabel("Nombre De Lignes:");
-		label_3.setFont(new Font("Arial", Font.PLAIN, 12));
-		panel2.add(label_3);
-		
 		JPanel panel_3 = new JPanel();
 		panel1.add(panel_3, BorderLayout.CENTER);
 		panel_3.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		NBNoeuds = new JTextField();
-	    X = new JTextField();
-	    Y = new JTextField();
 	    panel_3.add(NBNoeuds);
-	    panel_3.add(X);
-	    panel_3.add(Y);
 	    NBNoeuds.setColumns(2);
-	    X.setColumns(2);
-	    Y.setColumns(2);
 //        int result = JOptionPane.showConfirmDialog(null, panel, "Random",
 //                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 //        if (result == JOptionPane.OK_OPTION) {
