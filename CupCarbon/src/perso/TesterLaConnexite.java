@@ -12,19 +12,16 @@ import device.DeviceList;
 import device.SensorNode;
 
 public class TesterLaConnexite extends Thread {
-
-	Set<SensorNode> noeudsMarques = new HashSet<SensorNode>();
+	private static  boolean connexe=false;
+	private static  Set<SensorNode> noeudsMarques = new HashSet<SensorNode>();
 	public void run() {
-		long debut,fin;
-		debut=System.currentTimeMillis();
+		
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
-		for(Device capteur : capteurs){
-			capteur.setVisited(false);
-		}
-		DFS(capteurs, capteurs.get(0));
-		fin=System.currentTimeMillis();
-		System.out.println("Le temps d'execution de l'algo avec la nouvelle procedure, en Milliseconde = "+(fin-debut));
-		if(TesterConnexite(capteurs)==true){
+		try{
+		algorithme(capteurs);
+		}catch(IndexOutOfBoundsException e){final JFrame parent = new JFrame();
+		JOptionPane.showMessageDialog(parent,"Aucun capteur sur la carte");}
+		if(connexe==true){
 			final JFrame parent = new JFrame();
 			JOptionPane.showMessageDialog(parent,"Le graphe est connexe");
 		}
@@ -33,26 +30,35 @@ public class TesterLaConnexite extends Thread {
 			JOptionPane.showMessageDialog(parent,"Le graphe n'est pas connexe");
 		}
 		
-		
-//		final JFrame parent = new JFrame();
-//			JOptionPane.showMessageDialog();
 
 
 	}
-	private void DFS(List<SensorNode> capteurs, Device capteur){
-		
+	public static boolean algorithme(List<SensorNode> capteurs) {
+		for(Device capteur : capteurs){
+			capteur.setVisited(false);
+		}
+		noeudsMarques.clear();
+		try{
+			if(capteurs.size()!=0){
+				DFS(capteurs, capteurs.get(0));
+			}
+		}catch(IndexOutOfBoundsException e){System.out.println("c'est pas grave");;}
+		connexe=TesterConnexite(capteurs);
+		return connexe;
+	}
+	private static void DFS(List<SensorNode> capteurs, SensorNode capteur){
 		capteur.setVisited(true);
 		noeudsMarques.add((SensorNode) capteur);
-		for(Device voisin : capteur.getNeighbors()){
-			if(voisin.isVisited()==false){
-				DFS(capteurs,voisin);
-			}
+		for(SensorNode voisin : capteur.getSensorNodeNeighborsZakaria()){
+				if(voisin.isVisited()==false){
+					DFS(capteurs,voisin);
+				}
 		}
 	}
-	private boolean TesterConnexite(List<SensorNode> capteurs){
+	private static boolean TesterConnexite(List<SensorNode> capteurs){
 		
 		if(noeudsMarques.size()==capteurs.size()) return true;
-		else System.out.println(noeudsMarques.size());return false;
+		else return false;
 	}
 		
 

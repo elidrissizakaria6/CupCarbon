@@ -6,57 +6,49 @@ package perso;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import map.Layer;
-import device.DeviceList;
 import device.SensorNode;
 
 public class BIPAdapteA extends Thread {
 
-	public void run() {
-		boolean marker=false;
-		long debut,fin;
-		debut=System.currentTimeMillis();
+	public List<SensorNode> algorithme(List<SensorNode> capteurs, SensorNode capteur) {
 		double valeurMin= Double.MAX_VALUE;
-		List<SensorNode> capteurs = DeviceList.getSensorNodes();
 		List<SensorNode> noeudsNonMarques = new ArrayList<SensorNode>();
 		List<SensorNode> noeudsMarques = new ArrayList<SensorNode>();
+		//initialisation des noeuds
+		capteur.setMarked(true);
 		for( SensorNode a : capteurs )
 		{
-			a.setRadioRadius(0);
-			a.setValue(0);
-			if(a.isSelected()){marker=true; a.setMarked(true);noeudsMarques.add(a);}
-			else {a.setMarked(false);noeudsNonMarques.add(a);}
-		}
-		if(marker==false)
-		{
-			SensorNode SN=capteurs.get((1 + (int)(Math.random() * ((capteurs.size() - 2) + 1))));
-			SN.setMarked(true);
-			noeudsMarques.add(SN);
-		}
-		SensorNode NoeudNonMarque=new SensorNode();
-		SensorNode NoeudMarque=new SensorNode();
-		SensorNode NoeudMarqueChoisi=new SensorNode();
-		int i=0,j=0;
-		while(noeudsMarques.size()<capteurs.size()){
-			i=0;
-			while(i<noeudsMarques.size()){
-					NoeudMarque=noeudsMarques.get(i);
-					j=0;
-					while(j<noeudsNonMarques.size()){
-						
-							if(((NoeudMarque.Consommation(noeudsNonMarques.get(j))-NoeudMarque.getValue())+(noeudsNonMarques.get(j).Consommation(NoeudMarque)-noeudsNonMarques.get(j).getValue()))<valeurMin)
-								{	
-								NoeudNonMarque=noeudsNonMarques.get(j);
-								NoeudMarqueChoisi=NoeudMarque;
-								valeurMin=(NoeudMarque.Consommation(NoeudNonMarque)-NoeudMarque.getValue())+(noeudsNonMarques.get(j).Consommation(NoeudMarque)-noeudsNonMarques.get(j).getValue());
-								}
-						j++;
-					}
-				i++;
+			if(a.isMarked()){
+				noeudsMarques.add(a);
 			}
+			else {
+				a.setRadioRadius(0);	
+				noeudsNonMarques.add(a);
+			}
+		}
+		SensorNode NoeudNonMarque=null;
+		SensorNode NoeudMarque=null;
+		SensorNode NoeudMarqueChoisi=null;
+		int k=0;
+		while(noeudsMarques.size()<capteurs.size()){	
+			for(int i=0;i<capteurs.size();i++){
+				if(capteurs.get(i).isMarked()==true){
+					NoeudMarque=capteurs.get(i);
+					for(int j=0;j<capteurs.size();j++){
+						
+						if(capteurs.get(j).isMarked()==false){
+							if(((NoeudMarque.Consommation(capteurs.get(j))-NoeudMarque.getValue())+(capteurs.get(j).Consommation(NoeudMarque)-capteurs.get(j).getValue()))<valeurMin)
+								{	
+								NoeudNonMarque=capteurs.get(j);
+								NoeudMarqueChoisi=NoeudMarque;
+								valeurMin=(NoeudMarque.Consommation(NoeudNonMarque)-NoeudMarque.getValue())+(capteurs.get(j).Consommation(NoeudMarque)-capteurs.get(j).getValue());
+								}
+						}
+					}
+				}
+			}
+			if((NoeudMarqueChoisi!=null)&&(noeudsNonMarques!=null)){
 			//Si on met pas le max, on va voir un noeud marqué diminuer sa valeur par rapport à un nouveau noeud non marqué 
 			NoeudMarqueChoisi.setRadioRadius(Math.max(NoeudMarqueChoisi.distance(NoeudNonMarque), NoeudMarqueChoisi.getRadioRadius()));
 			NoeudMarqueChoisi.setValue(NoeudMarqueChoisi.getConsommation());
@@ -68,16 +60,19 @@ public class BIPAdapteA extends Thread {
 			noeudsNonMarques.remove(NoeudNonMarque);
 			valeurMin=Double.MAX_VALUE;
 			Layer.getMapViewer().repaint();
+			}
+			else{
+				noeudsMarques.add(NoeudMarqueChoisi);
+			}
+//			try {
+//				sleep(500);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			CupCarbonMap.saveHImage(k++);
 		}
-
-		fin=System.currentTimeMillis();
-		System.out.println("Le temps d'execution de l'algo avec la nouvelle procedure, en Milliseconde = "+(fin-debut));
-		
-		final JFrame parent = new JFrame();
-			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
-					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
-
-
+		return capteurs;
 	}
 		
 

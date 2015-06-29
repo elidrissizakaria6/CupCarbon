@@ -13,17 +13,11 @@ public class CalculerPuissanceConsommation extends Thread {
 	public void run() {
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
 		final JFrame parent = new JFrame();
-		try {
-			sleep(5);
 			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
-					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+					+ "La consommation globale = "+calculerComsommationGlobale());
 	}
 	
-	public double calculerPuissanceGlobale(List<SensorNode> capteurs)
+	public static double calculerPuissanceGlobale(List<SensorNode> capteurs)
 	{
 		double puissance=0;
 		for(SensorNode s : capteurs)
@@ -32,12 +26,13 @@ public class CalculerPuissanceConsommation extends Thread {
 		}
 		return puissance;
 	}
-	public double calculerComsommationGlobale(List<SensorNode> capteurs)
+	public static double calculerComsommationGlobale()
 	{
+		List<SensorNode> capteurs=DeviceList.getSensorNodes();
 		double Conso=0;
 		for(SensorNode s : capteurs)
 		{
-			Conso+=s.getConsommation();
+			Conso+=(s.getConsommation());
 		}
 		return Conso;
 	}

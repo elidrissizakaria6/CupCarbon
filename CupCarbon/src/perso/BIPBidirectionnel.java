@@ -16,17 +16,34 @@ import device.SensorNode;
 public class BIPBidirectionnel extends Thread {
 
 	public void run() {
-		boolean marker=false;
-		double valeurMin= Double.MAX_VALUE;
+
 		long debut,fin;
 		debut=System.currentTimeMillis();
+		
+		List<SensorNode> capteurs = algorithme();
+		
+		fin=System.currentTimeMillis();
+		System.out.println("Le temps d'execution de l'algo avec la nouvelle procedure, en Milliseconde = "+(fin-debut));
+		
+		final JFrame parent = new JFrame();
+			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
+					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
+
+
+	}
+
+
+
+	public List<SensorNode> algorithme() {
+		double valeurMin= Double.MAX_VALUE;
+		boolean marker=false;
 		List<SensorNode> capteurs = DeviceList.getSensorNodes();
 		List<SensorNode> noeudsNonMarques = new ArrayList<SensorNode>();
 		List<SensorNode> noeudsMarques = new ArrayList<SensorNode>();
 		//initialisation des noeuds
 		for( SensorNode a : capteurs )
 		{
-			a.setRadioRadius(100);
+			a.setRadioRadius(0);
 			a.setValue(0);
 			if(a.isSelected()){
 				marker=true; 
@@ -49,21 +66,21 @@ public class BIPBidirectionnel extends Thread {
 			for(int i=0;i<capteurs.size();i++){
 				if(capteurs.get(i).isMarked()==true){
 					NoeudMarque=capteurs.get(i);
-					for(int j=0;j<NoeudMarque.getNeighbors().size();j++){
+					for(int j=0;j<capteurs.size();j++){
 						
-						if(NoeudMarque.getNeighbors().get(j).isMarked()==false){
-							if(((NoeudMarque.Consommation(NoeudMarque.getNeighbors().get(j))-NoeudMarque.getValue())+(NoeudMarque.getNeighbors().get(j).Consommation(NoeudMarque)-NoeudMarque.getNeighbors().get(j).getValue()))<valeurMin)
+						if((capteurs.get(j).isMarked()==false)&&(NoeudMarque.distance(capteurs.get(j))<100)){
+							if(((NoeudMarque.Consommation(capteurs.get(j))-NoeudMarque.getValue())+(capteurs.get(j).Consommation(NoeudMarque)-capteurs.get(j).getValue()))<valeurMin)
 								{	
-								NoeudNonMarque=(SensorNode) NoeudMarque.getNeighbors().get(j);
+								NoeudNonMarque=capteurs.get(j);
 								NoeudMarqueChoisi=NoeudMarque;
-								valeurMin=(NoeudMarque.Consommation(NoeudNonMarque)-NoeudMarque.getValue())+(NoeudNonMarque.Consommation(NoeudMarque)-NoeudNonMarque.getValue());
+								valeurMin=(NoeudMarque.Consommation(NoeudNonMarque)-NoeudMarque.getValue())+(capteurs.get(j).Consommation(NoeudMarque)-capteurs.get(j).getValue());
 								}
 						}
 					}
 				}
 			}
 			//Si on met pas le max, on va voir un noeud marqué diminuer sa valeur par rapport à un nouveau noeud non marqué 
-			NoeudMarqueChoisi.setRadioRadius(Math.max(NoeudMarqueChoisi.distance(NoeudNonMarque), NoeudMarqueChoisi.getValue()));
+			NoeudMarqueChoisi.setRadioRadius(Math.max(NoeudMarqueChoisi.distance(NoeudNonMarque), NoeudMarqueChoisi.getRadioRadius()));
 			NoeudMarqueChoisi.setValue(NoeudMarqueChoisi.getConsommation());
 			NoeudNonMarque.setRadioRadius(NoeudMarqueChoisi.distance(NoeudNonMarque));
 			NoeudNonMarque.setValue(NoeudMarqueChoisi.getConsommation());
@@ -74,14 +91,7 @@ public class BIPBidirectionnel extends Thread {
 			valeurMin=Double.MAX_VALUE;
 			Layer.getMapViewer().repaint();
 		}
-		fin=System.currentTimeMillis();
-		System.out.println("Le temps d'execution de l'algo avec la nouvelle procedure, en Milliseconde = "+(fin-debut));
-		
-		final JFrame parent = new JFrame();
-			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
-					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
-
-
+		return capteurs;
 	}
 		
 

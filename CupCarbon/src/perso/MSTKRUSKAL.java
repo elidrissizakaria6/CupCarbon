@@ -17,15 +17,25 @@ import device.DeviceList;
 import device.SensorNode;
 
 public class MSTKRUSKAL extends Thread {
-
+	long temps;
 	public void run() {
+		
+		List<SensorNode> Capteurs = DeviceList.getSensorNodes();
+		algorithme(Capteurs);
+	
+		final JFrame parent = new JFrame();
+			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(Capteurs)+"\n La consommation globale = "+calculerComsommationGlobale(Capteurs));
+			Layer.mapViewer.repaint();
+	}
+
+
+
+	public List<SensorNode> algorithme(List<SensorNode> capteurs) {
 		long debut,fin;
 		debut=System.currentTimeMillis();
+		
 		int i=0;
 		ArrayList<arete> aretes = new ArrayList<arete>();
-		List<SensorNode> capteurs = DeviceList.getSensorNodes();
-		
-		
 		for( SensorNode a : capteurs )
 		{
 			a.setValue(100);
@@ -60,11 +70,10 @@ public class MSTKRUSKAL extends Thread {
 			
 			}
 		fin=System.currentTimeMillis();
-		System.out.println("Le temps d'execution de l'algo avec la nouvelle procedure, en Milliseconde = "+(fin-debut));
-	
-		final JFrame parent = new JFrame();
-			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n La consommation globale = "+calculerComsommationGlobale(capteurs));
-			Layer.mapViewer.repaint();
+		temps=fin-debut;
+//		System.out.println("Le temps d'execution de Kruskal, en Milliseconde = "+(temps));
+		
+		return capteurs;
 	}
 	
 
