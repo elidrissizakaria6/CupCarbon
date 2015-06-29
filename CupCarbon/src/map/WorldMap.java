@@ -26,6 +26,7 @@ import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
 
 import cupcarbon.CupCarbon;
+import cupcarbon.CupCarbonMap;
 
 public class WorldMap extends JXMapKit {
 
@@ -33,12 +34,15 @@ public class WorldMap extends JXMapKit {
 	private static Layer layer;
 	private final int max = 19;
 	public static String tileType = ".png";
-	public static String tileUrl = "http://otile1.mqcdn.com/tiles/1.0.0/osm/";
-
+	//zakaria
+//	public static String tileUrl = "http://otile1.mqcdn.com/tiles/1.0.0/osm/";
+	public static String tileUrl = "file:///C:/Users/Zakaria/workspace/CupCarbon/images/mer";
 	
 	//http://bcdcspatial.blogspot.fr/2012/01/onlineoffline-mapping-map-tiles-and.html
 	
 	public WorldMap() {
+		//zakaria
+		CupCarbon.setLocal(true);
 		// TileFactoryInfo info = new TileFactoryInfo(0,max,max,256, true,
 		// true,"file:/myLocalMapServer/tiles","x","y","z") {
 		TileFactoryInfo info = new TileFactoryInfo(0, max, max, 256, true, true, "http://tile.openseamap.org", "x", "y", "z") {

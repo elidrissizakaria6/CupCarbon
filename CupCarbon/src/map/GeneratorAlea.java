@@ -1,5 +1,7 @@
 package map;
 
+import java.util.Random;
+
 
 public class GeneratorAlea {
 	public static int compteur=-1;
@@ -24,4 +26,10 @@ public class GeneratorAlea {
 		compteur++;
 		return tab[compteur];
 		}
+	public static void main(String args[])
+	{
+		Random r=new Random(231);
+		for(int i=0;i<1000;i++)
+		System.out.println(Math.abs(r.nextInt()%50));
+	}
 }

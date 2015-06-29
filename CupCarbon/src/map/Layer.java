@@ -278,7 +278,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	public void mouseClicked(MouseEvent arg) {		
 		
 		//clic gauche
-		if (arg.getClickCount() == 2) {						
+		if (arg.getClickCount() == 2) {
 			Point p = new Point(arg.getX(), arg.getY());
 			GeoPosition gp = mapViewer.convertPointToGeoPosition(p);
 			CupCarbonMap.getMap().setCenterPosition(new GeoPosition(gp.getLatitude(), gp.getLongitude()));
@@ -365,7 +365,7 @@ public class Layer implements Painter<Object>, MouseListener,
 	// DeviceList.add(node);
 	// mapViewer.repaint();
 	// }
-
+	
 	// public static void addMarker(Marker marker) {
 	// MarkerList.add(marker);
 	// mapViewer.repaint();
