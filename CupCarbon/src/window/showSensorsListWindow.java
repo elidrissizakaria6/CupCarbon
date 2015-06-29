@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -12,12 +14,15 @@ import java.util.Vector;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import cupcarbon.CupCarbon;
 import map.Layer;
 import util.myJtable;
+import device.Device;
 import device.DeviceList;
 import device.SensorNode;
 
@@ -78,12 +83,12 @@ public class showSensorsListWindow extends JInternalFrame {
 			
 			 Vector<String> rowOne = new Vector<String>();
 			 rowOne.addElement(String.valueOf(sensorNode.getId()));
-			 rowOne.addElement(String.valueOf(sensorNode.getRadioRadius()));
-			 rowOne.addElement(String.valueOf(sensorNode.getConsommation()));
+			 rowOne.addElement(String.valueOf((int)sensorNode.getRadioRadius()));
+			 rowOne.addElement(String.valueOf((int)sensorNode.getConsommation()));
 			 rowData.addElement(rowOne);
 		}
 	    final myJtable table = new myJtable(rowData, columnNames);
-	    table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);   
+	    table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);  
 	      table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 	    	    @Override
 	    	    public void valueChanged(ListSelectionEvent event) {
@@ -110,6 +115,19 @@ public class showSensorsListWindow extends JInternalFrame {
 	    	        	
 	    	        }
 	    	    }
+	    	});
+	      table.addMouseListener(new MouseAdapter() {
+	    	  public void mouseClicked(MouseEvent e) {
+	    	    if (e.getClickCount() == 2) {
+	    	      JTable target = (JTable)e.getSource();
+	    	      int row = target.getSelectedRow();
+	    	      int id=Integer.valueOf(table.getValueAt(row, 0).toString());
+	    	      Device device=DeviceList.getNodeById(id);
+	    	      device.setSelection(true);
+	    	      device.sensorParametersUpdate();
+	    	      CupCarbon.openDeviceParemeterWindow();
+	    	    }
+	    	  }
 	    	});
 		table.getColumnModel().getColumn(0).setPreferredWidth(5);
 	    JScrollPane scrollPane = new JScrollPane(table);
