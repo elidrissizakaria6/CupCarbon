@@ -52,14 +52,15 @@ public class SensorNode extends DeviceWithRadio {
 	protected boolean flyingObjectDetection = false;
 	protected int type = Device.SENSOR;
 	protected boolean detecting = false ;
-	
 	//
 	protected int bufferSize = 127;
 	protected int bufferIndex = 0 ;
 	protected byte [] buffer = new byte [bufferSize];
 	protected boolean bufferReady = false;
 	protected HashMap<String, String> variables ; 
-
+	//zakaria test
+	private List<SensorNode> Voisin =new ArrayList<SensorNode>();
+	private List<SensorNode> VoisinRNG =new ArrayList<SensorNode>();
 	/**
 	 * Constructor 1 Instanciate the capture unit 
 	 * Instanciate the battery
@@ -70,6 +71,7 @@ public class SensorNode extends DeviceWithRadio {
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
+		if(CupCarbon.isLocal()) this.hide=5;
 		initBuffer();
 	}
 
@@ -91,6 +93,7 @@ public class SensorNode extends DeviceWithRadio {
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
+		if(CupCarbon.isLocal()) this.hide=5;
 		initBuffer();
 	}
 
@@ -115,6 +118,7 @@ public class SensorNode extends DeviceWithRadio {
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
+		if(CupCarbon.isLocal()) this.hide=5;
 		initBuffer();
 	}
 
@@ -141,6 +145,7 @@ public class SensorNode extends DeviceWithRadio {
 			double cuRadius, String[][] sb) {
 		this(x, y, radius, radioRadius, cuRadius);
 		this.setInfos(sb);
+		if(CupCarbon.isLocal()) this.hide=5;
 		initBuffer();
 	}
 
@@ -168,6 +173,7 @@ public class SensorNode extends DeviceWithRadio {
 		battery = new Battery(sensorUnit);
 		withRadio = true;
 		withSensor = true;
+		if(CupCarbon.isLocal()) this.hide=5;
 		initBuffer();
 	}
 
@@ -196,6 +202,7 @@ public class SensorNode extends DeviceWithRadio {
 		scriptFileName = (scriptFileName.equals("#") ? "" : scriptFileName);
 		setGPSFileName(gpsFileName);
 		setScriptFileName(scriptFileName);
+		if(CupCarbon.isLocal()) this.hide=5;
 		initBuffer();
 	}
 	
@@ -242,9 +249,6 @@ public class SensorNode extends DeviceWithRadio {
 						+ rayon + 3);
 				g.drawLine(x + rayon + 3, y + rayon + 3, x + rayon + 3, y
 						+ rayon - 2);
-			}
-			if(CupCarbon.isLocal()==true){
-				hide=5;
 			}
 			g.setColor(Color.DARK_GRAY);
 			if(hide == 0 || hide==4) {	
@@ -527,6 +531,54 @@ public class SensorNode extends DeviceWithRadio {
 			}
 		}
 		return neighnodes;
+	}
+	//zakaria
+	public List<SensorNode> getSensorNodeNeighborsZakaria() {
+		List<SensorNode> neighnodes = new ArrayList<SensorNode>();
+		
+		for(SensorNode snode : DeviceList.getSensorNodes()) {
+			if(((snode.radioDetectZakaria(this)) && (radioDetectZakaria(snode))) && this!=snode) {
+				neighnodes.add(snode);
+			}
+		}
+		return neighnodes;
+	}
+	//zakaria
+	public List<SensorNode> getSensorNodeNeighborszak() {
+		List<SensorNode> neighnodes = new ArrayList<SensorNode>();
+		
+		for(SensorNode snode : DeviceList.getSensorNodes()) {
+			if(((radioDetectzak(snode))) && this!=snode) {
+				neighnodes.add(snode);
+			}
+		}
+		return neighnodes;
+	}
+	public List<SensorNode> getSensorNodeNeighborsIn(List<SensorNode> noeuds) {
+		List<SensorNode> neighnodes = new ArrayList<SensorNode>();
+		
+		for(SensorNode snode : noeuds) {
+			if(((snode.radioDetectZakaria(this)) && (radioDetectZakaria(snode))) && this!=snode) {
+				neighnodes.add(snode);
+			}
+		}
+		return neighnodes;
+	}
+
+	public List<SensorNode> getVoisin() {
+		return Voisin;
+	}
+
+	public void setVoisin(List<SensorNode> voisin) {
+		Voisin = voisin;
+	}
+
+	public List<SensorNode> getVoisinRNG() {
+		return VoisinRNG;
+	}
+
+	public void setVoisinRNG(List<SensorNode> voisinRNG) {
+		VoisinRNG = voisinRNG;
 	}
 	
 }

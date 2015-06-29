@@ -26,10 +26,12 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
 import map.Layer;
+import map.RandomDevices;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
@@ -145,6 +147,14 @@ public final class Project {
 			double la = Double.valueOf(br.readLine().split(" ")[1]);
 			double lo = Double.valueOf(br.readLine().split(" ")[1]);
 			Layer.getMapViewer().setCenterPosition(new GeoPosition(la, lo));
+			
+			//zakaria
+			long racine_1=Long.valueOf(br.readLine().split(" ")[1]);
+			long racine_2=Long.valueOf(br.readLine().split(" ")[1]);
+			RandomDevices.racine1=racine_1;
+			RandomDevices.racine2=racine_2;
+			RandomDevices.random1=new Random(racine_1);
+			RandomDevices.random2=new Random(racine_2);
 			br.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -166,6 +176,8 @@ public final class Project {
 					+ Layer.getMapViewer().getCenterPosition().getLatitude());
 			fos.println("centerposition_lo "
 					+ Layer.getMapViewer().getCenterPosition().getLongitude());
+			fos.println("racine_1 " + RandomDevices.racine1);
+			fos.println("racine_2 " + RandomDevices.racine2);
 			fos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
