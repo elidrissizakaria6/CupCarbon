@@ -20,14 +20,14 @@ public class TesterLaConnexite extends Thread {
 		try{
 		algorithme(capteurs);
 		}catch(IndexOutOfBoundsException e){final JFrame parent = new JFrame();
-		JOptionPane.showMessageDialog(parent,"Aucun capteur sur la carte");}
+		JOptionPane.showMessageDialog(parent,"No Sensors");}
 		if(connexe==true){
 			final JFrame parent = new JFrame();
-			JOptionPane.showMessageDialog(parent,"Le graphe est connexe");
+			JOptionPane.showMessageDialog(parent,"The Network is Connected");
 		}
 		else{
 			final JFrame parent = new JFrame();
-			JOptionPane.showMessageDialog(parent,"Le graphe n'est pas connexe");
+			JOptionPane.showMessageDialog(parent,"The Network is not Connected");
 		}
 		
 
@@ -42,7 +42,7 @@ public class TesterLaConnexite extends Thread {
 			if(capteurs.size()!=0){
 				DFS(capteurs, capteurs.get(0));
 			}
-		}catch(IndexOutOfBoundsException e){System.out.println("c'est pas grave");;}
+		}catch(IndexOutOfBoundsException e){System.out.println("c'est pas grave");}
 		connexe=TesterConnexite(capteurs);
 		return connexe;
 	}

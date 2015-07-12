@@ -26,14 +26,13 @@ import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
 
 import cupcarbon.CupCarbon;
-import cupcarbon.CupCarbonMap;
 
 public class WorldMap extends JXMapKit {
 
 	private static final long serialVersionUID = 1L;
 	private static Layer layer;
 	private final int max = 19;
-	public static String tileType = ".png";
+	private static String tileType = ".png";
 	//zakaria
 //	public static String tileUrl = "http://otile1.mqcdn.com/tiles/1.0.0/osm/";
 	public static String tileUrl = "file:///C:/Users/Zakaria/workspace/CupCarbon/images/mer";

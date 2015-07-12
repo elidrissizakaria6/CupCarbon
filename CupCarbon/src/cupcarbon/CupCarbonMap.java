@@ -27,7 +27,6 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -36,12 +35,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
 import map.WorldMap;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfTemplate;
-import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * @author Ahcene Bounceur
@@ -102,28 +95,7 @@ public class CupCarbonMap extends JInternalFrame {
 	public void infos() {
 		System.out.println("->"+this.getSize());
 	}
-	public void PrintFrameToPDF()  {
-	    try {
-	        Document d = new Document();
-	        PdfWriter writer = PdfWriter.getInstance(d, new FileOutputStream ("C:/Users/Public/Documents/sample.pdf"));
-	        d.open ();
-
-	        PdfContentByte cb = writer.getDirectContent( );
-			PdfTemplate template = cb.createTemplate(PageSize.A4.getWidth(), PageSize.A4.getHeight());
-	        cb.addTemplate(template, 0, 0);
-			Graphics2D g2d = template.createGraphics(PageSize.A4.getWidth(), PageSize.A4.getHeight());
-	        g2d.scale(0.4, 0.4);
-	        map.print(g2d);
-	        map.addNotify();
-	        map.validate();
-	        g2d.dispose();
-
-	        d.close ();
-	    }
-	    catch(Exception e)  { e.printStackTrace();
-	        //
-	    }
-	}
+	
 	public static void saveHImage(int i) {
 		WorldMap map= CupCarbonMap.map;
 	    BufferedImage img = new BufferedImage(map.getWidth(), map.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE);

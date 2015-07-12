@@ -19,12 +19,13 @@ import device.SensorNode;
 
 public class RandomDevices {
 
-	public static boolean WithMarkers;
+	private static boolean WithMarkers;
 	public static long racine1;
 	public static long racine2;
 	public static Random random2;
 	public static Random random1;
-
+	private static Marker marker1;
+	private static Marker marker2;
 	public static void addRandomSensorsWithMarkers(int n) {
 		WithMarkers=true;
 		if(racine1==0&&racine2==00){
@@ -35,16 +36,16 @@ public class RandomDevices {
 			}
 		
 		try{
-			Marker marker1 = MarkerList.getMarkers().get(0);
-			Marker marker2 = MarkerList.getMarkers().get(1);
+			marker1 = MarkerList.getMarkers().get(0);
+			marker2 = MarkerList.getMarkers().get(1);
 			}catch(IndexOutOfBoundsException IOBE){WithMarkers=false;}
 		if(!WithMarkers){
 			final JFrame parent = new JFrame();
 			JOptionPane.showMessageDialog(parent,"Veuillez Poser 2 Markers Sur La Carte Puis Résseyez");
 		}
 		else{
-			Marker marker1 = MarkerList.getMarkers().get(0);
-			Marker marker2 = MarkerList.getMarkers().get(1);
+			marker1 = MarkerList.getMarkers().get(0);
+			marker2 = MarkerList.getMarkers().get(1);
 			double m1x = marker1.getX();
 			double m1y = marker1.getY();
 			double m2x = marker2.getX();
@@ -156,8 +157,8 @@ public class RandomDevices {
 			}
 		
 		try{
-			Marker marker1 = MarkerList.getMarkers().get(0);
-			Marker marker2 = MarkerList.getMarkers().get(1);
+			marker1 = MarkerList.getMarkers().get(0);
+			marker2 = MarkerList.getMarkers().get(1);
 			}catch(IndexOutOfBoundsException IOBE){WithMarkers=false;}
 		if(!WithMarkers){
 			final JFrame parent = new JFrame();

@@ -3,6 +3,7 @@
 		 */
 package perso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,12 +21,13 @@ public class MSTKRUSKAL extends Thread {
 	long temps;
 	public void run() {
 		
-		List<SensorNode> Capteurs = DeviceList.getSensorNodes();
-		algorithme(Capteurs);
+		List<SensorNode> capteurs = DeviceList.getSensorNodes();
+		algorithme(capteurs);
 	
+		DecimalFormat df=new DecimalFormat("####.##" );
 		final JFrame parent = new JFrame();
-			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(Capteurs)+"\n La consommation globale = "+calculerComsommationGlobale(Capteurs));
-			Layer.mapViewer.repaint();
+		JOptionPane.showMessageDialog(parent, "La puissance globale = "+df.format(calculerComsommationGlobale(capteurs)));
+		Layer.mapViewer.repaint();
 	}
 
 

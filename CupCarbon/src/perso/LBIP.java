@@ -3,13 +3,14 @@
 		 */
 package perso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import cupcarbon.CupCarbonMap;
+import map.Layer;
 import device.DeviceList;
 import device.SensorNode;
 public class LBIP extends Thread {
@@ -23,10 +24,10 @@ public class LBIP extends Thread {
 		algorithme(capteurs);
 		
 		
+		DecimalFormat df=new DecimalFormat("####.##" );
 		final JFrame parent = new JFrame();
-			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
-					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
-
+		JOptionPane.showMessageDialog(parent, "La puissance globale = "+df.format(calculerComsommationGlobale(capteurs)));
+		Layer.mapViewer.repaint();
 
 	}
 

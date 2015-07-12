@@ -26,9 +26,9 @@ public class RandomDeviceParametersWindowsWithoutGrid_WithMarkers extends JInter
 	private static final long serialVersionUID = 1L;
 
 	private int n=0;
-	public static JTextField NBNoeuds;
-    public static JLabel ErrorVoid;
-    public boolean error=false;
+	private static JTextField NBNoeuds;
+	private static JLabel ErrorVoid;
+    private boolean error=false;
     
     /**
 	 * Launch the application.

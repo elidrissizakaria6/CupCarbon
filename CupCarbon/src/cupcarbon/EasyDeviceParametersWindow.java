@@ -4,19 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
-import java.beans.PropertyVetoException;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
-import project.Project;
-import utilities.MapCalc;
-import map.Layer;
-import consumer.MaConsommation;
 import device.DeviceList;
 
 public class EasyDeviceParametersWindow extends JInternalFrame {
@@ -53,11 +46,6 @@ public class EasyDeviceParametersWindow extends JInternalFrame {
 		setClosable(true);
 		setIconifiable(true);
 		setAutoscrolls(false);
-		int[] coord = MapCalc.geoToIntPixelMapXY(fenetrex, fenetrey);
-		int lx1 = coord[0];
-		int ly1 = coord[1];
-		System.out.println(lx1);
-		Point2D p2d=MapCalc.geoXYToPixelMap(fenetrex, fenetrey);
 		setBounds(100,100 , 200, 150);
 		setBorder(null);
 		setVisible(false);

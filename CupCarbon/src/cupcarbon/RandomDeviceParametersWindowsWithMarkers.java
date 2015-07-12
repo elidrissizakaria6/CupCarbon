@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import map.RandomDevices;
-import device.MarkerList;
 public class RandomDeviceParametersWindowsWithMarkers extends JInternalFrame {
 
 	  /**
@@ -27,12 +26,12 @@ public class RandomDeviceParametersWindowsWithMarkers extends JInternalFrame {
 	private int n=0;
 	private int x=0;
 	private int y=0;
-	public static JTextField NBNoeuds;
-    public static JTextField X ;
-    public static JTextField Y ;
-    public static JLabel ErrorVoid;
-    public static JLabel ErrorImpo;
-    public boolean error=false;
+	private static JTextField NBNoeuds;
+	private static JTextField X ;
+	private static JTextField Y ;
+	private static JLabel ErrorVoid;
+	private static JLabel ErrorImpo;
+	private boolean error=false;
     
     /**
 	 * Launch the application.

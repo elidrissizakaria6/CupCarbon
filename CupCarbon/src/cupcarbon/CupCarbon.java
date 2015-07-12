@@ -1626,7 +1626,7 @@ public class CupCarbon {
 		
 		//
 		
-		JRadioButtonMenuItem mntmLocal = new JRadioButtonMenuItem("White Plan");
+		JRadioButtonMenuItem mntmLocal = new JRadioButtonMenuItem("White Background");
 		mntmLocal.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH + "geo.png"));
 		buttonGroup.add(mntmLocal);
 		mntmLocal.setSelected(true);
@@ -1661,12 +1661,12 @@ public class CupCarbon {
 		});
 		mnCenter.add(btnOk);
 		
-		JMenu mnPerso = new JMenu("AlgoAffectPuiss");
+		JMenu mnPerso = new JMenu("Power Assignment Algorithms");
 		mnPerso.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "personal-icon.png"));
 		menuBar.add(mnPerso);
 		//zakaria
-		JMenu mnOutilsAlgo = new JMenu("OutilsAlgo");
+		JMenu mnOutilsAlgo = new JMenu("Algorithms Tools");
 		mnOutilsAlgo.setIcon(new ImageIcon(CupCarbonParameters.IMGPATH
 				+ "personal-icon.png"));
 		menuBar.add(mnOutilsAlgo);
@@ -1716,7 +1716,7 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem algoMstMenu = new JMenuItem("Algo MST KRUSKAL");
+		JMenuItem algoMstMenu = new JMenuItem("MST KRUSKAL Algorithm");
 		algoMstMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				MSTKRUSKAL mstKruskal = new MSTKRUSKAL();
@@ -1724,35 +1724,11 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoMstMenu);
-		
+
 		/**
 		 * @author Zakaria
 		 */
-//		JMenuItem algoMst2Menu = new JMenuItem("Algo MST KRUSKAL2");
-//		algoMst2Menu.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				MSTKRUSKAL2 mstKruskal2 = new MSTKRUSKAL2();
-//				mstKruskal2.start();
-//			}
-//		});
-//		mnPerso.add(algoMst2Menu);
-		
-		/**
-		 * @author Zakaria
-		 */
-//		JMenuItem algoBipConsoMenu = new JMenuItem("Algo BIP Unidirectionel");
-//		algoBipConsoMenu.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				BIPConsom monBipConso = new BIPConsom();
-//				monBipConso.start();
-//			}
-//		});
-//		mnPerso.add(algoBipConsoMenu);
-		
-		/**
-		 * @author Zakaria
-		 */
-		JMenuItem algoBipAdapMenu = new JMenuItem("Algo BIP Adapté");
+		JMenuItem algoBipAdapMenu = new JMenuItem("BIP Adapted Algorithm");
 		algoBipAdapMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				BIPAdapte monBipAdap = new BIPAdapte();
@@ -1760,34 +1736,11 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoBipAdapMenu);
-
-		/**
-		 * @author Zakaria
-		 */
-//		JMenuItem algoBipBidiMenu = new JMenuItem("Algo BIP Adapté non Connexe");
-//		algoBipBidiMenu.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				BIPBidirectionnel monBipBidi = new BIPBidirectionnel();
-//				monBipBidi.start();
-//			}
-//		});
-//		mnPerso.add(algoBipBidiMenu);
-		/**
-		 * @author Zakaria
-		 */
-//		JMenuItem algoBipAdapAMenu = new JMenuItem("Algo BIP AdaptéA");
-//		algoBipAdapAMenu.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				BIPAdapteA monBipAdapA = new BIPAdapteA();
-//				monBipAdapA.start();
-//			}
-//		});
-//		mnPerso.add(algoBipAdapAMenu);
 		
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem algoHeurisMenu = new JMenuItem("Heuristique");
+		JMenuItem algoHeurisMenu = new JMenuItem("HWSN Algorithm");
 		algoHeurisMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Heuristique monHeuris = new Heuristique();
@@ -1795,33 +1748,11 @@ public class CupCarbon {
 			}
 		});
 		mnPerso.add(algoHeurisMenu);
-		/**
-		 * @author Zakaria
-		 */
-		JMenuItem algoMonHeurisMenu = new JMenuItem("MonHeuristique");
-		algoMonHeurisMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MonHeuristique monHeuris = new MonHeuristique();
-				monHeuris.start();
-			}
-		});
-		mnPerso.add(algoMonHeurisMenu);
-		/**
-		 * @author Zakaria
-		 */
-//		JMenuItem algoHeurisNonConnexeMenu = new JMenuItem("Heuristique Non Connexe");
-//		algoHeurisNonConnexeMenu.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				HeuristiqueNonConnexe monHeurisNonConnexe = new HeuristiqueNonConnexe();
-//				monHeurisNonConnexe.start();
-//			}
-//		});
-//		mnPerso.add(algoHeurisNonConnexeMenu);
 
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem GrapheRNGMenu = new JMenuItem("RNG");
+		JMenuItem GrapheRNGMenu = new JMenuItem("RNG Algorithm");
 		GrapheRNGMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GrapheRNG grapheRNG= new GrapheRNG();
@@ -1832,7 +1763,7 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem LMSTMenu = new JMenuItem("LMST");
+		JMenuItem LMSTMenu = new JMenuItem("LMST Algorithm");
 		LMSTMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				LMST lmst= new LMST();
@@ -1843,7 +1774,7 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem LBIPMenu = new JMenuItem("LBIP");
+		JMenuItem LBIPMenu = new JMenuItem("LBIP Algorithm");
 		LBIPMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				LBIP lbip= new LBIP();
@@ -1854,7 +1785,7 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem BorneInfMenu = new JMenuItem("Borne Inf");
+		JMenuItem BorneInfMenu = new JMenuItem("Lower Bound");
 		BorneInfMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				BorneInf borneInf = new BorneInf();
@@ -1865,7 +1796,7 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem BorneSupMenu = new JMenuItem("Borne Sup");
+		JMenuItem BorneSupMenu = new JMenuItem("Upper bound");
 		BorneSupMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				BorneSup borneSup = new BorneSup();
@@ -1876,7 +1807,7 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem calculerConsoMenu = new JMenuItem("Calculer la puissance");
+		JMenuItem calculerConsoMenu = new JMenuItem("Calculate the Overall Power");
 		calculerConsoMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CalculerPuissanceConsommation calculerpuisconso = new CalculerPuissanceConsommation();
@@ -1888,7 +1819,7 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem TestConnexeMenu = new JMenuItem("Tester La Connexité");
+		JMenuItem TestConnexeMenu = new JMenuItem("Test the Connectivity of the Network");
 		TestConnexeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				TesterLaConnexite calculerpuisconso = new TesterLaConnexite();
@@ -1899,11 +1830,15 @@ public class CupCarbon {
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem StatistiquesMenu = new JMenuItem("Générer des Statistiques");
+		JMenuItem StatistiquesMenu = new JMenuItem("Generate Statistics");
 		StatistiquesMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				Statistiques statistiques = new Statistiques();
-//				statistiques.start();
+				if (Project.projectPath.equals("") || Project.projectName.equals("")){
+					JOptionPane.showMessageDialog(null,
+							"Project must be created or must be open.", "Warning",
+							JOptionPane.WARNING_MESSAGE);
+			}
+			else{
 				statParametersWindow=new StatParametersWindow();
 				Layer.initClick();
 				if (!statParametersWindow.isVisible()) {
@@ -1912,13 +1847,14 @@ public class CupCarbon {
 				}
 				statParametersWindow.toFront();
 			}
+		}
 		});
 		mnOutilsAlgo.add(StatistiquesMenu);
 		
 		/**
 		 * @author Zakaria
 		 */
-		JMenuItem PDFMenu = new JMenuItem("Imprimer en PNG");
+		JMenuItem PDFMenu = new JMenuItem("Print PNG");
 		PDFMenu.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						FileFilter projectFilter = new FileFilter() {
@@ -1936,9 +1872,9 @@ public class CupCarbon {
 							}
 						};
 
-						JFileChooser fc = new JFileChooser("Sauvegarder");
+						JFileChooser fc = new JFileChooser("Save");
 						fc.setFileFilter(projectFilter);
-						int val = fc.showDialog(fc, "Sauvegarder");
+						int val = fc.showDialog(fc, "Save");
 						if (val == 0) {
 							cupCarbonMap.saveHDImage(CupCarbonMap.map,fc.getSelectedFile().getParent()
 									+ File.separator
@@ -1952,7 +1888,7 @@ public class CupCarbon {
 		
 		final JRadioButton mnRadioUni = new JRadioButton();//todo
 		mnRadioUni.setSelected(false);
-		mnRadioUni.setText("Liens Unidirectionnel");
+		mnRadioUni.setText("Unidirectional Links");
 		mnRadioUni.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {				
 			if(mnRadioUni.isSelected()) unidirectionnel=true;
@@ -1964,7 +1900,7 @@ public class CupCarbon {
 		
 		final JRadioButton mnRadioPoids = new JRadioButton();//todo
 		mnRadioPoids.setSelected(false);
-		mnRadioPoids.setText("Poids");
+		mnRadioPoids.setText("Weight");
 		mnRadioPoids.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {				
 			if(mnRadioPoids.isSelected()) poids=true;
@@ -1976,7 +1912,7 @@ public class CupCarbon {
 		
 		final JRadioButton mnRadioInfoNode = new JRadioButton();//todo
 		mnRadioInfoNode.setSelected(true);
-		mnRadioInfoNode.setText("Infos Capteurs");
+		mnRadioInfoNode.setText("Sensors details");
 		mnRadioInfoNode.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {		
 			if(mnRadioInfoNode.isSelected()) Device.setDisplayDetails(true);

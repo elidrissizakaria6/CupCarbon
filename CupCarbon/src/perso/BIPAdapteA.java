@@ -30,7 +30,6 @@ public class BIPAdapteA extends Thread {
 		SensorNode NoeudNonMarque=null;
 		SensorNode NoeudMarque=null;
 		SensorNode NoeudMarqueChoisi=null;
-		int k=0;
 		while(noeudsMarques.size()<capteurs.size()){	
 			for(int i=0;i<capteurs.size();i++){
 				if(capteurs.get(i).isMarked()==true){

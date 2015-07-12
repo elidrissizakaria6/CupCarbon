@@ -3,6 +3,7 @@
 		 */
 package perso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import map.Layer;
-import cupcarbon.CupCarbonMap;
 import device.Device;
 import device.DeviceList;
 import device.SensorNode;
@@ -27,10 +27,10 @@ public class Heuristique extends Thread {
 		algorithme(capteurs);
 		
 		
-		
+		DecimalFormat df=new DecimalFormat("####.##" );
 		final JFrame parent = new JFrame();
-			JOptionPane.showMessageDialog(parent, "La puissance globale = "+calculerPuissanceGlobale(capteurs)+"\n"
-					+ "La consommation globale = "+calculerComsommationGlobale(capteurs));
+		JOptionPane.showMessageDialog(parent, "La puissance globale = "+df.format(calculerComsommationGlobale(capteurs)));
+		Layer.mapViewer.repaint();
 
 	}
 
@@ -83,7 +83,7 @@ public class Heuristique extends Thread {
 				}
 			}
 		}
-		SensorNode S1 = null,S2 = null,a=null,b=null; int k=2;
+		SensorNode S1 = null,S2 = null,a=null,b=null;
 		while(compteurCC!=1){
 			for(int i=0;i<capteurs.size();i++){
 				a=capteurs.get(i);
